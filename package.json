@@ -6,7 +6,9 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.13",
-    "react-facebook-login": ""
+    "react-facebook-login": "",
+    "superagent": "",
+    "dotenv": ""
   },
   "scripts": {
     "start": "react-scripts start",
