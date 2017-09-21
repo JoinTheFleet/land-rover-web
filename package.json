@@ -10,7 +10,12 @@
     "universal-cookie": "",
     "bootstrap": "",
     "axios": "",
-    "dotenv": ""
+    "dotenv": "",
+    "style-loader": "",
+    "css-loader": "",
+    "sass-loader": "",
+    "node-sass": "",
+    "webpack": ""
   },
   "scripts": {
     "start": "react-scripts start",

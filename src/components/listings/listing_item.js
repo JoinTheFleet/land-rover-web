@@ -6,11 +6,23 @@ class ListingItem extends Component {
     let item = this.props.listing;
     let image;
 
+    let vehicleMake = item.variant.make.name;
+    let vehicleModel = item.variant.model.name;
+    let vehicleTrim = item.variant.trim;
+    let vehicleTitle = vehicleMake + ' ' + vehicleModel + ' - ' + vehicleTrim;
+
     if(item.gallery.length > 0) {
-      image = <img src={item.gallery[0].images.small_url}></img>;
+      image = <img src={item.gallery[0].images.large_url} alt={vehicleTitle}></img>;
     }
 
-    return image
+    return (
+      <div>
+        { image }
+        <p>
+          <span>{ vehicleTitle }</span>
+        </p>
+      </div>
+    )
   }
 
   render () {
