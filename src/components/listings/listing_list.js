@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TopSearchBar from './top_search_bar'
 import ListingItem from './listing_item'
 
 class ListingList extends Component {
@@ -29,7 +30,10 @@ class ListingList extends Component {
 
   render(){
     return (
-      <div id="listingsList">{ this.renderListingList() }</div>
+      <div>
+        <TopSearchBar />
+        <div id="listingList">{ this.renderListingList() }</div>
+      </div>
     )
   }
 }

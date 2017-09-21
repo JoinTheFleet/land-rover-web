@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import RatingInput from '../miscellaneous/rating_input'
 
 class ListingItem extends Component {
 
@@ -8,26 +9,34 @@ class ListingItem extends Component {
 
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
-    let vehicleTrim = item.variant.trim;
-    let vehicleTitle = vehicleMake + ' ' + vehicleModel + ' - ' + vehicleTrim;
+    let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
     if(item.gallery.length > 0) {
-      image = <img src={item.gallery[0].images.large_url} alt={vehicleTitle}></img>;
+      image = <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>;
     }
 
     return (
       <div>
-        { image }
-        <p>
-          <span>{ vehicleTitle }</span>
-        </p>
+        <div className="listing-item-photo-and-title">
+          { image }
+          <div className="listing-item-title fs-16px">
+            <span className="subtitle-font-weight">{ vehicleTitle }</span>
+            <span className="listing-item-year">{ item.variant.year.year }</span>
+          </div>
+        </div>
+        <div className="listing-item-info">
+          <div>
+            { '€' + (item.price / 100) + ' per day' }
+          </div>
+          <RatingInput rating={item.rating} />
+        </div>
       </div>
     )
   }
 
   render () {
     return (
-      <div> { this.renderItem() } </div>
+      <div className="listing-item col-xs-12 col-md-6"> { this.renderItem() } </div>
     )
   }
 }

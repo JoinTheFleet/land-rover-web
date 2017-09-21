@@ -1,0 +1,13 @@
+{
+  "presets": ["react"],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-runtime",
+    [
+      "react-intl", {
+        "messagesDir": "./build/messages",
+        "enforceDescriptions": false
+      }
+    ]
+  ]
+}

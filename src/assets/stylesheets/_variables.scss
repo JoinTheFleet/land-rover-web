@@ -1,0 +1,31 @@
+// Main Colors
+$main-color: #1de9b6;
+$secondary-color: #23a9f6;
+$terciary-color: #9b9b9b;
+
+$smoke-grey: #eeeeee;
+$sun-yellow: #f8e81c;
+
+// Text Colors
+$main-text-color: black;
+$secondary-text-color: $secondary-color;
+$terciary-text-color: $terciary-color;
+$placeholder-text-color: $terciary-color;
+
+// Text
+$text-font-family: Roboto;
+
+$text-main-font-weight: 400;
+$text-secondary-font-weight: 300;
+$title-font-weight: 700;
+$subtitle-font-weight: 500;
+$strong-font-weight: 900;
+
+
+// Screen sizes
+$screen-xs-max: 767px;
+$screen-sm-min: $screen-xs-max + 1;
+$screen-sm-max: 991px;
+$screen-md-min: $screen-sm-max + 1;
+$screen-md-max: 1199px;
+$screen-lg-min: $screen-md-max + 1;
