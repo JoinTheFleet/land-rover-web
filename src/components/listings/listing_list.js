@@ -31,7 +31,6 @@ class ListingList extends Component {
   render(){
     return (
       <div>
-        <TopSearchBar />
         <div id="listingList">{ this.renderListingList() }</div>
       </div>
     )

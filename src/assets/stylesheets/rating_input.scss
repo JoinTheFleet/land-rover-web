@@ -25,6 +25,10 @@
         content: '★ ';
     }
 
+    input:checked + label ~ label:before {
+      content: "\f006";
+    }
+
     label:hover,
     label:hover ~ label,
     input:checked ~ label {

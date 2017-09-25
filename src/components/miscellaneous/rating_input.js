@@ -7,10 +7,21 @@ class RatingInput extends Component {
     this.state = {
       currentRating: this.props.rating || 0
     }
+
+    this.handleOnChange = this.handleOnChange.bind(this);
+  }
+
+  handleOnChange(event){
+    let element = event.target;
+
+    if(element.checked) {
+      this.setState({currentRating: element.value});
+    }
   }
 
   render() {
     let ratingLength = this.props.length || 5;
+    let inputNameSufix = this.props.inputNameSufix || '';
     let inputName = this.props.inputName || 'rating';
     let inputId = this.props.inputId || 'star';
 
@@ -19,9 +30,9 @@ class RatingInput extends Component {
         {
           Array.from(new Array(ratingLength), (val, index) => index + 1).map((index) => {
             return (
-              <div>
-                <input type="radio" id={inputId + index} name={inputName} value={index} checked={index <= this.state.currentRating} />
-                <label for={inputId + index} ></label>
+              <div key={inputId + index}>
+                <input type="radio" id={inputId + index} name={inputName + '_' + inputNameSufix} value={index} defaultChecked={index <= this.state.currentRating} onChange={this.handleOnChange} />
+                <label htmlFor={inputId + index}></label>
               </div>
             )
           })
