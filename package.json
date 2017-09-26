@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "accept-language": "",
     "autoprefixer": "7.1.2",
     "axios": "",
     "babel-core": "6.25.0",

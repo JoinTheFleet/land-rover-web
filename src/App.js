@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
 import './App.css';
-import Header from './components/layout/header'
-import AuthenticationHandler from './api_handlers/authentication_handler'
-import LoginForm from './components/authentication/login_form'
+
+import Header from './components/layout/header';
+import AuthenticationHandler from './api_handlers/authentication_handler';
+import LoginForm from './components/authentication/login_form';
 import Cookies from "universal-cookie";
-import Homescreen from './components/home/homescreen'
+import Homescreen from './components/home/homescreen';
 
 const cookies = new Cookies();
 

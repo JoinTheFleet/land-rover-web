@@ -1,0 +1,50 @@
+{
+  "en": {
+    "application.blog": "Blog",
+    "application.dates": "Dates",
+    "application.location": "Location",
+    "application.search": "Search",
+    "application.view_all": "View All",
+
+    "company_info.info_email": "info@jointhefleet.com",
+
+    "locations.dublin": "Dublin",
+    "locations.galway": "Galway",
+    "locations.cork": "Cork",
+    "locations.wicklow": "Wicklow",
+
+    "header.list_your_car": "List your car",
+    "header.log_in": "Log in",
+    "header.sign_up": "Sign up",
+
+    "footer.get_started": "Get Started",
+    "footer.get_iphone_app": "Get the iPhone app",
+    "footer.get_android_app": "Get the Android app",
+    "footer.rent_a_car": "Rent a car",
+    "footer.make_your_car": "Make your car work for you",
+    "footer.learn_more": "Learn more",
+    "footer.customer_service": "Customer Service",
+    "footer.terms_and_conditions": "Terms & Conditions",
+    "footer.faqs": "FAQs",
+    "footer.top_destinations": "Top Destinations",
+    "footer.get_in_touch": "Get In Touch",
+    "footer.read_our_blog": "Read our blog",
+    "footer.copyrights": "© {year} Fleet",
+
+    "homescreen.top_banner_title": "Car Sharing Made Smart",
+    "homescreen.top_banner_slogan": "Rent nearby users cars quickly and easily with just a few clicks.",
+    "homescreen.insurance_partner": "Insurance Partner",
+    "homescreen.how_it_works": "How It Works",
+    "homescreen.renting_a_car": "Renting a Car",
+    "homescreen.pick_a_car": "Pick a Car",
+    "homescreen.book_a_car": "Book a Car",
+    "homescreen.meet_the_owner": "Meet The Owner",
+    "homescreen.create_profile": "Create your Profile",
+    "homescreen.receive_bookings": "Receive Bookings",
+    "homescreen.meet_the_driver": "Meet The Driver",
+    "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
+    "homescreen.featured_in": "Featured In",
+
+    "listings.top_seller": "Top Seller"
+  }
+}
