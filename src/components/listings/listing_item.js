@@ -28,7 +28,7 @@ class ListingItem extends Component {
           <div>
             { '€' + (item.price / 100) + ' per day' }
           </div>
-          <RatingInput rating={4} inputNameSufix={item.id} />
+          <RatingInput rating={4} inputNameSufix={item.id} readonly={true} />
         </div>
       </div>
     )

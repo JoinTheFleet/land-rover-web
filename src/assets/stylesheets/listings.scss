@@ -21,10 +21,12 @@
 .listing-item {
   img {
     max-width: 100%;
+    max-height: 100%;
   }
 
   .listing-item-photo-and-title {
     position: relative;
+    height: 350px;
 
     .listing-item-title {
       position: absolute;

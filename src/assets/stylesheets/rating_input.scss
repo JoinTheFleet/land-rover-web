@@ -15,7 +15,6 @@
         width: 1em;
         overflow: hidden;
         white-space: nowrap;
-        cursor: pointer;
         line-height: 1.2;
         color: #ddd;
         text-shadow: none;
@@ -29,8 +28,6 @@
       content: "\f006";
     }
 
-    label:hover,
-    label:hover ~ label,
     input:checked ~ label {
         color: $sun-yellow;
     }
@@ -47,5 +44,16 @@
         position: relative;
         top: 2px;
         left: 2px;
+    }
+
+    &:not(.disabled) {
+      label {
+        cursor: pointer;
+      }
+
+      label:hover,
+      label:hover ~ label {
+        color: $sun-yellow;
+      }
     }
 }
