@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import RatingInput from '../miscellaneous/rating_input'
 
-class ListingItem extends Component {
+export default class ListingItem extends Component {
 
   renderItem(){
     let item = this.props.listing;
@@ -28,7 +29,7 @@ class ListingItem extends Component {
           <div>
             { '€' + (item.price / 100) + ' per day' }
           </div>
-          <RatingInput rating={4} inputNameSufix={item.id} readonly={true} />
+          <RatingInput rating={4} inputNameSufix={item.id.toString()} readonly={true} />
         </div>
       </div>
     )
@@ -41,4 +42,6 @@ class ListingItem extends Component {
   }
 }
 
-export default ListingItem;
+ListingItem.propTypes = {
+  listing: PropTypes.object
+}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class TopSearchBar extends Component {
+export default class TopSearchBar extends Component {
   constructor(props) {
     super(props);
 
@@ -26,5 +26,3 @@ class TopSearchBar extends Component {
     )
   }
 }
-
-export default TopSearchBar;

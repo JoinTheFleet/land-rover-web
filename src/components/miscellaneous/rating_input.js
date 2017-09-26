@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 
-class RatingInput extends Component {
+export default class RatingInput extends Component {
   constructor(props) {
     super(props);
 
@@ -49,4 +50,11 @@ class RatingInput extends Component {
   }
 }
 
-export default RatingInput;
+RatingInput.propTypes = {
+  length: PropTypes.number,
+  rating: PropTypes.number,
+  readonly: PropTypes.bool,
+  inputNameSufix: PropTypes.string,
+  inputName: PropTypes.string,
+  inputId: PropTypes.string
+}

@@ -8,15 +8,20 @@ import Homescreen from './components/home/homescreen'
 
 const cookies = new Cookies();
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      accessToken: cookies.get('accessToken')
+      accessToken: cookies.get('accessToken'),
+      currentSelectedView: 'homescreen',
+      currentSearchParams: {}
     }
 
+    this.addSearchParam = this.addSearchParam.bind(this);
+
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
   handleLogin(username, password) {
@@ -31,10 +36,25 @@ class App extends Component {
     })
   }
 
+  addSearchParam(searchParams) {
+    let newSearchParams = this.state.currentSearchParams;
+    let searchParamsToAdd = searchParams || {};
+
+    for(var key in searchParamsToAdd) {
+      newSearchParams[key] = searchParamsToAdd[key];
+    }
+
+    this.setState({ currentSearchParams: newSearchParams });
+  }
+
+  handleMenuItemSelect(menuItem) {
+    this.setState({ currentSelectedView: menuItem });
+  }
+
   renderMainContent() {
     if(this.state.accessToken && this.state.accessToken !== ''){
       return (
-        <Homescreen accessToken={this.state.accessToken} />
+        <Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />
       )
     }
     else {
@@ -47,7 +67,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        <Header currentMenuItem={this.state.currentSelectedView} handleMenuItemSelect={this.handleMenuItemSelect} />
         <div id="main_container">
           { this.renderMainContent() }
         </div>
@@ -55,5 +75,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

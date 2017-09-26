@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import TopSearchBar from './top_search_bar'
+import PropTypes from 'prop-types';
 import ListingItem from './listing_item'
 
-class ListingList extends Component {
+export default class ListingList extends Component {
 
   constructor(props) {
     super(props);
@@ -20,7 +20,7 @@ class ListingList extends Component {
         this.setState({ listings: response.data.data.listings });
       }, (error) => {
         alert(error);
-      })
+      });
     }
   }
 
@@ -37,4 +37,7 @@ class ListingList extends Component {
   }
 }
 
-export default ListingList;
+ListingList.propTypes = {
+  accessToken: PropTypes.string.isRequired,
+  listingsHandler: PropTypes.func.isRequired
+}

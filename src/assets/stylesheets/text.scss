@@ -1,3 +1,4 @@
+// Font Weights
 .text-main-font-weight {
   font-weight: $text-main-font-weight;
 }
@@ -18,7 +19,34 @@
   font-weight: $strong-font-weight;
 }
 
+.light-font-weight {
+  font-weight: $light-font-weight;
+}
+
+
+// Font Sizes
+.title-font-size {
+  font-size: $title-font-size;
+}
+
+.subtitle-font-size {
+  font-size: $subtitle-font-size;
+}
+
 // Font sizes
-.fs-16px {
+.fs-16 {
   font-size: 16px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.fs-40 {
+  font-size: 40px;
+}
+
+//Letter spacings
+.ls-dot-five {
+  letter-spacing: 0.5px;
 }
