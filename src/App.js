@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Header from './components/layout/header';
+import Footer from './components/layout/footer';
 import AuthenticationHandler from './api_handlers/authentication_handler';
 import LoginForm from './components/authentication/login_form';
 import Cookies from "universal-cookie";
@@ -73,6 +74,7 @@ export default class App extends Component {
         <div id="main_container">
           { this.renderMainContent() }
         </div>
+        <Footer />
       </div>
     );
   }
