@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import logo from '../../assets/images/menu_logo.png';
 import Constants from '../miscellaneous/constants';
+import HeaderMenu from './header_menu'
+
+import logo from '../../assets/images/menu_logo.png';
 
 export default class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state =  {
+      menuOpen: false
+    }
+  }
+
+  toggleMenu() {
+    this.setState((prevState) => { menuOpen: !prevState.menuOpen })
+  }
+
   render() {
     let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().homescreen;
 
@@ -19,6 +33,7 @@ export default class Header extends Component {
           <a id="header_login_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('login') }}>Log in</a>
           <a id="header_register_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
         </div>
+        <HeaderMenu menuOpen={this.state.menuOpen} />
       </div>
     );
   }

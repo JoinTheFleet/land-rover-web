@@ -61,6 +61,7 @@
     "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
     "homescreen.featured_in": "Featured In",
 
-    "listings.top_seller": "Top Seller"
+    "listings.top_seller": "Top Seller",
+    "listings.total_reviews": "{total_reviews} reviews"
   }
 }
