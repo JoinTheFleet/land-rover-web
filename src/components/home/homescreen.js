@@ -59,6 +59,9 @@ class Homescreen extends Component {
           <img src={axaLogo} alt="homescreen_axa_banner" />
         </div>
 
+        <p className="top-seller-title strong-font-weight title-font-size">
+          <FormattedMessage id="listings.top_seller" />
+        </p>
         <ListingList accessToken={this.props.accessToken} listingsHandler={ListingsHandler} />
 
         <FeaturesList />

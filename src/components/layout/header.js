@@ -15,7 +15,7 @@ export default class Header extends Component {
   }
 
   toggleMenu() {
-    this.setState((prevState) => { menuOpen: !prevState.menuOpen })
+    this.setState((prevState) => { return {menuOpen: !prevState.menuOpen} })
   }
 
   render() {
