@@ -50,7 +50,7 @@ export default class HeaderMenu extends Component {
     }
 
     return (
-      <div id="header_menu" className="col-xs-12 white terciary-text-color">
+      <div id="header_menu" className="col-xs-12 white terciary-text-color" style={{height: (Helpers.pageHeight() - 80) + 'px'}}>
         {menuItems}
       </div>
     )
@@ -60,7 +60,6 @@ export default class HeaderMenu extends Component {
     return (
       <Anime easing="easeOutQuart"
              duration={500}
-             height={this.state.open ? ((Helpers.pageHeight() - 80) + 'px') : 0}
              opacity={this.state.open ? 1 : 0}>
         {this.renderMenu()}
       </Anime>
