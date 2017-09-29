@@ -12,10 +12,18 @@ export default class Header extends Component {
     this.state =  {
       menuOpen: false
     }
+
+    this.toggleMenu = this.toggleMenu.bind(this);
+    this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
   toggleMenu() {
     this.setState((prevState) => { return {menuOpen: !prevState.menuOpen} })
+  }
+
+  handleMenuItemSelect(item) {
+    this.props.handleMenuItemSelect(item);
+    this.setState({menuOpen: false});
   }
 
   render() {
@@ -23,7 +31,7 @@ export default class Header extends Component {
 
     return (
       <div className="app-header">
-        <img src={logo} alt="fleet logo" className="header-logo" />
+        <img src={logo} alt="fleet logo" className="header-logo" onClick={() => {this.toggleMenu()}} />
         <form id="header_search_form" className={ 'global-search-form' + (hideSearchForm ? ' hide' : '') }>
           <input type="text" name="global_search[location]" id="global_search_location" placeholder="Location" />
           <input type="text" name="global_search[dates]" id="global_search_dates" placeholder="Dates" />
@@ -33,7 +41,10 @@ export default class Header extends Component {
           <a id="header_login_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('login') }}>Log in</a>
           <a id="header_register_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
         </div>
-        <HeaderMenu menuOpen={this.state.menuOpen} />
+        <HeaderMenu accessToken={this.props.accessToken}
+                    menuOpen={this.state.menuOpen}
+                    currentMenuItem={this.props.currentMenuItem}
+                    handleMenuItemSelect={this.handleMenuItemSelect} />
       </div>
     );
   }

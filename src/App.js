@@ -17,7 +17,7 @@ export default class App extends Component {
 
     this.state = {
       accessToken: cookies.get('accessToken'),
-      currentSelectedView: 'homescreen',
+      currentSelectedView: 'home',
       currentSearchParams: {}
     }
 
@@ -70,7 +70,9 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header currentMenuItem={this.state.currentSelectedView} handleMenuItemSelect={this.handleMenuItemSelect} />
+        <Header accessToken={this.state.accessToken}
+                currentMenuItem={this.state.currentSelectedView}
+                handleMenuItemSelect={this.handleMenuItemSelect} />
         <div id="main_container">
           { this.renderMainContent() }
         </div>

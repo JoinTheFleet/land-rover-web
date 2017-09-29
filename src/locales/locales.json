@@ -22,6 +22,16 @@
     "locations.cork": "Cork",
     "locations.wicklow": "Wicklow",
 
+    "menu.home": "Home",
+    "menu.profile": "Profile",
+    "menu.bookings": "Bookings",
+    "menu.messages": "Messages",
+    "menu.account": "Account",
+    "menu.listings": "Listings",
+    "menu.signup": "Sign Up",
+    "menu.login": "Log In",
+    "menu.logout": "Log Out",
+
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
     "header.sign_up": "Sign up",
