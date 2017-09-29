@@ -1,7 +1,7 @@
 export default class Constants {
   static navigationSections() {
     return {
-      homescreen: 'homescreen',
+      home: 'home',
       listings: 'listings',
       profile: 'profile',
       bookings: 'bookings',

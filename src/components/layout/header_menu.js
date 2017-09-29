@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 import Anime from 'react-anime';
 import Helpers from '../miscellaneous/helpers';
+import Constants from '../miscellaneous/constants';
+
+const navigationSections = Constants.navigationSections();
 
 export default class HeaderMenu extends Component {
 
@@ -23,12 +26,15 @@ export default class HeaderMenu extends Component {
 
   renderMenu() {
     let menuItems = [];
-    let items = ['home', 'signup', 'login'];
+    let items = [navigationSections.home, navigationSections.signup, navigationSections.login];
     let itemsWithDivider = ['home'];
 
     if(this.props.accessToken){
-      items = ['home', 'profile', 'bookings', 'messages', 'listings', 'account', 'logout'];
-      itemsWithDivider = ['home', 'listings'];
+      items = [navigationSections.home, navigationSections.profile,
+               navigationSections.bookings,navigationSections.messages,
+               navigationSections.listings, navigationSections.account,
+               navigationSections.logout];
+      itemsWithDivider = [navigationSections.home, navigationSections.listings];
     }
 
     for(var i = 0; i < items.length; i++){

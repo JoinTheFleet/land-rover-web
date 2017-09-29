@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 
 import './App.css';
 
+import Constants from './components/miscellaneous/constants';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
-import AuthenticationHandler from './api_handlers/authentication_handler';
-import LoginForm from './components/authentication/login_form';
 import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
+import Login from './components/authentication/login';
 
 const cookies = new Cookies();
+const navigationSections = Constants.navigationSections();
 
 export default class App extends Component {
   constructor(props) {
@@ -17,26 +18,20 @@ export default class App extends Component {
 
     this.state = {
       accessToken: cookies.get('accessToken'),
-      currentSelectedView: 'home',
+      currentSelectedView: navigationSections.home,
       currentSearchParams: {}
     }
 
     this.addSearchParam = this.addSearchParam.bind(this);
 
-    this.handleLogin = this.handleLogin.bind(this);
+    this.setAccessToken = this.setAccessToken.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
-  handleLogin(username, password) {
-    AuthenticationHandler.login(username, password, (response) => {
-      let accessToken = response.data.data.token.access_token;
-
-      this.setState({ accessToken: accessToken }, () => {
-        cookies.set('accessToken', accessToken);
-      });
-    }, (error) => {
-      alert(error);
-    })
+  setAccessToken(accessToken) {
+    this.setState({ accessToken: accessToken }, () => {
+      cookies.set('accessToken', accessToken);
+    });
   }
 
   addSearchParam(searchParams) {
@@ -55,16 +50,24 @@ export default class App extends Component {
   }
 
   renderMainContent() {
-    if(this.state.accessToken && this.state.accessToken !== ''){
-      return (
-        <Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />
-      )
+    let viewToRender;
+
+    switch(this.state.currentSelectedView) {
+      case navigationSections.profile:
+        break;
+      case navigationSections.bookings:
+        break;
+      case navigationSections.messages:
+        break;
+      case navigationSections.listings:
+        break;
+      case navigationSections.account:
+        break;
+      default:
+        viewToRender = (<Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />);
     }
-    else {
-      return (
-        <LoginForm handleLogin={this.handleLogin} />
-      )
-    }
+
+    return viewToRender
   }
 
   render() {
@@ -76,6 +79,7 @@ export default class App extends Component {
         <div id="main_container">
           { this.renderMainContent() }
         </div>
+        <Login open={this.state.currentSelectedView === navigationSections.login} setAccessToken={this.setAccessToken}/>
         <Footer />
       </div>
     );
