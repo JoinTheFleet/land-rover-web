@@ -8,6 +8,7 @@ import Footer from './components/layout/footer';
 import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
 import Login from './components/authentication/login';
+import AuthenticationHandler from './api_handlers/authentication_handler';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -21,7 +22,7 @@ export default class App extends Component {
       currentSelectedView: navigationSections.home,
       currentSearchParams: {},
       openModals: []
-    }
+    };
 
     this.toggleModal = this.toggleModal.bind(this);
     this.addSearchParam = this.addSearchParam.bind(this);
@@ -37,7 +38,12 @@ export default class App extends Component {
     newState[openModals] = openModals;
 
     this.setState(newState, () => {
-      cookies.set('accessToken', accessToken);
+      if(accessToken.length > 0){
+        cookies.set('accessToken', accessToken);
+      }
+      else {
+        cookies.remove('accessToken');
+      }
     });
   }
 
@@ -53,7 +59,16 @@ export default class App extends Component {
   }
 
   handleMenuItemSelect(menuItem) {
-    this.setState({ currentSelectedView: menuItem });
+    if(menuItem === navigationSections.logout){
+      AuthenticationHandler.logout(this.state.accessToken, (success) => {
+        this.setAccessToken('');
+      }, (error) => {
+        alert(error);
+      });
+    }
+    else {
+      this.setState({ currentSelectedView: menuItem });
+    }
   }
 
   toggleModal(modal) {

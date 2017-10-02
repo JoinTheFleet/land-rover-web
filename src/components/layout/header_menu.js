@@ -13,7 +13,7 @@ export default class HeaderMenu extends Component {
 
     this.state = {
       open: this.props.menuOpen || false
-    }
+    };
 
     this.renderMenu = this.renderMenu.bind(this);
   }
@@ -21,13 +21,14 @@ export default class HeaderMenu extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       open: nextProps.menuOpen || false
-    })
+    });
   }
 
   renderMenu() {
     let menuItems = [];
     let items = [navigationSections.home, navigationSections.signup, navigationSections.login];
     let itemsWithDivider = ['home'];
+    let itemsWithModal = ['login'];
 
     if(this.props.accessToken){
       items = [navigationSections.home, navigationSections.profile,
@@ -37,15 +38,16 @@ export default class HeaderMenu extends Component {
       itemsWithDivider = [navigationSections.home, navigationSections.listings];
     }
 
-    for(var i = 0; i < items.length; i++){
+    for(var i = 0; i < items.length; i++) {
       let item = items[i];
 
       menuItems.push(
-        <div key={'header_menu_' + item}  className="menu-item">
-          <span onClick={() => { this.props.handleMenuItemSelect(item) }} className={this.props.currentMenuItem === item ? 'secondary-text-color' : ''}>
+        (<div key={'header_menu_' + item} className="menu-item">
+          <span className={this.props.currentMenuItem === item ? 'secondary-text-color' : ''}
+                onClick={() => {(itemsWithModal.indexOf(item) > -1) ? this.props.toggleModal(item) : this.props.handleMenuItemSelect(item);}} >
             <FormattedMessage id={'menu.' + item} />
           </span>
-        </div>
+        </div>)
       );
 
       if(itemsWithDivider.indexOf(item) > -1) {

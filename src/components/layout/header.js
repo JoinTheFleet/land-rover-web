@@ -14,11 +14,17 @@ export default class Header extends Component {
     }
 
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
   toggleMenu() {
     this.setState((prevState) => { return {menuOpen: !prevState.menuOpen} })
+  }
+
+  toggleModal(item) {
+    this.setState({menuOpen: false});
+    this.props.toggleModal(item);
   }
 
   handleMenuItemSelect(item) {
@@ -40,14 +46,15 @@ export default class Header extends Component {
  
         <div className={'pull-right hidden-xs header-right-options' + (this.props.accessToken ? ' hide' : '')}>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
-          <a id="header_login_link" className="header-right-option static-link white-text" onClick={() => { this.props.toggleModal('login') }}>Log in</a>
+          <a id="header_login_link" className="header-right-option static-link white-text" onClick={() => { this.toggleModal('login') }}>Log in</a>
           <a id="header_register_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
         </div>
 
         <HeaderMenu accessToken={this.props.accessToken}
                     menuOpen={this.state.menuOpen}
                     currentMenuItem={this.props.currentMenuItem}
-                    handleMenuItemSelect={this.handleMenuItemSelect} />
+                    handleMenuItemSelect={this.handleMenuItemSelect}
+                    toggleModal={this.toggleModal} />
       </div>
     );
   }

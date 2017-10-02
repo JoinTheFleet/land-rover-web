@@ -60,7 +60,6 @@ class Login extends Component {
   }
 
   handleErrorOnLogin(error) {
-    console.log(error);
     this.addError(this.props.intl.formatMessage({id: 'errors.authentication.unable_to_log_in'}));
   }
 
@@ -79,7 +78,7 @@ class Login extends Component {
     if(this.state.errors.length === 0){
       return;
     }
-    
+
     return (
       <div className="alert alert-danger">
         {

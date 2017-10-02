@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const authenticationUrl = process.env.REACT_APP_API_HOST + '/oauth'
+const authenticationUrl = process.env.REACT_APP_API_HOST + '/oauth';
 
 class AuthenticationHandler {
   static login(username, password, successCallback, errorCallback) {
@@ -37,7 +37,22 @@ class AuthenticationHandler {
       scopes: 'basic'
     })
     .then(function(response){
-      console.log(response);
+      successCallback(response);
+    })
+    .catch(function(error){
+      errorCallback(error);
+    });
+  }
+
+  static logout(accessToken, successCallback, errorCallback) {
+    axios.post(authenticationUrl + '/revoke', {
+      token: accessToken
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    })
+    .then(function(response){
       successCallback(response);
     })
     .catch(function(error){
