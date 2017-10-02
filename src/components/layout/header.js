@@ -27,20 +27,23 @@ export default class Header extends Component {
   }
 
   render() {
-    let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().homescreen;
+    let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().home;
 
     return (
       <div className="app-header">
         <img src={logo} alt="fleet logo" className="header-logo" onClick={() => {this.toggleMenu()}} />
+
         <form id="header_search_form" className={ 'global-search-form' + (hideSearchForm ? ' hide' : '') }>
           <input type="text" name="global_search[location]" id="global_search_location" placeholder="Location" />
           <input type="text" name="global_search[dates]" id="global_search_dates" placeholder="Dates" />
         </form>
-        <div className="pull-right hidden-xs header-right-options">
-          <a id="header_list_car_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
-          <a id="header_login_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('login') }}>Log in</a>
-          <a id="header_register_link" className="header-right-option white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
+ 
+        <div className={'pull-right hidden-xs header-right-options' + (this.props.accessToken ? ' hide' : '')}>
+          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
+          <a id="header_login_link" className="header-right-option static-link white-text" onClick={() => { this.props.toggleModal('login') }}>Log in</a>
+          <a id="header_register_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
         </div>
+
         <HeaderMenu accessToken={this.props.accessToken}
                     menuOpen={this.state.menuOpen}
                     currentMenuItem={this.props.currentMenuItem}
@@ -51,6 +54,7 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
+  accessToken: PropTypes.string,
   currentMenuItem: PropTypes.string.isRequired,
   handleMenuItemSelect: PropTypes.func.isRequired
 }

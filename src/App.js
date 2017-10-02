@@ -19,17 +19,24 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentSelectedView: navigationSections.home,
-      currentSearchParams: {}
+      currentSearchParams: {},
+      openModals: []
     }
 
+    this.toggleModal = this.toggleModal.bind(this);
     this.addSearchParam = this.addSearchParam.bind(this);
-
     this.setAccessToken = this.setAccessToken.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
   setAccessToken(accessToken) {
-    this.setState({ accessToken: accessToken }, () => {
+    let openModals = this.state.openModals;
+    let newState = {accessToken: accessToken};
+
+    openModals.splice(openModals.indexOf('login'), 1);
+    newState[openModals] = openModals;
+
+    this.setState(newState, () => {
       cookies.set('accessToken', accessToken);
     });
   }
@@ -47,6 +54,20 @@ export default class App extends Component {
 
   handleMenuItemSelect(menuItem) {
     this.setState({ currentSelectedView: menuItem });
+  }
+
+  toggleModal(modal) {
+    let openModals = this.state.openModals;
+    let index = openModals.indexOf(modal);
+
+    if(index > -1){
+      openModals.splice(index, 1);
+    }
+    else {
+      openModals.push(modal);
+    }
+
+    this.setState({openModals: openModals});
   }
 
   renderMainContent() {
@@ -75,11 +96,12 @@ export default class App extends Component {
       <div className="App">
         <Header accessToken={this.state.accessToken}
                 currentMenuItem={this.state.currentSelectedView}
-                handleMenuItemSelect={this.handleMenuItemSelect} />
+                handleMenuItemSelect={this.handleMenuItemSelect}
+                toggleModal={this.toggleModal} />
         <div id="main_container">
           { this.renderMainContent() }
         </div>
-        <Login open={this.state.currentSelectedView === navigationSections.login} setAccessToken={this.setAccessToken}/>
+        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={this.setAccessToken} toggleModal={this.toggleModal}/>
         <Footer />
       </div>
     );

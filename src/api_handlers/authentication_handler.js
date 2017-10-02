@@ -19,6 +19,31 @@ class AuthenticationHandler {
       errorCallback(error);
     });
   }
+
+  static loginWithFacebook(facebookResponse, successCallback, errorCallback){
+    let names = facebookResponse.name.split(' ');
+
+    axios.post(authenticationUrl + '/token', {
+      grant_type: 'facebook',
+      client_id: process.env.REACT_APP_API_CLIENT_ID,
+      client_secret: process.env.REACT_APP_API_CLIENT_SECRET,
+      facebook_access_token: facebookResponse.accessToken,
+      user: {
+        email: facebookResponse.email,
+        first_name: names[0],
+        last_name: names[names.length - 1],
+        image_url: facebookResponse.picture.data.url
+      },
+      scopes: 'basic'
+    })
+    .then(function(response){
+      console.log(response);
+      successCallback(response);
+    })
+    .catch(function(error){
+      errorCallback(error);
+    });
+  }
 }
 
 export default AuthenticationHandler;

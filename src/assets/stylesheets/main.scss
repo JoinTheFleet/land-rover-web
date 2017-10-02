@@ -24,6 +24,14 @@ form {
   }
 }
 
+.static-link {
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
 .global-search-form {
   input {
     padding-left: 15px;

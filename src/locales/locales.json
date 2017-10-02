@@ -87,6 +87,9 @@
     "homescreen.featured_in": "Featured In",
 
     "listings.top_seller": "Top Seller",
-    "listings.total_reviews": "{total_reviews} reviews"
+    "listings.total_reviews": "{total_reviews} reviews",
+    "listings.no_listings_to_display": "No listings to display",
+
+    "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }
 }

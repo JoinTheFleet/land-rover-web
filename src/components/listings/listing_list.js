@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Anime from 'react-anime';
+import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import ListingItem from './listing_item'
 
@@ -22,7 +23,7 @@ export default class ListingList extends Component {
   componentWillMount() {
     let listingsHandler = this.props.listingsHandler;
 
-    if(listingsHandler){
+    if(listingsHandler && this.props.accessToken){
       listingsHandler.listings(this.props.accessToken, (response) => {
         this.setState({ listings: response.data.data.listings });
       }, (error) => {
@@ -59,7 +60,14 @@ export default class ListingList extends Component {
   }
 
   renderListingList(){
-    return this.state.listings.map((listing) => <ListingItem key={'listing_' + listing.id} listing={listing}/>);
+    let listings = this.state.listings;
+
+    if(listings.length > 0){
+      return this.state.listings.map((listing) => <ListingItem key={'listing_' + listing.id} listing={listing}/>);
+    }
+    else {
+      return (<div className="no-listings-to-display-div title-font-size terciary-text-color"><FormattedMessage id="listings.no_listings_to_display" /></div>);
+    }
   }
 
   render(){
@@ -86,6 +94,6 @@ export default class ListingList extends Component {
 }
 
 ListingList.propTypes = {
-  accessToken: PropTypes.string.isRequired,
+  accessToken: PropTypes.string,
   listingsHandler: PropTypes.func.isRequired
 }

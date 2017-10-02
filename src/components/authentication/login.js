@@ -6,6 +6,7 @@ import Anime from 'react-anime';
 import AuthenticationHandler from '../../api_handlers/authentication_handler';
 
 import emailIcon from '../../assets/images/email.png';
+import closeGreyIcon from '../../assets/images/close-grey.png';
 
 class Login extends Component {
 
@@ -13,50 +14,112 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      selectedLoginMode: ''
+      selectedLoginMode: '',
+      modalOpen: this.props.open,
+      errors: []
     }
 
+    this.addError = this.addError.bind(this);
+    this.handleErrorOnLogin = this.handleErrorOnLogin.bind(this);
+    this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
+    this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
   }
 
-  componentDidUpdate() {
-    document.getElementById('login_modal').style.display = this.props.open ? 'block' : 'none';
-  }
-
-  handleLoginButtonClick(event) {
-    event.preventDefault();
-
-    let username = document.getElementById('login_username').value;
-    let password = document.getElementById('login_password').value;
-
-    AuthenticationHandler.login(username, password, (response) => {
-      let accessToken = response.data.data.token.access_token;
-
-      this.props.setAccessToken(accessToken);
-    }, (error) => {
-      alert(error);
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.open !== this.props.open){
+      this.setState({modalOpen: this.props.open});
+    }
   }
 
   setSelectedLoginMode(mode) {
-    this.setState({selectedLoginMode: mode});
+    this.setState({selectedLoginMode: mode, errors: []}, () => {
+      if(this.state.selectedLoginMode === ''){
+        document.getElementById('login_username').value = '';
+        document.getElementById('login_password').value = '';
+      }
+    });
   }
 
-  handleFacebookLogin(){
+  handleLoginButtonClick() {
+    let username = document.getElementById('login_username').value;
+    let password = document.getElementById('login_password').value;
 
+    AuthenticationHandler.login(username, password, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+  }
+
+  handleFacebookLogin(response){
+    AuthenticationHandler.loginWithFacebook(response, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+  }
+
+  handleSuccessfulLogin(response) {
+    let accessToken = response.data.data.token.access_token;
+
+    this.setSelectedLoginMode('');
+    this.props.setAccessToken(accessToken);
+  }
+
+  handleErrorOnLogin(error) {
+    console.log(error);
+    this.addError(this.props.intl.formatMessage({id: 'errors.authentication.unable_to_log_in'}));
+  }
+
+  addError(error){
+    if(error === ''){
+      return;
+    }
+
+    let errors = this.state.errors;
+    errors.push(error);
+
+    this.setState({errors: errors});
+  }
+
+  renderErrors(){
+    if(this.state.errors.length === 0){
+      return;
+    }
+    
+    return (
+      <div className="alert alert-danger">
+        {
+          this.state.errors.map((error, index) => {
+            return (<div key={'login_error_' + (index + 1)}>{error}</div>)
+          })
+        }
+      </div>
+    )
   }
 
   render() {
     return (
-      <div id="login_modal" className="modal fade in" role="dialog">
+      <Anime easing="easeOutQuart"
+             duration={500}
+             opacity={this.state.modalOpen ? 1 : 0}
+             begin={(anime) => {
+               if(this.state.modalOpen) {
+                 anime.animatables[0].target.style.display = 'block';
+               }
+             }}
+             complete={(anime) => {
+               if(!this.state.modalOpen) {
+                 anime.animatables[0].target.style.display = 'none';
+               }
+             }}>
+      <div id="login_modal" className="modal" role="dialog">
         <div className="modal-dialog">
           <div className="modal-content">
+            <a className="close-login-modal-btn" data-dismiss="modal" onClick={() => {this.props.toggleModal('login')}}>
+              <img src={closeGreyIcon} alt="close-modal-icon" />
+            </a>
             <p className="title-font-weight fs-28">
               <FormattedMessage id="authentication.log_in_to_continue" />
             </p>
 
-            <FacebookLogin appId="1088597931155576"
-                           autoLoad={true}
+            {this.renderErrors()}
+
+            <FacebookLogin appId="376880846063473"
+                           autoLoad={false}
                            fields="name,email,picture"
                            icon="fa-facebook"
                            cssClass="login-with-facebook-btn login-btn-with-icon btn facebook-color white-text text-secondary-font-weight fs-18"
@@ -76,15 +139,22 @@ class Login extends Component {
                    height={this.state.selectedLoginMode === 'email' ? (150 + 'px') : 0}>
               <div className="login-with-email-form-div">
                 <form>
-                  <input type="text" name="login[email]" className="form-control text-secondary-font-weight fs-18" placeholder={this.props.intl.formatMessage({id: 'authentication.email_address'})}></input>
-                  <input type="text" name="login[password]" className="form-control text-secondary-font-weight fs-18" placeholder={this.props.intl.formatMessage({id: 'authentication.password'})}></input>
+                  <input type="text" required={true} name="login[email]" id="login_username" className="form-control text-secondary-font-weight fs-18" placeholder={this.props.intl.formatMessage({id: 'authentication.email_address'})}></input>
+                  <input type="password" required={true} name="login[password]" id="login_password" className="form-control text-secondary-font-weight fs-18" placeholder={this.props.intl.formatMessage({id: 'authentication.password'})}></input>
                 </form>
               </div>
             </Anime>
 
             <button className="login-with-email-btn login-btn-with-icon btn secondary-color white-text text-secondary-font-weight fs-18"
-                    onClick={() => {this.setSelectedLoginMode('email')}}>
-              <i><img src={emailIcon} /></i>
+                    onClick={() => {
+                      if(this.state.selectedLoginMode !== 'email'){
+                        this.setSelectedLoginMode('email');
+                      }
+                      else {
+                        this.handleLoginButtonClick();
+                      }
+                    }}>
+              <i><img src={emailIcon} alt="email-icon" /></i>
               <FormattedMessage id="authentication.log_in_with_email" />
             </button>
 
@@ -105,6 +175,7 @@ class Login extends Component {
           </div>
         </div>
       </div>
+      </Anime>
     )
   }
 
@@ -113,5 +184,6 @@ class Login extends Component {
 export default injectIntl(Login);
 
 Login.propTypes = {
-  setAccessToken: PropTypes.func.isRequired
+  setAccessToken: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired
 };
