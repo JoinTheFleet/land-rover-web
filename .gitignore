@@ -37,3 +37,4 @@ yarn-debug.log*
 yarn-error.log*
 .jshintrc
 .vscode/launch.json
+settings.json

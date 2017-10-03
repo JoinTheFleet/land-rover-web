@@ -17,7 +17,7 @@ class Login extends Component {
       selectedLoginMode: '',
       modalOpen: this.props.open,
       errors: []
-    }
+    };
 
     this.addError = this.addError.bind(this);
     this.handleErrorOnLogin = this.handleErrorOnLogin.bind(this);
