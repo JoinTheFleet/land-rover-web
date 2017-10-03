@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
 import FacebookLogin from 'react-facebook-login';
 import Anime from 'react-anime';
-import AuthenticationHandler from '../../api_handlers/authentication_handler';
+import AuthenticationService from '../../shared/services/authentication_service';
 
 import emailIcon from '../../assets/images/email.png';
 import closeGreyIcon from '../../assets/images/close-grey.png';
@@ -11,7 +16,7 @@ import closeGreyIcon from '../../assets/images/close-grey.png';
 const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
 class Login extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -28,14 +33,19 @@ class Login extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.open !== this.props.open){
-      this.setState({modalOpen: this.props.open});
+    if (prevProps.open !== this.props.open) {
+      this.setState({
+        modalOpen: this.props.open
+      });
     }
   }
 
   setSelectedLoginMode(mode) {
-    this.setState({selectedLoginMode: mode, errors: []}, () => {
-      if(this.state.selectedLoginMode === ''){
+    this.setState({
+      selectedLoginMode: mode,
+      errors: []
+    }, () => {
+      if (this.state.selectedLoginMode === '') {
         document.getElementById('login_username').value = '';
         document.getElementById('login_password').value = '';
       }
@@ -46,11 +56,11 @@ class Login extends Component {
     let username = document.getElementById('login_username').value;
     let password = document.getElementById('login_password').value;
 
-    AuthenticationHandler.login(username, password, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+    AuthenticationService.login(username, password, this.handleSuccessfulLogin, this.handleErrorOnLogin);
   }
 
-  handleFacebookLogin(response){
-    AuthenticationHandler.loginWithFacebook(response, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+  handleFacebookLogin(response) {
+    AuthenticationService.loginWithFacebook(response, this.handleSuccessfulLogin, this.handleErrorOnLogin);
   }
 
   handleSuccessfulLogin(response) {
@@ -61,22 +71,26 @@ class Login extends Component {
   }
 
   handleErrorOnLogin(error) {
-    this.addError(this.props.intl.formatMessage({id: 'errors.authentication.unable_to_log_in'}));
+    this.addError(this.props.intl.formatMessage({
+      id: 'errors.authentication.unable_to_log_in'
+    }));
   }
 
-  addError(error){
-    if(error === ''){
+  addError(error) {
+    if (error === '') {
       return;
     }
 
     let errors = this.state.errors;
     errors.push(error);
 
-    this.setState({errors: errors});
+    this.setState({
+      errors: errors
+    });
   }
 
-  renderErrors(){
-    if(this.state.errors.length === 0){
+  renderErrors() {
+    if (this.state.errors.length === 0) {
       return;
     }
 

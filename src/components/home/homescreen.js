@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list'
-import ListingsHandler from '../../api_handlers/listings_handler'
+import ListingsService from '../../shared/services/listings_service'
 import FeaturesList from './features_list';
 import Testimonials from './testimonials';
 import BlogList from './blog_list';
@@ -62,7 +62,7 @@ class Homescreen extends Component {
         <p className="top-seller-title strong-font-weight title-font-size">
           <FormattedMessage id="listings.top_seller" />
         </p>
-        <ListingList accessToken={this.props.accessToken} listingsHandler={ListingsHandler} />
+        <ListingList listingsService={ListingsService} />
 
         <FeaturesList />
 
