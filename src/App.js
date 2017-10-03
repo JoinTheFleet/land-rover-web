@@ -10,6 +10,7 @@ import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import AuthenticationService from './shared/services/authentication_service';
+import bearer_client from './shared/libraries/client';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -24,6 +25,10 @@ export default class App extends Component {
       currentSearchParams: {},
       openModals: []
     };
+
+    if (this.state.accessToken && this.state.accessToken.length > 0) {
+      bearer_client.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
+    }
 
     this.toggleModal = this.toggleModal.bind(this);
     this.addSearchParam = this.addSearchParam.bind(this);
@@ -41,9 +46,11 @@ export default class App extends Component {
     this.setState(newState, () => {
       if(accessToken.length > 0){
         cookies.set('accessToken', accessToken);
+        bearer_client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
       else {
         cookies.remove('accessToken');
+        delete bearer_client.defaults.headers.common['Authorization'];
       }
     });
   }
@@ -61,11 +68,13 @@ export default class App extends Component {
 
   handleMenuItemSelect(menuItem) {
     if(menuItem === navigationSections.logout){
-      AuthenticationService.logout((success) => {
-        this.setAccessToken('');
-      }, (error) => {
-        alert(error);
-      });
+      AuthenticationService.logout()
+                           .then((success) => {
+                             this.setAccessToken('');
+                           })
+                           .catch((error) => {
+                             alert(error);
+                           });
     }
     else {
       this.setState({ currentSelectedView: menuItem });

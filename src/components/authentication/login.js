@@ -56,11 +56,15 @@ class Login extends Component {
     let username = document.getElementById('login_username').value;
     let password = document.getElementById('login_password').value;
 
-    AuthenticationService.login(username, password, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+    AuthenticationService.login(username, password)
+                         .then(this.handleSuccessfulLogin)
+                         .catch(this.handleErrorOnLogin);
   }
 
   handleFacebookLogin(response) {
-    AuthenticationService.loginWithFacebook(response, this.handleSuccessfulLogin, this.handleErrorOnLogin);
+    AuthenticationService.loginWithFacebook(response)
+                          .then(this.handleSuccessfulLogin)
+                          .catch(this.handleErrorOnLogin);
   }
 
   handleSuccessfulLogin(response) {

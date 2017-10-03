@@ -5,6 +5,10 @@ import HeaderMenu from './header_menu'
 
 import logo from '../../assets/images/menu_logo.png';
 
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 export default class Header extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +48,7 @@ export default class Header extends Component {
           <input type="text" name="global_search[dates]" id="global_search_dates" placeholder="Dates" />
         </form>
 
-        <div className={'pull-right hidden-xs header-right-options' + (this.props.accessToken ? ' hide' : '')}>
+        <div className={'pull-right hidden-xs header-right-options' + (cookies.get('accessToken') ? ' hide' : '')}>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
           <a id="header_login_link" className="header-right-option static-link white-text" onClick={() => { this.toggleModal('login') }}>Log in</a>
           <a id="header_register_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
