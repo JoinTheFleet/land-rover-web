@@ -19,7 +19,7 @@ export default class App extends Component {
       accessToken: cookies.get('accessToken'),
       currentSelectedView: 'homescreen',
       currentSearchParams: {}
-    }
+    };
 
     this.addSearchParam = this.addSearchParam.bind(this);
 
@@ -36,7 +36,7 @@ export default class App extends Component {
       });
     }, (error) => {
       alert(error);
-    })
+    });
   }
 
   addSearchParam(searchParams) {
@@ -55,7 +55,7 @@ export default class App extends Component {
   }
 
   renderMainContent() {
-    if(this.state.accessToken && this.state.accessToken !== ''){
+    if (this.state.accessToken && this.state.accessToken !== ''){
       return (
         <Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />
       )

@@ -9,13 +9,13 @@ export default class ListingList extends Component {
 
     this.state = {
       listings: []
-    }
+    };
   }
 
   componentWillMount() {
     let listingsHandler = this.props.listingsHandler;
 
-    if(listingsHandler){
+    if (listingsHandler){
       listingsHandler.listings(this.props.accessToken, (response) => {
         this.setState({ listings: response.data.data.listings });
       }, (error) => {
@@ -25,7 +25,7 @@ export default class ListingList extends Component {
   }
 
   renderListingList(){
-    return this.state.listings.map((listing) => <ListingItem key={'listing_' + listing.id} listing={listing}/>);
+    return this.state.listings.map((listing) => (<ListingItem key={'listing_' + listing.id} listing={listing}/>));
   }
 
   render(){

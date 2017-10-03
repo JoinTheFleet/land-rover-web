@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import FeatureTile from './feature_tile';
 
 import searchIcon from '../../assets/images/search.png';
 import bookIcon from '../../assets/images/book.png';
@@ -23,38 +24,9 @@ export default class FeaturesList extends Component {
             </span>
           </p>
 
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={searchIcon} alt="search_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.pick_a_car" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.pick_a_car_text" />
-            </p>
-          </div>
-
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={bookIcon} alt="book_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.book_a_car" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.book_a_car_text" />
-            </p>
-          </div>
-
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={chatIcon} alt="chat_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.meet_the_owner" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.meet_the_owner_text" />
-            </p>
-          </div>
+          <FeatureTile icon={searchIcon} titleMessageId="homescreen.pick_a_car" textMessageId="homescreen.pick_a_car_text" />
+          <FeatureTile icon={bookIcon} titleMessageId="homescreen.book_a_car" textMessageId="homescreen.book_a_car_text" />
+          <FeatureTile icon={chatIcon} titleMessageId="homescreen.meet_the_owner" textMessageId="homescreen.meet_the_owner_text" />
         </div>
 
         <div id="making_car_work_for_you_div" className="col-xs-12 text-center">
@@ -68,38 +40,9 @@ export default class FeaturesList extends Component {
             </span>
           </p>
 
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={accountIcon} alt="account_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.create_profile" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.create_profile_text" />
-            </p>
-          </div>
-
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={calendarIcon} alt="calendar_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.receive_bookings" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.receive_bookings_text" />
-            </p>
-          </div>
-
-          <div className="col-xs-12 col-sm-4 text-center">
-            <img src={groupIcon} alt="group_icon" />
-            <p>
-              <span className="subtitle-font-size subtitle-font-weight secondary-text-color text-uppercase">
-                <FormattedMessage id="homescreen.meet_the_driver" />
-              </span>
-              <br/>
-              <FormattedMessage id="homescreen.meet_the_driver_text" />
-            </p>
-          </div>
+          <FeatureTile icon={accountIcon} titleMessageId="homescreen.create_profile" textMessageId="homescreen.create_profile_text" />
+          <FeatureTile icon={calendarIcon} titleMessageId="homescreen.receive_bookings" textMessageId="homescreen.receive_bookings_text" />
+          <FeatureTile icon={groupIcon} titleMessageId="homescreen.meet_the_driver" textMessageId="homescreen.meet_the_driver_text" />
         </div>
       </div>
     )

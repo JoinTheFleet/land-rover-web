@@ -10,7 +10,7 @@ export default class TopSearchBar extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <div id="top_search_bar" className="smoke-grey">
         <a id="selectListingsFiltersBtn" className="top-search-bar-control secondary-color white-text btn" >

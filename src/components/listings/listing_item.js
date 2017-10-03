@@ -4,7 +4,7 @@ import RatingInput from '../miscellaneous/rating_input'
 
 export default class ListingItem extends Component {
 
-  renderItem(){
+  renderItem() {
     let item = this.props.listing;
     let image;
 
@@ -12,8 +12,8 @@ export default class ListingItem extends Component {
     let vehicleModel = item.variant.model.name;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
-    if(item.gallery.length > 0) {
-      image = <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>;
+    if (item.gallery.length > 0) {
+      image = (<img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>);
     }
 
     return (
@@ -27,7 +27,7 @@ export default class ListingItem extends Component {
         </div>
         <div className="listing-item-info">
           <div>
-            { '€' + (item.price / 100) + ' per day' }
+            { '€' + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
           <RatingInput rating={4} inputNameSufix={item.id.toString()} readonly={true} />
         </div>
@@ -35,7 +35,7 @@ export default class ListingItem extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <div className="listing-item col-xs-12 col-md-6"> { this.renderItem() } </div>
     )
