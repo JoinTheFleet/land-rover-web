@@ -22,6 +22,16 @@
     "locations.cork": "Cork",
     "locations.wicklow": "Wicklow",
 
+    "menu.home": "Home",
+    "menu.profile": "Profile",
+    "menu.bookings": "Bookings",
+    "menu.messages": "Messages",
+    "menu.account": "Account",
+    "menu.listings": "Listings",
+    "menu.signup": "Sign Up",
+    "menu.login": "Log In",
+    "menu.logout": "Log Out",
+
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
     "header.sign_up": "Sign up",
@@ -39,6 +49,21 @@
     "footer.get_in_touch": "Get In Touch",
     "footer.read_our_blog": "Read our blog",
     "footer.copyrights": "© {year} Fleet",
+
+    "authentication.log_in_to_continue": "Log in to continue",
+    "authentication.log_in_with_facebook": "Log in with Facebook",
+    "authentication.log_in_with_email": "Log in with Email",
+    "authentication.or_continue_with": "or continue with",
+    "authentication.dont_have_account": "Don't have an account?",
+    "authentication.email_address": "Email Address",
+    "authentication.password": "Password",
+    "authentication.forgot_password": "Forgot password?",
+
+    "authentication.sign_up_with_facebook": "Sign up with Facebook",
+    "authentication.sign_up_with_email": "Sign up with Email",
+    "authentication.already_have_account": "Already have a Fleet account?",
+    "authentication.first_name": "First Name",
+    "authentication.last_name": "Last Name",
 
     "homescreen.top_banner_title": "Car Sharing Made Smart",
     "homescreen.top_banner_slogan": "Rent nearby users cars quickly and easily with just a few clicks.",
@@ -61,6 +86,10 @@
     "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
     "homescreen.featured_in": "Featured In",
 
-    "listings.top_seller": "Top Seller"
+    "listings.top_seller": "Top Seller",
+    "listings.total_reviews": "{total_reviews} reviews",
+    "listings.no_listings_to_display": "No listings to display",
+
+    "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }
 }

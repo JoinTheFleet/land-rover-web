@@ -7,16 +7,28 @@
   background-color: $secondary-color !important;
 }
 
-.terciary-color {
-  background-color: $terciary-color !important;
+.tertiary-color {
+  background-color: $tertiary-color !important;
+}
+
+.facebook-color {
+  background-color: $facebook !important;
 }
 
 .smoke-grey {
   background-color: $smoke-grey;
 }
 
+.smoke-grey-two {
+  background-color: $smoke-grey-two;
+}
+
 .twilight-blue {
   background-color: $twilight-blue !important;
+}
+
+.white {
+  background-color: white !important;
 }
 
 // Text Colors
@@ -28,8 +40,8 @@
   color: $secondary-text-color !important;
 }
 
-.terciary-text-color {
-  color: $terciary-text-color !important;
+.tertiary-text-color {
+  color: $tertiary-text-color !important;
 }
 
 .twilight-blue-text {

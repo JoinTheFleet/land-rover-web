@@ -14,37 +14,102 @@
   }
 }
 
-#listingList {
+.listing-list {
   padding: 20px;
-}
+  min-height: 300px;
 
-.listing-item {
-  img {
-    max-width: 100%;
-    max-height: 100%;
+  .items-list {
+    white-space: nowrap;
+    overflow-x: hidden;
   }
 
-  .listing-item-photo-and-title {
-    position: relative;
-    height: 350px;
+  .listing-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+  	background-color: rgba(0, 0, 0, 0.75);
+    z-index: 2;
+    line-height: 45px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.8;
 
-    .listing-item-title {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      padding-left: 10px;
-      width: 100%;
-      height: 38px;
-      line-height: 38px;
-      background-color: rgba(255, 255, 255, 0.75);
+    &:hover {
+      opacity: 1;
     }
   }
 
-  .listing-item-year {
-    margin-left: 10px;
+  .previous-listing-btn {
+    left: 10px;
+
+    img {
+      margin-left: -4px;
+    }
   }
 
-  @media screen and (min-width: $screen-lg-min) {
-    width: calc(100% / 3);
+  .next-listing-btn {
+    right: 10px;
+  }
+
+  .listing-item {
+    float: none;
+    display: inline-block;
+
+    .listing-item-photo-and-title {
+      position: relative;
+      height: 300px;
+
+      & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .listing-item-title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding-left: 10px;
+        width: 100%;
+        height: 38px;
+        line-height: 38px;
+        background-color: rgba(255, 255, 255, 0.75);
+      }
+
+      .listing-item-liked {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+      }
+    }
+
+    .rating-input,
+    .rating-input + span {
+      float: left;
+    }
+
+    .rating-input + span {
+      margin-top: -2px;
+      margin-left: 5px;
+    }
+
+    .listing-item-year {
+      margin-left: 10px;
+    }
+
+    @media screen and (min-width: $screen-lg-min) {
+      width: calc(100% / 3);
+    }
+  }
+
+  .no-listings-to-display-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
   }
 }

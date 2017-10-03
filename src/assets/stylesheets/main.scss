@@ -1,6 +1,7 @@
 body {
   font-family: $text-font-family;
   font-weight: $text-main-font-weight;
+  color: $main-text-color;
 }
 
 form {
@@ -20,6 +21,14 @@ form {
     &:-ms-input-placeholder {
       color: $placeholder-text-color !important;
     }
+  }
+}
+
+.static-link {
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
   }
 }
 

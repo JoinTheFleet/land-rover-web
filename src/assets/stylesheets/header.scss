@@ -4,6 +4,10 @@
   height: 80px;
   line-height: 80px;
 
+  .header-logo {
+    cursor: pointer;
+  }
+
   #header_list_car_link {
     width: 110px;
     border: solid 1px white;
@@ -14,6 +18,7 @@
   .header-right-option {
     display: inline-block;
     text-align: center;
+    cursor: pointer;
 
     & + .header-right-option {
       margin-left: 30px;

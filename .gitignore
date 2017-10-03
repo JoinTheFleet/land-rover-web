@@ -27,5 +27,6 @@ yarn-debug.log*
 yarn-error.log*
 .env
 
+settings.json
 .vscode/launch.json
 .jshintrc

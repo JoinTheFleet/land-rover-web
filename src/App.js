@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 
 import './App.css';
 
+import Constants from './components/miscellaneous/constants';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
-import AuthenticationHandler from './api_handlers/authentication_handler';
-import LoginForm from './components/authentication/login_form';
 import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
+import Login from './components/authentication/login';
+import AuthenticationHandler from './api_handlers/authentication_handler';
 
 const cookies = new Cookies();
+const navigationSections = Constants.navigationSections();
 
 export default class App extends Component {
   constructor(props) {
@@ -17,25 +19,31 @@ export default class App extends Component {
 
     this.state = {
       accessToken: cookies.get('accessToken'),
-      currentSelectedView: 'homescreen',
-      currentSearchParams: {}
+      currentSelectedView: navigationSections.home,
+      currentSearchParams: {},
+      openModals: []
     };
 
+    this.toggleModal = this.toggleModal.bind(this);
     this.addSearchParam = this.addSearchParam.bind(this);
-
-    this.handleLogin = this.handleLogin.bind(this);
+    this.setAccessToken = this.setAccessToken.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
-  handleLogin(username, password) {
-    AuthenticationHandler.login(username, password, (response) => {
-      let accessToken = response.data.data.token.access_token;
+  setAccessToken(accessToken) {
+    let openModals = this.state.openModals;
+    let newState = {accessToken: accessToken};
 
-      this.setState({ accessToken: accessToken }, () => {
+    openModals.splice(openModals.indexOf('login'), 1);
+    newState[openModals] = openModals;
+
+    this.setState(newState, () => {
+      if(accessToken.length > 0){
         cookies.set('accessToken', accessToken);
-      });
-    }, (error) => {
-      alert(error);
+      }
+      else {
+        cookies.remove('accessToken');
+      }
     });
   }
 
@@ -51,29 +59,64 @@ export default class App extends Component {
   }
 
   handleMenuItemSelect(menuItem) {
-    this.setState({ currentSelectedView: menuItem });
+    if(menuItem === navigationSections.logout){
+      AuthenticationHandler.logout(this.state.accessToken, (success) => {
+        this.setAccessToken('');
+      }, (error) => {
+        alert(error);
+      });
+    }
+    else {
+      this.setState({ currentSelectedView: menuItem });
+    }
+  }
+
+  toggleModal(modal) {
+    let openModals = this.state.openModals;
+    let index = openModals.indexOf(modal);
+
+    if(index > -1){
+      openModals.splice(index, 1);
+    }
+    else {
+      openModals.push(modal);
+    }
+
+    this.setState({openModals: openModals});
   }
 
   renderMainContent() {
-    if (this.state.accessToken && this.state.accessToken !== ''){
-      return (
-        <Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />
-      )
+    let viewToRender;
+
+    switch(this.state.currentSelectedView) {
+      case navigationSections.profile:
+        break;
+      case navigationSections.bookings:
+        break;
+      case navigationSections.messages:
+        break;
+      case navigationSections.listings:
+        break;
+      case navigationSections.account:
+        break;
+      default:
+        viewToRender = (<Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />);
     }
-    else {
-      return (
-        <LoginForm handleLogin={this.handleLogin} />
-      )
-    }
+
+    return viewToRender
   }
 
   render() {
     return (
       <div className="App">
-        <Header currentMenuItem={this.state.currentSelectedView} handleMenuItemSelect={this.handleMenuItemSelect} />
+        <Header accessToken={this.state.accessToken}
+                currentMenuItem={this.state.currentSelectedView}
+                handleMenuItemSelect={this.handleMenuItemSelect}
+                toggleModal={this.toggleModal} />
         <div id="main_container">
           { this.renderMainContent() }
         </div>
+        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={this.setAccessToken} toggleModal={this.toggleModal}/>
         <Footer />
       </div>
     );
