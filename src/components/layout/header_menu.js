@@ -18,7 +18,6 @@ export default class HeaderMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     this.setState({
       open: nextProps.menuOpen || false
     });
