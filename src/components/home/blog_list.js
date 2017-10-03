@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 export default class BlogList extends Component {
   render() {
     return (
-      <div id="blog_list">
+      <div id="blog_list" className="col-xs-12">
         <p className="text-center">
           <span className="strong-font-weight title-font-size text-uppercase">
             <FormattedMessage id="application.blog" />

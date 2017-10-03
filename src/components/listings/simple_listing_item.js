@@ -6,14 +6,14 @@ import { FormattedMessage } from 'react-intl';
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
-export default class ListingItem extends Component {
+export default class SimpleListingItem extends Component {
 
   renderItem() {
     let item = this.props.listing;
     let image;
 
-    let vehicleMake = item.variant.make.name;
-    let vehicleModel = item.variant.model.name;
+    let vehicleMake = item.make;
+    let vehicleModel = item.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
     let wishListed = item.wish_lists.length > 0;
@@ -28,7 +28,7 @@ export default class ListingItem extends Component {
           { image }
           <div className="listing-item-title fs-16px">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
-            <span className="listing-item-year">{ item.variant.year.year }</span>
+            <span className="listing-item-year">{ item.year }</span>
           </div>
           <div className="listing-item-liked">
             <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
@@ -52,6 +52,6 @@ export default class ListingItem extends Component {
   }
 }
 
-ListingItem.propTypes = {
+SimpleListingItem.propTypes = {
   listing: PropTypes.object
 }

@@ -70,7 +70,7 @@ class Homescreen extends Component {
 
         <BlogList />
 
-        <div id="featured_in_div" className="text-center">
+        <div id="featured_in_div" className="col-xs-12 text-center">
           <span className="tertiary-text-color">
             <FormattedMessage id="homescreen.featured_in" />
           </span>

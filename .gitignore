@@ -30,3 +30,4 @@ yarn-error.log*
 settings.json
 .vscode/launch.json
 .jshintrc
+src/homefeed_example.json

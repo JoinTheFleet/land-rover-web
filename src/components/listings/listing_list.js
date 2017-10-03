@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Anime from 'react-anime';
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
-import ListingItem from './listing_item'
+import ListingItem from './listing_item';
+import SimpleListingItem from './simple_listing_item';
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
@@ -13,7 +14,7 @@ export default class ListingList extends Component {
     super(props);
 
     this.state = {
-      listings: [],
+      listings: this.props.listings || [],
       currentPosition: 0
     };
 
@@ -23,7 +24,7 @@ export default class ListingList extends Component {
   componentWillMount() {
     let listingsHandler = this.props.listingsHandler;
 
-    if(listingsHandler && this.props.accessToken){
+    if(this.state.listings.length === 0 && listingsHandler && this.props.accessToken){
       listingsHandler.listings(this.props.accessToken, (response) => {
         this.setState({ listings: response.data.data.listings });
       }, (error) => {
@@ -63,7 +64,16 @@ export default class ListingList extends Component {
     let listings = this.state.listings;
 
     if(listings.length > 0){
-      return this.state.listings.map((listing) => <ListingItem key={'listing_' + listing.id} listing={listing}/>);
+      let listingItems = [];
+
+      if(this.props.simpleListing) {
+        listingItems = this.state.listings.map((listing) => (<SimpleListingItem key={'listing_' + listing.id} listing={listing}/>));
+      }
+      else {
+        listingItems = this.state.listings.map((listing) => (<ListingItem key={'listing_' + listing.id} listing={listing}/>));
+      }
+
+      return listingItems;
     }
     else {
       return (<div className="no-listings-to-display-div title-font-size tertiary-text-color"><FormattedMessage id="listings.no_listings_to_display" /></div>);
@@ -95,5 +105,6 @@ export default class ListingList extends Component {
 
 ListingList.propTypes = {
   accessToken: PropTypes.string,
-  listingsHandler: PropTypes.func.isRequired
+  simpleListing: PropTypes.bool,
+  listingsHandler: PropTypes.func
 }

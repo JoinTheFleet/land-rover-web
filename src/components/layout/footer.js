@@ -8,7 +8,7 @@ import instagramIcon from '../../assets/images/instagram.png';
 class Footer extends Component {
   render() {
     return (
-      <footer id="footer" className="secondary-color white-text text-secondary-font-weight ls-dot-five">
+      <footer id="footer" className="col-xs-12 secondary-color white-text text-secondary-font-weight ls-dot-five">
         <div id="footer_top_part">
 
           <div className="hidden-xs col-sm-6 col-md-3">

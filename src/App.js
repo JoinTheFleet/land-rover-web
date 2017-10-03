@@ -7,6 +7,7 @@ import Header from './components/layout/header';
 import Footer from './components/layout/footer';
 import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
+import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import AuthenticationHandler from './api_handlers/authentication_handler';
 
@@ -100,10 +101,15 @@ export default class App extends Component {
       case navigationSections.account:
         break;
       default:
-        viewToRender = (<Homescreen accessToken={this.state.accessToken} addSearchParamHandler={this.addSearchParam} />);
+        if (this.state.accessToken && this.state.accessToken !== '' ) {
+          viewToRender = (<Homefeed accessToken={this.state.accessToken} />);
+        }
+        else {
+          viewToRender = (<Homescreen addSearchParamHandler={this.addSearchParam} />);
+        }
     }
 
-    return viewToRender
+    return viewToRender;
   }
 
   render() {
