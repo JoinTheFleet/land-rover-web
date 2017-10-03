@@ -1,0 +1,59 @@
+.rating-input {
+    display: table;
+
+    & > div {
+        display: table-cell;
+    }
+
+    input {
+        position: absolute;
+        top: -9999px;
+        clip: rect(0,0,0,0);
+    }
+
+    label {
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        line-height: 1.2;
+        color: #ddd;
+        text-shadow: none;
+    }
+
+    label:before {
+        content: '★ ';
+    }
+
+    input:checked + label ~ label:before {
+      content: "\f006";
+    }
+
+    input:checked ~ label {
+        color: $sun-yellow;
+    }
+
+    input:checked + label:hover,
+    input:checked + label:hover ~ label,
+    input:checked ~ label:hover,
+    input:checked ~ label:hover ~ label,
+    label:hover ~ input:checked ~ label {
+        color: $sun-yellow;
+    }
+
+    label:active {
+        position: relative;
+        top: 2px;
+        left: 2px;
+    }
+
+    &:not(.disabled) {
+      label {
+        cursor: pointer;
+      }
+
+      label:hover,
+      label:hover ~ label {
+        color: $sun-yellow;
+      }
+    }
+}

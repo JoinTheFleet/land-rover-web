@@ -1,0 +1,57 @@
+// Font Weights
+.text-main-font-weight {
+  font-weight: $text-main-font-weight;
+}
+
+.text-secondary-font-weight {
+  font-weight: $text-secondary-font-weight;
+}
+
+.title-font-weight {
+  font-weight: $title-font-weight;
+}
+
+.subtitle-font-weight {
+  font-weight: $subtitle-font-weight;
+}
+
+.strong-font-weight {
+  font-weight: $strong-font-weight;
+}
+
+.light-font-weight {
+  font-weight: $light-font-weight;
+}
+
+
+// Font Sizes
+.title-font-size {
+  font-size: $title-font-size;
+}
+
+.subtitle-font-size {
+  font-size: $subtitle-font-size;
+}
+
+// Font sizes
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.fs-40 {
+  font-size: 40px;
+}
+
+//Letter spacings
+.ls-dot-five {
+  letter-spacing: 0.5px;
+}
+
+// Text Transforms
+.text-uppercase {
+  text-transform: uppercase;
+}

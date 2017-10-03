@@ -1,0 +1,32 @@
+#footer_top_part,
+#footer_bottom_part {
+  padding: 25px;
+}
+
+#footer_top_part {
+  height: 180px;
+}
+
+#footer_bottom_part {
+  border-top: solid 1px rgba(255, 255, 255, 0.5);
+  height: 70px;
+}
+
+#footer_social_links {
+  margin-bottom: 18px;
+
+  a {
+    img {
+      width: 18px;
+      height: 18px;
+    }
+
+    & + a {
+      margin-left: 18px;
+    }
+  }
+}
+
+.footer-links-list {
+  margin-top: 25px;
+}
