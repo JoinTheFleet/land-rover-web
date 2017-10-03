@@ -1,0 +1,1219 @@
+{
+    "code": 0,
+    "message": "Success",
+    "data": {
+        "listings": [
+            {
+                "id": 12,
+                "country_configuration": {
+                    "insurance_provider": {
+                        "id": 1,
+                        "name": "AXA Ireland",
+                        "criteria": [
+                            {
+                                "id": 1,
+                                "name": "Penalty Points",
+                                "description": "You must declare any penalty points you have currently applied to your driving licence. Penalty points remain on your licence for three years. Please note that your request may be declined due to the number of points on your licence. Failure to declare penalty points on your licence will result in your rental being declined and insurance cover void.",
+                                "type": "integer",
+                                "min_required_value": 0,
+                                "max_required_value": 6,
+                                "min_value": 0,
+                                "max_value": 12,
+                                "rejection_message": "Unfortunately you have too many penalty points for us to insure this rental."
+                            },
+                            {
+                                "id": 2,
+                                "name": "Claims in the last 5 years",
+                                "description": "We need to know if you have had any claims in the last 5 years",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous claims in the last 5 years."
+                            },
+                            {
+                                "id": 3,
+                                "name": "Driving Convictions",
+                                "description": "You must declare any motoring convictions you have incurred in the last 5 years. This includes motoring offences for speeding, traffic offences, bans and restrictions. Failure to disclose details on motoring convictions may result in your rental being denied and insurance policy void.",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous driving convictions."
+                            },
+                            {
+                                "id": 4,
+                                "name": "License Held for 2 years",
+                                "description": "You must have held your driving license for at least 2 years to rent this vehicle",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have not held your driving license for 2 years."
+                            }
+                        ],
+                        "booking_terms": {
+                            "text": "\nYou confirm you have read accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that failure to disclose claims or false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to rent a vehicle via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed here..(need to insert link here to full policy document to be hosted on axa website).\n\nThe insurance policy is subject to you confirming the following information that forms part of your driver’s declaration with Fleet. Full policy wording can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about yourself and your driving history.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentations, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy renting a vehicle with Fleet, you agree to the following terms and conditions:\n1.You are 25 years of age or over\n2.You have a full ROI or UK driving licence for at least 24 months\n3.You have provided your driving license to Fleet for validation\n4.You have not been involved in any accidents or claims or have any pending claims irrespective of blame in the last 5 years\n5.You have not been convicted of any motoring offences or have any criminal convictions relation to motoring offences or have any prosecution pending in the last 10 years\n6.You have no more than 4 penalty points on your driving license\n7.You have not been disqualified from driving or from obtaining a Driving license during the last 10 years\n8.You have not been refused motor insurance at normal rates and terms or has not been declined insurance or had any insurance policy cancelled by an insurer.\n9.You are not engaged in professional gambling, sport or entertainment, hawking or general dealing, street or market trading or modelling\n10.You understand that the information you have provided is legally binding, and forms the basis of your contract with Fleet and you are required to disclose all facts known to me.\n11.If you are in doubt whether certain facts are important you will ask.\n12.You confirm this rental and agreement is for you only\n\n\nInsurance policy summary\n\nCover: Comprehensive including Glass Breakage\n\nPolicy Excess: €500 made payable to Fleet\n\nWindscreen Excess: €100 made payable to Fleet\n\nTerritorial Limits: Cover will apply to the ROI/NI only\n\nUse of the Vehicle:\nSocial Domestic and Pleasure Proposes Only, Excludes use for Hire or Reward, Racing, Pace Making, Speed Testing, commercial travelling or the carriage of goods or samples in connection to any trade or business use for any purpose in connection with Motor Trade\n\nVehicle Value: Max €50,000\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        },
+                        "listing_terms": {
+                            "text": "\nYou confirm you have read and accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to upload your vehicle to rent via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about your vehicle.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentation, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy uploading your vehicle to rent with Fleet, you agree to the following terms and conditions:\n\nYour Car must:\n\n•Be no more than €50,000 value\n•Be Kept in a Roadworthy Condition\n•Be Taxed and registered as a Private Car\n•Have no more than 5 Seats\n•Not be a Commercial Vehicle\n•Not be More than 10 Years Old\n•Have a valid up to date NCT\n•Be Owned by and registered in your name\n•Be First Registered in Ireland or the UK\n•Has never been modified or altered from the manufacturers specification,  including but not limited to:-\n-Air induction kits and filters\n-Change to the Exhaust\n-Engine Maintenance Computers\n-Adding of body parts\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        }
+                    },
+                    "country": {
+                        "name": "Ireland",
+                        "region": "Europe",
+                        "currency": "EUR",
+                        "currency_symbol": "€",
+                        "eu_member": true,
+                        "emoji_flag": "🇮🇪",
+                        "international_prefix": "00",
+                        "country_code": "353",
+                        "alpha2": "IE",
+                        "alpha3": "IRL",
+                        "geometry": {
+                            "northeast": {
+                                "lat": 55.4602,
+                                "lng": -5.668900100000001
+                            },
+                            "southwest": {
+                                "lat": 51.3066,
+                                "lng": -10.7666001
+                            }
+                        }
+                    },
+                    "distance_units": "km"
+                },
+                "amenities": [
+                    {
+                        "id": 1,
+                        "name": "Sunroof",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/small/sunroof.png?1489657027",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/medium/sunroof.png?1489657027",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/large/sunroof.png?1489657027",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/original/sunroof.png?1489657027"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "name": "Air Conditioning",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/small/aircon.png?1489657028",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/medium/aircon.png?1489657028",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/large/aircon.png?1489657028",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/original/aircon.png?1489657028"
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "name": "ABS",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/small/abs.png?1489657029",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/medium/abs.png?1489657029",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/large/abs.png?1489657029",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/original/abs.png?1489657029"
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "name": "Cruise Control",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/small/cruise_control.png?1489657029",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/medium/cruise_control.png?1489657029",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/large/cruise_control.png?1489657029",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/original/cruise_control.png?1489657029"
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "name": "Lane Assist",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/small/lane_assist.png?1489657030",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/medium/lane_assist.png?1489657030",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/large/lane_assist.png?1489657030",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/original/lane_assist.png?1489657030"
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "name": "Bluetooth",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/small/bluetooth.png?1489657031",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/medium/bluetooth.png?1489657031",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/large/bluetooth.png?1489657031",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/original/bluetooth.png?1489657031"
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "name": "Alarm",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/small/alarm.png?1489657031",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/medium/alarm.png?1489657031",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/large/alarm.png?1489657031",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/original/alarm.png?1489657031"
+                        }
+                    }
+                ],
+                "user": {
+                    "id": 1,
+                    "name": "Philip Kirwan",
+                    "images": {
+                        "small_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/small/picture.?1496765391",
+                        "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/medium/picture.?1496765391",
+                        "large_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/large/picture.?1496765391",
+                        "original_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/original/picture.?1496765391"
+                    },
+                    "first_name": "Philip",
+                    "last_name": "Kirwan",
+                    "location": null,
+                    "description": null,
+                    "phone_number": null,
+                    "identification": null,
+                    "owner_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Value for Money",
+                                    "slug": "value_for_money"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Cleanliness of the Vehicle",
+                                    "slug": "cleanliness_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Service",
+                                    "slug": "friendly_service"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "renter_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Would Rent Again",
+                                    "slug": "would_rent_again"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Care of the Vehicle",
+                                    "slug": "care_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Renter",
+                                    "slug": "friendly_renter"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "listing_count": 3,
+                    "listings": null,
+                    "review": null
+                },
+                "review": null,
+                "total_reviews": 0,
+                "rating": 0,
+                "geometry": {
+                    "bounds": {
+                        "southwest": {
+                            "latitude": 53.313493180354264,
+                            "longitude": -6.413463000378631
+                        },
+                        "northeast": {
+                            "latitude": 53.3584592606502,
+                            "longitude": -6.338158270255491
+                        }
+                    },
+                    "radius": 750
+                },
+                "location": {
+                    "latitude": 53.33554,
+                    "longitude": -6.3737272,
+                    "radius": 750
+                },
+                "address": "Dublin, Ireland",
+                "on_demand": true,
+                "price": 2500,
+                "cleaning_fee": 2500,
+                "variant": {
+                    "id": 56670,
+                    "trim": "2.0 Tdi Automatic",
+                    "valves_per_cylinder": 4,
+                    "power_ps": 171,
+                    "power_rpm": 4200,
+                    "torque_rpm": 1750,
+                    "torque_nm": 350,
+                    "bore_mm": 81,
+                    "stroke_mm": 95.5,
+                    "compression": "18.5:1",
+                    "top_speed_kph": 214,
+                    "zero_to_one_hundred_kph": 9,
+                    "engine_cc": 1968,
+                    "weight_kg": 1550,
+                    "length_mm": 4410,
+                    "height_mm": 1640,
+                    "wheelbase_mm": 2680,
+                    "litres_per_km_mixed": 6.6,
+                    "litres_per_km_city": 0,
+                    "litres_per_km_motorway": 0,
+                    "litres_fuel_capacity": 60,
+                    "sold_us": false,
+                    "co2": 0,
+                    "make": {
+                        "id": 138,
+                        "name": "Volkswagen",
+                        "display": "Volkswagen"
+                    },
+                    "model": {
+                        "id": 3198,
+                        "name": "Touran"
+                    },
+                    "engine_position": {
+                        "id": 2,
+                        "position": "front"
+                    },
+                    "engine_size": {
+                        "id": 4,
+                        "size": 2
+                    },
+                    "engine_cylinder": {
+                        "id": 1,
+                        "cylinders": 4
+                    },
+                    "engine_kind": {
+                        "id": 1,
+                        "kind": "in line"
+                    },
+                    "engine_fuel": {
+                        "id": 3,
+                        "fuel": "diesel"
+                    },
+                    "transmission": {
+                        "id": 2,
+                        "transmission": "automatic",
+                        "gears": 1
+                    },
+                    "door_count": {
+                        "id": 4,
+                        "doors": 5
+                    },
+                    "seat_count": {
+                        "id": 3,
+                        "seats": 5
+                    },
+                    "body": {
+                        "id": 10,
+                        "body": "Minivan"
+                    },
+                    "year": {
+                        "id": 56,
+                        "year": "2008"
+                    },
+                    "recommended_price": 3000
+                },
+                "check_in_time": 3600,
+                "check_out_time": 3600,
+                "gallery": [
+                    {
+                        "id": 1,
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/001/small/vw_6694.jpg?1488822488",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/001/medium/vw_6694.jpg?1488822488",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/001/large/vw_6694.jpg?1488822488",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/001/original/vw_6694.jpg?1488822488"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/002/small/vw_6694.jpg?1488822489",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/002/medium/vw_6694.jpg?1488822489",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/002/large/vw_6694.jpg?1488822489",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/002/original/vw_6694.jpg?1488822489"
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/003/small/vw_6694.jpg?1488822489",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/003/medium/vw_6694.jpg?1488822489",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/003/large/vw_6694.jpg?1488822489",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/003/original/vw_6694.jpg?1488822489"
+                        }
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 1,
+                        "rule": "Please take pictures of the car at pickup (driver side, car back, passenger side, car front, and upload to Fleet. Failure to upload all pictures will result in a penalty)."
+                    },
+                    {
+                        "id": 2,
+                        "rule": "When on autopilot (only safe on major highways), be ready to take over driving duties any second."
+                    },
+                    {
+                        "id": 3,
+                        "rule": "No food or pets allowed in the car please."
+                    }
+                ],
+                "wish_lists": [],
+                "reviewed": false,
+                "cancellation_policy": {
+                    "id": 1,
+                    "name": "Flexible",
+                    "description": "This cancellation policy is Flexible. The renter  will receive a full refund if you cancel up to 1 day prior to arrival."
+                },
+                "created_at": 1488822487,
+                "updated_at": 1496848862,
+                "promotion_available": false,
+                "current_bump": null,
+                "current_spotlight": null,
+                "promotions": null,
+                "license_plate_number": "152WW265",
+                "vin_number": "",
+                "on_demand_rates": [
+                    {
+                        "id": 1,
+                        "rate": 0,
+                        "distance": 10
+                    },
+                    {
+                        "id": 2,
+                        "rate": 0,
+                        "distance": 20
+                    },
+                    {
+                        "id": 3,
+                        "rate": 0,
+                        "distance": 50
+                    }
+                ],
+                "agreed_to_insurance_terms": null
+            },
+            {
+                "id": 9,
+                "country_configuration": {
+                    "insurance_provider": {
+                        "id": 1,
+                        "name": "AXA Ireland",
+                        "criteria": [
+                            {
+                                "id": 1,
+                                "name": "Penalty Points",
+                                "description": "You must declare any penalty points you have currently applied to your driving licence. Penalty points remain on your licence for three years. Please note that your request may be declined due to the number of points on your licence. Failure to declare penalty points on your licence will result in your rental being declined and insurance cover void.",
+                                "type": "integer",
+                                "min_required_value": 0,
+                                "max_required_value": 6,
+                                "min_value": 0,
+                                "max_value": 12,
+                                "rejection_message": "Unfortunately you have too many penalty points for us to insure this rental."
+                            },
+                            {
+                                "id": 2,
+                                "name": "Claims in the last 5 years",
+                                "description": "We need to know if you have had any claims in the last 5 years",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous claims in the last 5 years."
+                            },
+                            {
+                                "id": 3,
+                                "name": "Driving Convictions",
+                                "description": "You must declare any motoring convictions you have incurred in the last 5 years. This includes motoring offences for speeding, traffic offences, bans and restrictions. Failure to disclose details on motoring convictions may result in your rental being denied and insurance policy void.",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous driving convictions."
+                            },
+                            {
+                                "id": 4,
+                                "name": "License Held for 2 years",
+                                "description": "You must have held your driving license for at least 2 years to rent this vehicle",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have not held your driving license for 2 years."
+                            }
+                        ],
+                        "booking_terms": {
+                            "text": "\nYou confirm you have read accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that failure to disclose claims or false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to rent a vehicle via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed here..(need to insert link here to full policy document to be hosted on axa website).\n\nThe insurance policy is subject to you confirming the following information that forms part of your driver’s declaration with Fleet. Full policy wording can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about yourself and your driving history.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentations, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy renting a vehicle with Fleet, you agree to the following terms and conditions:\n1.You are 25 years of age or over\n2.You have a full ROI or UK driving licence for at least 24 months\n3.You have provided your driving license to Fleet for validation\n4.You have not been involved in any accidents or claims or have any pending claims irrespective of blame in the last 5 years\n5.You have not been convicted of any motoring offences or have any criminal convictions relation to motoring offences or have any prosecution pending in the last 10 years\n6.You have no more than 4 penalty points on your driving license\n7.You have not been disqualified from driving or from obtaining a Driving license during the last 10 years\n8.You have not been refused motor insurance at normal rates and terms or has not been declined insurance or had any insurance policy cancelled by an insurer.\n9.You are not engaged in professional gambling, sport or entertainment, hawking or general dealing, street or market trading or modelling\n10.You understand that the information you have provided is legally binding, and forms the basis of your contract with Fleet and you are required to disclose all facts known to me.\n11.If you are in doubt whether certain facts are important you will ask.\n12.You confirm this rental and agreement is for you only\n\n\nInsurance policy summary\n\nCover: Comprehensive including Glass Breakage\n\nPolicy Excess: €500 made payable to Fleet\n\nWindscreen Excess: €100 made payable to Fleet\n\nTerritorial Limits: Cover will apply to the ROI/NI only\n\nUse of the Vehicle:\nSocial Domestic and Pleasure Proposes Only, Excludes use for Hire or Reward, Racing, Pace Making, Speed Testing, commercial travelling or the carriage of goods or samples in connection to any trade or business use for any purpose in connection with Motor Trade\n\nVehicle Value: Max €50,000\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        },
+                        "listing_terms": {
+                            "text": "\nYou confirm you have read and accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to upload your vehicle to rent via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about your vehicle.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentation, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy uploading your vehicle to rent with Fleet, you agree to the following terms and conditions:\n\nYour Car must:\n\n•Be no more than €50,000 value\n•Be Kept in a Roadworthy Condition\n•Be Taxed and registered as a Private Car\n•Have no more than 5 Seats\n•Not be a Commercial Vehicle\n•Not be More than 10 Years Old\n•Have a valid up to date NCT\n•Be Owned by and registered in your name\n•Be First Registered in Ireland or the UK\n•Has never been modified or altered from the manufacturers specification,  including but not limited to:-\n-Air induction kits and filters\n-Change to the Exhaust\n-Engine Maintenance Computers\n-Adding of body parts\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        }
+                    },
+                    "country": {
+                        "name": "Ireland",
+                        "region": "Europe",
+                        "currency": "EUR",
+                        "currency_symbol": "€",
+                        "eu_member": true,
+                        "emoji_flag": "🇮🇪",
+                        "international_prefix": "00",
+                        "country_code": "353",
+                        "alpha2": "IE",
+                        "alpha3": "IRL",
+                        "geometry": {
+                            "northeast": {
+                                "lat": 55.4602,
+                                "lng": -5.668900100000001
+                            },
+                            "southwest": {
+                                "lat": 51.3066,
+                                "lng": -10.7666001
+                            }
+                        }
+                    },
+                    "distance_units": "km"
+                },
+                "amenities": [],
+                "user": {
+                    "id": 1,
+                    "name": "Philip Kirwan",
+                    "images": {
+                        "small_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/small/picture.?1496765391",
+                        "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/medium/picture.?1496765391",
+                        "large_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/large/picture.?1496765391",
+                        "original_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/original/picture.?1496765391"
+                    },
+                    "first_name": "Philip",
+                    "last_name": "Kirwan",
+                    "location": null,
+                    "description": null,
+                    "phone_number": null,
+                    "identification": null,
+                    "owner_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Value for Money",
+                                    "slug": "value_for_money"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Cleanliness of the Vehicle",
+                                    "slug": "cleanliness_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Service",
+                                    "slug": "friendly_service"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "renter_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Would Rent Again",
+                                    "slug": "would_rent_again"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Care of the Vehicle",
+                                    "slug": "care_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Renter",
+                                    "slug": "friendly_renter"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "listing_count": 3,
+                    "listings": null,
+                    "review": null
+                },
+                "review": null,
+                "total_reviews": 0,
+                "rating": 0,
+                "geometry": {
+                    "bounds": {
+                        "southwest": {
+                            "latitude": 52.95638562188914,
+                            "longitude": -6.083852581320465
+                        },
+                        "northeast": {
+                            "latitude": 53.001351702185076,
+                            "longitude": -6.009171683250682
+                        }
+                    },
+                    "radius": 750
+                },
+                "location": {
+                    "latitude": 52.9804348261283,
+                    "longitude": -6.04490490515256,
+                    "radius": 750
+                },
+                "address": "Wicklow, Ireland",
+                "on_demand": true,
+                "price": 2500,
+                "cleaning_fee": 2500,
+                "variant": {
+                    "id": 66819,
+                    "trim": "428i Sulev 2dr Coupe (2.0l 4cyl Turbo 8a)",
+                    "valves_per_cylinder": 4,
+                    "power_ps": 240,
+                    "power_rpm": 0,
+                    "torque_rpm": 0,
+                    "torque_nm": 255,
+                    "bore_mm": 0,
+                    "stroke_mm": 0,
+                    "compression": "10",
+                    "top_speed_kph": 0,
+                    "zero_to_one_hundred_kph": 0,
+                    "engine_cc": 2000,
+                    "weight_kg": 0,
+                    "length_mm": 0,
+                    "height_mm": 0,
+                    "wheelbase_mm": 0,
+                    "litres_per_km_mixed": 27,
+                    "litres_per_km_city": 23,
+                    "litres_per_km_motorway": 35,
+                    "litres_fuel_capacity": 16,
+                    "sold_us": true,
+                    "co2": 0,
+                    "make": {
+                        "id": 25,
+                        "name": "Bmw",
+                        "display": "Bmw"
+                    },
+                    "model": {
+                        "id": 3503,
+                        "name": "4 Series"
+                    },
+                    "engine_position": {
+                        "id": 2,
+                        "position": "front"
+                    },
+                    "engine_size": {
+                        "id": 4,
+                        "size": 2
+                    },
+                    "engine_cylinder": {
+                        "id": 1,
+                        "cylinders": 4
+                    },
+                    "engine_kind": {
+                        "id": 9,
+                        "kind": "inline"
+                    },
+                    "engine_fuel": {
+                        "id": 2,
+                        "fuel": "unleaded"
+                    },
+                    "transmission": {
+                        "id": 2,
+                        "transmission": "automatic",
+                        "gears": 1
+                    },
+                    "door_count": {
+                        "id": 1,
+                        "doors": 2
+                    },
+                    "seat_count": {
+                        "id": 4,
+                        "seats": 0
+                    },
+                    "body": {
+                        "id": 15,
+                        "body": "Subcompact Cars"
+                    },
+                    "year": {
+                        "id": 82,
+                        "year": "2017"
+                    },
+                    "recommended_price": 3000
+                },
+                "check_in_time": 51300,
+                "check_out_time": 51300,
+                "gallery": [
+                    {
+                        "id": 135,
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/135/small/listing_direct_upload.?1493227469",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/135/medium/listing_direct_upload.?1493227469",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/135/large/listing_direct_upload.?1493227469",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/135/original/listing_direct_upload.?1493227469"
+                        }
+                    },
+                    {
+                        "id": 268,
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/268/small/86a0960646c8fd3a38376df972573c80.png?1495458715",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/268/medium/86a0960646c8fd3a38376df972573c80.png?1495458715",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/268/large/86a0960646c8fd3a38376df972573c80.png?1495458715",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/gallery_images/images/000/000/268/original/86a0960646c8fd3a38376df972573c80.png?1495458715"
+                        }
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 371,
+                        "rule": "Be courteous to other drivers!!\n\n\n\n\n🙈"
+                    }
+                ],
+                "wish_lists": [],
+                "reviewed": false,
+                "cancellation_policy": {
+                    "id": 1,
+                    "name": "Flexible",
+                    "description": "This cancellation policy is Flexible. The renter  will receive a full refund if you cancel up to 1 day prior to arrival."
+                },
+                "created_at": 1488382665,
+                "updated_at": 1496848864,
+                "promotion_available": false,
+                "current_bump": null,
+                "current_spotlight": null,
+                "promotions": null,
+                "license_plate_number": "152WW265",
+                "vin_number": "",
+                "on_demand_rates": [
+                    {
+                        "id": 522,
+                        "rate": 500,
+                        "distance": 10
+                    },
+                    {
+                        "id": 523,
+                        "rate": 2000,
+                        "distance": 25
+                    }
+                ],
+                "agreed_to_insurance_terms": null
+            },
+            {
+                "id": 135,
+                "country_configuration": {
+                    "insurance_provider": {
+                        "id": 1,
+                        "name": "AXA Ireland",
+                        "criteria": [
+                            {
+                                "id": 1,
+                                "name": "Penalty Points",
+                                "description": "You must declare any penalty points you have currently applied to your driving licence. Penalty points remain on your licence for three years. Please note that your request may be declined due to the number of points on your licence. Failure to declare penalty points on your licence will result in your rental being declined and insurance cover void.",
+                                "type": "integer",
+                                "min_required_value": 0,
+                                "max_required_value": 6,
+                                "min_value": 0,
+                                "max_value": 12,
+                                "rejection_message": "Unfortunately you have too many penalty points for us to insure this rental."
+                            },
+                            {
+                                "id": 2,
+                                "name": "Claims in the last 5 years",
+                                "description": "We need to know if you have had any claims in the last 5 years",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous claims in the last 5 years."
+                            },
+                            {
+                                "id": 3,
+                                "name": "Driving Convictions",
+                                "description": "You must declare any motoring convictions you have incurred in the last 5 years. This includes motoring offences for speeding, traffic offences, bans and restrictions. Failure to disclose details on motoring convictions may result in your rental being denied and insurance policy void.",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have previous driving convictions."
+                            },
+                            {
+                                "id": 4,
+                                "name": "License Held for 2 years",
+                                "description": "You must have held your driving license for at least 2 years to rent this vehicle",
+                                "type": "boolean",
+                                "min_required_value": false,
+                                "max_required_value": false,
+                                "min_value": false,
+                                "max_value": true,
+                                "rejection_message": "Unfortunately we cannot insure you for this rental as you have not held your driving license for 2 years."
+                            }
+                        ],
+                        "booking_terms": {
+                            "text": "\nYou confirm you have read accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that failure to disclose claims or false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to rent a vehicle via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed here..(need to insert link here to full policy document to be hosted on axa website).\n\nThe insurance policy is subject to you confirming the following information that forms part of your driver’s declaration with Fleet. Full policy wording can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about yourself and your driving history.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentations, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy renting a vehicle with Fleet, you agree to the following terms and conditions:\n1.You are 25 years of age or over\n2.You have a full ROI or UK driving licence for at least 24 months\n3.You have provided your driving license to Fleet for validation\n4.You have not been involved in any accidents or claims or have any pending claims irrespective of blame in the last 5 years\n5.You have not been convicted of any motoring offences or have any criminal convictions relation to motoring offences or have any prosecution pending in the last 10 years\n6.You have no more than 4 penalty points on your driving license\n7.You have not been disqualified from driving or from obtaining a Driving license during the last 10 years\n8.You have not been refused motor insurance at normal rates and terms or has not been declined insurance or had any insurance policy cancelled by an insurer.\n9.You are not engaged in professional gambling, sport or entertainment, hawking or general dealing, street or market trading or modelling\n10.You understand that the information you have provided is legally binding, and forms the basis of your contract with Fleet and you are required to disclose all facts known to me.\n11.If you are in doubt whether certain facts are important you will ask.\n12.You confirm this rental and agreement is for you only\n\n\nInsurance policy summary\n\nCover: Comprehensive including Glass Breakage\n\nPolicy Excess: €500 made payable to Fleet\n\nWindscreen Excess: €100 made payable to Fleet\n\nTerritorial Limits: Cover will apply to the ROI/NI only\n\nUse of the Vehicle:\nSocial Domestic and Pleasure Proposes Only, Excludes use for Hire or Reward, Racing, Pace Making, Speed Testing, commercial travelling or the carriage of goods or samples in connection to any trade or business use for any purpose in connection with Motor Trade\n\nVehicle Value: Max €50,000\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        },
+                        "listing_terms": {
+                            "text": "\nYou confirm you have read and accepted AXA’s terms and conditions and data protection information before proceeding.\n\nPlease note that false declarations will give AXA certain legal rights, which may include the voiding of your insurance contract and/or refusal of a claim.\n\nThis outlines terms and conditions and obligations you must accept in order to upload your vehicle to rent via Fleet.\n\nDash Apps Limited (trading as “Fleet” have chosen to partner with AXA Insurance dac and the full policy wording of the Insurance arrangement between Fleet and AXA Insurance dac (AXA) can be accessed via our support desk\n\nYou have a legal obligation to take reasonable care not to make a misrepresentation to Fleet about your vehicle.\n\nWe asked you a number of questions, the answers to which are important. Please take time to read through the details below which reflect the answers you have given us. In the event that any detail you have supplied to us is incorrect, you need to advise Fleet immediately.  If you have made a misrepresentation, then AXA, as Fleet’s Insurance partner has certain legal rights which may include avoidance of the contract of insurance and refusal of all claims.\n\nBy uploading your vehicle to rent with Fleet, you agree to the following terms and conditions:\n\nYour Car must:\n\n•Be no more than €50,000 value\n•Be Kept in a Roadworthy Condition\n•Be Taxed and registered as a Private Car\n•Have no more than 5 Seats\n•Not be a Commercial Vehicle\n•Not be More than 10 Years Old\n•Have a valid up to date NCT\n•Be Owned by and registered in your name\n•Be First Registered in Ireland or the UK\n•Has never been modified or altered from the manufacturers specification,  including but not limited to:-\n-Air induction kits and filters\n-Change to the Exhaust\n-Engine Maintenance Computers\n-Adding of body parts\n\nPlease refer to our support desk for full policy wording and cover.\n\n",
+                            "actions": {
+                                "agree": "Agree",
+                                "decline": "Decline"
+                            }
+                        }
+                    },
+                    "country": {
+                        "name": "Ireland",
+                        "region": "Europe",
+                        "currency": "EUR",
+                        "currency_symbol": "€",
+                        "eu_member": true,
+                        "emoji_flag": "🇮🇪",
+                        "international_prefix": "00",
+                        "country_code": "353",
+                        "alpha2": "IE",
+                        "alpha3": "IRL",
+                        "geometry": {
+                            "northeast": {
+                                "lat": 55.4602,
+                                "lng": -5.668900100000001
+                            },
+                            "southwest": {
+                                "lat": 51.3066,
+                                "lng": -10.7666001
+                            }
+                        }
+                    },
+                    "distance_units": "km"
+                },
+                "amenities": [
+                    {
+                        "id": 1,
+                        "name": "Sunroof",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/small/sunroof.png?1489657027",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/medium/sunroof.png?1489657027",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/large/sunroof.png?1489657027",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/001/original/sunroof.png?1489657027"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "name": "Air Conditioning",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/small/aircon.png?1489657028",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/medium/aircon.png?1489657028",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/large/aircon.png?1489657028",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/002/original/aircon.png?1489657028"
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "name": "ABS",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/small/abs.png?1489657029",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/medium/abs.png?1489657029",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/large/abs.png?1489657029",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/003/original/abs.png?1489657029"
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "name": "Cruise Control",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/small/cruise_control.png?1489657029",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/medium/cruise_control.png?1489657029",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/large/cruise_control.png?1489657029",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/004/original/cruise_control.png?1489657029"
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "name": "Lane Assist",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/small/lane_assist.png?1489657030",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/medium/lane_assist.png?1489657030",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/large/lane_assist.png?1489657030",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/005/original/lane_assist.png?1489657030"
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "name": "Bluetooth",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/small/bluetooth.png?1489657031",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/medium/bluetooth.png?1489657031",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/large/bluetooth.png?1489657031",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/006/original/bluetooth.png?1489657031"
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "name": "Alarm",
+                        "images": {
+                            "small_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/small/alarm.png?1489657031",
+                            "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/medium/alarm.png?1489657031",
+                            "large_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/large/alarm.png?1489657031",
+                            "original_url": "https://rent-trust-api-development.s3.amazonaws.com/listing_amenities/images/000/000/007/original/alarm.png?1489657031"
+                        }
+                    }
+                ],
+                "user": {
+                    "id": 1,
+                    "name": "Philip Kirwan",
+                    "images": {
+                        "small_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/small/picture.?1496765391",
+                        "medium_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/medium/picture.?1496765391",
+                        "large_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/large/picture.?1496765391",
+                        "original_url": "https://rent-trust-api-development.s3.amazonaws.com/users/images/000/000/001/original/picture.?1496765391"
+                    },
+                    "first_name": "Philip",
+                    "last_name": "Kirwan",
+                    "location": null,
+                    "description": null,
+                    "phone_number": null,
+                    "identification": null,
+                    "owner_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Value for Money",
+                                    "slug": "value_for_money"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Cleanliness of the Vehicle",
+                                    "slug": "cleanliness_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Service",
+                                    "slug": "friendly_service"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "renter_review_summary": {
+                        "average_ratings": [
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Would Rent Again",
+                                    "slug": "would_rent_again"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Care of the Vehicle",
+                                    "slug": "care_of_vehicle"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Friendly Renter",
+                                    "slug": "friendly_renter"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Pick up Process",
+                                    "slug": "pick_up_process"
+                                }
+                            },
+                            {
+                                "rating": 0,
+                                "option": {
+                                    "description": "Drop off Process",
+                                    "slug": "drop_off_process"
+                                }
+                            }
+                        ],
+                        "total_reviews": 0,
+                        "rating": 0
+                    },
+                    "listing_count": 3,
+                    "listings": null,
+                    "review": null
+                },
+                "review": null,
+                "total_reviews": 0,
+                "rating": 0,
+                "geometry": {
+                    "bounds": {
+                        "southwest": {
+                            "latitude": 52.95713729769362,
+                            "longitude": -6.082342082240476
+                        },
+                        "northeast": {
+                            "latitude": 53.002103377989556,
+                            "longitude": -6.0076598849601215
+                        }
+                    },
+                    "radius": 750
+                },
+                "location": {
+                    "latitude": 52.9808207,
+                    "longitude": -6.044589,
+                    "radius": 750
+                },
+                "address": "Cill Mhantáin, Ireland",
+                "on_demand": true,
+                "price": 60,
+                "cleaning_fee": 60,
+                "variant": {
+                    "id": 65135,
+                    "trim": "Stingray 2dr Coupe W/2lt (6.2l 8cyl 7m)",
+                    "valves_per_cylinder": 2,
+                    "power_ps": 455,
+                    "power_rpm": 0,
+                    "torque_rpm": 0,
+                    "torque_nm": 460,
+                    "bore_mm": 0,
+                    "stroke_mm": 0,
+                    "compression": "11.5",
+                    "top_speed_kph": 0,
+                    "zero_to_one_hundred_kph": 0,
+                    "engine_cc": 6200,
+                    "weight_kg": 0,
+                    "length_mm": 0,
+                    "height_mm": 0,
+                    "wheelbase_mm": 0,
+                    "litres_per_km_mixed": 0,
+                    "litres_per_km_city": 17,
+                    "litres_per_km_motorway": 29,
+                    "litres_fuel_capacity": 0,
+                    "sold_us": true,
+                    "co2": 0,
+                    "make": {
+                        "id": 33,
+                        "name": "Chevrolet",
+                        "display": "Chevrolet"
+                    },
+                    "model": {
+                        "id": 572,
+                        "name": "Corvette"
+                    },
+                    "engine_position": {
+                        "id": 2,
+                        "position": "front"
+                    },
+                    "engine_size": {
+                        "id": 59,
+                        "size": 6.2
+                    },
+                    "engine_cylinder": {
+                        "id": 5,
+                        "cylinders": 8
+                    },
+                    "engine_kind": {
+                        "id": 4,
+                        "kind": "v"
+                    },
+                    "engine_fuel": {
+                        "id": 2,
+                        "fuel": "unleaded"
+                    },
+                    "transmission": {
+                        "id": 1,
+                        "transmission": "manual",
+                        "gears": 1
+                    },
+                    "door_count": {
+                        "id": 1,
+                        "doors": 2
+                    },
+                    "seat_count": {
+                        "id": 4,
+                        "seats": 0
+                    },
+                    "body": {
+                        "id": 19,
+                        "body": "Two Seaters"
+                    },
+                    "year": {
+                        "id": 81,
+                        "year": "2016"
+                    },
+                    "recommended_price": 3000
+                },
+                "check_in_time": 3600,
+                "check_out_time": 3600,
+                "gallery": [],
+                "rules": [
+                    {
+                        "id": 575,
+                        "rule": "Please take pictures of the car at pickup (driver side, car back, passenger side, car front, and upload to Fleet. Failure to upload all pictures will result in a penalty)."
+                    },
+                    {
+                        "id": 576,
+                        "rule": "When on autopilot (only safe on major highways), be ready to take over driving duties any second."
+                    },
+                    {
+                        "id": 577,
+                        "rule": "No food or pets allowed in the car please."
+                    }
+                ],
+                "wish_lists": [],
+                "reviewed": false,
+                "cancellation_policy": {
+                    "id": 1,
+                    "name": "Flexible",
+                    "description": "This cancellation policy is Flexible. The renter  will receive a full refund if you cancel up to 1 day prior to arrival."
+                },
+                "created_at": 1505921295,
+                "updated_at": 1505921295,
+                "promotion_available": false,
+                "current_bump": null,
+                "current_spotlight": null,
+                "promotions": null,
+                "license_plate_number": "152WW265",
+                "vin_number": "",
+                "on_demand_rates": [
+                    {
+                        "id": 786,
+                        "rate": 25,
+                        "distance": 10
+                    },
+                    {
+                        "id": 787,
+                        "rate": 10,
+                        "distance": 20
+                    },
+                    {
+                        "id": 788,
+                        "rate": 20,
+                        "distance": 50
+                    }
+                ],
+                "agreed_to_insurance_terms": null
+            }
+        ]
+    }
+}

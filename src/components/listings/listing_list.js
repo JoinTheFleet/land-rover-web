@@ -106,5 +106,5 @@ export default class ListingList extends Component {
 ListingList.propTypes = {
   accessToken: PropTypes.string,
   simpleListing: PropTypes.bool,
-  listingsService: PropTypes.func.isRequired
+  listingsService: PropTypes.func
 }
