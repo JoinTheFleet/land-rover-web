@@ -8,7 +8,7 @@ import likedIcon from '../../assets/images/liked.png';
 
 export default class ListingItem extends Component {
 
-  renderItem(){
+  renderItem() {
     let item = this.props.listing;
     let image;
 
@@ -36,7 +36,7 @@ export default class ListingItem extends Component {
         </div>
         <div className="listing-item-info">
           <div>
-            { '€' + (item.price / 100) + ' per day' }
+            { '€' + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
           <RatingInput rating={4} inputNameSufix={item.id.toString()} readonly={true} />
           <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
@@ -45,7 +45,7 @@ export default class ListingItem extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <div className="listing-item col-xs-12 col-sm-6 col-lg-4"> { this.renderItem() } </div>
     )

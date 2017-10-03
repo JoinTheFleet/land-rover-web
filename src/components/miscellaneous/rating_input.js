@@ -8,7 +8,7 @@ export default class RatingInput extends Component {
     this.state = {
       currentRating: this.props.rating || 0,
       disabled: this.props.readonly || false
-    }
+    };
 
     this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -16,8 +16,8 @@ export default class RatingInput extends Component {
   handleOnChange(event){
     let element = event.target;
 
-    if(element.checked) {
-      this.setState({currentRating: element.value});
+    if (element.checked) {
+      this.setState({ currentRating: element.value });
     }
   }
 
@@ -29,7 +29,7 @@ export default class RatingInput extends Component {
 
     let className = 'rating-input';
 
-    if(this.state.disabled) {
+    if (this.state.disabled) {
       className += ' disabled';
     }
 

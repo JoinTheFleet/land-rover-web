@@ -15,7 +15,7 @@ export default class ListingList extends Component {
     this.state = {
       listings: [],
       currentPosition: 0
-    }
+    };
 
     this.handleNavigationClick = this.handleNavigationClick.bind(this);
   }
