@@ -9,7 +9,7 @@ import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
-import AuthenticationHandler from './api_handlers/authentication_handler';
+import AuthenticationService from './shared/services/authentication_service';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -33,7 +33,7 @@ export default class App extends Component {
 
   setAccessToken(accessToken) {
     let openModals = this.state.openModals;
-    let newState = {accessToken: accessToken};
+    let newState = { accessToken: accessToken };
 
     openModals.splice(openModals.indexOf('login'), 1);
     newState[openModals] = openModals;
@@ -61,7 +61,7 @@ export default class App extends Component {
 
   handleMenuItemSelect(menuItem) {
     if(menuItem === navigationSections.logout){
-      AuthenticationHandler.logout(this.state.accessToken, (success) => {
+      AuthenticationService.logout((success) => {
         this.setAccessToken('');
       }, (error) => {
         alert(error);
@@ -115,8 +115,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header accessToken={this.state.accessToken}
-                currentMenuItem={this.state.currentSelectedView}
+        <Header currentMenuItem={this.state.currentSelectedView}
                 handleMenuItemSelect={this.handleMenuItemSelect}
                 toggleModal={this.toggleModal} />
         <div id="main_container">

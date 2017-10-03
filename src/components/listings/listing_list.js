@@ -22,10 +22,10 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    let listingsHandler = this.props.listingsHandler;
+    let listingsService = this.props.listingsService;
 
-    if(this.state.listings.length === 0 && listingsHandler && this.props.accessToken){
-      listingsHandler.listings(this.props.accessToken, (response) => {
+    if(this.state.listings.length === 0 && listingsService) {
+      listingsService.listings((response) => {
         this.setState({ listings: response.data.data.listings });
       }, (error) => {
         alert(error);
@@ -106,5 +106,5 @@ export default class ListingList extends Component {
 ListingList.propTypes = {
   accessToken: PropTypes.string,
   simpleListing: PropTypes.bool,
-  listingsHandler: PropTypes.func
+  listingsService: PropTypes.func.isRequired
 }
