@@ -3,13 +3,10 @@ import {FormattedMessage} from 'react-intl';
 import Anime from 'react-anime';
 import Helpers from '../miscellaneous/helpers';
 import Constants from '../miscellaneous/constants';
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 
 export default class HeaderMenu extends Component {
-
   constructor(props) {
     super(props);
 
@@ -21,6 +18,7 @@ export default class HeaderMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
     this.setState({
       open: nextProps.menuOpen || false
     });
@@ -32,7 +30,7 @@ export default class HeaderMenu extends Component {
     let itemsWithDivider = ['home'];
     let itemsWithModal = ['login'];
 
-    if(cookies.get('accessToken')){
+    if (this.props.accessToken) {
       items = [navigationSections.home, navigationSections.profile,
                navigationSections.bookings,navigationSections.messages,
                navigationSections.listings, navigationSections.account,
