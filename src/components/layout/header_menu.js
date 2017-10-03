@@ -70,7 +70,17 @@ export default class HeaderMenu extends Component {
     return (
       <Anime easing="easeOutQuart"
              duration={500}
-             opacity={this.state.open ? 1 : 0}>
+             opacity={this.state.open ? 1 : 0}
+             begin={(anime) => {
+               if(this.state.open) {
+                 anime.animatables[0].target.style.display = 'block';
+               }
+             }}
+             complete={(anime) => {
+               if(!this.state.open) {
+                 anime.animatables[0].target.style.display = 'none';
+               }
+             }}>
         {this.renderMenu()}
       </Anime>
     )
