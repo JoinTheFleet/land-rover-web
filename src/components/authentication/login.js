@@ -8,6 +8,7 @@ import AuthenticationHandler from '../../api_handlers/authentication_handler';
 import emailIcon from '../../assets/images/email.png';
 import closeGreyIcon from '../../assets/images/close-grey.png';
 
+const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
 class Login extends Component {
 
   constructor(props){
@@ -117,7 +118,7 @@ class Login extends Component {
 
             {this.renderErrors()}
 
-            <FacebookLogin appId="376880846063473"
+            <FacebookLogin appId={facebookAppID}
                            autoLoad={false}
                            fields="name,email,picture"
                            icon="fa-facebook"
@@ -127,8 +128,8 @@ class Login extends Component {
                            onClick={() => {this.setSelectedLoginMode('facebook')}} />
 
             <div className="divider with-text">
-              <div className="divider-line terciary-color"></div>
-              <div className="divider-text white terciary-text-color text-secondary-font-weight ls-dot-two text-center">
+              <div className="divider-line tertiary-color"></div>
+              <div className="divider-text white tertiary-text-color text-secondary-font-weight ls-dot-two text-center">
                 <FormattedMessage id="authentication.or_continue_with" />
               </div>
             </div>
@@ -158,10 +159,10 @@ class Login extends Component {
             </button>
 
             <div className="divider">
-              <div className="divider-line terciary-color"></div>
+              <div className="divider-line tertiary-color"></div>
             </div>
 
-            <div id="dont_have_account_message" className="text-center terciary-text-color text-secondary-font-weight fs-18">
+            <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
               <FormattedMessage id="authentication.dont_have_account" />
               <FormattedMessage id="menu.signup" >
                 {(message) => (

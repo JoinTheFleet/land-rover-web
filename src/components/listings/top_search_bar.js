@@ -17,7 +17,7 @@ export default class TopSearchBar extends Component {
           <span>Filter</span>
         </a>
         <div className="pull-right">
-          <span className="terciary-text-color">SORT BY</span>
+          <span className="tertiary-text-color">SORT BY</span>
           <a id="selectListingsSortByBtn" className="top-search-bar-control secondary-color white-text btn" >
             <span>Price high - low</span>
           </a>

@@ -18,7 +18,7 @@ export default class ListingItem extends Component {
 
     let wishListed = item.wish_lists.length > 0;
 
-    if(item.gallery.length > 0) {
+    if (item.gallery.length > 0) {
       image = <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>;
     }
 

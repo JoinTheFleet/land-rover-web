@@ -66,7 +66,7 @@ export default class ListingList extends Component {
       return this.state.listings.map((listing) => <ListingItem key={'listing_' + listing.id} listing={listing}/>);
     }
     else {
-      return (<div className="no-listings-to-display-div title-font-size terciary-text-color"><FormattedMessage id="listings.no_listings_to_display" /></div>);
+      return (<div className="no-listings-to-display-div title-font-size tertiary-text-color"><FormattedMessage id="listings.no_listings_to_display" /></div>);
     }
   }
 

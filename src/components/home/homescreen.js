@@ -71,7 +71,7 @@ class Homescreen extends Component {
         <BlogList />
 
         <div id="featured_in_div" className="text-center">
-          <span className="terciary-text-color">
+          <span className="tertiary-text-color">
             <FormattedMessage id="homescreen.featured_in" />
           </span>
           <img src={independentLogo} alt="Independent logo" />

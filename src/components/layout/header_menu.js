@@ -58,7 +58,7 @@ export default class HeaderMenu extends Component {
     }
 
     return (
-      <div id="header_menu" className="col-xs-12 white terciary-text-color" style={{height: (Helpers.pageHeight() - 80) + 'px'}}>
+      <div id="header_menu" className="col-xs-12 white tertiary-text-color" style={{height: (Helpers.pageHeight() - 80) + 'px'}}>
         {menuItems}
       </div>
     )
