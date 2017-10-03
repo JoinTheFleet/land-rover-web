@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Anime from 'react-anime';
 import {FormattedMessage} from 'react-intl';
-import PropTypes from 'prop-types';
 import ListingItem from './listing_item'
+
+import ListingsService from '../../shared/services/listings_service'
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
@@ -21,15 +22,13 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    let listingsService = this.props.listingsService;
-
-    if(listingsService) {
-      listingsService.listings((response) => {
-        this.setState({ listings: response.data.data.listings });
-      }, (error) => {
-        alert(error);
-      });
-    }
+    ListingsService.listings()
+                   .then((response) => {
+                     this.setState({ listings: response.data.data.listings });
+                   })
+                   .catch((error) => {
+                     alert(error);
+                   });
   }
 
   handleNavigationClick(direction) {
@@ -91,8 +90,4 @@ export default class ListingList extends Component {
       </div>
     )
   }
-}
-
-ListingList.propTypes = {
-  listingsService: PropTypes.func.isRequired
 }
