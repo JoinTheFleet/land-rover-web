@@ -5,11 +5,11 @@ import './App.css';
 import Constants from './components/miscellaneous/constants';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
-import Cookies from "universal-cookie";
 import Homescreen from './components/home/homescreen';
 import Login from './components/authentication/login';
 import AuthenticationService from './shared/services/authentication_service';
-import bearer_client from './shared/libraries/client';
+import client from './shared/libraries/client';
+import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -26,7 +26,7 @@ export default class App extends Component {
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
-      bearer_client.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
+      client.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
     }
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -36,20 +36,21 @@ export default class App extends Component {
   }
 
   setAccessToken(accessToken) {
+    cookies.remove('accessToken');
+
     let openModals = this.state.openModals;
     let newState = { accessToken: accessToken };
 
     openModals.splice(openModals.indexOf('login'), 1);
-    newState[openModals] = openModals;
+    newState[openModals] = openModals
 
     this.setState(newState, () => {
       if(accessToken.length > 0){
         cookies.set('accessToken', accessToken);
-        bearer_client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
       else {
-        cookies.remove('accessToken');
-        delete bearer_client.defaults.headers.common['Authorization'];
+        delete client.defaults.headers.common['Authorization'];
       }
     });
   }
@@ -118,7 +119,8 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header currentMenuItem={this.state.currentSelectedView}
+        <Header loggedIn={this.state.accessToken && this.state.accessToken.length > 0}
+                currentMenuItem={this.state.currentSelectedView}
                 handleMenuItemSelect={this.handleMenuItemSelect}
                 toggleModal={this.toggleModal} />
         <div id="main_container">
