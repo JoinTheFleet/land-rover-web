@@ -29,7 +29,7 @@ export default class HeaderMenu extends Component {
     let itemsWithDivider = ['home'];
     let itemsWithModal = ['login'];
 
-    if (this.props.accessToken) {
+    if (this.props.loggedIn) {
       items = [navigationSections.home, navigationSections.profile,
                navigationSections.bookings,navigationSections.messages,
                navigationSections.listings, navigationSections.account,

@@ -119,7 +119,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header accessToken={this.state.accessToken}
+        <Header loggedIn={this.state.accessToken && this.state.accessToken.length > 0}
                 currentMenuItem={this.state.currentSelectedView}
                 handleMenuItemSelect={this.handleMenuItemSelect}
                 toggleModal={this.toggleModal} />
