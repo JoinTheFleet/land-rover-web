@@ -5,38 +5,24 @@ class Service {
     return '';
   }
 
-  static get paramKey() {
-    return '';
+  static index(params) {
+    return client.get(this.baseURL, params);
   }
 
-  static index() {
-    return client.get(this.baseURL);
-  }
-
-  static show(id) {
-    return client.get(this.baseURL + id);
+  static show(id, params) {
+    return client.get(this.baseURL + id, params);
   }
 
   static create(params) {
-    return client.post(this.baseURL, this.ensure_params_has_key(params));
+    return client.post(this.baseURL, params);
   }
 
   static update(id, params) {
-    return client.put(this.baseURL + id, this.ensure_params_has_key(params));
+    return client.put(this.baseURL + id, params);
   }
 
-  static destroy(id) {
-    return client.delete(this.baseURL + id);
-  }
-
-  static ensure_params_has_key(params) {
-    if (!params[this.paramKey] && this.paramKey.length > 0) {
-      let newParams = {};
-      newParams[this.paramKey] = params;
-
-      return newParams;
-    }
-    return params;
+  static destroy(id, params) {
+    return client.delete(this.baseURL + id, params);
   }
 }
 
