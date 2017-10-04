@@ -1,5 +1,4 @@
 import client from '../libraries/client';
-import bearer_client from '../libraries/client';
 
 const listingsURL = '/api/v1/listings';
 
