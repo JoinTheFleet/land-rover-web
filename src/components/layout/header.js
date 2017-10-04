@@ -61,7 +61,7 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  loggedIn: PropTypes.bool,
   currentMenuItem: PropTypes.string.isRequired,
   handleMenuItemSelect: PropTypes.func.isRequired
 }
