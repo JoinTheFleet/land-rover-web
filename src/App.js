@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import Constants from './components/miscellaneous/constants';
+import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';

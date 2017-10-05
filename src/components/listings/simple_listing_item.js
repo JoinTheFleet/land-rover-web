@@ -1,7 +1,13 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
-import RatingInput from '../miscellaneous/rating_input';
-import { FormattedMessage } from 'react-intl';
+import RatingInput from '../../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
@@ -20,7 +26,7 @@ export default class SimpleListingItem extends Component {
     let hasImages = item.gallery ? (item.gallery.length > 0) : false;
 
     if (hasImages) {
-      image = <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>;
+    image = (<img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>);
     }
 
     return (
@@ -48,11 +54,12 @@ export default class SimpleListingItem extends Component {
 
   render() {
     return (
-      <div className="listing-item col-xs-12 col-sm-6 col-lg-4"> { this.renderItem() } </div>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }> { this.renderItem() } </div>
     )
   }
 }
 
 SimpleListingItem.propTypes = {
-  listing: PropTypes.object
+  listing: PropTypes.object,
+  additionalClasses: PropTypes.string
 }

@@ -1,3 +1,4 @@
+/* Homescreen */
 #homescreen_top_banner {
   height: 600px;
   position: relative;
@@ -71,4 +72,29 @@
 
 .top-seller-title {
   margin: 15px 0 0 30px;
+}
+
+/* Homefeed */
+.toggle-map-div {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: $screen-md-max) {
+  .homefeed-listings-list {
+    height: auto !important;
+  }
+}
+
+@media screen and (min-width: $screen-lg-min) {
+  .homefeed-listings-list {
+    overflow-y: scroll;
+  }
 }

@@ -1,5 +1,12 @@
-import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list'
 import FeaturesList from './features_list';

@@ -1,5 +1,11 @@
-import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
 
 import facebookIcon from '../../assets/images/facebook.png';
 import twitterIcon from '../../assets/images/twitter.png';

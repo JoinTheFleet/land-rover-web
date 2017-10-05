@@ -1,14 +1,46 @@
-import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
+import FiltersTopBar from '../listings/filters_top_bar';
 
-import Helpers from '../miscellaneous/helpers';
+import Helpers from '../../miscellaneous/helpers';
 
+import mapToggleIcon from '../../assets/images/map_toggle.png';
 import homefeedExampleData from '../../homefeed_example.json';
 import listingsExampleData from '../../listings_example.json';
 
+const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
+
 export default class Homefeed extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      toggledComponent: ''
+    };
+
+    this.toggleComponent = this.toggleComponent.bind(this);
+
+    let component = this;
+
+    window.addEventListener('resize', () => {
+      if(Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== ''){
+        component.setState({ toggledComponent: '' });
+      }
+    });
+  }
+
+  toggleComponent(component) {
+    this.setState({ toggledComponent: component });
+  }
+
   renderListingLists() {
     let nearbyListings = homefeedExampleData.data.home_feed.nearby.objects;
     let collections = homefeedExampleData.data.home_feed.collections;
@@ -44,20 +76,48 @@ export default class Homefeed extends Component {
     let listings = listingsExampleData.data.listings;
 
     return (
-      <ListingMap containerElement={(<div style={{ height: Helpers.pageHeight() + 'px' }}></div>)}
-                  mapElement={ <div style={{ height: `100%` }}></div> }
+      <ListingMap containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
+                  mapElement={ <div style={{ height: '100%' }}></div> }
                   listings={listings} />
     )
   }
 
   render() {
+    let listingsDivsToDisplay = [];
+    let largeWidth = Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL;
+    let nextComponent = this.state.toggledComponent === 'map' ? 'list' : 'map';
+    let listingsListDiv = (
+      <div key="listings_list_div" className="homefeed-listings-list col-lg-7 no-side-padding" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
+        {this.renderListingLists()}
+      </div>
+    );
+
+    let listingsMapDiv = (
+      <div key="listings_map_div" className="homefeed-listings-map col-lg-5 no-side-padding listings-map">
+        {this.renderListingMap()}
+      </div>
+    );
+
+    if(largeWidth || this.state.toggledComponent !== 'map') {
+      listingsDivsToDisplay.push(listingsListDiv);
+    }
+
+    if(largeWidth || this.state.toggledComponent === 'map') {
+      listingsDivsToDisplay.push(listingsMapDiv);
+    }
+
     return (
       <div className="col-xs-12 no-side-padding">
-        <div className="col-lg-7 no-side-padding">
-          {this.renderListingLists()}
+        <div className="col-xs-12 no-side-padding">
+          <FiltersTopBar />
         </div>
-        <div className="col-lg-5 no-side-padding">
-          {this.renderListingMap()}
+        <div className="col-xs-12 no-side-padding">
+          {
+            listingsDivsToDisplay.map((listingDiv) => { return listingDiv })
+          }
+        </div>
+        <div className="toggle-map-div hidden-lg">
+          <img src={mapToggleIcon} alt="toggle_map_icon" onClick={ () => { this.toggleComponent(nextComponent) } } />
         </div>
       </div>
     );

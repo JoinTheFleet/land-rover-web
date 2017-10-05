@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
+
 import PropTypes from 'prop-types';
-import Constants from '../miscellaneous/constants';
-import HeaderMenu from './header_menu'
+import Constants from '../../miscellaneous/constants';
+import HeaderMenu from './header_menu';
 
 import logo from '../../assets/images/menu_logo.png';
 
@@ -11,7 +14,7 @@ export default class Header extends Component {
 
     this.state =  {
       menuOpen: false
-    }
+    };
 
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleModal = this.toggleModal.bind(this);

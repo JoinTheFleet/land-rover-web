@@ -1,49 +1,78 @@
-import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import React, {
+  Component
+} from 'react';
+
+import {
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+  InfoWindow
+} from 'react-google-maps';
+
+import ListingItem from '../listings/listing_item';
+import Geolocation from '../../miscellaneous/geolocation';
 
 class ListingMap extends Component {
-  render() {
-    let listings = this.props.listings;
-    let lat = 0;
-    let lng = 0;
-    let x = 0;
-    let y = 0;
-    let z = 0;
-    let sumX = 0;
-    let sumY = 0;
-    let sumZ = 0;
-    let listing;
+  constructor(props) {
+    super(props);
 
-    for(let i = 0; i < listings.length; i++){
-      listing = listings[i];
-      lat = (listing.location.latitude) * Math.PI / 180;
-      lng = (listing.location.longitude) * Math.PI / 180;
+    this.state = {
+      markerSelected: ''
+    };
 
-      x = Math.cos(lat) * Math.cos(lng);
-      y = Math.cos(lat) * Math.sin(lng);
-      z = Math.sin(lat);
+    this.toggleMarker = this.toggleMarker.bind(this);
+  }
 
-      sumX += x;
-      sumY += y;
-      sumZ += z;
+  toggleMarker(markerKey) {
+    if (this.state.markerSelected === markerKey) {
+      this.setState({
+        markerSelected: ''
+      });
+    }
+    else {
+      this.setState({
+        markerSelected: markerKey
+      });
+    }
+  }
+
+  renderMarker(listing, index) {
+    let markerKey = 'listing_map_item_' + (index + 1);
+    let infoWindow = '';
+
+    if (this.state.markerSelected === markerKey) {
+      infoWindow = (
+        <InfoWindow onCloseClick={() => { this.toggleMarker(markerKey) } }>
+          <ListingItem additionalClasses="no-side-padding" listing={listing} />
+        </InfoWindow>
+      )
     }
 
-    let finalX = sumX / listings.length;
-    let finalY = sumY / listings.length;
-    let finalZ = sumZ / listings.length;
+    let marker = (
+      <Marker key={'listing_map_item_' + (index + 1)}
+              position={{ lat: listing.location.latitude, lng: listing.location.longitude }}
+              onClick={() => { this.toggleMarker(markerKey) } }>
+        { infoWindow }
+      </Marker>
+    )
 
-    let avgLng = (Math.atan2(finalY, finalX)) * 180 / Math.PI;
-    let avgLat = (Math.atan2(finalZ, Math.sqrt(Math.pow(finalX,2) + Math.pow(finalY, 2)))) * 180 / Math.PI;
+    return marker;
+  }
 
-    console.log(avgLat);
-    console.log(avgLng);
+  render() {
+    let listings = this.props.listings;
+    let averageCoordinates = Geolocation.getCoordinatesCenter(listings.map((listing) => {
+      return [ listing.location.latitude, listing.location.longitude ];
+    }));
 
     return (
       <GoogleMap defaultZoom={10}
-                 defaultCenter={{ lat: avgLat, lng: avgLng }}>
+                 defaultCenter={{ lat: averageCoordinates.latitude, lng: averageCoordinates.longitude }}
+                 className="listingsMap"
+                 ref={(map) => { this.map = map } }>
         {
           listings.map((listing, index) => {
-            return <Marker key={'listing_map_item_' + (index + 1)} position={{ lat: listing.location.latitude, lng: listing.location.longitude }} />
+            return this.renderMarker(listing, index);
           })
         }
       </GoogleMap>

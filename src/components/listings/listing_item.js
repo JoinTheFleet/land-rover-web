@@ -1,7 +1,13 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
-import RatingInput from '../miscellaneous/rating_input';
-import { FormattedMessage } from 'react-intl';
+import RatingInput from '../../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
@@ -19,7 +25,9 @@ export default class ListingItem extends Component {
     let wishListed = item.wish_lists.length > 0;
 
     if (item.gallery.length > 0) {
-      image = <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>;
+      image = (
+        <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>
+      );
     }
 
     return (

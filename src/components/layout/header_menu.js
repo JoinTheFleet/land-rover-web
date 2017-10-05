@@ -1,8 +1,14 @@
-import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import Anime from 'react-anime';
-import Helpers from '../miscellaneous/helpers';
-import Constants from '../miscellaneous/constants';
+import Helpers from '../../miscellaneous/helpers';
+import Constants from '../../miscellaneous/constants';
 
 const navigationSections = Constants.navigationSections();
 
