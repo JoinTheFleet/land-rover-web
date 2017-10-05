@@ -1,5 +1,4 @@
 import client from '../libraries/client';
-import bearer_client from '../libraries/client';
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -31,7 +30,7 @@ class AuthenticationService {
   }
 
   static logout() {
-    return bearer_client.post('/oauth/revoke', {
+    return client.post('/oauth/revoke', {
       token: cookies.get('accessToken')
     });
   }

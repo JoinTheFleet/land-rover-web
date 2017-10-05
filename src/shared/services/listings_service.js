@@ -1,11 +1,8 @@
-import client from '../libraries/client';
-import bearer_client from '../libraries/client';
+import Service from './service';
 
-const listingsURL = '/api/v1/listings';
-
-class ListingsService {
-  static listings() {
-    return bearer_client.get(listingsURL);
+class ListingsService extends Service {
+  static get baseURL() {
+    return '/api/v1/listings/';
   }
 }
 

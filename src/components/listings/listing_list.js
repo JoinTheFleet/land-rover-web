@@ -24,12 +24,12 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    ListingsService.listings()
+    ListingsService.index()
                    .then((response) => {
                      this.setState({ listings: response.data.data.listings });
                    })
                    .catch((error) => {
-                     alert(error);
+                     alert(error); // TODO: Some sort of nice flash service.
                    });
   }
 
