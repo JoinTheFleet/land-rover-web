@@ -33,7 +33,7 @@ export default class SimpleListingItem extends Component {
       <div>
         <div className="listing-item-photo-and-title">
           { image }
-          <div className="listing-item-title fs-16px">
+          <div className="listing-item-title fs-16">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
             <span className="listing-item-year">{ item.year }</span>
           </div>

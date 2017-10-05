@@ -95,6 +95,10 @@
     }
   }
 
+  .listing-item-info {
+    margin-top: 10px;
+  }
+
   .rating-input,
   .rating-input + span {
     float: left;
@@ -115,9 +119,9 @@
 }
 
 .listings-map {
-  .gm-style-iw {
-    max-width: 230px;
-    max-height: 200px;
+  .listings-map-listing-details-div {
+    width: 230px;
+    height: 200px;
   }
 
   .listing-item {
@@ -125,10 +129,16 @@
 
     .listing-item-photo-and-title {
       height: auto !important;
+
+      .listing-item-title {
+        bottom: -1px;
+        font-size: 12px;
+      }
     }
 
     .listing-item-info {
-      margin-top: 10px;
+      padding-left: 6px;
+      font-size: 12px;
     }
   }
 }

@@ -6,11 +6,16 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
-  InfoWindow
+  OverlayView
 } from 'react-google-maps';
 
 import ListingItem from '../listings/listing_item';
 import Geolocation from '../../miscellaneous/geolocation';
+
+const getPixelPositionOffset = (width, height) => ({
+  x: -(width / 2),
+  y: -(height + 10),
+})
 
 class ListingMap extends Component {
   constructor(props) {
@@ -42,9 +47,13 @@ class ListingMap extends Component {
 
     if (this.state.markerSelected === markerKey) {
       infoWindow = (
-        <InfoWindow onCloseClick={() => { this.toggleMarker(markerKey) } }>
-          <ListingItem additionalClasses="no-side-padding" listing={listing} />
-        </InfoWindow>
+        <OverlayView position={{ lat: listing.location.latitude, lng: listing.location.longitude }}
+                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                     getPixelPositionOffset={getPixelPositionOffset}>
+          <div className="listings-map-listing-details-div">
+            <ListingItem additionalClasses="no-side-padding" listing={listing} />
+          </div>
+        </OverlayView>
       )
     }
 

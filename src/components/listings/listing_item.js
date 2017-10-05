@@ -31,10 +31,10 @@ export default class ListingItem extends Component {
     }
 
     return (
-      <div>
+      <div className="col-xs-12 no-side-padding white">
         <div className="listing-item-photo-and-title">
           { image }
-          <div className="listing-item-title fs-16px">
+          <div className="listing-item-title fs-16">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
             <span className="listing-item-year">{ item.variant.year.year }</span>
           </div>
