@@ -22,7 +22,7 @@ export default class Header extends Component {
   }
 
   toggleMenu() {
-    this.setState((prevState) => { return {menuOpen: !prevState.menuOpen} })
+    this.setState((prevState) => ({ menuOpen: !prevState.menuOpen }));
   }
 
   toggleModal(item) {

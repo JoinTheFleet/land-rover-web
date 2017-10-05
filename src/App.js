@@ -43,7 +43,7 @@ export default class App extends Component {
     let newState = { accessToken: accessToken };
 
     openModals.splice(openModals.indexOf('login'), 1);
-    newState[openModals] = openModals
+    newState[openModals] = openModals;
 
     this.setState(newState, () => {
       if(accessToken.length > 0){
