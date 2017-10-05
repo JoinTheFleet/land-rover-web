@@ -8,7 +8,7 @@ import {
 } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import ListingList from '../listings/listing_list'
+import ListingList from '../listings/listing_list';
 import FeaturesList from './features_list';
 import Testimonials from './testimonials';
 import BlogList from './blog_list';

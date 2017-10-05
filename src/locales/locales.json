@@ -2,8 +2,11 @@
   "en": {
     "application.blog": "Blog",
     "application.dates": "Dates",
+    "application.filter": "Filter",
     "application.location": "Location",
+    "application.other": "Other",
     "application.search": "Search",
+    "application.sort_by": "Sort By",
     "application.view_all": "View All",
 
     "company_info.info_email": "info@jointhefleet.com",
@@ -90,6 +93,18 @@
     "listings.top_seller": "Top Seller",
     "listings.total_reviews": "{total_reviews} reviews",
     "listings.no_listings_to_display": "No listings to display",
+    "listings.vehicle": "Vehicle",
+    "listings.type": "Type",
+    "listings.make": "Make",
+    "listings.model": "Model",
+    "listings.year": "Year",
+    "listings.details": "Details",
+    "listings.fuel": "Fuel",
+    "listings.transmission": "Transmission",
+    "listings.passengers": "Passengers",
+    "listings.doors": "Doors",
+    "listings.on_demand_collection": "On Demand Collection",
+    "listings.amenities": "Amenities",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }

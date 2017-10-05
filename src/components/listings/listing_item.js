@@ -55,7 +55,7 @@ export default class ListingItem extends Component {
 
   render() {
     return (
-      <div className="listing-item col-xs-12 col-sm-6 col-lg-4"> { this.renderItem() } </div>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }> { this.renderItem() } </div>
     )
   }
 }

@@ -6,13 +6,18 @@ import {
   FormattedMessage
 } from 'react-intl';
 
+import PropTypes from 'prop-types';
+
+// Fleet Components
 import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
-import FiltersTopBar from '../listings/filters_top_bar';
-import HomeFeedService from '../../shared/services/home_feed_service';
+import ListingsFiltersTopBar from '../listings/listings_filters_top_bar';
 
+// Services / Miscellaneous
+import HomeFeedService from '../../shared/services/home_feed_service';
 import Helpers from '../../miscellaneous/helpers';
 
+// Icons
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 import listingsExampleData from '../../listings_example.json';
@@ -138,7 +143,7 @@ export default class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <FiltersTopBar />
+          <ListingsFiltersTopBar addSearchParamHandler={this.props.addSearchParamHandler} />
         </div>
 
         { this.renderListingsToDisplay() }
@@ -149,4 +154,8 @@ export default class Homefeed extends Component {
       </div>
     );
   }
+}
+
+Homefeed.propTypes = {
+  addSearchParamHandler: PropTypes.func.isRequired
 }

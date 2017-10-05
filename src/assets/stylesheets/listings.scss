@@ -126,6 +126,7 @@
 
   .listing-item {
     width: 100% !important;
+    box-shadow: 1px 1px 5px grey;
 
     .listing-item-photo-and-title {
       height: auto !important;
@@ -141,4 +142,12 @@
       font-size: 12px;
     }
   }
+}
+
+.listings-filters {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
