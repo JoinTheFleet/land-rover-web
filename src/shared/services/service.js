@@ -30,7 +30,7 @@ class Service {
   }
 
   static validatedShow(id, params) {
-    return client.get(this.baseURL + id, {
+    return client.get(this.baseURL + (id || ''), {
       params: params
     });
   }
@@ -48,6 +48,11 @@ class Service {
   }
 
   static validatedUpdate(id, params) {
+    if (!(id instanceof String)) {
+      params = id;
+      id = '';
+    }
+
     return client.put(this.baseURL + id, params);
   }
 
