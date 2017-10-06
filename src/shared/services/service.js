@@ -20,7 +20,9 @@ class Service {
   }
 
   static validatedIndex(params) {
-    return client.get(this.baseURL, params);
+    return client.get(this.baseURL, {
+      params: params
+    });
   }
 
   static show(id, params) {
@@ -28,7 +30,9 @@ class Service {
   }
 
   static validatedShow(id, params) {
-    return client.get(this.baseURL + id, params);
+    return client.get(this.baseURL + id, {
+      params: params
+    });
   }
 
   static create(params) {
@@ -48,7 +52,9 @@ class Service {
   }
 
   static destroy(id, params) {
-    return this.validatedAction('destroy', 'validatedDestroy', id, params);
+    return this.validatedAction('destroy', 'validatedDestroy', id, {
+      params: params
+    });
   }
 
   static validatedDestroy(id, params) {
@@ -63,15 +69,9 @@ class Service {
     if (this.validAction(action)) {
       // First 2 arguments are the action name and the callback name
       let applicationArguments = Array.prototype.slice.call(arguments, 2);
-      let allArgumentsUndefined = applicationArguments.every(function(argument) {
-        return argument === undefined;
-      })
+      let filteredArguments = applicationArguments.filter(argument => argument);
 
-      if (allArgumentsUndefined) {
-        applicationArguments = [];
-      }
-
-      return this[callback](applicationArguments);
+      return this[callback].apply(this, filteredArguments);
     }
     else {
       return Promise.reject(new Error('Invalid Action'));
