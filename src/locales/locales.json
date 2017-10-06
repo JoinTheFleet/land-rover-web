@@ -105,6 +105,7 @@
     "listings.doors": "Doors",
     "listings.on_demand_collection": "On Demand Collection",
     "listings.amenities": "Amenities",
+    "listings.see_listings": "See Listings",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }

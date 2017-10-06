@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // Fleet Components
 import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
-import ListingsFiltersTopBar from '../listings/listings_filters_top_bar';
+import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar';
 
 // Services / Miscellaneous
 import HomeFeedService from '../../shared/services/home_feed_service';
@@ -143,7 +143,7 @@ export default class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <ListingsFiltersTopBar addSearchParamHandler={this.props.addSearchParamHandler} />
+          <ListingsFiltersTopBar setCurrentSearchParams={ this.props.setCurrentSearchParams } />
         </div>
 
         { this.renderListingsToDisplay() }
@@ -157,5 +157,5 @@ export default class Homefeed extends Component {
 }
 
 Homefeed.propTypes = {
-  addSearchParamHandler: PropTypes.func.isRequired
+  setCurrentSearchParams: PropTypes.func.isRequired
 }

@@ -13,4 +13,9 @@ export default class Helpers {
   static windowWidth(){
     return window.innerWidth;
   }
+
+  static extendObject(source, object) {
+    Object.keys(object).forEach((key) => { source[key] = object[key]; });
+    return source;
+  }
 }

@@ -42,12 +42,14 @@ export default class ListingsFiltersTopBar extends Component {
             <span>Price high - low</span>
           </a>
         </div>
-        <ListingsFilters open={this.state.filtersOpen} addSearchParamHandler={this.props.addSearchParamHandler} />
+        <ListingsFilters open={this.state.filtersOpen}
+                         setCurrentSearchParams={ this.props.setCurrentSearchParams }
+                         toggleFilters={ this.toggleFilters } />
       </div>
     )
   }
 }
 
 ListingsFiltersTopBar.propTypes = {
-  addSearchParamHandler: PropTypes.func.isRequired
+  setCurrentSearchParams: PropTypes.func.isRequired
 }

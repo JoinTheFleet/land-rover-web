@@ -7,7 +7,7 @@ import {
 } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import RatingInput from '../../miscellaneous/rating_input';
+import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';

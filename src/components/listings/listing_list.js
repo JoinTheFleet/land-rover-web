@@ -30,7 +30,7 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    if (this.props.listings.length === 0) {
+    if (!this.props.listings || this.props.listings.length === 0) {
       ListingsService.index()
                     .then((response) => {
                       this.setState({ listings: response.data.data.listings });
