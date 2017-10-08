@@ -9,7 +9,9 @@ export default class Constants {
       account: 'account',
       logout: 'logout',
       login: 'login',
-      signup: 'signup'
+      signup: 'signup',
+      calendar: 'calendar',
+      dashboard: 'dashboard'
     };
   }
 

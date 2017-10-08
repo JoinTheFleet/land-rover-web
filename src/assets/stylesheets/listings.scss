@@ -170,3 +170,43 @@
     padding: 17px 0;
   }
 }
+
+/* Listings Overview */
+
+.listings-overview-div {
+  .listings-overview-top-bar {
+    height: 50px;
+    line-height: 50px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .listings-overview-list {
+    padding: 20px 0;
+  }
+}
+
+.listing-card {
+  height: 94px;
+  border: solid 1px $smoke-grey-two;
+
+  .listing-card-photo {
+    display: inline-block;
+    width: 141px;
+    height: 100%;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .listing-card-details {
+    width: calc(100% - 141px);
+    display: inline-block;
+  }
+
+  & + .listing-card {
+    margin-top: 20px;
+  }
+}

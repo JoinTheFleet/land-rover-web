@@ -4,10 +4,13 @@ import './App.css';
 
 import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
+import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
+import ListingsOverview from './components/listings/listings_overview';
+
 import AuthenticationService from './shared/services/authentication_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
@@ -19,7 +22,6 @@ const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
 const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
-
 
 export default class App extends Component {
   constructor(props) {
@@ -168,6 +170,7 @@ export default class App extends Component {
       case navigationSections.messages:
         break;
       case navigationSections.listings:
+        viewToRender = (<ListingsOverview></ListingsOverview>);
         break;
       case navigationSections.account:
         break;
@@ -186,16 +189,23 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header loggedIn={this.state.accessToken && this.state.accessToken.length > 0}
-                currentUserRole={this.state.currentUserRole}
-                currentMenuItem={this.state.currentSelectedView}
-                handleMenuItemSelect={this.handleMenuItemSelect}
-                toggleModal={this.toggleModal}
-                handleChangeCurrentUserRole={this.changeCurrentUserRole} />
+        <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
+                currentUserRole={ this.state.currentUserRole }
+                currentMenuItem={ this.state.currentSelectedView }
+                handleMenuItemSelect={ this.handleMenuItemSelect }
+                toggleModal={ this.toggleModal }
+                handleChangeCurrentUserRole={ this.changeCurrentUserRole } />
+
+        <HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
+                       currentUserRole={ this.state.currentUserRole }
+                       handleMenuItemSelect={ this.handleMenuItemSelect } />
+
         <div id="main_container">
           { this.renderMainContent() }
         </div>
+
         <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={this.setAccessToken} toggleModal={this.toggleModal}/>
+
         <Footer />
       </div>
     );

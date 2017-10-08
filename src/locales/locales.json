@@ -28,11 +28,13 @@
     "locations.wicklow": "Wicklow",
 
     "menu.home": "Home",
+    "menu.dashboard": "Dashboard",
     "menu.profile": "Profile",
     "menu.bookings": "Bookings",
     "menu.messages": "Messages",
     "menu.account": "Account",
     "menu.listings": "Listings",
+    "menu.calendar": "Calendar",
     "menu.signup": "Sign Up",
     "menu.login": "Log In",
     "menu.logout": "Log Out",
@@ -109,6 +111,7 @@
     "listings.on_demand_collection": "On Demand Collection",
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Listings",
+    "listings.add_new_listing": "Add New Listing",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }
