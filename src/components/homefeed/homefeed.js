@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import {
+  injectIntl,
   FormattedMessage
 } from 'react-intl';
 
@@ -19,7 +20,7 @@ import listToggleIcon from '../../assets/images/list_toggle.png';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
-export default class Homefeed extends Component {
+class Homefeed extends Component {
   constructor(props) {
     super(props);
 
@@ -101,8 +102,14 @@ export default class Homefeed extends Component {
   }
 
   renderListingMap() {
+    let googleMapUrl = this.props.intl.formatMessage({
+      id: 'google.maps.javascript_api_link',
+    }, {
+      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+    });
+
     return (
-      <ListingMap googleMapURL={ 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY }
+      <ListingMap googleMapURL={ googleMapUrl }
                   loadingElement={<div style={{ height: `100%` }} />}
                   containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
                   mapElement={ <div style={{ height: '100%' }}></div> }
@@ -162,3 +169,5 @@ export default class Homefeed extends Component {
     );
   }
 }
+
+export default injectIntl(Homefeed);
