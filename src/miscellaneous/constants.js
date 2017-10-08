@@ -13,6 +13,13 @@ export default class Constants {
     };
   }
 
+  static userRoles() {
+    return {
+      renter: 'renter',
+      owner: 'owner'
+    };
+  }
+
   static listingFiltersTypes() {
     let types = Constants.types();
 

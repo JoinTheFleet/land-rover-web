@@ -5,6 +5,8 @@
     "application.filter": "Filter",
     "application.location": "Location",
     "application.other": "Other",
+    "application.owner": "Owner",
+    "application.renter": "Renter",
     "application.search": "Search",
     "application.sort_by": "Sort By",
     "application.view_all": "View All",
@@ -38,6 +40,7 @@
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
     "header.sign_up": "Sign up",
+    "header.switch_to_role": "Switch to {role}",
 
     "footer.get_started": "Get Started",
     "footer.get_iphone_app": "Get the iPhone app",

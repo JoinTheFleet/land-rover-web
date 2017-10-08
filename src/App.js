@@ -16,14 +16,18 @@ import Helpers from './miscellaneous/helpers';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
+const userRoles = Constants.userRoles();
 const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
+
+
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       accessToken: cookies.get('accessToken'),
+      currentUserRole: userRoles.renter,
       currentSelectedView: navigationSections.home,
       currentSearchParams: {},
       openModals: []
@@ -38,6 +42,7 @@ export default class App extends Component {
     this.addSearchParams = this.addSearchParams.bind(this);
     this.removeSearchParams = this.removeSearchParams.bind(this);
     this.setCurrentSearchParams = this.setCurrentSearchParams.bind(this);
+    this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
@@ -117,6 +122,12 @@ export default class App extends Component {
     this.setState({ currentSearchParams: newSearchParams });
   }
 
+  changeCurrentUserRole() {
+    this.setState((prevState) => ({
+      currentUserRole: (prevState.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter
+    }));
+  }
+
   handleMenuItemSelect(menuItem) {
     if(menuItem === navigationSections.logout){
       AuthenticationService.logout()
@@ -176,9 +187,11 @@ export default class App extends Component {
     return (
       <div className="App">
         <Header loggedIn={this.state.accessToken && this.state.accessToken.length > 0}
+                currentUserRole={this.state.currentUserRole}
                 currentMenuItem={this.state.currentSelectedView}
                 handleMenuItemSelect={this.handleMenuItemSelect}
-                toggleModal={this.toggleModal} />
+                toggleModal={this.toggleModal}
+                handleChangeCurrentUserRole={this.changeCurrentUserRole} />
         <div id="main_container">
           { this.renderMainContent() }
         </div>
