@@ -120,7 +120,7 @@
 
 .listings-map {
   .listings-map-listing-details-div {
-    width: 230px;
+    width: 276px;
     height: 200px;
   }
 
@@ -129,6 +129,10 @@
 
     .listing-item-photo-and-title {
       height: auto !important;
+
+      & > img {
+        height: 184px;
+      }
 
       .listing-item-title {
         bottom: -1px;

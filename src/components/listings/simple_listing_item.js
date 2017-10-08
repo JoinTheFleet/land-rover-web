@@ -26,7 +26,7 @@ export default class SimpleListingItem extends Component {
     let hasImages = item.gallery ? (item.gallery.length > 0) : false;
 
     if (hasImages) {
-    image = (<img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>);
+      image = (<img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>);
     }
 
     return (
@@ -43,7 +43,7 @@ export default class SimpleListingItem extends Component {
         </div>
         <div className="listing-item-info">
           <div>
-            { '€' + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
+            { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
           <RatingInput rating={item.rating} inputNameSufix={item.id.toString()} readonly={true} />
           <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />

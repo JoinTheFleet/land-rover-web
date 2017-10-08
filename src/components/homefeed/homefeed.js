@@ -10,12 +10,12 @@ import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
 import FiltersTopBar from '../listings/filters_top_bar';
 import HomeFeedService from '../../shared/services/home_feed_service';
+import ListingsService from '../../shared/services/listings_service';
 
 import Helpers from '../../miscellaneous/helpers';
 
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
-import listingsExampleData from '../../listings_example.json';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
@@ -26,7 +26,8 @@ export default class Homefeed extends Component {
     this.state = {
       toggledComponent: '',
       nearby: [],
-      collections: []
+      collections: [],
+      listings: [] // Added temporarily to show listings on map until HomeFeed endpoint returns locations
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
@@ -46,6 +47,17 @@ export default class Homefeed extends Component {
                      this.setState({
                        nearby: response.data.data.home_feed.nearby,
                        collections: response.data.data.home_feed.collections
+                    }, () => {
+                      // Added temporarily to show listings on map until HomeFeed endpoint returns locations
+                      ListingsService.index()
+                      .then((response) => {
+                        this.setState({
+                          listings: response.data.data.listings,
+                        });
+                      })
+                      .catch((error) => {
+                        alert(error); // TODO: Some sort of nice flash service.
+                      });
                     });
                    })
                    .catch((error) => {
@@ -89,12 +101,12 @@ export default class Homefeed extends Component {
   }
 
   renderListingMap() {
-    let listings = listingsExampleData.data.listings;
-
     return (
-      <ListingMap containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
+      <ListingMap googleMapURL={ 'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_GOOGLE_MAPS_API_KEY }
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  listings={listings} />
+                  listings={this.state.listings} />
     )
   }
 

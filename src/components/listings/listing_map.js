@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 
 import {
+  withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
@@ -15,7 +16,7 @@ import Geolocation from '../../miscellaneous/geolocation';
 const getPixelPositionOffset = (width, height) => ({
   x: -(width / 2),
   y: -(height + 10),
-})
+});
 
 class ListingMap extends Component {
   constructor(props) {
@@ -70,23 +71,32 @@ class ListingMap extends Component {
 
   render() {
     let listings = this.props.listings;
-    let averageCoordinates = Geolocation.getCoordinatesCenter(listings.map((listing) => {
-      return [ listing.location.latitude, listing.location.longitude ];
-    }));
+    let elementToReturn;
 
-    return (
-      <GoogleMap defaultZoom={10}
-                 defaultCenter={{ lat: averageCoordinates.latitude, lng: averageCoordinates.longitude }}
-                 className="listingsMap"
-                 ref={(map) => { this.map = map } }>
-        {
-          listings.map((listing, index) => {
-            return this.renderMarker(listing, index);
-          })
-        }
-      </GoogleMap>
-    )
+    if (listings.length === 0) {
+      elementToReturn = (<div></div>);
+    }
+    else {
+      let averageCoordinates = Geolocation.getCoordinatesCenter(listings.map((listing) => {
+        return [ listing.location.latitude, listing.location.longitude ];
+      }));
+
+      elementToReturn = (
+        <GoogleMap defaultZoom={10}
+                   defaultCenter={{ lat: averageCoordinates.latitude, lng: averageCoordinates.longitude }}
+                   className="listingsMap"
+                   ref={(map) => { this.map = map } }>
+          {
+            listings.map((listing, index) => {
+              return this.renderMarker(listing, index);
+            })
+          }
+        </GoogleMap>
+      )
+    }
+
+    return elementToReturn;
   }
 }
 
-export default withGoogleMap(ListingMap);
+export default withScriptjs(withGoogleMap(ListingMap));
