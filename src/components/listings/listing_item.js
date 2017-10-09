@@ -7,7 +7,7 @@ import {
 } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import RatingInput from '../../miscellaneous/rating_input';
+import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
@@ -26,7 +26,7 @@ export default class ListingItem extends Component {
 
     if (item.gallery.length > 0) {
       image = (
-        <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>
+        <img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>
       );
     }
 
@@ -46,7 +46,7 @@ export default class ListingItem extends Component {
           <div>
             { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
-          <RatingInput rating={item.rating} inputNameSufix={item.id.toString()} readonly={true} />
+          <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
           <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
         </div>
       </div>
@@ -55,7 +55,7 @@ export default class ListingItem extends Component {
 
   render() {
     return (
-      <div className="listing-item col-xs-12 col-sm-6 col-lg-4"> { this.renderItem() } </div>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }> { this.renderItem() } </div>
     )
   }
 }

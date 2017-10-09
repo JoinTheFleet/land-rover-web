@@ -45,16 +45,16 @@ export default class ListingList extends Component {
     let itemsList = this.listingItem.getElementsByClassName('items-list')[0];
     let listingItems = itemsList.getElementsByClassName('listing-item');
 
-    if(listingItems.length > 0){
+    if (listingItems.length > 0) {
       let updatedCurrentPosition = this.state.currentPosition;
       let directionCoeficient = direction === 'next' ? 1 : -1;
 
       updatedCurrentPosition += itemsList.offsetWidth * directionCoeficient;
 
-      if(updatedCurrentPosition > (itemsList.scrollWidth - itemsList.offsetWidth)) {
+      if (updatedCurrentPosition > (itemsList.scrollWidth - itemsList.offsetWidth)) {
         updatedCurrentPosition = itemsList.scrollWidth - itemsList.offsetWidth;
       }
-      else if(updatedCurrentPosition < 0) {
+      else if (updatedCurrentPosition < 0) {
         updatedCurrentPosition = 0;
       }
 
@@ -62,21 +62,21 @@ export default class ListingList extends Component {
     }
   }
 
-  renderListingList(){
+  renderListingList() {
     let listings = this.state.listings;
 
-    if(listings.length > 0){
+    if (listings.length > 0) {
       let listingItems = [];
 
-      if(this.props.simpleListing) {
+      if (this.props.simpleListing) {
         listingItems = this.state.listings.map((listing) => {
           return (
-            <SimpleListingItem key={'listing_' + listing.id} additionalClasses="col-sm-6 col-lg-4" listing={listing}/>
+            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing }/>
           )
         });
       }
       else {
-        listingItems = this.state.listings.map((listing) => (<ListingItem key={'listing_' + listing.id} listing={listing}/>));
+        listingItems = this.state.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing }/>));
       }
 
       return listingItems;
@@ -86,22 +86,22 @@ export default class ListingList extends Component {
     }
   }
 
-  render(){
+  render() {
     return (
       <div>
-        <div className="listing-list col-xs-12" ref={(div) => { this.listingItem = div; }}>
-          <div className="previous-listing-btn listing-nav-button" onClick={() => { this.handleNavigationClick('prev') }}>
-            <img src={chevronLeft} alt="chevron_left" />
+        <div className="listing-list col-xs-12" ref={ (div) => { this.listingItem = div; }}>
+          <div className="previous-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('prev') } }>
+            <img src={ chevronLeft } alt="chevron_left" />
           </div>
           <Anime easing="easeInOutQuart"
                  duration={500}
-                 scrollLeft={this.state.currentPosition}>
+                 scrollLeft={ this.state.currentPosition }>
             <div className="items-list">
               { this.renderListingList() }
             </div>
           </Anime>
-          <div className="next-listing-btn listing-nav-button" onClick={() => { this.handleNavigationClick('next') }}>
-            <img src={chevronRight} alt="chevron_right" />
+          <div className="next-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('next') } }>
+            <img src={ chevronRight } alt="chevron_right" />
           </div>
         </div>
       </div>

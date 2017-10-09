@@ -59,9 +59,9 @@ class ListingMap extends Component {
     }
 
     let marker = (
-      <Marker key={'listing_map_item_' + (index + 1)}
-              position={{ lat: listing.location.latitude, lng: listing.location.longitude }}
-              onClick={() => { this.toggleMarker(markerKey) } }>
+      <Marker key={ 'listing_map_item_' + (index + 1) }
+              position={ { lat: listing.location.latitude, lng: listing.location.longitude } }
+              onClick={ () => { this.toggleMarker(markerKey) } }>
         { infoWindow }
       </Marker>
     )
@@ -83,9 +83,9 @@ class ListingMap extends Component {
 
       elementToReturn = (
         <GoogleMap defaultZoom={10}
-                   defaultCenter={{ lat: averageCoordinates.latitude, lng: averageCoordinates.longitude }}
+                   defaultCenter={ { lat: averageCoordinates.latitude, lng: averageCoordinates.longitude } }
                    className="listingsMap"
-                   ref={(map) => { this.map = map } }>
+                   ref={ (map) => { this.map = map } }>
           {
             listings.map((listing, index) => {
               return this.renderMarker(listing, index);

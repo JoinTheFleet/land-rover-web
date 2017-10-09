@@ -1,0 +1,18 @@
+.fleet-dropdown {
+  position: relative;
+
+  .currentSelectedItem {
+    cursor: pointer;
+
+    img {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .dropdown-items {
+    ul {
+      list-style: none;
+    }
+  }
+}
