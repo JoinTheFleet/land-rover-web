@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import Constants from './components/miscellaneous/constants';
+import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
+import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import AuthenticationService from './shared/services/authentication_service';
 import client from './shared/libraries/client';
@@ -42,7 +43,7 @@ export default class App extends Component {
     let newState = { accessToken: accessToken };
 
     openModals.splice(openModals.indexOf('login'), 1);
-    newState[openModals] = openModals
+    newState[openModals] = openModals;
 
     this.setState(newState, () => {
       if(accessToken.length > 0){
@@ -110,10 +111,15 @@ export default class App extends Component {
       case navigationSections.account:
         break;
       default:
-        viewToRender = (<Homescreen addSearchParamHandler={this.addSearchParam} />);
+        if (this.state.accessToken && this.state.accessToken !== '' ) {
+          viewToRender = (<Homefeed accessToken={this.state.accessToken} />);
+        }
+        else {
+          viewToRender = (<Homescreen addSearchParamHandler={this.addSearchParam} />);
+        }
     }
 
-    return viewToRender
+    return viewToRender;
   }
 
   render() {

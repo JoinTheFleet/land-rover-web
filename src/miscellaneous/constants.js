@@ -10,6 +10,6 @@ export default class Constants {
       logout: 'logout',
       login: 'login',
       signup: 'signup'
-    }
+    };
   }
 }
