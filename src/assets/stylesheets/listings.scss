@@ -194,7 +194,7 @@
   border: solid 1px $smoke-grey-two;
 
   .listing-card-photo {
-    display: inline-block;
+    float: left;
     width: 141px;
     height: 100%;
 
@@ -206,8 +206,20 @@
   }
 
   .listing-card-details {
+    position: relative;
+    float: left;
     width: calc(100% - 141px);
-    display: inline-block;
+
+    & > p {
+      display: block;
+      position: absolute;
+      top: 7px;
+      left: 9px;
+
+      span + span {
+        margin-left: 10px;
+      }
+    }
   }
 
   & + .listing-card {

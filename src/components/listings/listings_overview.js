@@ -16,18 +16,27 @@ export default class ListingsOverview extends Component {
 
     this.state = {
       selectedListingId: '',
-      listings: []
+      listings: [],
+      page: 1
     };
+
+    this.fetchListings = this.fetchListings.bind(this);
   }
 
-  componentWillMount() {
+  componentWillMount(prevProps, prevState) {
+    if (prevState.page !== this.state.page) {
+      this.fetchListings();
+    }
+  }
+
+  fetchListings(){
     ListingsService.index()
-                   .then((response) => {
-                     this.setState({ listings: response.data.data.listings });
-                   })
-                   .catch((error) => {
-                     alert(error); // TODO: Some sort of nice flash service.
-                   });
+    .then((response) => {
+      this.setState({ listings: response.data.data.listings });
+    })
+    .catch((error) => {
+      alert(error); // TODO: Some sort of nice flash service.
+    });
   }
 
   render() {

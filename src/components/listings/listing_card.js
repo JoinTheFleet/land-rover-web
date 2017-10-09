@@ -25,8 +25,10 @@ export default class ListingCard extends Component {
         </div>
 
         <div className="listing-card-details">
-          <span className="subtitle-font-weight">{ vehicleTitle }</span>
-          <span className="listing-item-year">{ item.variant.year.year }</span>
+          <p>
+            <span className="subtitle-font-weight fs-18">{ vehicleTitle }</span>
+            <span className="listing-item-year fs-18">{ item.variant.year.year }</span>
+          </p>
         </div>
       </div>
     )
