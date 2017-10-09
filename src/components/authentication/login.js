@@ -9,7 +9,7 @@ import {
 import FacebookLogin from 'react-facebook-login';
 import Anime from 'react-anime';
 
-import Toggable from '../miscellaneous/toggable';
+import Toggleable from '../miscellaneous/toggleable';
 
 import AuthenticationService from '../../shared/services/authentication_service';
 
@@ -114,7 +114,7 @@ class Login extends Component {
 
   render() {
     return (
-      <Toggable open={ this.state.modalOpen }>
+      <Toggleable open={ this.state.modalOpen }>
         <div id="login_modal" className="modal" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">
@@ -128,13 +128,13 @@ class Login extends Component {
               { this.renderErrors() }
 
               <FacebookLogin appId={facebookAppID}
-                            autoLoad={false}
-                            fields="name,email,picture"
-                            icon="fa-facebook"
-                            cssClass="login-with-facebook-btn login-btn-with-icon btn facebook-color white-text text-secondary-font-weight fs-18"
-                            textButton={ this.props.intl.formatMessage({id: 'authentication.log_in_with_facebook'}) }
-                            callback={ this.handleFacebookLogin }
-                            onClick={ () => { this.setSelectedLoginMode('facebook') } } />
+                             autoLoad={false}
+                             fields="name,email,picture"
+                             icon="fa-facebook"
+                             cssClass="login-with-facebook-btn login-btn-with-icon btn facebook-color white-text text-secondary-font-weight fs-18"
+                             textButton={ this.props.intl.formatMessage({id: 'authentication.log_in_with_facebook'}) }
+                             callback={ this.handleFacebookLogin }
+                             onClick={ () => { this.setSelectedLoginMode('facebook') } } />
 
               <div className="divider with-text">
                 <div className="divider-line tertiary-color"></div>
@@ -144,8 +144,8 @@ class Login extends Component {
               </div>
 
               <Anime easing="easeOutQuart"
-                    duration={500}
-                    height={ this.state.selectedLoginMode === 'email' ? (150 + 'px') : 0 }>
+                     duration={500}
+                     height={ this.state.selectedLoginMode === 'email' ? (150 + 'px') : 0 }>
                 <div className="login-with-email-form-div">
                   <form>
                     <input type="text" required={true} name="login[email]" id="login_username" className="form-control text-secondary-font-weight fs-18" placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }></input>
@@ -184,7 +184,7 @@ class Login extends Component {
             </div>
           </div>
         </div>
-      </Toggable>
+      </Toggleable>
     )
   }
 

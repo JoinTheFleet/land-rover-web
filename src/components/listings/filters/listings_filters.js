@@ -11,7 +11,7 @@ import {
 import Anime from 'react-anime';
 import PropTypes from 'prop-types';
 
-import Toggable from '../../miscellaneous/toggable';
+import Toggleable from '../../miscellaneous/toggleable';
 
 import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
@@ -161,9 +161,9 @@ class ListingsFilters extends Component {
   render() {
 
     return (
-      <Toggable open={ this.state.open } >
+      <Toggleable open={ this.state.open } >
         { this.renderListingsFilters() }
-      </Toggable>
+      </Toggleable>
     )
   }
 }

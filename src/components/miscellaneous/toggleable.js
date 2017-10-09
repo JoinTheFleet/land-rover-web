@@ -9,7 +9,7 @@ const DEFAULTS = {
   duration: 500
 };
 
-export default class Toggable extends Component {
+export default class Toggleable extends Component {
   render() {
     return (
       <Anime easing="easeOutQuart"
@@ -31,6 +31,6 @@ export default class Toggable extends Component {
   }
 }
 
-Toggable.propTypes = {
+Toggleable.propTypes = {
   open: PropTypes.bool
 };

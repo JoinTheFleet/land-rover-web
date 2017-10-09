@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import PropTypes from 'prop-types';
-import Toggable from '../miscellaneous/toggable';
+import Toggleable from '../miscellaneous/toggleable';
 
 import dropdownIcon from '../../assets/images/dropdown.png';
 import dropdownOpenIcon from '../../assets/images/dropdown_open.png';
@@ -50,7 +50,7 @@ export default class Dropdown extends Component {
           <span className={ this.state.currentSelectedItem ? 'subtitle-font-weight' : '' } >{ currentItemText }</span>
           <img src={ this.state.open ? dropdownOpenIcon : dropdownIcon } alt="dropdown_icon" />
 
-          <Toggable open={ this.state.open } duration={ 250 } >
+          <Toggleable open={ this.state.open } duration={ 250 } >
             <div className="dropdown-items">
               <ul>
                 {
@@ -60,7 +60,7 @@ export default class Dropdown extends Component {
                 }
               </ul>
             </div>
-          </Toggable>
+          </Toggleable>
         </div>
       </div>
     )

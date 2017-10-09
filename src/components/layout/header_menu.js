@@ -8,7 +8,7 @@ import {
 
 import Anime from 'react-anime';
 
-import Toggable from '../miscellaneous/toggable';
+import Toggleable from '../miscellaneous/toggleable';
 
 import Helpers from '../../miscellaneous/helpers';
 import Constants from '../../miscellaneous/constants';
@@ -74,9 +74,9 @@ export default class HeaderMenu extends Component {
 
   render() {
     return (
-      <Toggable open={ this.state.open }>
+      <Toggleable open={ this.state.open }>
         { this.renderMenu() }
-      </Toggable>
+      </Toggleable>
     )
   }
 }
