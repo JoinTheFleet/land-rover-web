@@ -1,8 +1,14 @@
-import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import Anime from 'react-anime';
-import Helpers from '../miscellaneous/helpers';
-import Constants from '../miscellaneous/constants';
+import Helpers from '../../miscellaneous/helpers';
+import Constants from '../../miscellaneous/constants';
 
 const navigationSections = Constants.navigationSections();
 
@@ -67,7 +73,17 @@ export default class HeaderMenu extends Component {
     return (
       <Anime easing="easeOutQuart"
              duration={500}
-             opacity={this.state.open ? 1 : 0}>
+             opacity={this.state.open ? 1 : 0}
+             begin={(anime) => {
+               if(this.state.open) {
+                 anime.animatables[0].target.style.display = 'block';
+               }
+             }}
+             complete={(anime) => {
+               if(!this.state.open) {
+                 anime.animatables[0].target.style.display = 'none';
+               }
+             }}>
         {this.renderMenu()}
       </Anime>
     )

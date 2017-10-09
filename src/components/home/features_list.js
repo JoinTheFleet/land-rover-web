@@ -1,5 +1,11 @@
-import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import FeatureTile from './feature_tile';
 
 import searchIcon from '../../assets/images/search.png';

@@ -1,5 +1,12 @@
-import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list'
 import FeaturesList from './features_list';
@@ -69,7 +76,7 @@ class Homescreen extends Component {
 
         <BlogList />
 
-        <div id="featured_in_div" className="text-center">
+        <div id="featured_in_div" className="col-xs-12 text-center">
           <span className="tertiary-text-color">
             <FormattedMessage id="homescreen.featured_in" />
           </span>

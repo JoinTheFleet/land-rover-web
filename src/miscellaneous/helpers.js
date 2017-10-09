@@ -5,4 +5,12 @@ export default class Helpers {
 
     return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
   }
+
+  static windowHeight(){
+    return window.innerHeight;
+  }
+
+  static windowWidth(){
+    return window.innerWidth;
+  }
 }

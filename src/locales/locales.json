@@ -86,9 +86,12 @@
     "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
     "homescreen.featured_in": "Featured In",
 
+    "listings.nearby": "Nearby",
     "listings.top_seller": "Top Seller",
     "listings.total_reviews": "{total_reviews} reviews",
     "listings.no_listings_to_display": "No listings to display",
+
+    "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }

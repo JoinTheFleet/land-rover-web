@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, {
+  Component
+} from 'react';
+
+import {
+  FormattedMessage
+} from 'react-intl';
 
 export default class FeatureTile extends Component {
   render() {

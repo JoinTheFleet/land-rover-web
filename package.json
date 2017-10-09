@@ -42,6 +42,7 @@
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
     "react-facebook-login": "",
+    "react-google-maps": "",
     "react-hot-loader": "",
     "react-intl": "",
     "geolocation": "",
