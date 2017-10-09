@@ -126,6 +126,7 @@
 
   .listing-item {
     width: 100% !important;
+    box-shadow: 1px 1px 5px grey;
 
     .listing-item-photo-and-title {
       height: auto !important;
@@ -144,5 +145,32 @@
       padding-left: 6px;
       font-size: 12px;
     }
+  }
+}
+
+.listings-filters {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  padding: 38px 24px;
+  width: 100%;
+  z-index: 100;
+
+  .fleet-dropdown {
+    width: 100%;
+
+    .currentSelectedItem {
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+
+  .listings-filters-divider {
+    height: 1px;
+    margin: 34px 0 37px 0;
+  }
+
+  .apply-listings-filters-div {
+    padding: 17px 0;
   }
 }

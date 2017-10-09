@@ -7,6 +7,9 @@ import {
 } from 'react-intl';
 
 import Anime from 'react-anime';
+
+import Toggleable from '../miscellaneous/toggleable';
+
 import Helpers from '../../miscellaneous/helpers';
 import Constants from '../../miscellaneous/constants';
 
@@ -48,14 +51,14 @@ export default class HeaderMenu extends Component {
 
       menuItems.push(
         (<div key={'header_menu_' + item} className="menu-item">
-          <span className={this.props.currentMenuItem === item ? 'secondary-text-color' : ''}
-                onClick={() => {(itemsWithModal.indexOf(item) > -1) ? this.props.toggleModal(item) : this.props.handleMenuItemSelect(item);}} >
+          <span className={ this.props.currentMenuItem === item ? 'secondary-text-color' : ''}
+                onClick={ () => { (itemsWithModal.indexOf(item) > -1) ? this.props.toggleModal(item) : this.props.handleMenuItemSelect(item); } } >
             <FormattedMessage id={'menu.' + item} />
           </span>
         </div>)
       );
 
-      if(itemsWithDivider.indexOf(item) > -1) {
+      if (itemsWithDivider.indexOf(item) > -1) {
         menuItems.push(
           <div key={'header_menu_' + item + '_divider'} className="menu-divider smoke-grey-two"></div>
         );
@@ -71,21 +74,9 @@ export default class HeaderMenu extends Component {
 
   render() {
     return (
-      <Anime easing="easeOutQuart"
-             duration={500}
-             opacity={this.state.open ? 1 : 0}
-             begin={(anime) => {
-               if(this.state.open) {
-                 anime.animatables[0].target.style.display = 'block';
-               }
-             }}
-             complete={(anime) => {
-               if(!this.state.open) {
-                 anime.animatables[0].target.style.display = 'none';
-               }
-             }}>
-        {this.renderMenu()}
-      </Anime>
+      <Toggleable open={ this.state.open }>
+        { this.renderMenu() }
+      </Toggleable>
     )
   }
 }

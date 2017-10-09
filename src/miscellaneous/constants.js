@@ -12,4 +12,29 @@ export default class Constants {
       signup: 'signup'
     };
   }
+
+  static listingFiltersTypes() {
+    let types = Constants.types();
+
+    return {
+      type: types.string,
+      make: types.string,
+      model: types.string,
+      year: types.number,
+      fuel: types.string,
+      transmission: types.string,
+      passengers: types.number,
+      doors: types.number,
+      amenities: types.array
+    };
+  }
+
+  static types() {
+    return {
+      string: 'string',
+      number: 'number',
+      boolean: 'boolean',
+      array: 'array'
+    };
+  }
 }

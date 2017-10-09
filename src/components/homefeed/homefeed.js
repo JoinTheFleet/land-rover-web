@@ -7,14 +7,19 @@ import {
   FormattedMessage
 } from 'react-intl';
 
+import PropTypes from 'prop-types';
+
+// Fleet Components
 import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
-import FiltersTopBar from '../listings/filters_top_bar';
+import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar';
+
+// Services / Miscellaneous
 import HomeFeedService from '../../shared/services/home_feed_service';
 import ListingsService from '../../shared/services/listings_service';
-
 import Helpers from '../../miscellaneous/helpers';
 
+// Icons
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
@@ -36,13 +41,13 @@ class Homefeed extends Component {
     let component = this;
 
     window.addEventListener('resize', () => {
-      if(Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== ''){
+      if (Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== '') {
         component.setState({ toggledComponent: '' });
       }
     });
   }
 
-  componentWillMount(){
+  componentWillMount() {
     HomeFeedService.show()
                    .then((response) => {
                      this.setState({
@@ -110,10 +115,10 @@ class Homefeed extends Component {
 
     return (
       <ListingMap googleMapURL={ googleMapUrl }
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
+                  loadingElement={ <div style={{ height: `100%` }} /> }
+                  containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  listings={this.state.listings} />
+                  listings={ this.state.listings } />
     )
   }
 
@@ -123,21 +128,21 @@ class Homefeed extends Component {
 
     let listingsListDiv = (
       <div key="listings_list_div" className="homefeed-listings-list col-lg-7 no-side-padding" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
-        {this.renderListingLists()}
+        { this.renderListingLists() }
       </div>
     );
 
     let listingsMapDiv = (
       <div key="listings_map_div" className="homefeed-listings-map col-lg-5 no-side-padding listings-map">
-        {this.renderListingMap()}
+        { this.renderListingMap() }
       </div>
     );
 
-    if(largeWidth || this.state.toggledComponent !== 'map') {
+    if (largeWidth || this.state.toggledComponent !== 'map') {
       listingsDivsToDisplay.push(listingsListDiv);
     }
 
-    if(largeWidth || this.state.toggledComponent === 'map') {
+    if (largeWidth || this.state.toggledComponent === 'map') {
       listingsDivsToDisplay.push(listingsMapDiv);
     }
 
@@ -157,7 +162,7 @@ class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <FiltersTopBar />
+          <ListingsFiltersTopBar setCurrentSearchParams={ this.props.setCurrentSearchParams } />
         </div>
 
         { this.renderListingsToDisplay() }
@@ -168,6 +173,10 @@ class Homefeed extends Component {
       </div>
     );
   }
+}
+
+Homefeed.propTypes = {
+  setCurrentSearchParams: PropTypes.func.isRequired
 }
 
 export default injectIntl(Homefeed);
