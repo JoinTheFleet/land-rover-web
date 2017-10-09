@@ -16,6 +16,14 @@ export default class Listings extends Component {
       currentView: 'index',
       currentSelectedListingId: -1
     };
+
+    this.setCurrentView = this.setCurrentView.bind(this);
+  }
+
+  setCurrentView(view) {
+    this.setState({
+      currentView: view
+    });
   }
 
   getViewToRender() {
@@ -29,7 +37,7 @@ export default class Listings extends Component {
         viewToRender = '';
         break;
       default:
-        viewToRender = (<ListingsOverview></ListingsOverview>);
+        viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);
     }
 
     return viewToRender;

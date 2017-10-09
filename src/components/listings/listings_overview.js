@@ -6,11 +6,17 @@ import {
   FormattedMessage
 } from 'react-intl';
 
+import PropTypes from 'prop-types';
+
+import Constants from '../../miscellaneous/constants';
+
 import ListingCard from './listing_card';
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings_service';
+
+const listingsViews = Constants.listingViews();
 
 export default class ListingsOverview extends Component {
   constructor(props) {
@@ -77,7 +83,7 @@ export default class ListingsOverview extends Component {
 
         <div className="listings-overview-top-bar smoke-grey col-xs-12">
           <div className="pull-right">
-            <button className="btn secondary-color white-text">
+            <button className="btn secondary-color white-text" onClick={ () => { this.props.handleChangeView(listingsViews.new) } }>
               <FormattedMessage id="listings.add_new_listing" />
             </button>
           </div>
@@ -93,4 +99,8 @@ export default class ListingsOverview extends Component {
       </div>
     )
   }
+}
+
+ListingsOverview.propTypes = {
+  handleChangeView: PropTypes.func
 }

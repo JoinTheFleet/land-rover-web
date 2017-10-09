@@ -31,6 +31,16 @@ export default class Constants {
     };
   }
 
+  static listingSteps() {
+    return {
+      registration: 'registration',
+      details: 'details',
+      location: 'location',
+      images: 'images',
+      pricing: 'pricing'
+    };
+  }
+
   static listingFiltersTypes() {
     let types = Constants.types();
 
