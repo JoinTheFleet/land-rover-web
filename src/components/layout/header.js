@@ -42,7 +42,7 @@ export default class Header extends Component {
   }
 
   renderSwitchRoleButton() {
-    let switchRoleButton = (<div></div>);
+    let switchRoleButton = '';
 
     if (this.props.loggedIn) {
       switchRoleButton = (

@@ -159,6 +159,18 @@ export default class App extends Component {
     this.setState({openModals: openModals});
   }
 
+  renderHeaderTopMenu() {
+    let headerTopMenu = '';
+
+    if (this.state.accessToken) {
+      headerTopMenu = (<HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
+                                      currentUserRole={ this.state.currentUserRole }
+                                      handleMenuItemSelect={ this.handleMenuItemSelect } />)
+    }
+
+    return headerTopMenu;
+  }
+
   renderMainContent() {
     let viewToRender;
 
@@ -196,9 +208,7 @@ export default class App extends Component {
                 toggleModal={ this.toggleModal }
                 handleChangeCurrentUserRole={ this.changeCurrentUserRole } />
 
-        <HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
-                       currentUserRole={ this.state.currentUserRole }
-                       handleMenuItemSelect={ this.handleMenuItemSelect } />
+        { this.renderHeaderTopMenu() }
 
         <div id="main_container">
           { this.renderMainContent() }
