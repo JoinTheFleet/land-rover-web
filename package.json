@@ -45,6 +45,7 @@
     "react-google-maps": "",
     "react-hot-loader": "",
     "react-intl": "",
+    "geolocation": "",
     "sass-loader": "",
     "sw-precache-webpack-plugin": "0.11.4",
     "universal-cookie": "",

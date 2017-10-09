@@ -20,7 +20,9 @@ class Service {
   }
 
   static validatedIndex(params) {
-    return client.get(this.baseURL, params);
+    return client.get(this.baseURL, {
+      params: params
+    });
   }
 
   static show(id, params) {
@@ -28,7 +30,9 @@ class Service {
   }
 
   static validatedShow(id, params) {
-    return client.get(this.baseURL + id, params);
+    return client.get(this.baseURL + (id || ''), {
+      params: params
+    });
   }
 
   static create(params) {
@@ -44,15 +48,35 @@ class Service {
   }
 
   static validatedUpdate(id, params) {
+    if (!(id instanceof String) && isNaN(id)) {
+      params = id;
+      id = '';
+    }
+
     return client.put(this.baseURL + id, params);
   }
 
   static destroy(id, params) {
-    return this.validatedAction('destroy', 'validatedDestroy', id, params);
+    let queryParams = undefined;
+
+    if (params) {
+      queryParams = {
+        params: params
+      };
+    }
+
+    return this.validatedAction('destroy', 'validatedDestroy', id, queryParams);
   }
 
   static validatedDestroy(id, params) {
-    return client.delete(this.baseURL + id, params);
+    let deleteURL = this.baseURL + (id || '');
+
+    if (params) {
+      return client.delete(deleteURL, params);
+    }
+    else {
+      return client.delete(deleteURL);
+    }
   }
 
   static validAction(action) {
@@ -63,15 +87,9 @@ class Service {
     if (this.validAction(action)) {
       // First 2 arguments are the action name and the callback name
       let applicationArguments = Array.prototype.slice.call(arguments, 2);
-      let allArgumentsUndefined = applicationArguments.every(function(argument) {
-        return argument === undefined;
-      })
+      let filteredArguments = applicationArguments.filter(argument => argument);
 
-      if (allArgumentsUndefined) {
-        applicationArguments = [];
-      }
-
-      return this[callback](applicationArguments);
+      return this[callback].apply(this, filteredArguments);
     }
     else {
       return Promise.reject(new Error('Invalid Action'));
