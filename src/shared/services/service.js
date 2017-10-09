@@ -57,13 +57,26 @@ class Service {
   }
 
   static destroy(id, params) {
-    return this.validatedAction('destroy', 'validatedDestroy', id, {
-      params: params
-    });
+    let queryParams = undefined;
+
+    if (params) {
+      queryParams = {
+        params: params
+      };
+    }
+
+    return this.validatedAction('destroy', 'validatedDestroy', id, queryParams);
   }
 
   static validatedDestroy(id, params) {
-    return client.delete(this.baseURL + id, params);
+    let deleteURL = this.baseURL + (id || '');
+
+    if (params) {
+      return client.delete(deleteURL, params);
+    }
+    else {
+      return client.delete(deleteURL);
+    }
   }
 
   static validAction(action) {
