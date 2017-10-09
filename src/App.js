@@ -9,7 +9,7 @@ import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
-import ListingsOverview from './components/listings/listings_overview';
+import Listings from './components/listings/listings';
 
 import AuthenticationService from './shared/services/authentication_service';
 import client from './shared/libraries/client';
@@ -182,7 +182,7 @@ export default class App extends Component {
       case navigationSections.messages:
         break;
       case navigationSections.listings:
-        viewToRender = (<ListingsOverview></ListingsOverview>);
+        viewToRender = (<Listings></Listings>);
         break;
       case navigationSections.account:
         break;

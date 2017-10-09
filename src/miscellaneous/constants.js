@@ -22,6 +22,15 @@ export default class Constants {
     };
   }
 
+  static listingViews() {
+    return {
+      index: 'index',
+      view: 'view',
+      new: 'new',
+      edit: 'edit'
+    };
+  }
+
   static listingFiltersTypes() {
     let types = Constants.types();
 
