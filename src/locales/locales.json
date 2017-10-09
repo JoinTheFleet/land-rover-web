@@ -107,6 +107,8 @@
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Listings",
 
+    "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
+
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
   }
 }
