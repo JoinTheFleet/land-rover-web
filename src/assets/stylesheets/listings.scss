@@ -178,6 +178,12 @@
 /* Listings Overview */
 
 .listings-overview-div {
+  height: 100%;
+
+  .pageable {
+    height: 100%;
+  }
+
   .listings-overview-top-bar {
     height: 50px;
     line-height: 50px;
@@ -186,6 +192,7 @@
 
   .listings-overview-list {
     padding: 20px 0;
+    height: 100%;
   }
 }
 

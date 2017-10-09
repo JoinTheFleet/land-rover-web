@@ -210,7 +210,7 @@ export default class App extends Component {
 
         { this.renderHeaderTopMenu() }
 
-        <div id="main_container">
+        <div id="main_container" className="col-xs-12 no-side-padding">
           { this.renderMainContent() }
         </div>
 

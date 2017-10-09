@@ -1,3 +1,10 @@
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
 body {
   font-family: $text-font-family;
   font-weight: $text-main-font-weight;
@@ -22,6 +29,10 @@ form {
       color: $placeholder-text-color !important;
     }
   }
+}
+
+#main_container {
+  min-height: calc(100vh - 364px);
 }
 
 .no-side-padding {

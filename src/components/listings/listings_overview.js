@@ -7,6 +7,8 @@ import {
 } from 'react-intl';
 
 import ListingCard from './listing_card';
+import Loading from '../miscellaneous/loading';
+import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings_service';
 
@@ -17,14 +19,22 @@ export default class ListingsOverview extends Component {
     this.state = {
       selectedListingId: '',
       listings: [],
-      page: 1
+      loaded: false,
+      currentPage: 1,
+      totalPages: 1,
+      errors: []
     };
 
     this.fetchListings = this.fetchListings.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
-  componentWillMount(prevProps, prevState) {
-    if (prevState.page !== this.state.page) {
+  componentWillMount() {
+    this.fetchListings();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentPage !== this.state.currentPage) {
       this.fetchListings();
     }
   }
@@ -32,11 +42,33 @@ export default class ListingsOverview extends Component {
   fetchListings(){
     ListingsService.index()
     .then((response) => {
-      this.setState({ listings: response.data.data.listings });
+      this.setState({ listings: response.data.data.listings, loaded: true });
     })
     .catch((error) => {
-      alert(error); // TODO: Some sort of nice flash service.
+      this.setState((prevState) => ({ errors: prevState.errors.push(error), loaded: true }));
     });
+  }
+
+  handlePageChange(page) {
+    this.setState({
+      currentPage: page,
+      loaded: false
+    });
+  }
+
+  renderMainContent() {
+    if (!this.state.loaded) {
+      return (<Loading></Loading>);
+    }
+    else {
+      return (
+        <div>
+          {
+            this.state.listings.map((listing) => ( <ListingCard key={'listing_' + listing.id} listing={ listing } /> ))
+          }
+        </div>
+      )
+    }
   }
 
   render() {
@@ -51,11 +83,13 @@ export default class ListingsOverview extends Component {
           </div>
         </div>
 
-        <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-          {
-            this.state.listings.map((listing) => ( <ListingCard key={'listing_' + listing.id} listing={ listing } /> ))
-          }
-        </div>
+        <Pageable currentPage={ this.state.currentPage }
+                  totalPages={ this.state.totalPages }
+                  handlePageChange={ this.handlePageChange }>
+          <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+            { this.renderMainContent() }
+          </div>
+        </Pageable>
       </div>
     )
   }
