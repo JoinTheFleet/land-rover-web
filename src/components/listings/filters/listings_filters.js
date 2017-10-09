@@ -11,6 +11,8 @@ import {
 import Anime from 'react-anime';
 import PropTypes from 'prop-types';
 
+import Toggable from '../../miscellaneous/toggable';
+
 import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
@@ -19,6 +21,7 @@ const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
 
 const dummyData = {
+  // TODO: replace those with actual data provided by the API endpoints.
   type: ['Type 1', 'Type 2', 'Type 3'],
   make: ['Make 1', 'Make 2', 'Make 3'],
   model: ['Model 1', 'Model 2', 'Model 3'],
@@ -78,7 +81,7 @@ class ListingsFilters extends Component {
     });
   }
 
-  handleApplyFilters(){
+  handleApplyFilters() {
     this.props.toggleFilters();
     this.props.setCurrentSearchParams(this.state.selectedFilters);
   }
@@ -138,7 +141,7 @@ class ListingsFilters extends Component {
 
               return (
                 <div key={ 'listings_amenity_filter_' + amenity } className="listings-amenity-filter fleet-checkbox">
-                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={(event) => { this.handleFilterSelected('amenities', amenity) } } />
+                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity) } } />
                   <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity }</label>
                 </div>
               )
@@ -158,21 +161,9 @@ class ListingsFilters extends Component {
   render() {
 
     return (
-      <Anime easing="easeOutQuart"
-             duration={500}
-             opacity={this.state.open ? 1 : 0}
-             begin={(anime) => {
-               if(this.state.open) {
-                 anime.animatables[0].target.style.display = 'block';
-               }
-             }}
-             complete={(anime) => {
-               if(!this.state.open) {
-                 anime.animatables[0].target.style.display = 'none';
-               }
-             }}>
+      <Toggable open={ this.state.open } >
         { this.renderListingsFilters() }
-      </Anime>
+      </Toggable>
     )
   }
 }

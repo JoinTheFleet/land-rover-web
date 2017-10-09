@@ -2,7 +2,7 @@ export default class Geolocation {
 
   /* Returns a pair of values for latitude and longitude, representing the center point of a given list of pairs of latitude/longitude */
   static getCoordinatesCenter(coordinatesList) {
-    if(!coordinatesList) {
+    if (!coordinatesList) {
       return [];
     }
 
@@ -13,7 +13,7 @@ export default class Geolocation {
     let sumZ = 0;
 
     // Run through all pairs of coordinates, as they will need to be processed one by one
-    for(let i = 0; i < coordinatesList.length; i++){
+    for(let i = 0; i < coordinatesList.length; i++) {
       coordinates = coordinatesList[i];
 
       // Convert latitude/longitude from degrees to radians

@@ -22,11 +22,11 @@ class Footer extends Component {
               <FormattedMessage id="footer.get_started" />
             </span>
             <p className="footer-links-list">
-              <a href={this.props.intl.formatMessage({id: 'company_info.ios_app'})} target="_blank" className="white-text">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.ios_app'}) } target="_blank" className="white-text">
                 <FormattedMessage id="footer.get_iphone_app" />
               </a>
               <br/>
-              <a href={this.props.intl.formatMessage({id: 'company_info.android_app'})} target="_blank" className="white-text">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.android_app'}) } target="_blank" className="white-text">
                 <FormattedMessage id="footer.get_android_app" />
               </a>
               <br/>
@@ -45,15 +45,15 @@ class Footer extends Component {
               <FormattedMessage id="footer.learn_more" />
             </span>
             <p className="footer-links-list">
-              <a href={this.props.intl.formatMessage({id: 'company_info.customer_service'})} target="_blank" className="white-text">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.customer_service'}) } target="_blank" className="white-text">
                 <FormattedMessage id="footer.customer_service" />
               </a>
               <br/>
-              <a href={this.props.intl.formatMessage({id: 'company_info.terms_and_conditions'})} target="_blank" className="white-text">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.terms_and_conditions'}) } target="_blank" className="white-text">
                 <FormattedMessage id="footer.terms_and_conditions" />
               </a>
               <br/>
-              <a href={this.props.intl.formatMessage({id: 'company_info.faqs'})} target="_blank" className="white-text">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.faqs'}) } target="_blank" className="white-text">
                 <FormattedMessage id="footer.faqs" />
               </a>
             </p>
@@ -103,7 +103,7 @@ class Footer extends Component {
                 <FormattedMessage id="footer.read_our_blog" />
               </a>
               <br/>
-              <a href={'mailto:' + this.props.intl.formatMessage({id: 'company_info.info_email'})} className="white-text">
+              <a href={'mailto:' + this.props.intl.formatMessage({id: 'company_info.info_email'}) } className="white-text">
                 <FormattedMessage id="company_info.info_email" />
               </a>
             </div>

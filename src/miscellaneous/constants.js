@@ -29,7 +29,7 @@ export default class Constants {
     };
   }
 
-  static types(){
+  static types() {
     return {
       string: 'string',
       number: 'number',

@@ -33,7 +33,7 @@ class Homescreen extends Component {
     this.props.addSearchParamHandler({ location: location, dates: dates });
   }
 
-  render(){
+  render() {
     return (
       <div>
         <div id="homescreen_top_banner">
@@ -48,9 +48,9 @@ class Homescreen extends Component {
                 <FormattedMessage id="homescreen.top_banner_slogan" />
               </span>
             </p>
-            <form id="homescreen_search_form" className="global-search-form" onSubmit={(event) => { this.handleSearchFormSubmit(event) }}>
-              <input type="text" name="global_search[location]" id="global_search_location" placeholder={this.props.intl.formatMessage({id: 'application.location'})} />
-              <input type="text" name="global_search[dates]" id="global_search_dates" placeholder={this.props.intl.formatMessage({id: 'application.dates'})} />
+            <form id="homescreen_search_form" className="global-search-form" onSubmit={ (event) => { this.handleSearchFormSubmit(event) }}>
+              <input type="text" name="global_search[location]" id="global_search_location" placeholder={ this.props.intl.formatMessage({id: 'application.location'}) } />
+              <input type="text" name="global_search[dates]" id="global_search_dates" placeholder={ this.props.intl.formatMessage({id: 'application.dates'}) } />
               <button className="btn secondary-color white-text">
                 <FormattedMessage id="application.search" />
               </button>

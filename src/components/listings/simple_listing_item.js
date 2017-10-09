@@ -45,7 +45,7 @@ export default class SimpleListingItem extends Component {
           <div>
             { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
-          <RatingInput rating={item.rating} inputNameSufix={item.id.toString()} readonly={true} />
+          <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
           <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
         </div>
       </div>

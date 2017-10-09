@@ -106,6 +106,8 @@
     "listings.on_demand_collection": "On Demand Collection",
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Listings",
+    "listings.sort.price_high_low": "Price high - low",
+    "listings.sort.price_low_high": "Price low - high",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
 
