@@ -1,8 +1,7 @@
-var geolocation = require('geolocation')
-
+var geolocation = require('geolocation');
 
 class GeolocationService {
-  static getCurrentPosition(callback) {
+  static getCurrentPosition() {
     return new Promise(function(resolve, reject) {
       geolocation.getCurrentPosition(function(error, position) {
         if (error) {
