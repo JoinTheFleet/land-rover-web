@@ -41,13 +41,13 @@ class Homefeed extends Component {
     let component = this;
 
     window.addEventListener('resize', () => {
-      if(Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== ''){
+      if (Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== '') {
         component.setState({ toggledComponent: '' });
       }
     });
   }
 
-  componentWillMount(){
+  componentWillMount() {
     HomeFeedService.show()
                    .then((response) => {
                      this.setState({
@@ -115,10 +115,10 @@ class Homefeed extends Component {
 
     return (
       <ListingMap googleMapURL={ googleMapUrl }
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={(<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>)}
+                  loadingElement={ <div style={{ height: `100%` }} /> }
+                  containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  listings={this.state.listings} />
+                  listings={ this.state.listings } />
     )
   }
 
@@ -128,21 +128,21 @@ class Homefeed extends Component {
 
     let listingsListDiv = (
       <div key="listings_list_div" className="homefeed-listings-list col-lg-7 no-side-padding" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
-        {this.renderListingLists()}
+        { this.renderListingLists() }
       </div>
     );
 
     let listingsMapDiv = (
       <div key="listings_map_div" className="homefeed-listings-map col-lg-5 no-side-padding listings-map">
-        {this.renderListingMap()}
+        { this.renderListingMap() }
       </div>
     );
 
-    if(largeWidth || this.state.toggledComponent !== 'map') {
+    if (largeWidth || this.state.toggledComponent !== 'map') {
       listingsDivsToDisplay.push(listingsListDiv);
     }
 
-    if(largeWidth || this.state.toggledComponent === 'map') {
+    if (largeWidth || this.state.toggledComponent === 'map') {
       listingsDivsToDisplay.push(listingsMapDiv);
     }
 

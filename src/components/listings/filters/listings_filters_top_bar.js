@@ -29,20 +29,20 @@ export default class ListingsFiltersTopBar extends Component {
     return (
       <div id="filters_top_bar" className="smoke-grey">
         <a id="selectListingsFiltersBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn"
-           onClick={() => { this.toggleFilters() } }>
+           onClick={ () => { this.toggleFilters() } }>
           <FormattedMessage id="application.filter" />
         </a>
         <div className="pull-right">
           <FormattedMessage id="application.sort_by">
-            {(text) => (
+            { (text) => (
               <span className="tertiary-text-color text-uppercase">{text}</span>
-            )}
+            ) }
           </FormattedMessage>
           <a id="selectListingsSortByBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn" >
-            <span>Price high - low</span>
+            <FormattedMessage id="listings.sort.price_high_low" />
           </a>
         </div>
-        <ListingsFilters open={this.state.filtersOpen}
+        <ListingsFilters open={ this.state.filtersOpen }
                          setCurrentSearchParams={ this.props.setCurrentSearchParams }
                          toggleFilters={ this.toggleFilters } />
       </div>

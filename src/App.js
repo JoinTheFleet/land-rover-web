@@ -58,7 +58,7 @@ export default class App extends Component {
     newState[openModals] = openModals;
 
     this.setState(newState, () => {
-      if(accessToken.length > 0){
+      if (accessToken.length > 0) {
         cookies.set('accessToken', accessToken);
         client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
@@ -109,7 +109,7 @@ export default class App extends Component {
     let searchParamValue;
 
     for(var key in searchParamsToRemove) {
-      if(newSearchParams[key]) {
+      if (newSearchParams[key]) {
         searchParamValue = searchParamsToRemove[key];
 
         if (listingsFiltersTypes[key] === types.array) {
@@ -131,7 +131,7 @@ export default class App extends Component {
   }
 
   handleMenuItemSelect(menuItem) {
-    if(menuItem === navigationSections.logout){
+    if (menuItem === navigationSections.logout) {
       AuthenticationService.logout()
                            .then((success) => {
                              this.setAccessToken('');
@@ -149,7 +149,7 @@ export default class App extends Component {
     let openModals = this.state.openModals;
     let index = openModals.indexOf(modal);
 
-    if(index > -1){
+    if (index > -1) {
       openModals.splice(index, 1);
     }
     else {
@@ -214,7 +214,7 @@ export default class App extends Component {
           { this.renderMainContent() }
         </div>
 
-        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={this.setAccessToken} toggleModal={this.toggleModal}/>
+        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal }/>
 
         <Footer />
       </div>

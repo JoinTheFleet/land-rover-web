@@ -3,13 +3,13 @@ import React, {
 } from 'react';
 
 import PropTypes from 'prop-types';
-import Toggable from '../miscellaneous/toggable';
+import Toggleable from '../miscellaneous/toggleable';
 
 import dropdownIcon from '../../assets/images/dropdown.png';
 import dropdownOpenIcon from '../../assets/images/dropdown_open.png';
 
 export default class Dropdown extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -20,7 +20,7 @@ export default class Dropdown extends Component {
     this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
-  toggleDropdown(){
+  toggleDropdown() {
     this.setState((prevState) => ( { open: !prevState.open } ));
   }
 
@@ -31,7 +31,7 @@ export default class Dropdown extends Component {
       currentSelectedItem: item,
       open: 'false' // TODO: check what's wrong with this (doesn't work with boolean false value)
     }, () => {
-      if(name){
+      if (name) {
         this.props.itemClickHandler(name, item);
       }
       else {
@@ -46,11 +46,11 @@ export default class Dropdown extends Component {
 
     return (
       <div className="fleet-dropdown">
-        <div className="currentSelectedItem" onClick={() => { this.toggleDropdown() }}>
+        <div className="currentSelectedItem" onClick={ () => { this.toggleDropdown() } }>
           <span className={ this.state.currentSelectedItem ? 'subtitle-font-weight' : '' } >{ currentItemText }</span>
           <img src={ this.state.open ? dropdownOpenIcon : dropdownIcon } alt="dropdown_icon" />
 
-          <Toggable open={ this.state.open } duration={ 250 } >
+          <Toggleable open={ this.state.open } duration={ 250 } >
             <div className="dropdown-items">
               <ul>
                 {
@@ -60,7 +60,7 @@ export default class Dropdown extends Component {
                 }
               </ul>
             </div>
-          </Toggable>
+          </Toggleable>
         </div>
       </div>
     )

@@ -26,7 +26,7 @@ export default class ListingItem extends Component {
 
     if (item.gallery.length > 0) {
       image = (
-        <img src={item.gallery[0].images.original_url} alt={vehicleTitle}></img>
+        <img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>
       );
     }
 
@@ -46,7 +46,7 @@ export default class ListingItem extends Component {
           <div>
             { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
           </div>
-          <RatingInput rating={item.rating} inputNameSufix={item.id.toString()} readonly={true} />
+          <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
           <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
         </div>
       </div>

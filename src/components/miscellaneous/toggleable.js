@@ -9,19 +9,19 @@ const DEFAULTS = {
   duration: 500
 };
 
-export default class Toggable extends Component {
-  render(){
+export default class Toggleable extends Component {
+  render() {
     return (
       <Anime easing="easeOutQuart"
-            duration={this.props.duration || DEFAULTS.duration}
-            opacity={this.props.open ? 1 : 0}
-            begin={(anime) => {
-              if(this.props.open) {
+            duration={ this.props.duration || DEFAULTS.duration }
+            opacity={ this.props.open ? 1 : 0 }
+            begin={ (anime) => {
+              if (this.props.open) {
                 anime.animatables[0].target.style.display = 'block';
               }
             }}
-            complete={(anime) => {
-              if(!this.props.open) {
+            complete={ (anime) => {
+              if (!this.props.open) {
                 anime.animatables[0].target.style.display = 'none';
               }
             }}>
@@ -31,7 +31,6 @@ export default class Toggable extends Component {
   }
 }
 
-Toggable.propTypes = {
+Toggleable.propTypes = {
   open: PropTypes.bool
 };
-

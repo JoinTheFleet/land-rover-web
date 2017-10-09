@@ -62,7 +62,7 @@ export default class Header extends Component {
 
     return (
       <div className="app-header">
-        <img src={logo} alt="fleet logo" className="header-logo" onClick={() => {this.toggleMenu()}} />
+        <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
 
         <form id="header_search_form" className={ 'global-search-form' + (hideSearchForm ? ' hide' : '') }>
           <input type="text" name="global_search[location]" id="global_search_location" placeholder="Location" />
@@ -71,17 +71,17 @@ export default class Header extends Component {
 
         { this.renderSwitchRoleButton() }
 
-        <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '')}>
-          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
-          <a id="header_login_link" className="header-right-option static-link white-text" onClick={() => { this.toggleModal('login') }}>Log in</a>
-          <a id="header_register_link" className="header-right-option static-link white-text" onClick={() => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
+        <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
+          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
+          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login') }}>Log in</a>
+          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
         </div>
 
-        <HeaderMenu loggedIn={this.props.loggedIn}
-                    menuOpen={this.state.menuOpen}
-                    currentMenuItem={this.props.currentMenuItem}
-                    handleMenuItemSelect={this.handleMenuItemSelect}
-                    toggleModal={this.toggleModal} />
+        <HeaderMenu loggedIn={ this.props.loggedIn }
+                    menuOpen={ this.state.menuOpen }
+                    currentMenuItem={ this.props.currentMenuItem }
+                    handleMenuItemSelect={ this.handleMenuItemSelect }
+                    toggleModal={ this.toggleModal } />
       </div>
     );
   }
