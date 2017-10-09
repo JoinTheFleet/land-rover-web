@@ -48,7 +48,7 @@ class Service {
   }
 
   static validatedUpdate(id, params) {
-    if (!(id instanceof String)) {
+    if (!(id instanceof String) && isNaN(id)) {
       params = id;
       id = '';
     }
