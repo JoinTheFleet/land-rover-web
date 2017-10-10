@@ -1,4 +1,4 @@
-import Service from './service';
+import Service from '../service';
 
 class ListingsService extends Service {
   static get baseURL() {
