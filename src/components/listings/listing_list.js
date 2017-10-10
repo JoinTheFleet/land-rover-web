@@ -30,13 +30,6 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    window.user_credit_histories_service = UserCreditHistoriesServices;
-    window.user_listings_service = UserListingsService;
-    window.user_notifications_settings_service = UserNotificationsSettingsService;
-    window.user_phone_numbers_service = UserPhoneNumbersService;
-    window.users_service = UsersService;
-    window.user_reviews_service = UserReviewsService
-
     if (this.state.listings.length === 0 && this.props.accessToken) {
       ListingsService.index()
                      .then((response) => {
