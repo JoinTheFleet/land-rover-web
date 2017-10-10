@@ -1,5 +1,5 @@
-import client from '../libraries/client';
-import Service from './service';
+import client from '../../libraries/client';
+import Service from '../service';
 
 class BookingSurveyIssuesService extends Service {
   static get baseURL() {
