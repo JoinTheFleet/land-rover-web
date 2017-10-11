@@ -11,14 +11,7 @@ import PropTypes from 'prop-types';
 import SimpleListingItem from './simple_listing_item';
 import ListingItem from './listing_item';
 
-import ListingsService from '../../shared/services/listings_service';
-import ConfigurationService from '../../shared/services/configuration_service';
-import ListingReviewsService from '../../shared/services/listing_reviews_service';
-import ListingAvailabilityService from '../../shared/services/listing_availability_service';
-import ListingQuotationService from '../../shared/services/listing_quotation_service';
-import ListingCalendarService from '../../shared/services/listing_calendar_service';
-import ListingImagesService from '../../shared/services/listing_images_service';
-import BookingsService from '../../shared/services/bookings_service'
+import ListingsService from '../../shared/services/listings/listings_service';
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
@@ -37,19 +30,14 @@ export default class ListingList extends Component {
   }
 
   componentWillMount() {
-    window.configuration_service = ConfigurationService;
-    window.listing_availability_service = ListingAvailabilityService;
-    window.listing_quotation_service = ListingQuotationService;
-    window.bookings_service = BookingsService;
-
     if (this.state.listings.length === 0 && this.props.accessToken) {
       ListingsService.index()
-                    .then((response) => {
-                      this.setState({ listings: response.data.data.listings });
-                    })
-                    .catch((error) => {
-                      alert(error); // TODO: Some sort of nice flash service.
-                    });
+                     .then((response) => {
+                       this.setState({ listings: response.data.data.listings });
+                     })
+                     .catch((error) => {
+                       alert(error); // TODO: Some sort of nice flash service.
+                     });
     }
   }
 

@@ -16,7 +16,7 @@ import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar'
 
 // Services / Miscellaneous
 import HomeFeedService from '../../shared/services/home_feed_service';
-import ListingsService from '../../shared/services/listings_service';
+import ListingsService from '../../shared/services/listings/listings_service';
 import Helpers from '../../miscellaneous/helpers';
 
 // Icons
