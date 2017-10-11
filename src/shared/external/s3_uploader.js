@@ -17,14 +17,12 @@ class S3Uploader {
       }
     });
 
-    let bucketFolderName = Constants.s3BucketFolderName(folder_name);
-
-    if (!bucketFolderName || bucketFolderName.length < 1) {
+    if (!folder_name || folder_name.length < 1) {
       return Promise.reject(new Error(LocalizationService.formatMessage('aws.s3.invalid_bucket_folder_name')));
     }
     else {
       return s3.upload({
-        Key: `${bucketFolderName || ''}/${file.name}-${Date.now()}`,
+        Key: `${folder_name || ''}/${file.name}-${Date.now()}`,
         Body: file,
         ContentType: file.type,
         ACL: "public-read"
