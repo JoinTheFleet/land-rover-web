@@ -9,10 +9,5 @@
         "enforceDescriptions": false
       }
     ]
-  ],
-  "env": {
-    "production": {
-      "presets": ["minify"]
-    }
-  }
+  ]
 }
