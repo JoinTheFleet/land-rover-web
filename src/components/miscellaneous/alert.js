@@ -24,7 +24,7 @@ export default class Alert extends Component {
       </Toggleable>
     )
   }
-  }
+}
 
 Alert.propTypes = {
   message: PropTypes.string.isRequired,
