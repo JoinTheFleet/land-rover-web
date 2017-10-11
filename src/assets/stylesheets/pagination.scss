@@ -1,0 +1,18 @@
+.pagination {
+  .pagination-pages,
+  .pagination-nav-link,
+  .pagination-page-link {
+    display: inline-block;
+
+    & + .pagination-pages,
+    & + .pagination-nav-link,
+    & + .pagination-page-link {
+      margin-left: 10px;
+    }
+  }
+  
+  .pagination-nav-link,
+  .pagination-page-link {
+    cursor: pointer;
+  }
+}

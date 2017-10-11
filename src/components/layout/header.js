@@ -2,9 +2,15 @@ import React, {
   Component
 } from 'react';
 
+import {
+  FormattedMessage
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
-import Constants from '../../miscellaneous/constants';
 import HeaderMenu from './header_menu';
+import Constants from '../../miscellaneous/constants';
+import Helpers from '../../miscellaneous/helpers';
+import Roles from '../../miscellaneous/roles';
 
 import logo from '../../assets/images/menu_logo.png';
 
@@ -35,8 +41,24 @@ export default class Header extends Component {
     this.setState({menuOpen: false});
   }
 
+  renderSwitchRoleButton() {
+    let switchRoleButton = '';
+
+    if (this.props.loggedIn) {
+      switchRoleButton = (
+        <div className="pull-right">
+          <button className="btn white secondary-text-color" onClick={() => { this.props.handleChangeCurrentUserRole() }}>
+            <FormattedMessage id="header.switch_to_role" values={ { role: Helpers.capitalizeString(Roles.nextRole(this.props.currentUserRole))  } } />
+          </button>
+        </div>
+      )
+    }
+
+    return switchRoleButton;
+  }
+
   render() {
-    let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().home;
+    let hideSearchForm = !this.props.loggedIn && this.props.currentMenuItem === Constants.navigationSections().home;
 
     return (
       <div className="app-header">
@@ -46,6 +68,8 @@ export default class Header extends Component {
           <input type="text" name="global_search[location]" id="global_search_location" placeholder="Location" />
           <input type="text" name="global_search[dates]" id="global_search_dates" placeholder="Dates" />
         </form>
+
+        { this.renderSwitchRoleButton() }
 
         <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
@@ -65,6 +89,8 @@ export default class Header extends Component {
 
 Header.propTypes = {
   loggedIn: PropTypes.bool,
+  currentUserRole: PropTypes.string,
   currentMenuItem: PropTypes.string.isRequired,
-  handleMenuItemSelect: PropTypes.func.isRequired
+  handleMenuItemSelect: PropTypes.func.isRequired,
+  handleChangeCurrentUserRole: PropTypes.func.isRequired
 }
