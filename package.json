@@ -47,6 +47,7 @@
     "react-intl": "",
     "geolocation": "",
     "sass-loader": "",
+    "aws-sdk": "",
     "sw-precache-webpack-plugin": "0.11.4",
     "universal-cookie": "",
     "url-loader": "0.5.9",
