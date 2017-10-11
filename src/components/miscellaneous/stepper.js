@@ -23,6 +23,8 @@ export default class Stepper extends Component {
       width: 'calc(100% / ' + totalDividers + ' * 5 )'
     };
 
+    console.log((100 / (steps.length - 1) * currentStepIndex) + '%');
+
     return (
       <div className="fleet-stepper smoke-grey col-xs-12 no-side-padding">
         <div className="fleet-stepper-steps"
@@ -30,10 +32,10 @@ export default class Stepper extends Component {
           <div className="fleet-stepper-bar white">
             <Anime easing="linear"
                     duration={ 500 }
-                    width={ (100 / currentStepIndex) + '%' }
+                    width={ (100 / (steps.length - 1) * currentStepIndex) + '%' }
                     begin={ (anime) => {
                       if (this.props.previousStep) {
-                        anime.animatables[0].target.style.width = (100 / previousStepIndex) + '%';
+                        anime.animatables[0].target.style.width = (100 / (steps.length - 1) * previousStepIndex) + '%';
                       }
                     } }>
               <div className="fleet-stepper-bar-progress secondary-color"></div>
@@ -51,7 +53,7 @@ export default class Stepper extends Component {
               return (
                 <div key={'step_' + step}
                      className="fleet-stepper-step"
-                     style={ { left: stepLeftValue } }>
+                     style={ { left: stepLeftValue, width: stepIconWidth } }>
                   <img src={ icon } alt="step_icon" />
 
                   <span className={ 'fleet-stepper-step-number fs-12 text-secondary-font-weight' + numberTextColor }

@@ -2,5 +2,6 @@
   position: fixed;
   left: 10px;
   bottom: 20px;
-  width: calc(100% - 10px);
+  width: calc(100% - 20px);
+  z-index: 10;
 }

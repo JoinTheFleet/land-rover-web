@@ -113,6 +113,7 @@
     "listings.transmission": "Transmission",
     "listings.passengers": "Passengers",
     "listings.doors": "Doors",
+    "listings.odc": "ODC",
     "listings.on_demand_collection": "On Demand Collection",
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Listings",
@@ -129,8 +130,13 @@
     "listings.registration.registration_details": "Registration Details",
     "listings.registration.please_enter_car_country": "Please enter your car’s country of registration & registration number.",
 
+    "listings.location.location_search": "Location Search",
+    "listings.location.for_security_reasons": "For security reasons the exact location of your vehicle will not be be shared on your public profile.",
+    "listings.location.address_location": "Address Location",
+
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
 
-    "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials."
+    "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials.",
+    "errors.forms.fill_up_all_required_fields": "Please fill up all required fields"
   }
 }

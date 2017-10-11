@@ -31,11 +31,14 @@ export default class Dropdown extends Component {
       currentSelectedItem: item,
       open: 'false' // TODO: check what's wrong with this (doesn't work with boolean false value)
     }, () => {
-      if (name) {
-        this.props.itemClickHandler(name, item);
-      }
-      else {
-        this.props.itemClickHandler(item);
+
+      if(this.props.itemClickHandler) {
+        if (name) {
+          this.props.itemClickHandler(name, item);
+        }
+        else {
+          this.props.itemClickHandler(item);
+        }
       }
     });
   }
@@ -71,5 +74,5 @@ Dropdown.propTypes = {
   placeholder: PropTypes.string,
   name: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  itemClickHandler: PropTypes.func.isRequired
+  itemClickHandler: PropTypes.func
 };

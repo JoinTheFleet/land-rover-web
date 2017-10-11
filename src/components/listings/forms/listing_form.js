@@ -14,8 +14,12 @@ import Helpers from '../../../miscellaneous/helpers';
 import Stepper from '../../miscellaneous/stepper';
 
 import ListingRegistration from './steps/listing_registration';
+import ListingDetails from './steps/listing_details';
+import ListingLocation from './steps/listing_location';
 
 const listingSteps = Constants.listingSteps();
+const stepDirections = Constants.stepDirections();
+const steps = Object.keys(listingSteps);
 
 class ListingForm extends Component {
   constructor(props) {
@@ -29,6 +33,7 @@ class ListingForm extends Component {
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.setListingProperties = this.setListingProperties.bind(this);
+    this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
   }
 
   setCurrentStep(step) {
@@ -44,6 +49,22 @@ class ListingForm extends Component {
     }));
   }
 
+  proceedToStepAndAddProperties(direction, propertiesToAdd) {
+    let currentStepIndex = steps.indexOf(this.state.currentStep);
+    let stepKey;
+
+    if ((direction === stepDirections.next && currentStepIndex < steps.length - 1) ||
+        (direction === stepDirections.previous && currentStepIndex > 0)) {
+      stepKey = direction === stepDirections.next ? steps[currentStepIndex + 1] : steps[currentStepIndex - 1];
+
+      this.setState((prevState) => ({
+        currentStep: listingSteps[stepKey],
+        previousStep: prevState.currentStep,
+        listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
+      }));
+    }
+  }
+
   renderStepper(){
     let step;
     let steps = {};
@@ -53,6 +74,9 @@ class ListingForm extends Component {
       step = listingStepsKeys[i];
       steps[step]= this.props.intl.formatMessage({ id: 'listings.forms.steps.' + step });
     }
+
+    console.log(this.state.currentStep);
+    console.log(this.state.previousStep);
 
     return (
       <Stepper steps={ steps }
@@ -67,21 +91,27 @@ class ListingForm extends Component {
 
     switch(step) {
       case listingSteps.details:
+        renderedStep = (<ListingDetails listing={ this.state.listing }
+                                        handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
         break;
       case listingSteps.location:
+        renderedStep = (<ListingLocation listing={ this.state.listing }
+                                        handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
         break;
       case listingSteps.images:
         break;
       case listingSteps.pricing:
         break;
       default:
-        renderedStep = (
-          <ListingRegistration listing={ this.state.listing }
-                               handleChangeStep={ this.setCurrentStep }
-                               handleSetListingProperties={ this.setListingProperties } />);
+        renderedStep = (<ListingRegistration listing={ this.state.listing }
+                                             handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />);
     }
 
-    return renderedStep;
+    return (
+      <div className="listing-form-current-step col-xs-12">
+        { renderedStep }
+      </div>
+    );
   }
 
   render() {

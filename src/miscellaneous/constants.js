@@ -65,4 +65,11 @@ export default class Constants {
       array: 'array'
     };
   }
+
+  static stepDirections() {
+    return {
+      next: 'next',
+      previous: 'previous'
+    };
+  }
 }
