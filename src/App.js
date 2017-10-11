@@ -4,10 +4,13 @@ import './App.css';
 
 import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
+import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
+import Listings from './components/listings/listings';
+
 import AuthenticationService from './shared/services/authentication_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
@@ -16,14 +19,17 @@ import Helpers from './miscellaneous/helpers';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
+const userRoles = Constants.userRoles();
 const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
+
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       accessToken: cookies.get('accessToken'),
+      currentUserRole: userRoles.renter,
       currentSelectedView: navigationSections.home,
       currentSearchParams: {},
       openModals: []
@@ -38,6 +44,7 @@ export default class App extends Component {
     this.addSearchParams = this.addSearchParams.bind(this);
     this.removeSearchParams = this.removeSearchParams.bind(this);
     this.setCurrentSearchParams = this.setCurrentSearchParams.bind(this);
+    this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
   }
 
@@ -117,6 +124,12 @@ export default class App extends Component {
     this.setState({ currentSearchParams: newSearchParams });
   }
 
+  changeCurrentUserRole() {
+    this.setState((prevState) => ({
+      currentUserRole: (prevState.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter
+    }));
+  }
+
   handleMenuItemSelect(menuItem) {
     if (menuItem === navigationSections.logout) {
       AuthenticationService.logout()
@@ -146,6 +159,18 @@ export default class App extends Component {
     this.setState({openModals: openModals});
   }
 
+  renderHeaderTopMenu() {
+    let headerTopMenu = '';
+
+    if (this.state.accessToken) {
+      headerTopMenu = (<HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
+                                      currentUserRole={ this.state.currentUserRole }
+                                      handleMenuItemSelect={ this.handleMenuItemSelect } />)
+    }
+
+    return headerTopMenu;
+  }
+
   renderMainContent() {
     let viewToRender;
 
@@ -157,6 +182,7 @@ export default class App extends Component {
       case navigationSections.messages:
         break;
       case navigationSections.listings:
+        viewToRender = (<Listings></Listings>);
         break;
       case navigationSections.account:
         break;
@@ -175,14 +201,21 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0}
-                currentMenuItem={ this.state.currentSelectedView}
-                handleMenuItemSelect={ this.handleMenuItemSelect}
-                toggleModal={ this.toggleModal} />
-        <div id="main_container">
+        <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
+                currentUserRole={ this.state.currentUserRole }
+                currentMenuItem={ this.state.currentSelectedView }
+                handleMenuItemSelect={ this.handleMenuItemSelect }
+                toggleModal={ this.toggleModal }
+                handleChangeCurrentUserRole={ this.changeCurrentUserRole } />
+
+        { this.renderHeaderTopMenu() }
+
+        <div id="main_container" className="col-xs-12 no-side-padding">
           { this.renderMainContent() }
         </div>
-        <Login open={ this.state.openModals.indexOf('login') > -1} setAccessToken={ this.setAccessToken} toggleModal={ this.toggleModal}/>
+
+        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal }/>
+
         <Footer />
       </div>
     );

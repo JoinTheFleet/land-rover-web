@@ -24,7 +24,25 @@ export default class Constants {
       account: 'account',
       logout: 'logout',
       login: 'login',
-      signup: 'signup'
+      signup: 'signup',
+      calendar: 'calendar',
+      dashboard: 'dashboard'
+    };
+  }
+
+  static userRoles() {
+    return {
+      renter: 'renter',
+      owner: 'owner'
+    };
+  }
+
+  static listingViews() {
+    return {
+      index: 'index',
+      view: 'view',
+      new: 'new',
+      edit: 'edit'
     };
   }
 

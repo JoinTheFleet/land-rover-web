@@ -18,4 +18,8 @@ export default class Helpers {
     Object.keys(object).forEach((key) => ( source[key] = object[key] ));
     return source;
   }
+
+  static capitalizeString(string) {
+    return string[0].toUpperCase() + string.substr(1);
+  }
 }
