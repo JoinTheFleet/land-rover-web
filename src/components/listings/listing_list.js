@@ -18,7 +18,7 @@ import ListingAvailabilityService from '../../shared/services/listing_availabili
 import ListingQuotationService from '../../shared/services/listing_quotation_service';
 import ListingCalendarService from '../../shared/services/listing_calendar_service';
 import ListingImagesService from '../../shared/services/listing_images_service';
-import BookingsService from '../../shared/services/bookings_service'
+import BookingsService from '../../shared/services/bookings_service';
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';

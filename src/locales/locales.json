@@ -1,6 +1,7 @@
 {
   "en": {
     "application.blog": "Blog",
+    "application.country": "Country",
     "application.dates": "Dates",
     "application.filter": "Filter",
     "application.loading": "Loading",
@@ -9,6 +10,7 @@
     "application.other": "Other",
     "application.owner": "Owner",
     "application.previous": "Previous",
+    "application.registration": "Registration",
     "application.renter": "Renter",
     "application.search": "Search",
     "application.sort_by": "Sort By",
@@ -117,6 +119,15 @@
     "listings.add_new_listing": "Add New Listing",
     "listings.sort.price_high_low": "Price high - low",
     "listings.sort.price_low_high": "Price low - high",
+
+    "listings.forms.steps.registration": "Registration",
+    "listings.forms.steps.details": "Details",
+    "listings.forms.steps.location": "Location",
+    "listings.forms.steps.images": "Images",
+    "listings.forms.steps.pricing": "Pricing",
+
+    "listings.registration.registration_details": "Registration Details",
+    "listings.registration.please_enter_car_country": "Please enter your car’s country of registration & registration number.",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
 

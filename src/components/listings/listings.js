@@ -5,6 +5,7 @@ import React, {
 import Constants from '../../miscellaneous/constants';
 
 import ListingsOverview from './listings_overview';
+import ListingForm from './forms/listing_form';
 
 const listingsViews = Constants.listingViews();
 
@@ -31,7 +32,7 @@ export default class Listings extends Component {
 
     switch(this.state.currentView) {
       case listingsViews.new:
-        viewToRender = '';
+        viewToRender = (<ListingForm></ListingForm>);
         break;
       case listingsViews.view:
         viewToRender = '';

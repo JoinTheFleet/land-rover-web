@@ -7,8 +7,6 @@ import {
   injectIntl
 } from 'react-intl';
 
-
-import Anime from 'react-anime';
 import PropTypes from 'prop-types';
 
 import Toggleable from '../../miscellaneous/toggleable';

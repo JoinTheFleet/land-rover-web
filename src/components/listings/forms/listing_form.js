@@ -2,16 +2,22 @@ import React, {
   Component
 } from 'react';
 
+import {
+  injectIntl
+} from 'react-intl';
+
 import PropTypes from 'prop-types';
 
 import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
 
+import Stepper from '../../miscellaneous/stepper';
+
 import ListingRegistration from './steps/listing_registration';
 
 const listingSteps = Constants.listingSteps();
 
-export default class ListingForm extends Component {
+class ListingForm extends Component {
   constructor(props) {
     super(props);
 
@@ -36,6 +42,24 @@ export default class ListingForm extends Component {
     this.setState((prevState) => ({
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }));
+  }
+
+  renderStepper(){
+    let step;
+    let steps = {};
+    let listingStepsKeys = Object.keys(listingSteps);
+
+    for(let i = 0; i < listingStepsKeys.length; i++) {
+      step = listingStepsKeys[i];
+      steps[step]= this.props.intl.formatMessage({ id: 'listings.forms.steps.' + step });
+    }
+
+    return (
+      <Stepper steps={ steps }
+               currentStep={ this.state.currentStep }
+               previousStep={ this.state.previousStep }>
+      </Stepper>
+    );
   }
 
   renderStep(step) {
@@ -66,12 +90,17 @@ export default class ListingForm extends Component {
     return (
       <div className="listing-form">
         {
+          this.renderStepper()
+        }
+        {
           currentRenderedStep
         }
       </div>
     )
   }
 }
+
+export default injectIntl(ListingForm);
 
 ListingForm.propTypes = {
   listing: PropTypes.object
