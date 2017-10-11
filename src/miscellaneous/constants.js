@@ -1,17 +1,15 @@
-const bucketFolderNames = {
-  user_avatar: "user_avatar_direct_upload",
-  survey_issue: "survey_issue_direct_upload",
-  signature_owner: "signature_owner_direct_upload",
-  signature_renter: "signature_renter_direct_upload",
-  listing_image: "listing_image_direct_upload",
-  driver_license: "driver_license_direct_upload",
-  conversation_attachment: "conversation_attachment_direct_upload",
-  conversation: "conversation_direct_upload"
-};
-
 export default class Constants {
   static s3BucketFolderName(folder_name) {
-    return bucketFolderNames[folder_name];
+    return {
+      user_avatar: "user_avatar_direct_upload",
+      survey_issue: "survey_issue_direct_upload",
+      signature_owner: "signature_owner_direct_upload",
+      signature_renter: "signature_renter_direct_upload",
+      listing_image: "listing_image_direct_upload",
+      driver_license: "driver_license_direct_upload",
+      conversation_attachment: "conversation_attachment_direct_upload",
+      conversation: "conversation_direct_upload"
+    }[folder_name];
   }
 
   static navigationSections() {
