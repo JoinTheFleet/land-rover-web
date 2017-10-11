@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
 import LocalizationService from '../libraries/localization_service'
-import Constants from '../../miscellaneous/constants'
 
 class S3Uploader {
   static upload(file, folder_name) {
