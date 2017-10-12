@@ -27,7 +27,7 @@ class ListingForm extends Component {
 
     this.state = {
       listing: this.props.listing || {},
-      currentStep: listingSteps.registration,
+      currentStep: listingSteps.location,
       previousStep: ''
     };
 

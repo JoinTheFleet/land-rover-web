@@ -318,3 +318,18 @@
     margin-top: 20px;
   }
 }
+
+/* Listing Location */
+.listing-form-location {
+  .listing-form-location-disclaimer {
+    position: absolute;
+    bottom: 0;
+    height: 36px;
+    line-height: 36px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .listing-form-location-selected-address {
+	  height: 50px;
+  }
+}

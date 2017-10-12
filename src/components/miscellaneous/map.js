@@ -18,8 +18,43 @@ import {
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
 
 class Map extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      center: { lat: 52.9893, lng: -6.0751581 },
+      markers: []
+    };
+
+    this.onPlacesChanged = this.onPlacesChanged.bind(this);
+  }
+
+  onPlacesChanged() {
+    const places = this.searchBox.getPlaces();
+    const bounds = new window.google.maps.LatLngBounds();
+
+    places.forEach(place => {
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    const nextMarkers = places.map(place => ({
+      position: place.geometry.location,
+    }));
+
+    this.setState({
+      markers: nextMarkers,
+    }, () => {
+      this.props.onPlacesChanged(places);
+    });
+
+    this.map.fitBounds(bounds);
+  }
+
   render() {
-    let markers = this.props.markers || [];
+    let markers = this.state.markers || [];
     let searchBox = '';
 
     if (this.props.includeSearchBox) {
@@ -27,7 +62,8 @@ class Map extends Component {
         <SearchBox
           bounds={this.props.bounds}
           controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
-          onPlacesChanged={this.props.onPlacesChanged}>
+          onPlacesChanged={this.onPlacesChanged}
+          ref={ (searchBox) => { this.searchBox = searchBox } }>
           <input type="text"
                  placeholder={ this.props.intl.formatMessage({ id: 'listings.location.location_search' }) }
                  style={{
@@ -47,16 +83,18 @@ class Map extends Component {
     }
 
     return (
-      <GoogleMap defaultZoom={10}
-                 defaultCenter={ this.props.defaultCenter }
-                 className="fleet-map">
+      <GoogleMap defaultZoom={ 10 }
+                 center={ this.state.center }
+                 className="fleet-map"
+                 ref={ (map) => { this.map = map } }>
         { searchBox }
 
         {
           markers.map((marker, index) => {
             return (
               <Marker key={ 'listing_map_item_' + (index + 1) }
-                      position={ marker.position } />
+                      position={ marker.position }
+                      draggable={ this.props.draggableMarkers } />
             )
           })
         }
@@ -68,9 +106,8 @@ class Map extends Component {
 export default withScriptjs(withGoogleMap(injectIntl(Map)))
 
 Map.propTypes = {
-  defaultCenter: PropTypes.object.isRequired,
-  markers: PropTypes.array,
   includeSearchBox: PropTypes.bool,
   onPlacesChanged: PropTypes.func,
-  bounds: PropTypes.object
+  bounds: PropTypes.object,
+  draggableMarkers: PropTypes.bool
 }
