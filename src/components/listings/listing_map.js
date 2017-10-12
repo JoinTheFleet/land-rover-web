@@ -12,6 +12,7 @@ import {
 
 import ListingItem from '../listings/listing_item';
 import Geolocation from '../../miscellaneous/geolocation';
+import GeolocationService from '../../shared/services/geolocation_service';
 
 const getPixelPositionOffset = (width, height) => ({
   x: -(width / 2),
@@ -23,11 +24,24 @@ class ListingMap extends Component {
     super(props);
 
     this.state = {
-      markerSelected: ''
+      markerSelected: '',
+      latitude: 0,
+      longitude: 0
     };
 
     this.toggleMarker = this.toggleMarker.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.onPositionChange = this.onPositionChange.bind(this);
+  }
+
+  componentWillMount() {
+    GeolocationService.getCurrentPosition()
+                      .then(position => {
+                        this.setState({
+                          latitude: position.coords.latitude,
+                          longitude: position.coords.longitude
+                        })
+                      });
   }
 
   toggleMarker(markerKey) {
@@ -77,7 +91,25 @@ class ListingMap extends Component {
   }
 
   onDragEnd() {
+    let center = this.map.getCenter();
+
+    this.setState({
+      latitude: center.lat(),
+      longitude: center.lng()
+    });
+
     this.props.onDragEnd(this.map.getBounds(), this.map.getCenter());
+  }
+
+  onPositionChange() {
+    let center = this.map.getCenter();
+
+    this.setState({
+      latitude: center.lat(),
+      longitude: center.lng()
+    });
+
+    this.props.onPositionChange(this.map.getBounds(), this.map.getCenter());
   }
 
   listingLocation(listing) {
@@ -110,33 +142,24 @@ class ListingMap extends Component {
   render() {
     let listings = this.props.listings;
     let elementToReturn;
+    let latitude = this.state.latitude;
+    let longitude = this.state.longitude;
 
-    if (listings.length === 0) {
-      elementToReturn = (<div></div>);
-    }
-    else {
-      let averageCoordinates = Geolocation.getCoordinatesCenter(listings.map((listing) => {
-        let coordinates = this.listingLocation(listing);
-
-        return [coordinates.latitude, coordinates.longitude];
-      }));
-
-      elementToReturn = (
-        <GoogleMap defaultZoom={10}
-                   defaultCenter={ { lat: averageCoordinates.latitude, lng: averageCoordinates.longitude } }
-                   className="listingsMap"
-                   onDragEnd={ this.onDragEnd }
-                   ref={ (map) => { this.map = map } }>
-          {
-            listings.map((listing, index) => {
-              return this.renderMarker(listing, index);
-            })
-          }
-        </GoogleMap>
-      )
-    }
-
-    return elementToReturn;
+    return (
+      <GoogleMap defaultZoom={10}
+                 center={ { lat: latitude, lng: longitude } }
+                 className="listingsMap"
+                 onDragEnd={ this.onDragEnd }
+                 onZoomChange={ this.onPositionChange }
+                 onTilesLoaded={ this.onPositionChange }
+                 ref={ (map) => { this.map = map } }>
+        {
+          listings.map((listing, index) => {
+            return this.renderMarker(listing, index);
+          })
+        }
+      </GoogleMap>
+    )
   }
 }
 

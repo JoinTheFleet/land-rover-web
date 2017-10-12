@@ -24,6 +24,8 @@ import Helpers from '../../miscellaneous/helpers';
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
+import Pageable from '../miscellaneous/pageable';
+
 import moment from 'moment';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
@@ -36,11 +38,13 @@ class Homefeed extends Component {
       toggledComponent: '',
       nearby: [],
       collections: [],
-      listings: [] // Added temporarily to show listings on map until HomeFeed endpoint returns locations
+      listings: [], // Added temporarily to show listings on map until HomeFeed endpoint returns locations
+      hasBeenScrolled: false
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
+    this.handleMapDrag = this.handleMapDrag.bind(this);
 
     let component = this;
 
@@ -62,7 +66,7 @@ class Homefeed extends Component {
                       ListingsService.index()
                       .then((response) => {
                         this.setState({
-                          listings: response.data.data.listings,
+                          listings: [],
                         });
                       })
                       .catch((error) => {
@@ -79,39 +83,57 @@ class Homefeed extends Component {
     this.setState({ toggledComponent: component });
   }
 
+  handlePageChange() {
+
+  }
+
   renderListingLists() {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    return (
-      <div>
+    if (this.state.hasBeenScrolled && this.state.listings && this.state.listings.length > 0) {
+      return (
         <div>
-          <p className="top-seller-title strong-font-weight title-font-size">
-            <FormattedMessage id="listings.nearby" />
-          </p>
-
-          <ListingList simpleListing={true} listings={nearbyListings} />
+          <div>
+            <Pageable totalPages={ 60 }
+                      currentPage={ 1 }
+                      handlePageChange={ this.handlePageChange }>
+              <ListingList scrollable={false} listings={this.state.listings} />
+            </Pageable>
+          </div>
         </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <div>
+            <p className="top-seller-title strong-font-weight title-font-size">
+              <FormattedMessage id="listings.nearby" />
+            </p>
 
-        {
-          collections.map((collection) => {
-            return (
-              <div key={collection.id + '_' + collection.name + '_listing'}>
-                <p className="top-seller-title strong-font-weight title-font-size">
-                  <span>{collection.name}</span>
-                </p>
+            <ListingList scrollable={true} simpleListing={true} listings={nearbyListings} />
+          </div>
 
-                <ListingList simpleListing={true} listings={collection.objects} />
-              </div>
-            );
-          })
-        }
-      </div>
-    )
+          {
+            collections.map((collection) => {
+              return (
+                <div key={collection.id + '_' + collection.name + '_listing'}>
+                  <p className="top-seller-title strong-font-weight title-font-size">
+                    <span>{collection.name}</span>
+                  </p>
+
+                  <ListingList scrollable={true} simpleListing={true} listings={collection.objects} />
+                </div>
+              );
+            })
+          }
+        </div>
+      )
+    }
   }
 
   handlePositionChange(bounds, center) {
-    console.log(center)
     let latitudes = bounds.f;
     let longitudes = bounds.b;
     let location = {
@@ -124,6 +146,7 @@ class Homefeed extends Component {
       bottom: latitudes.b,
       top: latitudes.f
     }
+
     SearchService.create({
       search: {
         location: location,
@@ -132,11 +155,17 @@ class Homefeed extends Component {
         sort: 'distance'
       }
     }).then((response) => {
-      console.log(response.data.data.listings);
       this.setState({
         listings: response.data.data.listings,
       });
     })
+  }
+
+  handleMapDrag(bounds, center) {
+    this.setState({
+      hasBeenScrolled: true
+    });
+    this.handlePositionChange(bounds, center);
   }
 
   renderListingMap() {
@@ -151,7 +180,8 @@ class Homefeed extends Component {
                   loadingElement={ <div style={{ height: `100%` }} /> }
                   containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  onDragEnd={this.handlePositionChange}
+                  onDragEnd={this.handleMapDrag}
+                  onPositionChange={this.handlePositionChange}
                   listings={ this.state.listings } />
     )
   }
