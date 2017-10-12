@@ -15,8 +15,11 @@ export default class Helpers {
   }
 
   static extendObject(source, object) {
-    Object.keys(object).forEach((key) => ( source[key] = object[key] ));
-    return source;
+    let newObject = JSON.parse(JSON.stringify(source));
+
+    Object.keys(object).forEach((key) => ( newObject[key] = object[key] ));
+
+    return newObject;
   }
 
   static capitalizeString(string) {

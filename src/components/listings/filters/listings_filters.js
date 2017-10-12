@@ -7,7 +7,6 @@ import {
   injectIntl
 } from 'react-intl';
 
-import Anime from 'react-anime';
 import PropTypes from 'prop-types';
 
 import VehicleBodiesService from '../../../shared/services/vehicles/vehicle_bodies_service'
