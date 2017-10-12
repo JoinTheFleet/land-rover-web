@@ -240,6 +240,7 @@ class Homefeed extends Component {
 }
 
 Homefeed.propTypes = {
+  searchParams: PropTypes.object.isRequired,
   setCurrentSearchParams: PropTypes.func.isRequired
 }
 

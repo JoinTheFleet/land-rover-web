@@ -165,7 +165,7 @@ class ListingsFilters extends Component {
                             items={ this.state.filterOptions[filtersGroup][filter] }
                             valueProperty="id"
                             displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
-                            itemClickHandler={ this.handleApplyFilters } />
+                            itemClickHandler={ this.handleFilterSelected } />
                   })
                 }
                 <div className='listings-filters-divider smoke-grey-two'></div>
