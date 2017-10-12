@@ -27,6 +27,7 @@ class ListingMap extends Component {
     };
 
     this.toggleMarker = this.toggleMarker.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   toggleMarker(markerKey) {
@@ -58,15 +59,52 @@ class ListingMap extends Component {
       )
     }
 
-    let marker = (
-      <Marker key={ 'listing_map_item_' + (index + 1) }
-              position={ { lat: listing.location.latitude, lng: listing.location.longitude } }
-              onClick={ () => { this.toggleMarker(markerKey) } }>
-        { infoWindow }
-      </Marker>
-    )
+    if (!listing.location && !listing.geometry) {
+      return '';
+    }
+    else {
+      let coordinates = this.listingLocation(listing);
+      let marker = (
+        <Marker key={ 'listing_map_item_' + (index + 1) }
+                position={ { lat: coordinates.latitude, lng: coordinates.longitude } }
+                onClick={ () => { this.toggleMarker(markerKey) } }>
+          { infoWindow }
+        </Marker>
+      )
 
-    return marker;
+      return marker;
+    }
+  }
+
+  onDragEnd() {
+    this.props.onDragEnd(this.map.getBounds(), this.map.getCenter());
+  }
+
+  listingLocation(listing) {
+    let latitude = 0;
+    let longitude = 0;
+    if (listing.location) {
+      latitude = listing.location.latitude;
+      longitude = listing.location.longitude;
+    }
+    else if (listing.geometry && listing.geometry.bounds) {
+      let northeast = listing.geometry.bounds.northeast;
+      let southwest = listing.geometry.bounds.southwest;
+
+      latitude = (northeast.latitude + southwest.latitude) / 2;
+      longitude = (northeast.longitude + southwest.longitude) / 2;
+    }
+    else if (!listing.location && this.map) {
+      let center = this.map.getCenter();
+
+      latitude = center.lat();
+      longitude = center.lng();
+    }
+
+    return {
+      latitude: latitude,
+      longitude: longitude
+    };
   }
 
   render() {
@@ -78,13 +116,16 @@ class ListingMap extends Component {
     }
     else {
       let averageCoordinates = Geolocation.getCoordinatesCenter(listings.map((listing) => {
-        return [ listing.location.latitude, listing.location.longitude ];
+        let coordinates = this.listingLocation(listing);
+
+        return [coordinates.latitude, coordinates.longitude];
       }));
 
       elementToReturn = (
         <GoogleMap defaultZoom={10}
                    defaultCenter={ { lat: averageCoordinates.latitude, lng: averageCoordinates.longitude } }
                    className="listingsMap"
+                   onDragEnd={ this.onDragEnd }
                    ref={ (map) => { this.map = map } }>
           {
             listings.map((listing, index) => {

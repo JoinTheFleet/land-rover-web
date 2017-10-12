@@ -17,11 +17,14 @@ import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar'
 // Services / Miscellaneous
 import HomeFeedService from '../../shared/services/home_feed_service';
 import ListingsService from '../../shared/services/listings/listings_service';
+import SearchService from '../../shared/services/search_service';
 import Helpers from '../../miscellaneous/helpers';
 
 // Icons
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
+
+import moment from 'moment';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
@@ -37,6 +40,7 @@ class Homefeed extends Component {
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
+    this.handlePositionChange = this.handlePositionChange.bind(this);
 
     let component = this;
 
@@ -106,6 +110,35 @@ class Homefeed extends Component {
     )
   }
 
+  handlePositionChange(bounds, center) {
+    console.log(center)
+    let latitudes = bounds.f;
+    let longitudes = bounds.b;
+    let location = {
+      latitude: center.lat(),
+      longitude: center.lng()
+    }
+    let boundingBox = {
+      left: longitudes.b,
+      right: longitudes.f,
+      bottom: latitudes.b,
+      top: latitudes.f
+    }
+    SearchService.create({
+      search: {
+        location: location,
+        bounding_box: boundingBox,
+        force_bounding_box: true,
+        sort: 'distance'
+      }
+    }).then((response) => {
+      console.log(response.data.data.listings);
+      this.setState({
+        listings: response.data.data.listings,
+      });
+    })
+  }
+
   renderListingMap() {
     let googleMapUrl = this.props.intl.formatMessage({
       id: 'google.maps.javascript_api_link',
@@ -118,6 +151,7 @@ class Homefeed extends Component {
                   loadingElement={ <div style={{ height: `100%` }} /> }
                   containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
+                  onDragEnd={this.handlePositionChange}
                   listings={ this.state.listings } />
     )
   }
