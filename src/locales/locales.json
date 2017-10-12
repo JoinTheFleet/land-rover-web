@@ -137,6 +137,8 @@
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?key={key}",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials.",
-    "errors.forms.fill_up_all_required_fields": "Please fill up all required fields"
+    "errors.forms.fill_up_all_required_fields": "Please fill up all required fields",
+
+    "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name"
   }
 }

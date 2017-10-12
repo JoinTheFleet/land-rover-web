@@ -14,7 +14,7 @@ import ListingCard from './listing_card';
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
 
-import ListingsService from '../../shared/services/listings_service';
+import ListingsService from '../../shared/services/listings/listings_service';
 
 const listingsViews = Constants.listingViews();
 
