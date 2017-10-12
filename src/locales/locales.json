@@ -143,6 +143,9 @@
     "listings.location.for_security_reasons": "For security reasons the exact location of your vehicle will not be be shared on your public profile.",
     "listings.location.address_location": "Address Location",
 
+    "listings.images.vehicle_images": "Vehicle Images",
+    "listings.images.upload_vehicle_images": "Upload Vehicle Image(s)",
+
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials.",

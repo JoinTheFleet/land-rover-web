@@ -16,6 +16,7 @@ import Stepper from '../../miscellaneous/stepper';
 import ListingRegistration from './steps/listing_registration';
 import ListingDetails from './steps/listing_details';
 import ListingLocation from './steps/listing_location';
+import ListingImages from './steps/listing_images';
 
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
@@ -27,7 +28,7 @@ class ListingForm extends Component {
 
     this.state = {
       listing: this.props.listing || {},
-      currentStep: listingSteps.location,
+      currentStep: listingSteps[Object.keys(listingSteps)[0]],
       previousStep: ''
     };
 
@@ -96,6 +97,8 @@ class ListingForm extends Component {
                                         handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
         break;
       case listingSteps.images:
+        renderedStep = (<ListingImages listing={ this.state.listing }
+                                       handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
         break;
       case listingSteps.pricing:
         break;
