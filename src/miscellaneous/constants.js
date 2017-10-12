@@ -44,11 +44,21 @@ export default class Constants {
     };
   }
 
+  static listingSteps() {
+    return {
+      registration: 'registration',
+      details: 'details',
+      location: 'location',
+      images: 'images',
+      pricing: 'pricing'
+    };
+  }
+
   static listingFiltersTypes() {
     let types = Constants.types();
 
     return {
-      type: types.string,
+      body: types.string,
       make: types.string,
       model: types.string,
       year: types.number,
@@ -60,12 +70,27 @@ export default class Constants {
     };
   }
 
+  static listingFiltersDisplayProperties() {
+    return {
+      body: 'body',
+      make: ['name', 'display'],
+      model: 'name'
+    };
+  }
+
   static types() {
     return {
       string: 'string',
       number: 'number',
       boolean: 'boolean',
       array: 'array'
+    };
+  }
+
+  static stepDirections() {
+    return {
+      next: 'next',
+      previous: 'previous'
     };
   }
 }

@@ -6,8 +6,6 @@ import {
   FormattedMessage
 } from 'react-intl';
 
-import Anime from 'react-anime';
-
 import Toggleable from '../miscellaneous/toggleable';
 
 import Helpers from '../../miscellaneous/helpers';

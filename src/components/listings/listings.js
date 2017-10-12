@@ -5,6 +5,7 @@ import React, {
 import Constants from '../../miscellaneous/constants';
 
 import ListingsOverview from './listings_overview';
+import ListingForm from './forms/listing_form';
 
 const listingsViews = Constants.listingViews();
 
@@ -16,6 +17,14 @@ export default class Listings extends Component {
       currentView: 'index',
       currentSelectedListingId: -1
     };
+
+    this.setCurrentView = this.setCurrentView.bind(this);
+  }
+
+  setCurrentView(view) {
+    this.setState({
+      currentView: view
+    });
   }
 
   getViewToRender() {
@@ -23,13 +32,13 @@ export default class Listings extends Component {
 
     switch(this.state.currentView) {
       case listingsViews.new:
-        viewToRender = '';
+        viewToRender = (<ListingForm></ListingForm>);
         break;
       case listingsViews.view:
         viewToRender = '';
         break;
       default:
-        viewToRender = (<ListingsOverview></ListingsOverview>);
+        viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);
     }
 
     return viewToRender;
