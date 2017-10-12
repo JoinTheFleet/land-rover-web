@@ -9,6 +9,16 @@ import {
 
 import PropTypes from 'prop-types';
 
+import VehicleBodiesService from '../../../shared/services/vehicles/vehicle_bodies_service'
+import VehicleDoorCountsService from '../../../shared/services/vehicles/vehicle_door_counts_service'
+import VehicleEngineFuelsService from '../../../shared/services/vehicles/vehicle_engine_fuels_service'
+import VehicleMakesService from '../../../shared/services/vehicles/vehicle_makes_service'
+import VehicleTransmissionsService from '../../../shared/services/vehicles/vehicle_transmissions_service'
+import VehicleYearsService from '../../../shared/services/vehicles/vehicle_years_service'
+import VehicleMakeModelsService from '../../../shared/services/vehicles/vehicle_years_service'
+import VehicleSeatCountsService from '../../../shared/services/vehicles/vehicle_seat_counts_service'
+import ListingAmenitiesService from '../../../shared/services/listings/listing_amenities_service'
+
 import Toggleable from '../../miscellaneous/toggleable';
 
 import Constants from '../../../miscellaneous/constants';
@@ -17,6 +27,11 @@ import Dropdown from '../../miscellaneous/dropdown';
 
 const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
+
+const dropdownFilters = {
+  vehicle: ['type', 'make', 'model', 'year'],
+  details: ['fuel', 'transmission', 'passengers', 'doors']
+};
 
 const dummyData = {
   // TODO: replace those with actual data provided by the API endpoints.
@@ -30,11 +45,6 @@ const dummyData = {
   doors: [1, 2, 3, 4, 5]
 };
 
-const dropdownFilters = {
-  vehicle: ['type', 'make', 'model', 'year'],
-  details: ['fuel', 'transmission', 'passengers', 'doors']
-};
-
 const amenities = ['Sunroof', 'Air Conditioning', 'ABS', 'Cruise Control', 'Lane Assist'];
 
 class ListingsFilters extends Component {
@@ -43,7 +53,10 @@ class ListingsFilters extends Component {
 
     this.state = {
       open: this.props.open || false,
-      selectedFilters: {}
+      selectedFilters: {},
+      filterOptions: {
+      },
+      amenities: []
     };
 
     this.handleFilterSelected = this.handleFilterSelected.bind(this);
@@ -53,6 +66,39 @@ class ListingsFilters extends Component {
     this.setState({
       open: nextProps.open || false
     });
+  }
+
+  componentWillMount() {
+    let filterOptions = this.state.filterOptions;
+    VehicleYearsService.index().then(response => {
+      filterOptions.years = response.data.data.years
+      this.setState({filterOptions: filterOptions})
+    });
+    VehicleBodiesService.index().then(response => {
+      filterOptions.bodies = response.data.data.bodies
+      this.setState({filterOptions: filterOptions})
+    });
+    VehicleEngineFuelsService.index().then(response => {
+      filterOptions.engine_fuels = response.data.data.engine_fuels
+      this.setState({filterOptions: filterOptions})
+    });
+    VehicleMakesService.index().then(response => {
+      filterOptions.makes = response.data.data.makes
+      this.setState({filterOptions: filterOptions})
+    });
+    if (this.state.selected_make_id) {
+      VehicleMakeModelsService.index(this.state.selected_make_id).then(response => {
+        filterOptions.models = response.data.data.models
+        this.setState({filterOptions: filterOptions})
+      });
+    }
+    VehicleTransmissionsService.index().then(response => {
+      filterOptions.transmissions = response.data.data.transmissions
+      this.setState({filterOptions: filterOptions})
+    });
+    ListingAmenitiesService.index().then(response => {
+      this.setState({amenities: response.data.data.amenities});
+    })
   }
 
   handleFilterSelected(name, value) {
