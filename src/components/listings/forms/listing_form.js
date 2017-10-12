@@ -75,9 +75,6 @@ class ListingForm extends Component {
       steps[step]= this.props.intl.formatMessage({ id: 'listings.forms.steps.' + step });
     }
 
-    console.log(this.state.currentStep);
-    console.log(this.state.previousStep);
-
     return (
       <Stepper steps={ steps }
                currentStep={ this.state.currentStep }

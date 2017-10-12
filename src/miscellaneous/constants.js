@@ -58,7 +58,7 @@ export default class Constants {
     let types = Constants.types();
 
     return {
-      type: types.string,
+      body: types.string,
       make: types.string,
       model: types.string,
       year: types.number,
@@ -67,6 +67,14 @@ export default class Constants {
       passengers: types.number,
       doors: types.number,
       amenities: types.array
+    };
+  }
+
+  static listingFiltersDisplayProperties() {
+    return {
+      body: 'body',
+      make: ['name', 'display'],
+      model: 'name'
     };
   }
 

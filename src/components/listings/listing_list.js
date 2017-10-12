@@ -11,14 +11,14 @@ import PropTypes from 'prop-types';
 import SimpleListingItem from './simple_listing_item';
 import ListingItem from './listing_item';
 
-import ListingsService from '../../shared/services/listings_service';
+import ListingsService from '../../shared/services/listings/listings_service';
 import ConfigurationService from '../../shared/services/configuration_service';
-import ListingReviewsService from '../../shared/services/listing_reviews_service';
-import ListingAvailabilityService from '../../shared/services/listing_availability_service';
-import ListingQuotationService from '../../shared/services/listing_quotation_service';
-import ListingCalendarService from '../../shared/services/listing_calendar_service';
-import ListingImagesService from '../../shared/services/listing_images_service';
-import BookingsService from '../../shared/services/bookings_service';
+import ListingReviewsService from '../../shared/services/listings/listing_reviews_service';
+import ListingAvailabilityService from '../../shared/services/listings/listing_availability_service';
+import ListingQuotationService from '../../shared/services/listings/listing_quotation_service';
+import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
+import ListingImagesService from '../../shared/services/listings/listing_images_service';
+import BookingsService from '../../shared/services/bookings/bookings_service';
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';

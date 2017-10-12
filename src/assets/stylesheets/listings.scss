@@ -297,6 +297,17 @@
         transform: translateY(-50%);
       }
     }
+
+    .dropdown-items {
+      position: absolute;
+      top: 100%;
+      left: -1px;
+      right: -1px;
+      background: white;
+      z-index: 20;
+      border: solid 1px $warm-grey;
+      border-top: none;
+    }
   }
 
   .listing-form-field-label {

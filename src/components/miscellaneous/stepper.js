@@ -23,8 +23,6 @@ export default class Stepper extends Component {
       width: 'calc(100% / ' + totalDividers + ' * 5 )'
     };
 
-    console.log((100 / (steps.length - 1) * currentStepIndex) + '%');
-
     return (
       <div className="fleet-stepper smoke-grey col-xs-12 no-side-padding">
         <div className="fleet-stepper-steps"

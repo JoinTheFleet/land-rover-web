@@ -7,6 +7,7 @@
     "application.loading": "Loading",
     "application.location": "Location",
     "application.next": "Next",
+    "application.no": "No",
     "application.other": "Other",
     "application.owner": "Owner",
     "application.previous": "Previous",
@@ -15,6 +16,7 @@
     "application.search": "Search",
     "application.sort_by": "Sort By",
     "application.view_all": "View All",
+    "application.yes": "Yes",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -105,6 +107,7 @@
     "listings.no_listings_to_display": "No listings to display",
     "listings.vehicle": "Vehicle",
     "listings.type": "Type",
+    "listings.body": "Type",
     "listings.make": "Make",
     "listings.model": "Model",
     "listings.year": "Year",
