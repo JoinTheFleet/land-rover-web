@@ -330,6 +330,23 @@
   }
 
   .listing-form-location-selected-address {
-	  height: 50px;
+    padding: 9px 24px;
+    height: 50px;
+
+    #listing_form_location_selected_address {
+      display: inline-block;
+      padding-left: 10px;
+      width: calc(100% - 61px);
+      height: 32px;
+    }
+
+    .proceed-to-step-btn {
+      display: inline-block;
+      float: none !important;
+      margin-top: -2px;
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
 }
