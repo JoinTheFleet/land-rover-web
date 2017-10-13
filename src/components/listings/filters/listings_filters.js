@@ -55,6 +55,8 @@ class ListingsFilters extends Component {
       open: this.props.open || false,
       selectedFilters: {},
       filterOptions: {
+        vehicle: {},
+        details: {}
       },
       amenities: []
     };
@@ -70,30 +72,39 @@ class ListingsFilters extends Component {
 
   componentWillMount() {
     let filterOptions = this.state.filterOptions;
+
     VehicleYearsService.index().then(response => {
-      filterOptions.years = response.data.data.years
+      filterOptions.vehicle.years = response.data.data.years
       this.setState({filterOptions: filterOptions})
     });
     VehicleBodiesService.index().then(response => {
-      filterOptions.bodies = response.data.data.bodies
+      filterOptions.vehicle.bodies = response.data.data.bodies
       this.setState({filterOptions: filterOptions})
     });
     VehicleEngineFuelsService.index().then(response => {
-      filterOptions.engine_fuels = response.data.data.engine_fuels
+      filterOptions.details.engine_fuels = response.data.data.engine_fuels
       this.setState({filterOptions: filterOptions})
     });
     VehicleMakesService.index().then(response => {
-      filterOptions.makes = response.data.data.makes
+      filterOptions.vehicle.makes = response.data.data.makes
       this.setState({filterOptions: filterOptions})
     });
     if (this.state.selected_make_id) {
       VehicleMakeModelsService.index(this.state.selected_make_id).then(response => {
-        filterOptions.models = response.data.data.models
+        filterOptions.vehicle.models = response.data.data.models
         this.setState({filterOptions: filterOptions})
       });
     }
     VehicleTransmissionsService.index().then(response => {
-      filterOptions.transmissions = response.data.data.transmissions
+      filterOptions.details.transmissions = response.data.data.transmissions
+      this.setState({filterOptions: filterOptions})
+    });
+    VehicleDoorCountsService.index().then(response => {
+      filterOptions.details.door_counts = response.data.data.door_counts
+      this.setState({filterOptions: filterOptions})
+    });
+    VehicleSeatCountsService.index().then(response => {
+      filterOptions.details.seat_counts = response.data.data.seat_counts
       this.setState({filterOptions: filterOptions})
     });
     ListingAmenitiesService.index().then(response => {
@@ -131,31 +142,32 @@ class ListingsFilters extends Component {
   }
 
   renderListingsFilters() {
-    let filterGroups = Object.keys(dropdownFilters);
+    let filterGroups = Object.keys(this.state.filterOptions);
 
     return (
       <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
         {
           filterGroups.map((filtersGroup, index) => {
-            let filters = dropdownFilters[filtersGroup];
+            let filters = Object.keys(this.state.filterOptions[filtersGroup]);
 
             return (
-              <div key={ 'filters_group_' + filtersGroup } >
+              <div key={'search_filters_grous_' + filtersGroup}>
                 <FormattedMessage id={ 'listings.' + filtersGroup }>
                   { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
                 </FormattedMessage>
 
                 {
-                  filters.map((paramName) => {
-                    return (
-                      <Dropdown key={ 'filter_' + filtersGroup + '_' + paramName  } placeholder={ this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
-                          items={ dummyData[paramName] }
-                          name={paramName}
-                          itemClickHandler={ this.handleFilterSelected } />
-                    );
+                  filters.map(filter => {
+                    return <Dropdown
+                            key={ 'filters_group_' + filter }
+                            name={ filter }
+                            placeholder={ this.props.intl.formatMessage({ id: 'listings.' + filter }) }
+                            items={ this.state.filterOptions[filtersGroup][filter] }
+                            valueProperty="id"
+                            displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                            itemClickHandler={ this.handleFilterSelected } />
                   })
                 }
-
                 <div className='listings-filters-divider smoke-grey-two'></div>
               </div>
             )
@@ -180,13 +192,13 @@ class ListingsFilters extends Component {
           </FormattedMessage>
 
           {
-            amenities.map((amenity) => {
-              let checkboxId = 'listings_amenity_' + amenity;
+            this.state.amenities.map((amenity) => {
+              let checkboxId = 'listings_amenity_' + amenity.id;
 
               return (
-                <div key={ 'listings_amenity_filter_' + amenity } className="listings-amenity-filter fleet-checkbox">
-                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity) } } />
-                  <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity }</label>
+                <div key={ 'listings_amenity_filter_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
+                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity.id) } } />
+                  <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
                 </div>
               )
             })

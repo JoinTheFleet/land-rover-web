@@ -188,7 +188,7 @@ export default class App extends Component {
         break;
       default:
         if (this.state.accessToken && this.state.accessToken !== '' ) {
-          viewToRender = (<Homefeed accessToken={ this.state.accessToken } setCurrentSearchParams={ this.setCurrentSearchParams } />);
+          viewToRender = (<Homefeed accessToken={ this.state.accessToken } searchParams={ this.state.currentSearchParams } setCurrentSearchParams={ this.setCurrentSearchParams } />);
         }
         else {
           viewToRender = (<Homescreen addSearchParamHandler={ this.addSearchParams } />);

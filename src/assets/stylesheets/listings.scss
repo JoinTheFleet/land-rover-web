@@ -23,6 +23,10 @@
     overflow-x: hidden;
   }
 
+  .items-list.full-screen-list {
+    white-space: inherit;
+  }
+
   .listing-nav-button {
     position: absolute;
     top: 50%;
