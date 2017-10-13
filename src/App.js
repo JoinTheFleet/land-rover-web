@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import './App.css';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
 import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
@@ -10,6 +12,7 @@ import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
+import UserManagement from './components/user_management/user_management';
 
 import AuthenticationService from './shared/services/authentication_service';
 import client from './shared/libraries/client';
@@ -185,6 +188,7 @@ export default class App extends Component {
         viewToRender = (<Listings></Listings>);
         break;
       case navigationSections.account:
+        viewToRender = (<UserManagement></UserManagement>)
         break;
       default:
         if (this.state.accessToken && this.state.accessToken !== '' ) {

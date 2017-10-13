@@ -19,3 +19,17 @@
     height: 1px;
   }
 }
+
+.menu-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 19px;
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+}
