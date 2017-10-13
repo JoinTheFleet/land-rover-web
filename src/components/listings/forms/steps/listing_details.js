@@ -234,7 +234,7 @@ class ListingDetails extends Component {
                               placeholder={ listing[paramName] || this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
                               items={ filtersData[paramType] || [] }
                               valueProperty="id"
-                              displayProperty={ listingFiltersDisplayProperties[paramName] }
+                              displayProperty={ listingFiltersDisplayProperties }
                               itemClickHandler={ this.addSelectedParam } />
                   </ListingFormField>
                 )
@@ -254,7 +254,7 @@ class ListingDetails extends Component {
                               placeholder={ listing[paramName] || this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
                               items={ filtersData[paramType] || [] }
                               valueProperty="id"
-                              displayProperty={ listingFiltersDisplayProperties[paramName] }
+                              displayProperty={ listingFiltersDisplayProperties }
                               itemClickHandler={ this.addSelectedParam } />
                   </ListingFormField>
                 )

@@ -27,6 +27,7 @@ class Map extends Component {
     };
 
     this.onPlacesChanged = this.onPlacesChanged.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
   onPlacesChanged() {
@@ -51,6 +52,21 @@ class Map extends Component {
     });
 
     this.map.fitBounds(bounds);
+  }
+
+  handleMapClick(location) {
+    let marker = {
+      position: {
+        lat: location.latLng.lat(),
+        lng: location.latLng.lng()
+      }
+    };
+
+    this.setState({
+      markers: [marker]
+    }, () => {
+      this.props.handleMapClick(location.latLng);
+    });
   }
 
   render() {
@@ -86,6 +102,7 @@ class Map extends Component {
       <GoogleMap defaultZoom={ 10 }
                  center={ this.state.center }
                  className="fleet-map"
+                 onClick={ this.handleMapClick }
                  ref={ (map) => { this.map = map } }>
         { searchBox }
 
