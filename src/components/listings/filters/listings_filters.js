@@ -1,23 +1,20 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 
-import {
-  FormattedMessage,
-  injectIntl
-} from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
-import VehicleBodiesService from '../../../shared/services/vehicles/vehicle_bodies_service'
-import VehicleDoorCountsService from '../../../shared/services/vehicles/vehicle_door_counts_service'
-import VehicleEngineFuelsService from '../../../shared/services/vehicles/vehicle_engine_fuels_service'
-import VehicleMakesService from '../../../shared/services/vehicles/vehicle_makes_service'
-import VehicleTransmissionsService from '../../../shared/services/vehicles/vehicle_transmissions_service'
-import VehicleYearsService from '../../../shared/services/vehicles/vehicle_years_service'
-import VehicleMakeModelsService from '../../../shared/services/vehicles/vehicle_years_service'
-import VehicleSeatCountsService from '../../../shared/services/vehicles/vehicle_seat_counts_service'
-import ListingAmenitiesService from '../../../shared/services/listings/listing_amenities_service'
+import VehicleBodiesService from '../../../shared/services/vehicles/vehicle_bodies_service';
+import VehicleDoorCountsService from '../../../shared/services/vehicles/vehicle_door_counts_service';
+import VehicleEngineFuelsService from '../../../shared/services/vehicles/vehicle_engine_fuels_service';
+import VehicleMakesService from '../../../shared/services/vehicles/vehicle_makes_service';
+import VehicleTransmissionsService from '../../../shared/services/vehicles/vehicle_transmissions_service';
+import VehicleYearsService from '../../../shared/services/vehicles/vehicle_years_service';
+import VehicleMakeModelsService from '../../../shared/services/vehicles/vehicle_years_service';
+import VehicleSeatCountsService from '../../../shared/services/vehicles/vehicle_seat_counts_service';
+import ListingAmenitiesService from '../../../shared/services/listings/listing_amenities_service';
+
+import LocalizationService from '../../../shared/libraries/localization_service';
 
 import Toggleable from '../../miscellaneous/toggleable';
 
@@ -26,7 +23,6 @@ import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
 
 const listingsFiltersTypes = Constants.listingFiltersTypes();
-const types = Constants.types();
 
 class ListingsFilters extends Component {
   constructor(props) {
@@ -36,8 +32,8 @@ class ListingsFilters extends Component {
       open: this.props.open || false,
       selectedFilters: {},
       filterOptions: {
-        vehicle: {},
-        details: {}
+        vehicle: [],
+        details: []
       },
       amenities: []
     };
@@ -53,67 +49,103 @@ class ListingsFilters extends Component {
 
   componentWillMount() {
     let filterOptions = this.state.filterOptions;
+    let selectedFilters = this.state.selectedFilters;
+
+    VehicleBodiesService.index().then(response => {
+      filterOptions.vehicle.push({
+        position: 1,
+        param: 'body_id',
+        data: response.data.data.bodies,
+        name: LocalizationService.formatMessage("filters.body")
+      });
+
+      this.setState({filterOptions: filterOptions})
+    });
+
+    VehicleMakesService.index().then(response => {
+      filterOptions.vehicle.push({
+        position: 2,
+        param: 'make_id',
+        data: response.data.data.makes,
+        name: LocalizationService.formatMessage('filters.make')
+      });
+
+      this.setState({filterOptions: filterOptions})
+    });
 
     VehicleYearsService.index().then(response => {
-      filterOptions.vehicle.years = response.data.data.years
-      this.setState({filterOptions: filterOptions})
-    });
-    VehicleBodiesService.index().then(response => {
-      filterOptions.vehicle.bodies = response.data.data.bodies
-      this.setState({filterOptions: filterOptions})
-    });
-    VehicleEngineFuelsService.index().then(response => {
-      filterOptions.details.engine_fuels = response.data.data.engine_fuels
-      this.setState({filterOptions: filterOptions})
-    });
-    VehicleMakesService.index().then(response => {
-      filterOptions.vehicle.makes = response.data.data.makes
-      this.setState({filterOptions: filterOptions})
-    });
-    if (this.state.selected_make_id) {
-      VehicleMakeModelsService.index(this.state.selected_make_id).then(response => {
-        filterOptions.vehicle.models = response.data.data.models
-        this.setState({filterOptions: filterOptions})
+      filterOptions.vehicle.push({
+        position: 4,
+        param: 'year_id',
+        data: response.data.data.years,
+        name: LocalizationService.formatMessage('filters.year')
       });
-    }
+
+      this.setState({filterOptions: filterOptions})
+    });
+
+    VehicleEngineFuelsService.index().then(response => {
+      filterOptions.details.push({
+        position: 1,
+        param: 'engine_fuel_id',
+        data: response.data.data.engine_fuels,
+        name: LocalizationService.formatMessage('filters.engine_fuel')
+      });
+
+      this.setState({filterOptions: filterOptions})
+    });
+
     VehicleTransmissionsService.index().then(response => {
-      filterOptions.details.transmissions = response.data.data.transmissions
+      filterOptions.details.push({
+        position: 2,
+        param: 'transmission_id',
+        data: response.data.data.transmissions,
+        name: LocalizationService.formatMessage('filters.transmission')
+      });
+
       this.setState({filterOptions: filterOptions})
     });
-    VehicleDoorCountsService.index().then(response => {
-      filterOptions.details.door_counts = response.data.data.door_counts
-      this.setState({filterOptions: filterOptions})
-    });
+
     VehicleSeatCountsService.index().then(response => {
-      filterOptions.details.seat_counts = response.data.data.seat_counts
+      filterOptions.details.push({
+        position: 3,
+        param: 'seat_count_id',
+        data: response.data.data.seat_counts,
+        name: LocalizationService.formatMessage('filters.seat_count')
+      });
+
       this.setState({filterOptions: filterOptions})
     });
+
+    VehicleDoorCountsService.index().then(response => {
+      filterOptions.details.push({
+        position: 4,
+        param: 'door_count_id',
+        data: response.data.data.door_counts,
+        name: LocalizationService.formatMessage('filters.door_count')
+      });
+
+      this.setState({filterOptions: filterOptions})
+    });
+
+
     ListingAmenitiesService.index().then(response => {
       this.setState({amenities: response.data.data.amenities});
-    })
+    });
   }
 
   handleFilterSelected(name, value) {
-    let filters = this.state.selectedFilters;
-    let valueIndex;
+    let selectedFilters = this.state.selectedFilters;
 
-    if (listingsFiltersTypes[name] === types.array) {
-      filters[name] = filters[name] || [];
-      valueIndex = filters[name].indexOf(value);
-
-      if (valueIndex < 0) {
-        filters[name].push(value);
-      }
-      else {
-        filters[name].splice(valueIndex, 1);
-      }
+    if (value) {
+      selectedFilters[name] = value;
     }
     else {
-      filters[name] = value;
+      delete selectedFilters[name];
     }
 
     this.setState({
-      selectedFilters: filters
+      selectedFilters: selectedFilters
     });
   }
 
@@ -129,25 +161,29 @@ class ListingsFilters extends Component {
       <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
         {
           filterGroups.map((filtersGroup, index) => {
-            let filters = Object.keys(this.state.filterOptions[filtersGroup]);
+            let filters = this.state.filterOptions[filtersGroup];
 
             return (
-              <div key={'search_filters_grous_' + filtersGroup}>
+              <div key={'search_filters_groups_' + filtersGroup}>
                 <FormattedMessage id={ 'listings.' + filtersGroup }>
                   { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
                 </FormattedMessage>
 
                 {
-                  filters.map(filter => {
-                    return <Dropdown
-                            key={ 'filters_group_' + filter }
-                            name={ filter }
-                            placeholder={ this.props.intl.formatMessage({ id: 'listings.' + filter }) }
-                            items={ this.state.filterOptions[filtersGroup][filter] }
-                            valueProperty="id"
-                            displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
-                            itemClickHandler={ this.handleFilterSelected } />
-                  })
+                  filters
+                    .sort(function(a, b) {
+                      return a.position - b.position;
+                    })
+                    .map(filter => {
+                      return <Dropdown
+                                key={ 'filters_group_' + filter.param }
+                                name={ filter.param }
+                                placeholder={ filter.name }
+                                items={ filter.data }
+                                valueProperty="id"
+                                displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                                itemClickHandler={ this.handleFilterSelected } />
+                    })
                 }
                 <div className='listings-filters-divider smoke-grey-two'></div>
               </div>
@@ -196,7 +232,6 @@ class ListingsFilters extends Component {
   }
 
   render() {
-
     return (
       <Toggleable open={ this.state.open } >
         { this.renderListingsFilters() }

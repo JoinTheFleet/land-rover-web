@@ -182,7 +182,16 @@
     "user_profile_verified_info.address.county": "County",
     "user_profile_verified_info.address.post_code": "Post Code",
     "user_profile_verified_info.address.country": "Country",
-    "user_profile_verified_info.email": "Email"
+    "user_profile_verified_info.email": "Email",
+
+    "filters.door_count": "Doors",
+    "filters.seat_count": "Passengers",
+    "filters.transmission": "Transmission",
+    "filters.model": "Model",
+    "filters.make": "Make",
+    "filters.body": "Type",
+    "filters.year": "Year",
+    "filters.engine_fuel": "Fuel"
 
   }
 }
