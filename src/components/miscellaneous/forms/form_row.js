@@ -5,7 +5,7 @@ import FormField from './form_field';
 class FormRow extends Component {
   render() {
     return (
-      <div class='col-xs-12'>
+      <div className='col-xs-12'>
         <div className='row form-row'>
           <div className='col-xs-2'>
             <span>{ this.props.placeholder }</span>
