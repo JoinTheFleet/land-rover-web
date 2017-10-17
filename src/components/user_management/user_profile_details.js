@@ -4,6 +4,7 @@ import UsersService from '../../shared/services/users/users_service';
 
 import UserForm from './user_profile/user_form';
 import UserImage from './user_profile/user_image';
+import FormButtonRow from '../miscellaneous/forms/form_button_row';
 
 import S3Uploader from '../../shared/external/s3_uploader';
 import moment from 'moment';
@@ -129,13 +130,11 @@ export default class UserProfileDetails extends Component {
                   handleDateChange={this.handleDateChange}
                   date={this.state.date} />
 
-        <div className='col-xs-12 no-side-padding button-row'>
-          <div className='row'>
-            <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
-              <FormattedMessage id="application.save" />
-            </btn>
-          </div>
-        </div>
+        <FormButtonRow>
+          <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
+            <FormattedMessage id="application.save" />
+          </btn>
+        </FormButtonRow>
       </div>
     )
   }
