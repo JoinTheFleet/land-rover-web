@@ -43,6 +43,7 @@
     "prop-types": "",
     "react": "^15.6.1",
     "react-dates": "",
+    "react-datez": "",
     "react-addons-shallow-compare": "",
     "react-anime": "",
     "react-dev-utils": "^4.0.1",
