@@ -71,7 +71,7 @@ export default class Constants {
   }
 
   static listingFiltersDisplayProperties() {
-    return ['body', 'name', 'display', 'fuel', 'year', 'seats', 'doors', 'transmission'];
+    return ['trim', 'body', 'name', 'display', 'fuel', 'year', 'seats', 'doors', 'transmission'];
   }
 
   static types() {

@@ -12,12 +12,17 @@ import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
 
 import Stepper from '../../miscellaneous/stepper';
+import Alert from '../../miscellaneous/alert';
 
 import ListingRegistration from './steps/listing_registration';
 import ListingDetails from './steps/listing_details';
 import ListingLocation from './steps/listing_location';
 import ListingImages from './steps/listing_images';
+import ListingPricing from './steps/listing_pricing';
 
+import ListingsService from '../../../shared/services/listings/listings_service';
+
+const listingsViews = Constants.listingViews();
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -29,12 +34,14 @@ class ListingForm extends Component {
     this.state = {
       listing: this.props.listing || {},
       currentStep: listingSteps[Object.keys(listingSteps)[0]],
-      previousStep: ''
+      previousStep: '',
+      errors: []
     };
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.setListingProperties = this.setListingProperties.bind(this);
     this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
+    this.handleCompleteListing = this.handleCompleteListing.bind(this);
   }
 
   setCurrentStep(step) {
@@ -64,6 +71,26 @@ class ListingForm extends Component {
         listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
       }));
     }
+  }
+
+  handleCompleteListing(propertiesToAdd) {
+    this.setState((prevState) => ({
+      loading: true,
+      listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
+    }), () => {
+      let listing = this.state.listing;
+
+      listing.price *= 100;
+      listing.cleaning_fee *= 100;
+
+      ListingsService.create({ listing: listing})
+                     .then(response => {
+                       this.props.setCurrentView(listingsViews.index);
+                     })
+                     .catch(error => {
+                       this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
+                     });
+    });
   }
 
   renderStepper(){
@@ -101,6 +128,8 @@ class ListingForm extends Component {
                                        handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
         break;
       case listingSteps.pricing:
+        renderedStep = (<ListingPricing listing={ this.state.listing }
+                                        handleCompleteListing={ this.handleCompleteListing } />)
         break;
       default:
         renderedStep = (<ListingRegistration listing={ this.state.listing }
@@ -115,6 +144,7 @@ class ListingForm extends Component {
   }
 
   render() {
+    let errors = this.state.errors;
     let currentRenderedStep = this.renderStep(this.state.currentStep);
 
     return (
@@ -124,6 +154,11 @@ class ListingForm extends Component {
         }
         {
           currentRenderedStep
+        }
+        {
+          errors.map((error, index) => {
+            return (<Alert key={ "error" + index } type="danger" message={ error } />)
+          })
         }
       </div>
     )

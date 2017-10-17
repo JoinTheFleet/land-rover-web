@@ -20,6 +20,7 @@ import VehicleEngineFuelsService from '../../../../shared/services/vehicles/vehi
 import VehicleTransmissionService from '../../../../shared/services/vehicles/vehicle_transmissions_service';
 import VehicleSeatCountsService from '../../../../shared/services/vehicles/vehicle_seat_counts_service';
 import VehicleDoorCountsService from '../../../../shared/services/vehicles/vehicle_door_counts_service';
+import VehicleMakeModelVariantsService from '../../../../shared/services/vehicles/vehicle_make_model_variants_service';
 import ListingAmenitiesService from '../../../../shared/services/listings/listing_amenities_service';
 
 import Helpers from '../../../../miscellaneous/helpers';
@@ -27,7 +28,7 @@ import Constants from '../../../../miscellaneous/constants';
 
 const listingFiltersDisplayProperties = Constants.listingFiltersDisplayProperties();
 const filtersToLoadFirst = ['bodies', 'makes', 'amenities', 'engine_fuels', 'transmissions', 'seat_counts', 'door_counts'];
-const requiredFields = ['body', 'make', 'model', 'fuel', 'transmission', 'passengers', 'doors'];
+const requiredFields = ['vehicle_variant_id'];
 
 class ListingDetails extends Component {
 
@@ -40,11 +41,12 @@ class ListingDetails extends Component {
         body: '',
         make: '',
         model: '',
+        vehicle_variant_id: '',
         fuel: '',
         transmission: '',
         passengers: '',
         doors: '',
-        odc: '',
+        on_demand: '',
         amenities: []
       },
       filtersData: {}
@@ -121,6 +123,16 @@ class ListingDetails extends Component {
                                 this.addFiltersData({ models: response.data.data.models });
                               })
                               .catch((error) => { this.addError(error); });
+    }
+
+    if ((selectedParams.make && selectedParams.model) &&
+        (selectedParams.make !== prevState.selectedParams.make || selectedParams.model !== prevState.selectedParams.model)) {
+      VehicleMakeModelVariantsService.index(selectedParams.make, selectedParams.model)
+                                     .then((response) => {
+                                       console.log(response);
+                                       this.addFiltersData({ variants: response.data.data.variants });
+                                     })
+                                     .catch((error) => { this.addError(error); });
     }
   }
 
@@ -200,7 +212,13 @@ class ListingDetails extends Component {
   }
 
   getListingProperties() {
-    return this.state.selectedParams;
+    let selectedParams = this.state.selectedParams;
+
+    delete selectedParams.make;
+    delete selectedParams.body;
+    delete selectedParams.model;
+
+    return selectedParams;
   }
 
   handleAmenitySelected(selected, value) {
@@ -224,17 +242,24 @@ class ListingDetails extends Component {
                      intl={ this.props.intl }>
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.vehicle'}) }>
             {
-              [ ['body', 'bodies'], ['make', 'makes'], ['model', 'models']].map((param) => {
+              [ ['body', 'bodies'], ['make', 'makes'], ['model', 'models'], ['vehicle_variant_id', 'variants']].map((param) => {
                 let paramName = param[0];
                 let paramType = param[1];
+
+                let placeholderMessage = this.props.intl.formatMessage({ id: 'listings.' + paramName });
+
+                if (paramName === 'model' && !filtersData['makes']) {
+                  placeholderMessage = this.props.intl.formatMessage({ id: 'listings.details.select_car_make' });
+                }
 
                 return (
                   <ListingFormField key={ 'listings_vehicle_' + paramName } label={ this.props.intl.formatMessage({id: 'listings.' + paramName}) }>
                     <Dropdown name={ paramName }
-                              placeholder={ listing[paramName] || this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
+                              placeholder={ listing[paramName] || placeholderMessage }
                               items={ filtersData[paramType] || [] }
                               valueProperty="id"
                               displayProperty={ listingFiltersDisplayProperties }
+                              noPaddingOnList={ true }
                               itemClickHandler={ this.addSelectedParam } />
                   </ListingFormField>
                 )
@@ -255,7 +280,7 @@ class ListingDetails extends Component {
                               items={ filtersData[paramType] || [] }
                               valueProperty="id"
                               displayProperty={ listingFiltersDisplayProperties }
-                              itemClickHandler={ this.addSelectedParam } />
+                              noPaddingOnList={ true } />
                   </ListingFormField>
                 )
               })
@@ -264,10 +289,13 @@ class ListingDetails extends Component {
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) }>
-              <Dropdown name='odc'
+              <Dropdown name='on_demand'
                         placeholder={ listing.on_demand_collection || this.props.intl.formatMessage({ id: 'listings.on_demand_collection' }) }
-                        items={ [ this.props.intl.formatMessage({ id: 'application.no' }),
-                                  this.props.intl.formatMessage({ id: 'application.yes' }) ] }
+                        items={ [ { value: false, display: this.props.intl.formatMessage({ id: 'application.no' }) },
+                                  { value: true, display: this.props.intl.formatMessage({ id: 'application.yes' }) } ] }
+                        valueProperty="value"
+                        displayProperty="display"
+                        noPaddingOnList={ true }
                         itemClickHandler={ this.addSelectedParam } />
             </ListingFormField>
           </ListingFormFieldGroup>

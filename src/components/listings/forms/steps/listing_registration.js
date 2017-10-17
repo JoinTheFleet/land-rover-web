@@ -37,6 +37,7 @@ class ListingRegistration extends Component {
     }
     else {
       let errorMessage = this.props.intl.formatMessage({ id: 'errors.forms.fill_up_all_required_fields' });
+
       this.setState((prevState) => ({
         errors: prevState.errors.push(errorMessage)
       }));
@@ -47,13 +48,13 @@ class ListingRegistration extends Component {
     let listingCountry = document.getElementById('listing_country').value;
     let listingRegistration = document.getElementById('listing_registration').value;
 
-    return { country: listingCountry, registration: listingRegistration };
+    return { country: listingCountry, license_plate_number: listingRegistration };
   }
 
   validateFields() {
     let properties = this.getListingProperties();
 
-    return properties.country.length > 0 && properties.registration.length > 0;
+    return properties.country.length > 0 && properties.license_plate_number.length > 0;
   }
 
   render() {

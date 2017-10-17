@@ -364,4 +364,50 @@
     height: 32px;
     line-height: 32px;
   }
+
+  .loading-div {
+    height: 350px;
+  }
+
+  .fleet-image-gallery {
+    width: 100%;
+    height: 350px;
+
+    img:not(.fleet-image-gallery-remove-icon) {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .slick-dots {
+      bottom: 0;
+
+      li {
+        width: 15px;
+        margin: 0;
+
+        button {
+          &:before {
+            opacity: 0.5;
+            color: black;
+            font-size: 8px;
+          }
+        }
+
+        &.slick-active {
+          button {
+            &:before {
+              color: white;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #listing_images_uploaded_input {
+    width: 0;
+    height: 0;
+  }
 }

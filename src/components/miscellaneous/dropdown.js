@@ -65,7 +65,7 @@ export default class Dropdown extends Component {
 
           <Toggleable open={ this.state.open } duration={ 250 } >
             <div className="dropdown-items">
-              <ul>
+              <ul className={ this.props.noPaddingOnList ? 'no-padding-on-list' : '' }>
                 {
                   this.props.items.map((item, index) => {
                     let valueText = this.props.valueProperty ? item[this.props.valueProperty] : item;
@@ -74,7 +74,7 @@ export default class Dropdown extends Component {
                     if (displayProperty) {
                       if (displayProperty.constructor === Array) {
                         for(let i = 0; i < displayProperty.length; i++) {
-                          if (item[displayProperty[i]] && item[displayProperty[i]] !== '') {
+                          if (item[displayProperty[i]] && item[displayProperty[i]] !== '' && item[displayProperty[i]].constructor === String) {
                             displayText = item[displayProperty[i]];
                             break;
                           }
@@ -104,5 +104,6 @@ Dropdown.propTypes = {
   valueProperty: PropTypes.string,
   displayProperty: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   prefixPlaceholder: PropTypes.bool,
+  noPaddingOnList: PropTypes.bool,
   itemClickHandler: PropTypes.func
 };

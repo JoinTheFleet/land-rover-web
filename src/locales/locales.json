@@ -117,6 +117,7 @@
     "listings.body": "Type",
     "listings.make": "Make",
     "listings.model": "Model",
+    "listings.vehicle_variant_id": "Variant",
     "listings.year": "Year",
     "listings.details": "Details",
     "listings.fuel": "Fuel",
@@ -128,6 +129,8 @@
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Listings",
     "listings.add_new_listing": "Add New Listing",
+    "listings.complete_listing": "Complete Listing",
+
     "listings.sort.price_high_low": "Price high - low",
     "listings.sort.price_low_high": "Price low - high",
 
@@ -140,12 +143,22 @@
     "listings.registration.registration_details": "Registration Details",
     "listings.registration.please_enter_car_country": "Please enter your car’s country of registration & registration number.",
 
+    "listings.details.select_car_make": "Select car make",
+
     "listings.location.location_search": "Location Search",
     "listings.location.for_security_reasons": "For security reasons the exact location of your vehicle will not be be shared on your public profile.",
     "listings.location.address_location": "Address Location",
 
     "listings.images.vehicle_images": "Vehicle Images",
     "listings.images.upload_vehicle_images": "Upload Vehicle Image(s)",
+
+    "listings.pricing.prices": "Prices",
+    "listings.pricing.daily": "Daily",
+    "listings.pricing.cleaning": "Cleaning",
+    "listings.pricing.on_demand_collection": "On Demand Collection (Optional)",
+    "listings.pricing.earn_more_by_offering": "Earn more by offering renters the option to select their own On Demand Collection and Drop off Locations.",
+    "listings.pricing.distance": "Distance",
+    "listings.pricing.price": "Price",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 
