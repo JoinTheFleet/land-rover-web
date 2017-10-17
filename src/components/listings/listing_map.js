@@ -11,7 +11,6 @@ import {
 } from 'react-google-maps';
 
 import ListingItem from '../listings/listing_item';
-import Geolocation from '../../miscellaneous/geolocation';
 import GeolocationService from '../../shared/services/geolocation_service';
 
 const getPixelPositionOffset = (width, height) => ({
@@ -40,7 +39,7 @@ class ListingMap extends Component {
                         this.setState({
                           latitude: position.coords.latitude,
                           longitude: position.coords.longitude
-                        })
+                        });
                       });
   }
 
@@ -141,7 +140,6 @@ class ListingMap extends Component {
 
   render() {
     let listings = this.props.listings;
-    let elementToReturn;
     let latitude = this.state.latitude;
     let longitude = this.state.longitude;
 

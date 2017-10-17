@@ -26,8 +26,6 @@ import listToggleIcon from '../../assets/images/list_toggle.png';
 
 import Pageable from '../miscellaneous/pageable';
 
-import moment from 'moment';
-
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
 class Homefeed extends Component {
