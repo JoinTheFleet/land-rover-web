@@ -11,7 +11,14 @@ class FormRow extends Component {
             <span>{ this.props.placeholder }</span>
           </div>
           <div className='col-xs-10'>
-            <FormField focused={ this.props.focused } handleFocusChange={ this.props.handleFocusChange } handleChange={ this.props.handleChange } type={ this.props.type } id={ this.props.id } value={ this.props.value } placeholder={ this.props.placeholder } />
+            <FormField focused={ this.props.focused }
+                       handleFocusChange={ this.props.handleFocusChange }
+                       handleChange={ this.props.handleChange }
+                       type={ this.props.type }
+                       id={ this.props.id }
+                       value={ this.props.value }
+                       placeholder={ this.props.placeholder }
+                       options={ this.props.options} />
           </div>
         </div>
       </div>

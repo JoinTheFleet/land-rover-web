@@ -168,6 +168,21 @@
     "user_profile.first_name": "First Name",
     "user_profile.last_name": "Last Name",
     "user_profile.description": "Description",
-    "user_profile.date_of_birth": "Date of Birth"
+    "user_profile.date_of_birth": "Date of Birth",
+
+    "user_profile_verified_info.verified_info": "Verified Information",
+    "user_profile_verified_info.date_of_birth": "Date of Birth",
+    "user_profile_verified_info.gender": "Gender",
+    "user_profile_verified_info.gender.male": "Male",
+    "user_profile_verified_info.gender.female": "Female",
+    "user_profile_verified_info.address": "Address",
+    "user_profile_verified_info.address.address_line_1": "Address Line 1",
+    "user_profile_verified_info.address.address_line_2": "Address Line 2",
+    "user_profile_verified_info.address.state": "City",
+    "user_profile_verified_info.address.county": "County",
+    "user_profile_verified_info.address.post_code": "Post Code",
+    "user_profile_verified_info.address.country": "Country",
+    "user_profile_verified_info.email": "Email"
+
   }
 }
