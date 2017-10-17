@@ -96,11 +96,7 @@ export default class Constants {
   }
 
   static listingFiltersDisplayProperties() {
-    return {
-      body: 'body',
-      make: ['name', 'display'],
-      model: 'name'
-    };
+    return ['body', 'name', 'display', 'fuel', 'year', 'seats', 'doors', 'transmission'];
   }
 
   static types() {
