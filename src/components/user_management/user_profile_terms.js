@@ -3,10 +3,6 @@ import React, {
 } from 'react';
 
 export default class UserProfileTerms extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   getViewToRender() {
     let viewToRender = 'T';
 

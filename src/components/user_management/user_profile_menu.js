@@ -6,16 +6,6 @@ import Constants from '../../miscellaneous/constants';
 const userManagementViews = Constants.userManagementViews();
 
 export default class UserProfileMenu extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  getViewToRender() {
-    let viewToRender = 'Menu';
-
-    return viewToRender;
-  }
-
   render() {
     let menuKeys = Object.keys(userManagementViews);
 

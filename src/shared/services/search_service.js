@@ -1,4 +1,3 @@
-import client from '../libraries/client';
 import Service from './service';
 
 class SearchService extends Service {

@@ -3,9 +3,6 @@ import React, {
 } from 'react';
 
 export default class UserProfileSettings extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   getViewToRender() {
     let viewToRender = 'SE';

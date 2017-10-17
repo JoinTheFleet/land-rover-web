@@ -28,25 +28,6 @@ import Dropdown from '../../miscellaneous/dropdown';
 const listingsFiltersTypes = Constants.listingFiltersTypes();
 const types = Constants.types();
 
-const dropdownFilters = {
-  vehicle: ['type', 'make', 'model', 'year'],
-  details: ['fuel', 'transmission', 'passengers', 'doors']
-};
-
-const dummyData = {
-  // TODO: replace those with actual data provided by the API endpoints.
-  type: ['Type 1', 'Type 2', 'Type 3'],
-  make: ['Make 1', 'Make 2', 'Make 3'],
-  model: ['Model 1', 'Model 2', 'Model 3'],
-  year: [2017, 2016, 2015],
-  fuel: ['Fuel 1', 'Fuel 2', 'Fuel 3'],
-  transmission: ['Transmission 1', 'Transmission 2'],
-  passengers: [1, 2, 3, 4, 5],
-  doors: [1, 2, 3, 4, 5]
-};
-
-const amenities = ['Sunroof', 'Air Conditioning', 'ABS', 'Cruise Control', 'Lane Assist'];
-
 class ListingsFilters extends Component {
   constructor(props) {
     super(props);

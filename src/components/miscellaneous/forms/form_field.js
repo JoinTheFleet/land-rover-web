@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DateRangePicker, SingleDatePicker } from 'react-dates';
+import { ReactDatez } from 'react-datez';
+import moment from 'moment';
 
 export default class FormField extends Component {
   render() {
@@ -9,7 +11,7 @@ export default class FormField extends Component {
     if (this.props.type === 'textarea') {
       renderable = (
         <textarea id={ this.props.id }
-                  defaultValue={ this.props.value }
+                  value={ this.props.value }
                   placeholder={ this.props.placeholder }
                   onChange={ this.props.handleChange }
                   className='col-xs-12' />
@@ -18,18 +20,34 @@ export default class FormField extends Component {
     else if (this.props.type === 'singledate') {
       renderable = (
         <SingleDatePicker
-          date={null} // momentPropTypes.momentObj or null
-          onDateChange={date => this.setState({ date })} // PropTypes.func.isRequired
-          focused={true} // PropTypes.bool
-          onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+          date={this.props.value}
+          onDateChange={this.props.handleChange}
+          focused={this.props.focused}
+          onFocusChange={this.props.handleFocusChange}
+          showClearDate={false}
+          withPortal={false}
+          withFullScreenPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={1}
+          keepOpenOnDateSelect={false}
+          renderCalendardInfo={false}
+          hideKeyboardShortcutsPanel={true}
         />
       )
     }
-    else if (this.props.type === 'daterange') {
+    else if (this.props.type === 'singleyeardate') {
       renderable = (
-        <DateRangePicker
-          onDatesChange={this.props.handleChange} // PropTypes.func.isRequired,
-          onFocusChange={this.props.handleFocusChange} // PropTypes.func.isRequired,
+        <ReactDatez
+          value={this.props.value}
+          handleChange={this.props.handleChange}
+          highlightWeekends={true}
+          yearJump={this.props.yearJump || true}
+          allowPast={this.props.allowPast || true}
+          allowFuture={this.props.allowFuture || true}
+          startDate={this.props.startDate || this.props.value || moment()}
+          endDate={this.props.endDate}
+          position={this.props.position || 'left'}
+          placeholder={this.props.placeholder}
         />
       )
     }
@@ -37,9 +55,10 @@ export default class FormField extends Component {
       renderable = (
         <input type={ this.props.type }
                id={ this.props.id }
-               defaultValue={ this.props.value }
+               value={ this.props.value }
                placeholder={ this.props.placeholder }
                onChange={ this.props.handleChange }
+               onFocusChange={ this.props.handleFocusChange }
                className="col-xs-12" />
       );
     }
@@ -53,6 +72,7 @@ FormField.propTypes = {
   type: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string,
+  focused: PropTypes.book,
   handleChange: PropTypes.func.isRequired,
   handleFocusChange: PropTypes.func
 }

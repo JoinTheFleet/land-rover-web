@@ -21,7 +21,7 @@ class S3Uploader {
     }
     else {
       return s3.upload({
-        Key: `${folder_name || ''}/${file.name}-${Date.now()}`,
+        Key: `${folder_name || ''}/${file.name}`,
         Body: file,
         ContentType: file.type,
         ACL: "public-read"

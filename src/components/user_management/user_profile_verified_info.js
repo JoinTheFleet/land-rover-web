@@ -3,10 +3,6 @@ import React, {
 } from 'react';
 
 export default class UserProfileVerifiedInfo extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   getViewToRender() {
     let viewToRender = 'VI';
 

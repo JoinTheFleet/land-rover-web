@@ -17,6 +17,8 @@
     "application.sort_by": "Sort By",
     "application.view_all": "View All",
     "application.yes": "Yes",
+    "application.save": "Save",
+    "application.cancel": "Cancel",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -162,6 +164,7 @@
     "user_profile.profile": "Profile",
     "user_profile.first_name": "First Name",
     "user_profile.last_name": "Last Name",
-    "user_profile.description": "Description"
+    "user_profile.description": "Description",
+    "user_profile.date_of_birth": "Date of Birth"
   }
 }
