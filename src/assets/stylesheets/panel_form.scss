@@ -43,4 +43,31 @@
   }
 
   margin-bottom: 20px;
+
+
+  // Overrides for react-select styles.
+  .Select-multi-value-wrapper {
+    display: inline-block !important;
+    padding: inherit !important;
+  }
+
+  .Select-clear-zone,
+  .Select-arrow-zone {
+    display: table-cell !important;
+    padding: inherit !important;
+  }
+
+  .Select-clear,
+  .Select-arrow {
+    display: inline-block !important;
+    padding: inherit !important;
+  }
+
+  .Select-value-label {
+    padding-top: 0 !important;
+  }
+
+  .Select {
+    position: initial;
+  }
 }

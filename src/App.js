@@ -4,6 +4,7 @@ import './App.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-datez/dist/css/react-datez.css';
+import 'react-select/dist/react-select.css';
 
 import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';

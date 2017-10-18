@@ -17,7 +17,6 @@ class UserForm extends Component {
             <FormRow type='text' id='user-first-name' value={ this.props.user.first_name } handleChange={ this.props.handleFirstNameUpdate } placeholder={ this.props.intl.formatMessage({id: 'user_profile.first_name'}) } />
             <FormRow type='text' id='user-last-name' value={ this.props.user.last_name } handleChange={ this.props.handleLastNameUpdate } placeholder={ this.props.intl.formatMessage({id: 'user_profile.last_name'}) } />
             <FormRow type='textarea' id='user-description' value={ this.props.user.description ? this.props.user.description : '' } handleChange={ this.props.handleDescriptionUpdate } placeholder={ this.props.intl.formatMessage({id: 'user_profile.description'}) } />
-            <FormRow type='singleyeardate' id='user-dateofbirth' handleChange={ this.props.handleDateChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth) : moment() } placeholder={ this.props.intl.formatMessage({id: 'user_profile.date_of_birth'}) } />
           </div>
         </div>
       </div>

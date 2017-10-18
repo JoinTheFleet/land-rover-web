@@ -25,7 +25,6 @@ export default class UserProfileDetails extends Component {
     this.handleFirstNameUpdate = this.handleFirstNameUpdate.bind(this);
     this.handleLastNameUpdate = this.handleLastNameUpdate.bind(this);
     this.handleDescriptionUpdate = this.handleDescriptionUpdate.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
     this.setUser = this.setUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
   }
@@ -72,23 +71,13 @@ export default class UserProfileDetails extends Component {
     this.setState({ user: user })
   }
 
-  handleDateChange(date) {
-    let user = this.state.user;
-
-    user.date_of_birth = moment(date).unix();
-
-    this.setState({
-      user: user
-    });
-  }
 
   updateUser() {
     let user = this.state.user;
     let user_params = {
       first_name: user.first_name,
       last_name: user.last_name,
-      description: user.description,
-      date_of_birth: user.date_of_birth
+      description: user.description
     };
 
     if (this.state.imageURL) {
@@ -126,9 +115,7 @@ export default class UserProfileDetails extends Component {
         <UserForm user={this.state.user}
                   handleFirstNameUpdate={this.handleFirstNameUpdate}
                   handleLastNameUpdate={this.handleLastNameUpdate}
-                  handleDescriptionUpdate={this.handleDescriptionUpdate}
-                  handleDateChange={this.handleDateChange}
-                  date={this.state.date} />
+                  handleDescriptionUpdate={this.handleDescriptionUpdate} />
 
         <FormButtonRow>
           <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
