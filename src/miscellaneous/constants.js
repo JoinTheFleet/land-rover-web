@@ -44,6 +44,31 @@ export default class Constants {
     };
   }
 
+  static userManagementViews() {
+    return {
+      profile_details: {
+        key: 'profile_details',
+        display: 'Profile Details'
+      },
+      verified_info: {
+        key: 'verified_info',
+        display: 'Verified Info'
+      },
+      settings: {
+        key: 'settings',
+        display: 'Settings'
+      },
+      support: {
+        key: 'support',
+        display: 'Support'
+      },
+      t_and_cs: {
+        key: 't_and_cs',
+        display: "T's and C's"
+      }
+    }
+  }
+
   static listingSteps() {
     return {
       registration: 'registration',

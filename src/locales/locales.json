@@ -17,6 +17,8 @@
     "application.sort_by": "Sort By",
     "application.view_all": "View All",
     "application.yes": "Yes",
+    "application.save": "Save",
+    "application.cancel": "Cancel",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -165,6 +167,20 @@
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials.",
     "errors.forms.fill_up_all_required_fields": "Please fill up all required fields",
 
-    "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name"
+    "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
+
+    "user_profile_menu.profile_details": "Profile Details",
+    "user_profile_menu.verified_info": "Verified Info",
+    "user_profile_menu.settings": "Settings",
+    "user_profile_menu.support": "Support",
+    "user_profile_menu.t_and_cs": "T's & C's",
+
+    "user_profile.profile_photo": "Profile Photo",
+    "user_profile.upload_profile_pic": "Upload Profile Pic",
+    "user_profile.profile": "Profile",
+    "user_profile.first_name": "First Name",
+    "user_profile.last_name": "Last Name",
+    "user_profile.description": "Description",
+    "user_profile.date_of_birth": "Date of Birth"
   }
 }

@@ -1,4 +1,3 @@
-import { injectIntl } from 'react-intl';
 import { IntlProvider } from 'react-intl';
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
@@ -12,7 +11,6 @@ const language = cookies.get('userLocale') || ((navigator.languages && navigator
                      navigator.language ||
                      navigator.userLanguage);
 
-const messages = localeData[language] || localeData.en;
 const locale = acceptLanguage.get(language);
 
 const { intl } = new IntlProvider({

@@ -1,0 +1,46 @@
+@import "colors";
+
+.panel-form {
+  .form-header {
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: $secondary-color;
+    color: $inverted-text-color;
+  }
+
+  .form-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $smoke-grey-two;
+    border-top-width: 0;
+  }
+
+  .panel-image {
+    margin-bottom: 10px;
+  }
+
+  .form-row {
+    span,
+    input,
+    textarea {
+      font-size: 14px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    span {
+      display: block;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    margin-bottom: 10px;
+  }
+
+  margin-bottom: 20px;
+}
