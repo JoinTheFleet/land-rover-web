@@ -10,7 +10,7 @@ import VehicleEngineFuelsService from '../../../shared/services/vehicles/vehicle
 import VehicleMakesService from '../../../shared/services/vehicles/vehicle_makes_service';
 import VehicleTransmissionsService from '../../../shared/services/vehicles/vehicle_transmissions_service';
 import VehicleYearsService from '../../../shared/services/vehicles/vehicle_years_service';
-import VehicleMakeModelsService from '../../../shared/services/vehicles/vehicle_years_service';
+import VehicleMakeModelsService from '../../../shared/services/vehicles/vehicle_make_models_service';
 import VehicleSeatCountsService from '../../../shared/services/vehicles/vehicle_seat_counts_service';
 import ListingAmenitiesService from '../../../shared/services/listings/listing_amenities_service';
 
@@ -18,11 +18,8 @@ import LocalizationService from '../../../shared/libraries/localization_service'
 
 import Toggleable from '../../miscellaneous/toggleable';
 
-import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
-
-const listingsFiltersTypes = Constants.listingFiltersTypes();
 
 class ListingsFilters extends Component {
   constructor(props) {
@@ -47,9 +44,37 @@ class ListingsFilters extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidUpdate(props, state) {
     let filterOptions = this.state.filterOptions;
     let selectedFilters = this.state.selectedFilters;
+    let oldMakeID = state.selectedFilters.make_id;
+    let vehicleFilters = filterOptions.vehicle;
+
+    if (oldMakeID !== selectedFilters.make_id) {
+      let foundIndex = vehicleFilters.findIndex(filterOption => {
+        return filterOption.param === 'model_id';
+      });
+
+      if (foundIndex > -1) {
+        vehicleFilters.splice(foundIndex, 1);
+      }
+
+      VehicleMakeModelsService.index(selectedFilters.make_id).then(response => {
+        vehicleFilters.push({
+          position: 3,
+          param: 'model_id',
+          data: response.data.data.models,
+          name: LocalizationService.formatMessage('filters.model')
+        });
+      });
+
+      filterOptions.vehicle = vehicleFilters;
+      this.setState({filterOptions: filterOptions});
+    }
+  }
+
+  componentWillMount() {
+    let filterOptions = this.state.filterOptions;
 
     VehicleBodiesService.index().then(response => {
       filterOptions.vehicle.push({
@@ -135,7 +160,7 @@ class ListingsFilters extends Component {
   }
 
   handleFilterSelected(name, value) {
-    let selectedFilters = this.state.selectedFilters;
+    let selectedFilters = JSON.parse(JSON.stringify(this.state.selectedFilters));
 
     if (value) {
       selectedFilters[name] = value;
