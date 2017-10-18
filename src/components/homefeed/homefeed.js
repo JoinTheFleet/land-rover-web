@@ -135,17 +135,16 @@ class Homefeed extends Component {
   }
 
   handlePositionChange(bounds, center) {
-    let latitudes = bounds.f;
-    let longitudes = bounds.b;
     let location = {
-      latitude: center.lat(),
-      longitude: center.lng()
+      latitude: center.lat,
+      longitude: center.lng
     }
+
     let boundingBox = {
-      left: longitudes.b,
-      right: longitudes.f,
-      bottom: latitudes.b,
-      top: latitudes.f
+      left: bounds.sw.lng,
+      right: bounds.ne.lng,
+      bottom: bounds.sw.lat,
+      top: bounds.ne.lat
     }
 
     this.setState({
@@ -174,6 +173,7 @@ class Homefeed extends Component {
 
     if (boundingBox) {
       searchParams.bounding_box = boundingBox;
+      searchParams.force_bounding_box = true;
     }
 
     if (filters) {
