@@ -168,7 +168,21 @@ class ListingsFilters extends Component {
   handleFilterSelected(name, value) {
     let selectedFilters = JSON.parse(JSON.stringify(this.state.selectedFilters));
 
-    if (value) {
+    if (name === 'amenities') {
+      if (!selectedFilters[name]) {
+        selectedFilters[name] = [];
+      }
+
+      let existingIndex = selectedFilters[name].findIndex(element => element === value);
+
+      if (existingIndex > -1) {
+        selectedFilters[name].splice(existingIndex, 1);
+      }
+      else {
+        selectedFilters[name].push(value);
+      }
+    }
+    else if (value) {
       selectedFilters[name] = value;
     }
     else {
@@ -177,9 +191,9 @@ class ListingsFilters extends Component {
 
     this.setState({
       selectedFilters: selectedFilters
+    }, () => {
+      this.props.handleFilterToggle(selectedFilters)
     });
-
-    this.props.handleFilterToggle(selectedFilters)
   }
 
   renderListingsFilters() {
