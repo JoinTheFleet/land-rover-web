@@ -59,6 +59,8 @@ class ListingsFilters extends Component {
         vehicleFilters.splice(foundIndex, 1);
       }
 
+      delete selectedFilters.model_id;
+
       VehicleMakeModelsService.index(selectedFilters.make_id).then(response => {
         vehicleFilters.push({
           position: 3,
@@ -66,10 +68,14 @@ class ListingsFilters extends Component {
           data: response.data.data.models,
           name: LocalizationService.formatMessage('filters.model')
         });
-      });
 
-      filterOptions.vehicle = vehicleFilters;
-      this.setState({filterOptions: filterOptions});
+        filterOptions.vehicle = vehicleFilters;
+
+        this.setState({
+          filterOptions: filterOptions,
+          selectedFilters: selectedFilters
+        });
+      });
     }
   }
 
@@ -84,7 +90,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage("filters.body")
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleMakesService.index().then(response => {
@@ -95,7 +101,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.make')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleYearsService.index().then(response => {
@@ -106,7 +112,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.year')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleEngineFuelsService.index().then(response => {
@@ -117,7 +123,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.engine_fuel')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleTransmissionsService.index().then(response => {
@@ -128,7 +134,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.transmission')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleSeatCountsService.index().then(response => {
@@ -139,7 +145,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.seat_count')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleDoorCountsService.index().then(response => {
@@ -150,7 +156,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.door_count')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
 
@@ -172,11 +178,8 @@ class ListingsFilters extends Component {
     this.setState({
       selectedFilters: selectedFilters
     });
-  }
 
-  handleApplyFilters() {
-    this.props.toggleFilters();
-    this.props.setCurrentSearchParams(this.state.selectedFilters);
+    this.props.handleFilterToggle(selectedFilters)
   }
 
   renderListingsFilters() {
@@ -247,7 +250,7 @@ class ListingsFilters extends Component {
           }
 
           <div className="apply-listings-filters-div col-xs-12">
-            <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.handleApplyFilters() } }>
+            <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.props.toggleFilters() } }>
               <FormattedMessage id="listings.see_listings" />
             </button>
           </div>
@@ -268,5 +271,5 @@ class ListingsFilters extends Component {
 export default injectIntl(ListingsFilters);
 
 ListingsFilters.propTypes = {
-  setCurrentSearchParams: PropTypes.func.isRequired
+  handleFilterToggle: PropTypes.func.isRequired
 };

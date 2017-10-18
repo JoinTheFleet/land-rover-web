@@ -37,12 +37,15 @@ class Homefeed extends Component {
       nearby: [],
       collections: [],
       listings: [], // Added temporarily to show listings on map until HomeFeed endpoint returns locations
-      hasBeenScrolled: false
+      hasBeenScrolled: false,
+      currentSearch: false
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleFilterToggle = this.handleFilterToggle.bind(this);
 
     let component = this;
 
@@ -89,7 +92,7 @@ class Homefeed extends Component {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    if (this.state.hasBeenScrolled && this.state.listings && this.state.listings.length > 0) {
+    if ((this.state.hasBeenScrolled || this.state.currentSearch) && this.state.listings && this.state.listings.length > 0) {
       return (
         <div>
           <div>
@@ -145,13 +148,44 @@ class Homefeed extends Component {
       top: latitudes.f
     }
 
+    this.setState({
+      location: location,
+      boundingBox: boundingBox,
+      currentSearch: false
+    }, this.handleSearch);
+  }
+
+  handleFilterToggle(filters) {
+    this.setState({
+      filters: filters,
+      currentSearch: true
+    }, this.handleSearch);
+  }
+
+  handleSearch() {
+    let searchParams = {};
+    let location = this.state.location;
+    let boundingBox = this.state.boundingBox;
+    let filters = this.state.filters;
+
+    if (location) {
+      searchParams.location = location;
+    }
+
+    if (boundingBox) {
+      searchParams.bounding_box = boundingBox;
+    }
+
+    if (filters) {
+      Object.keys(filters).forEach(filter => {
+        if (filters[filter]) {
+          searchParams[filter] = filters[filter];
+        }
+      });
+    }
+
     SearchService.create({
-      search: {
-        location: location,
-        bounding_box: boundingBox,
-        force_bounding_box: true,
-        sort: 'distance'
-      }
+      search: searchParams
     }).then((response) => {
       this.setState({
         listings: response.data.data.listings,
@@ -224,7 +258,7 @@ class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <ListingsFiltersTopBar setCurrentSearchParams={ this.props.setCurrentSearchParams } />
+          <ListingsFiltersTopBar handleFilterToggle={ this.handleFilterToggle } />
         </div>
 
         { this.renderListingsToDisplay() }

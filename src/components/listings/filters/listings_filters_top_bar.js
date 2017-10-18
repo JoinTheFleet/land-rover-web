@@ -43,7 +43,7 @@ export default class ListingsFiltersTopBar extends Component {
           </a>
         </div>
         <ListingsFilters open={ this.state.filtersOpen }
-                         setCurrentSearchParams={ this.props.setCurrentSearchParams }
+                         handleFilterToggle={ this.props.handleFilterToggle }
                          toggleFilters={ this.toggleFilters } />
       </div>
     )
@@ -51,5 +51,5 @@ export default class ListingsFiltersTopBar extends Component {
 }
 
 ListingsFiltersTopBar.propTypes = {
-  setCurrentSearchParams: PropTypes.func.isRequired
+  handleFilterToggle: PropTypes.func.isRequired
 }

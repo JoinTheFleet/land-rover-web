@@ -44,16 +44,9 @@ class ListingMap extends Component {
   }
 
   toggleMarker(markerKey) {
-    if (this.state.markerSelected === markerKey) {
-      this.setState({
-        markerSelected: ''
-      });
-    }
-    else {
-      this.setState({
-        markerSelected: markerKey
-      });
-    }
+    let markerSelected = this.state.markerSelected === markerKey ? markerKey : '';
+
+    this.setState({markerSelected: markerSelected});
   }
 
   renderMarker(listing, index) {
@@ -63,8 +56,8 @@ class ListingMap extends Component {
     if (this.state.markerSelected === markerKey) {
       infoWindow = (
         <OverlayView position={{ lat: listing.location.latitude, lng: listing.location.longitude }}
-                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                     getPixelPositionOffset={getPixelPositionOffset}>
+                     mapPaneName={ OverlayView.OVERLAY_MOUSE_TARGET }
+                     getPixelPositionOffset={ getPixelPositionOffset }>
           <div className="listings-map-listing-details-div">
             <ListingItem additionalClasses="no-side-padding" listing={listing} />
           </div>
