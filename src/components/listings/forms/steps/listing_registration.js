@@ -14,6 +14,7 @@ import ListingFormField from '../listing_form_field';
 import FormField from '../../../miscellaneous/forms/form_field';
 
 import Constants from '../../../../miscellaneous/constants';
+import Helpers from '../../../../miscellaneous/helpers';
 
 const stepDirections = Constants.stepDirections();
 
@@ -23,11 +24,15 @@ class ListingRegistration extends Component {
     super(props);
 
     this.state = {
+      listing: this.props.listing,
       errors: []
     };
 
     this.proceedToNextStep = this.proceedToNextStep.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.getListingProperties = this.getListingProperties.bind(this);
+    this.handleCountrySelect = this.handleCountrySelect.bind(this);
+    this.handleLicensePlateChange = this.handleLicensePlateChange.bind(this);
   }
 
   proceedToNextStep() {
@@ -45,20 +50,37 @@ class ListingRegistration extends Component {
   }
 
   getListingProperties() {
-    let listingCountry = document.getElementById('listing_country').value;
-    let listingRegistration = document.getElementById('listing_registration').value;
+    let listing = this.state.listing;
 
-    return { country: listingCountry, license_plate_number: listingRegistration };
+    return { country: listing.country, license_plate_number: listing.license_plate_number };
   }
 
   validateFields() {
-    let properties = this.getListingProperties();
+    let listing = this.state.listing;
 
-    return properties.country.length > 0 && properties.license_plate_number.length > 0;
+    if (!listing.country || !listing.license_plate_number) {
+      return false;
+    }
+
+    return listing.country.length > 0 && listing.license_plate_number.length > 0;
+  }
+
+  handleCountrySelect(selectedOption) {
+    this.setState(prevState => ({
+      listing: Helpers.extendObject(prevState.listing, { country: selectedOption.value })
+    }));
+  }
+
+  handleLicensePlateChange(event) {
+    let value = event.target.value;
+
+    this.setState(prevState => ({
+      listing: Helpers.extendObject(prevState.listing, { license_plate_number: value })
+    }));
   }
 
   render() {
-    let listing = this.props.listing;
+    let listing = this.state.listing;
 
     return (
       <div className="listing-form-registration col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
@@ -70,16 +92,18 @@ class ListingRegistration extends Component {
                                 fieldsDescription={ this.props.intl.formatMessage({id: 'listings.registration.please_enter_car_country'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'application.country'}) }>
               <FormField id="listing_country"
-                        type="text"
-                        value={ listing ? listing.country : '' }
-                        placeholder={ this.props.intl.formatMessage({id: 'application.country'}) } />
+                         type="country"
+                         value={ listing.country }
+                         placeholder={ this.props.intl.formatMessage({id: 'application.country'}) }
+                         handleChange={ this.handleCountrySelect } />
             </ListingFormField>
 
             <ListingFormField label={ this.props.intl.formatMessage({id: 'application.registration'}) }>
               <FormField id="listing_registration"
                         type="text"
-                        value={ listing ? listing.registration : '' }
-                        placeholder={ this.props.intl.formatMessage({id: 'application.registration'}) } />
+                        value={ listing.license_plate_number }
+                        placeholder={ this.props.intl.formatMessage({id: 'application.registration'}) }
+                        handleChange={ this.handleLicensePlateChange } />
             </ListingFormField>
 
           </ListingFormFieldGroup>

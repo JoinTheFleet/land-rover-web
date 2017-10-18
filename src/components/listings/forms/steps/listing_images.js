@@ -112,7 +112,7 @@ class ListingImages extends Component {
 
   handleRemoveImage(image) {
     let images = this.state.images;
-    let index = images.indexOf(image);
+    let index = images.findIndex(currentImage => currentImage.url === image);
 
     if (index >= 0) {
       images.splice(index, 1);

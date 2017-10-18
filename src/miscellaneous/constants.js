@@ -75,7 +75,8 @@ export default class Constants {
       details: 'details',
       location: 'location',
       images: 'images',
-      pricing: 'pricing'
+      pricing: 'pricing',
+      rules: 'rules'
     };
   }
 

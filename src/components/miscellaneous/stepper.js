@@ -20,7 +20,7 @@ export default class Stepper extends Component {
     let totalDividers = steps.length + 2;
     let stepperContainerStyle = {
       marginLeft: 'calc(100% / ' + totalDividers + ')',
-      width: 'calc(100% / ' + totalDividers + ' * 5 )'
+      width: 'calc(100% / ' + totalDividers + ' * ' + (totalDividers - 2) + ')'
     };
 
     return (

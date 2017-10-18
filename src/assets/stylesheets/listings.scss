@@ -277,7 +277,7 @@
 }
 
 .listing-form-field {
-  input,
+  input[type=text],
   textarea,
   select,
   .listing-form-field-label,
@@ -285,9 +285,8 @@
     height: 36px;
   }
 
-  input,
-  .fleet-dropdown {
-    border: solid 1px $warm-grey;
+  .listings-readonly-value {
+    line-height: 36px;
   }
 
   .fleet-dropdown {

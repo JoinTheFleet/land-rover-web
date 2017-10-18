@@ -25,4 +25,20 @@ export default class Helpers {
   static capitalizeString(string) {
     return string[0].toUpperCase() + string.substr(1);
   }
+
+  static detectObjectValue(object, possibleKeys) {
+    let value;
+
+    for(let i = 0; i < possibleKeys.length; i++) {
+      if (!object[possibleKeys[i]]) {
+        continue;
+      }
+
+      if (object[possibleKeys[i]].toString().length > 0) {
+        value = object[possibleKeys[i]];
+      }
+    }
+
+    return value;
+  }
 }

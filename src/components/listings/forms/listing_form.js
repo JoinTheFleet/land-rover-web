@@ -6,6 +6,8 @@ import {
   injectIntl
 } from 'react-intl';
 
+import moment from 'moment';
+
 import PropTypes from 'prop-types';
 
 import Constants from '../../../miscellaneous/constants';
@@ -13,14 +15,17 @@ import Helpers from '../../../miscellaneous/helpers';
 
 import Stepper from '../../miscellaneous/stepper';
 import Alert from '../../miscellaneous/alert';
+import Loading from '../../miscellaneous/loading';
 
 import ListingRegistration from './steps/listing_registration';
 import ListingDetails from './steps/listing_details';
 import ListingLocation from './steps/listing_location';
 import ListingImages from './steps/listing_images';
 import ListingPricing from './steps/listing_pricing';
+import ListingRules from './steps/listing_rules';
 
 import ListingsService from '../../../shared/services/listings/listings_service';
+import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_lookups_service';
 
 const listingsViews = Constants.listingViews();
 const listingSteps = Constants.listingSteps();
@@ -32,6 +37,7 @@ class ListingForm extends Component {
     super(props);
 
     this.state = {
+      loading: false,
       listing: this.props.listing || {},
       currentStep: listingSteps[Object.keys(listingSteps)[0]],
       previousStep: '',
@@ -39,9 +45,10 @@ class ListingForm extends Component {
     };
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
-    this.setListingProperties = this.setListingProperties.bind(this);
-    this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
+    this.addListingProperties = this.addListingProperties.bind(this);
     this.handleCompleteListing = this.handleCompleteListing.bind(this);
+    this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
+    this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
   }
 
   setCurrentStep(step) {
@@ -51,7 +58,7 @@ class ListingForm extends Component {
     }));
   }
 
-  setListingProperties(propertiesToAdd) {
+  addListingProperties(propertiesToAdd) {
     this.setState((prevState) => ({
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }));
@@ -65,11 +72,39 @@ class ListingForm extends Component {
         (direction === stepDirections.previous && currentStepIndex > 0)) {
       stepKey = direction === stepDirections.next ? steps[currentStepIndex + 1] : steps[currentStepIndex - 1];
 
-      this.setState((prevState) => ({
-        currentStep: listingSteps[stepKey],
-        previousStep: prevState.currentStep,
-        listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
-      }));
+      if (propertiesToAdd.license_plate_number && propertiesToAdd.country) {
+        this.setState({
+          loading: true,
+        }, () => {
+          VehicleLookupsService.create(propertiesToAdd.license_plate_number, propertiesToAdd.country)
+                               .then(response => {
+                                 this.setState(prevState => ({
+                                   loading: false,
+                                   currentStep: listingSteps[stepKey],
+                                   previousStep: prevState.currentStep,
+                                   listing: Helpers.extendObject(prevState.listing, {
+                                     license_plate_number: propertiesToAdd.license_plate_number,
+                                     country: propertiesToAdd.country,
+                                     variant: response.data.data.variant
+                                   })
+                                 }));
+                               })
+                               .catch(error => {
+                                 console.log(error);
+                                 this.setState(prevState => ({
+                                   loading: false,
+                                   errors: prevState.errors.concat([error.message])
+                                 }));
+                               });
+        });
+      }
+      else {
+        this.setState((prevState) => ({
+          currentStep: listingSteps[stepKey],
+          previousStep: prevState.currentStep,
+          listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
+        }));
+      }
     }
   }
 
@@ -78,12 +113,9 @@ class ListingForm extends Component {
       loading: true,
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }), () => {
-      let listing = this.state.listing;
+      let submissionParams = this.extractListingParamsForSubmission();
 
-      listing.price *= 100;
-      listing.cleaning_fee *= 100;
-
-      ListingsService.create({ listing: listing})
+      ListingsService.create({ listing: submissionParams})
                      .then(response => {
                        this.props.setCurrentView(listingsViews.index);
                      })
@@ -91,6 +123,25 @@ class ListingForm extends Component {
                        this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
                      });
     });
+  }
+
+  extractListingParamsForSubmission() {
+    let listing = this.state.listing;
+    let submissionParams = JSON.parse(JSON.stringify(listing));
+
+    submissionParams.latitude = submissionParams.location.latitude;
+    submissionParams.longitude = submissionParams.location.longitude;
+    submissionParams.vehicle_variant_id = submissionParams.variant.id;
+    submissionParams.price *= 100;
+    submissionParams.cleaning_fee *= 100;
+    submissionParams.check_in_time = moment.duration(listing.check_out_time.format('HH:MM:SS')).asSeconds();
+    submissionParams.check_out_time = moment.duration(listing.check_in_time.format('HH:MM:SS')).asSeconds();
+
+    delete submissionParams.location;
+    delete submissionParams.country;
+    delete submissionParams.variant;
+
+    return submissionParams;
   }
 
   renderStepper(){
@@ -114,26 +165,35 @@ class ListingForm extends Component {
   renderStep(step) {
     let renderedStep;
 
-    switch(step) {
-      case listingSteps.details:
-        renderedStep = (<ListingDetails listing={ this.state.listing }
-                                        handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
-        break;
-      case listingSteps.location:
-        renderedStep = (<ListingLocation listing={ this.state.listing }
-                                        handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
-        break;
-      case listingSteps.images:
-        renderedStep = (<ListingImages listing={ this.state.listing }
-                                       handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
-        break;
-      case listingSteps.pricing:
-        renderedStep = (<ListingPricing listing={ this.state.listing }
+    if ( this.state.loading ) {
+      renderedStep = (<Loading />)
+    }
+    else {
+      switch(step) {
+        case listingSteps.details:
+          renderedStep = (<ListingDetails listing={ this.state.listing }
+                                          handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
+          break;
+        case listingSteps.location:
+          renderedStep = (<ListingLocation listing={ this.state.listing }
+                                           handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
+          break;
+        case listingSteps.images:
+          renderedStep = (<ListingImages listing={ this.state.listing }
+                                         handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
+          break;
+        case listingSteps.pricing:
+          renderedStep = (<ListingPricing listing={ this.state.listing }
+                                          handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
+          break;
+        case listingSteps.rules:
+          renderedStep = (<ListingRules listing={ this.state.listing }
                                         handleCompleteListing={ this.handleCompleteListing } />)
-        break;
-      default:
-        renderedStep = (<ListingRegistration listing={ this.state.listing }
-                                             handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />);
+          break;
+        default:
+          renderedStep = (<ListingRegistration listing={ this.state.listing }
+                                               handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />);
+      }
     }
 
     return (
