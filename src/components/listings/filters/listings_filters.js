@@ -182,6 +182,14 @@ class ListingsFilters extends Component {
         selectedFilters[name].push(value);
       }
     }
+    else if (name === 'on_demand') {
+      if (selectedFilters[name]) {
+        delete selectedFilters[name];
+      }
+      else {
+        selectedFilters[name] = true;
+      }
+    }
     else if (value) {
       selectedFilters[name] = value;
     }
@@ -241,17 +249,19 @@ class ListingsFilters extends Component {
           </FormattedMessage>
           <br/>
           <FormattedMessage id="listings.on_demand_collection">
-            { (text) => ( <span className="fs-16 text-secondary-font-weight">{ text }</span> ) }
+            { (text) => (
+              <div key='on_demand_filter' className="listings-amenity-filter fleet-checkbox">
+                <input type="checkbox" id='on-demand-checkbox' name="on-demand-checkbox" onChange={ (event) => { this.handleFilterSelected('on_demand') } } />
+                <label htmlFor={ 'on-demand-checkbox' } className="fs-16 text-secondary-font-weight">{ text }</label>
+              </div>
+            )}
           </FormattedMessage>
         </div>
 
         <div className="listings-filters-divider smoke-grey-two"></div>
 
-        <div className="listings-filters-amenities">
-          <FormattedMessage id="listings.amenities">
-            { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-          </FormattedMessage>
 
+        <div className="listings-filters-amenities">
           {
             this.state.amenities.map((amenity) => {
               let checkboxId = 'listings_amenity_' + amenity.id;
