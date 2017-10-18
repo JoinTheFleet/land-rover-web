@@ -184,6 +184,7 @@ class ListingsFilters extends Component {
 
   renderListingsFilters() {
     let filterGroups = Object.keys(this.state.filterOptions);
+    let selectedFilters = this.state.selectedFilters;
 
     return (
       <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
@@ -208,6 +209,7 @@ class ListingsFilters extends Component {
                                 name={ filter.param }
                                 placeholder={ filter.name }
                                 items={ filter.data }
+                                selectedValue={ selectedFilters[filter.param] }
                                 valueProperty="id"
                                 displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
                                 itemClickHandler={ this.handleFilterSelected } />

@@ -29,8 +29,6 @@ export default class Dropdown extends Component {
     let name = this.props.name;
 
     this.setState({
-      currentSelectedValue: value,
-      currentSelectedText: text,
       open: 'false' // TODO: check what's wrong with this (doesn't work with boolean false value)
     }, () => {
 
@@ -49,45 +47,44 @@ export default class Dropdown extends Component {
     let currentItemText = this.props.placeholder;
     let displayProperty = this.props.displayProperty;
 
-    if (this.props.prefixPlaceholder) {
-      currentItemText += this.state.currentSelectedText ? (': ' + this.state.currentSelectedText) : '';
-    }
-    else if (this.state.currentSelectedText) {
-      currentItemText = this.state.currentSelectedText;
-    }
+    let items =
+      this.props.items.map((item, index) => {
+
+        let valueText = this.props.valueProperty ? item[this.props.valueProperty] : item;
+        let displayText = valueText;
+
+        if (displayProperty) {
+          if (displayProperty.constructor === Array) {
+            for(let i = 0; i < displayProperty.length; i++) {
+              if (item[displayProperty[i]] && item[displayProperty[i]] !== '') {
+                displayText = item[displayProperty[i]];
+                break;
+              }
+            }
+          }
+          else {
+            displayText = item[displayProperty];
+          }
+        }
+
+        if (item[this.props.valueProperty] === this.props.selectedValue) {
+          currentItemText = displayText;
+        }
+
+        return (<li className="dropdown-item" key={ this.props.name + '_item_' + index } onClick={ () => { this.handleItemClick(valueText, displayText) } } >{ displayText }</li>);
+      });
 
     return (
       <div className="fleet-dropdown">
         <div className="currentSelectedItem" onClick={ () => { this.toggleDropdown() } }>
-          <span className={ this.state.currentSelectedText ? 'subtitle-font-weight' : '' } >{ currentItemText }</span>
+          <span className={ currentItemText !== this.props.placeholder ? 'subtitle-font-weight' : '' } >{ currentItemText }</span>
           <img src={ this.state.open ? dropdownOpenIcon : dropdownIcon } alt="dropdown_icon" />
           <input type="hidden" id={ this.props.name } name={ this.props.name } value={ this.state.currentSelectedValue || '' } />
 
           <Toggleable open={ this.state.open } duration={ 250 } >
             <div className="dropdown-items">
               <ul>
-                {
-                  this.props.items.map((item, index) => {
-                    let valueText = this.props.valueProperty ? item[this.props.valueProperty] : item;
-                    let displayText = valueText;
-
-                    if (displayProperty) {
-                      if (displayProperty.constructor === Array) {
-                        for(let i = 0; i < displayProperty.length; i++) {
-                          if (item[displayProperty[i]] && item[displayProperty[i]] !== '') {
-                            displayText = item[displayProperty[i]];
-                            break;
-                          }
-                        }
-                      }
-                      else {
-                        displayText = item[displayProperty];
-                      }
-                    }
-
-                    return (<li className="dropdown-item" key={ this.props.name + '_item_' + index } onClick={ () => { this.handleItemClick(valueText, displayText) } } >{ displayText }</li>);
-                  })
-                }
+                { items }
               </ul>
             </div>
           </Toggleable>
