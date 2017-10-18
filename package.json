@@ -53,6 +53,8 @@
     "react-hot-loader": "",
     "react-intl": "",
     "react-slick": "",
+    "react-moment-proptypes": "",
+    "react-select": "",
     "sass-loader": "",
     "aws-sdk": "",
     "slick-carousel": "",
