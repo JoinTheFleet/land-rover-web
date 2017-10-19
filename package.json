@@ -48,6 +48,7 @@
     "react-anime": "",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
+    "closest": "",
     "react-facebook-login": "",
     "google-map-react": "",
     "react-google-maps": "",
