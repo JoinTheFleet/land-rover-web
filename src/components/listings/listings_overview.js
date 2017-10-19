@@ -33,6 +33,7 @@ export default class ListingsOverview extends Component {
 
     this.fetchListings = this.fetchListings.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
   }
 
   componentWillMount() {
@@ -62,6 +63,10 @@ export default class ListingsOverview extends Component {
     });
   }
 
+  handleEditButtonClick(listing) {
+    this.props.handleChangeView(listingsViews.edit, { currentListing: listing });
+  }
+
   renderMainContent() {
     if (!this.state.loaded) {
       return (<Loading></Loading>);
@@ -70,7 +75,14 @@ export default class ListingsOverview extends Component {
       return (
         <div>
           {
-            this.state.listings.map((listing) => ( <ListingCard key={'listing_' + listing.id} listing={ listing } /> ))
+            this.state.listings.map((listing) => {
+              return (
+                <ListingCard key={'listing_' + listing.id}
+                             listing={ listing }
+                             enableEdit={ true }
+                             handleEditButtonClick={ this.handleEditButtonClick } />
+              )
+            })
           }
         </div>
       )

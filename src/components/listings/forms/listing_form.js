@@ -51,6 +51,17 @@ class ListingForm extends Component {
     this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.edit) {
+      let listing = this.state.listing;
+
+      this.proceedToStepAndAddProperties(stepDirections.next, {
+        license_plate_number: listing.license_plate_number,
+        country: listing.country_configuration.country.alpha2
+      });
+    }
+  }
+
   setCurrentStep(step) {
     this.setState((prevState) => ({
       currentStep: step,
@@ -115,33 +126,45 @@ class ListingForm extends Component {
     }), () => {
       let submissionParams = this.extractListingParamsForSubmission();
 
-      ListingsService.create({ listing: submissionParams})
-                     .then(response => {
-                       this.props.setCurrentView(listingsViews.index);
-                     })
-                     .catch(error => {
-                       this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
-                     });
+      if (this.props.edit) {
+        ListingsService.update(this.state.listing.id, { listing: submissionParams })
+                       .then(response => {
+                         this.props.setCurrentView(listingsViews.index);
+                       })
+                       .catch(error => {
+                         this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
+                       });
+      }
+      else {
+        ListingsService.create({ listing: submissionParams})
+                       .then(response => {
+                         this.props.setCurrentView(listingsViews.index);
+                       })
+                       .catch(error => {
+                         this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
+                       });
+      }
     });
   }
 
   extractListingParamsForSubmission() {
     let listing = this.state.listing;
-    let submissionParams = JSON.parse(JSON.stringify(listing));
 
-    submissionParams.latitude = submissionParams.location.latitude;
-    submissionParams.longitude = submissionParams.location.longitude;
-    submissionParams.vehicle_variant_id = submissionParams.variant.id;
-    submissionParams.price *= 100;
-    submissionParams.cleaning_fee *= 100;
-    submissionParams.check_in_time = moment.duration(listing.check_out_time.format('HH:MM:SS')).asSeconds();
-    submissionParams.check_out_time = moment.duration(listing.check_in_time.format('HH:MM:SS')).asSeconds();
-
-    delete submissionParams.location;
-    delete submissionParams.country;
-    delete submissionParams.variant;
-
-    return submissionParams;
+    return {
+      latitude: listing.location.latitude,
+      longitude: listing.location.longitude,
+      vehicle_variant_id: listing.variant.id,
+      images: listing.images,
+      on_demand: listing.on_demand,
+      on_demand_rates: listing.on_demand_rates,
+      amenities: listing.amenities,
+      price: listing.price * 100,
+      cleaning_fee: listing.cleaning_fee * 100,
+      license_plate_number: listing.license_plate_number,
+      check_in_time: moment.duration(listing.check_out_time.format('HH:MM:SS')).asSeconds(),
+      check_out_time: moment.duration(listing.check_in_time.format('HH:MM:SS')).asSeconds(),
+      rules: listing.rules
+    };
   }
 
   renderStepper(){
@@ -228,5 +251,7 @@ class ListingForm extends Component {
 export default injectIntl(ListingForm);
 
 ListingForm.propTypes = {
-  listing: PropTypes.object
+  listing: PropTypes.object,
+  setCurrentView: PropTypes.func,
+  edit: PropTypes.bool
 }
