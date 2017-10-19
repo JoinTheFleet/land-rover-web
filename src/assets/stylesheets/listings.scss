@@ -410,3 +410,26 @@
     height: 0;
   }
 }
+
+/* Listing Prices */
+.listing-form-pricing {
+  .listing-on-demand-rate-row  {
+    & + .listing-on-demand-rate-row {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: solid 1px lightgrey;
+    }
+
+    & + .listing-form-odc-rate-add-new {
+      margin-top: 15px;
+    }
+  }
+}
+
+/* Listing Rules */
+.listing-form-rules {
+  #listing_rules {
+    resize: none;
+    min-height: 200px;
+  }
+}

@@ -58,7 +58,7 @@ class ListingRules extends Component {
     let listing = this.state.listing;
 
     return (
-      <div className="listing-form-registration col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
+      <div className="listing-form-rules col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleCompleteListing={ this.props.handleCompleteListing }
