@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import FormRow from '../../miscellaneous/forms/form_row';
-import moment from 'moment';
 
 class UserForm extends Component {
   render() {

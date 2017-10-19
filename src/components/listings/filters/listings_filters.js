@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 

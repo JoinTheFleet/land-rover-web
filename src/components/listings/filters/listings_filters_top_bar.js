@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Dropdown, MenuItem } from 'react-bootstrap';
 import LocalizationService from '../../../shared/libraries/localization_service';
 
 import PropTypes from 'prop-types';
 
 import ListingsFilters from './listings_filters';
 import SortDropdown from './sort_dropdown';
-
-const SORT_FILTERS = ['price', 'name', 'rating', 'distance']
 
 class ListingsFiltersTopBar extends Component {
   constructor(props) {

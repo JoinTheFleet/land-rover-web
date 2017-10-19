@@ -22,7 +22,7 @@ class SortDropdown extends Component {
           <Dropdown.Menu>
             {
               SORT_FILTERS.map((filter) => {
-                return <MenuItem eventKey={filter} active={filter === this.props.selectedSort}>{ LocalizationService.formatMessage(`listings.sort.${filter}`) }</MenuItem>
+                return <MenuItem key={`sort_filter_${filter}`} eventKey={filter} active={filter === this.props.selectedSort}>{ LocalizationService.formatMessage(`listings.sort.${filter}`) }</MenuItem>
               })
             }
           </Dropdown.Menu>

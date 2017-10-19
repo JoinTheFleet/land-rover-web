@@ -5,15 +5,8 @@ import GoogleMapReact from 'google-map-react';
 import ListingItem from '../listings/listing_item';
 import GeolocationService from '../../shared/services/geolocation_service';
 
-import Anime from 'react-anime';
-
 import Helpers from '../../miscellaneous/helpers';
 import closest from 'closest';
-
-const getPixelPositionOffset = (width, height) => ({
-  x: -(width / 2),
-  y: -(height + 10),
-});
 
 class ListingMap extends Component {
   constructor(props) {
@@ -52,7 +45,6 @@ class ListingMap extends Component {
   renderMarker(listing, index) {
     let markerKey = `listing_${listing.id}`;
     let coordinates = this.listingLocation(listing);
-    let infoWindow = '';
     let selected = false;
 
     if (this.state.markerSelected === markerKey) {

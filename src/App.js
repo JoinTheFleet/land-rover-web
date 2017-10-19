@@ -17,16 +17,13 @@ import Listings from './components/listings/listings';
 import UserManagement from './components/user_management/user_management';
 
 import AuthenticationService from './shared/services/authentication_service';
+import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
-
-import Helpers from './miscellaneous/helpers';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
-const listingsFiltersTypes = Constants.listingFiltersTypes();
-const types = Constants.types();
 
 export default class App extends Component {
   constructor(props) {
@@ -36,8 +33,14 @@ export default class App extends Component {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
       currentSelectedView: navigationSections.home,
-      currentSearchParams: {},
-      openModals: []
+      openModals: [],
+      listings: [],
+      locationName: '',
+      currentSearch: false,
+      customSearch: false,
+      location: undefined,
+      boundingBox: undefined,
+      sort: 'distance'
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -46,11 +49,13 @@ export default class App extends Component {
 
     this.toggleModal = this.toggleModal.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
-    this.addSearchParams = this.addSearchParams.bind(this);
-    this.removeSearchParams = this.removeSearchParams.bind(this);
-    this.setCurrentSearchParams = this.setCurrentSearchParams.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handlePositionChange = this.handlePositionChange.bind(this);
+    this.handleMapDrag = this.handleMapDrag.bind(this);
+    this.handleSortToggle = this.handleSortToggle.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   setAccessToken(accessToken) {
@@ -71,62 +76,6 @@ export default class App extends Component {
         delete client.defaults.headers.common['Authorization'];
       }
     });
-  }
-
-  setCurrentSearchParams(searchParams) {
-    let location = this.state.currentSearchParams.location;
-    let startDate = this.state.currentSearchParams.startDate;
-    let endDate = this.state.currentSearchParams.endDate;
-
-    this.setState({
-      currentSearchParams: Helpers.extendObject(searchParams, { location: location, startDate: startDate, endDate: endDate })
-    });
-  }
-
-  addSearchParams(searchParams) {
-    let newSearchParams = this.state.currentSearchParams;
-    let searchParamsToAdd = searchParams || {};
-    let searchParamValue;
-
-    for(var key in searchParamsToAdd) {
-      searchParamValue = searchParamsToAdd[key];
-
-      if (listingsFiltersTypes[key] === types.array) {
-        if ( !newSearchParams[key] ) {
-          newSearchParams[key] = [];
-        }
-
-        if ( newSearchParams[key].indexOf(searchParamValue) < 0 ) {
-          newSearchParams[key].push(searchParamValue);
-        }
-      }
-      else {
-        newSearchParams[key] = searchParamValue;
-      }
-    }
-
-    this.setState({ currentSearchParams: newSearchParams });
-  }
-
-  removeSearchParams(searchParams) {
-    let newSearchParams = this.state.currentSearchParams;
-    let searchParamsToRemove = searchParams || {};
-    let searchParamValue;
-
-    for(var key in searchParamsToRemove) {
-      if (newSearchParams[key]) {
-        searchParamValue = searchParamsToRemove[key];
-
-        if (listingsFiltersTypes[key] === types.array) {
-          newSearchParams[key].splice(newSearchParams[key].indexOf(searchParamValue), 1);
-        }
-        else {
-          delete newSearchParams[key];
-        }
-      }
-    }
-
-    this.setState({ currentSearchParams: newSearchParams });
   }
 
   changeCurrentUserRole() {
@@ -194,14 +143,107 @@ export default class App extends Component {
         break;
       default:
         if (this.state.accessToken && this.state.accessToken !== '' ) {
-          viewToRender = (<Homefeed accessToken={ this.state.accessToken } searchParams={ this.state.currentSearchParams } setCurrentSearchParams={ this.setCurrentSearchParams } />);
+          viewToRender = (<Homefeed accessToken={ this.state.accessToken }
+                                    handleFilterToggle={ this.handleFilterToggle }
+                                    handleMapDrag={ this.handleMapDrag }
+                                    handlePositionChange={ this.handlePositionChange }
+                                    handleSortToggle={ this.handleSortToggle }
+                                    sort={ this.state.sort }
+                                    listings={ this.state.listings }
+                                    customSearch={ this.state.customSearch }
+                                    currentSearch={ this.state.currentSearch } />);
         }
         else {
-          viewToRender = (<Homescreen addSearchParamHandler={ this.addSearchParams } />);
+          viewToRender = (<Homescreen />);
         }
     }
 
     return viewToRender;
+  }
+
+  handleSearch() {
+    let searchParams = {
+      sort: this.state.sort
+    };
+    let location = this.state.location;
+    let boundingBox = this.state.boundingBox;
+    let filters = this.state.filters;
+
+    if (location) {
+      searchParams.location = location;
+    }
+
+    if (boundingBox) {
+      searchParams.bounding_box = boundingBox;
+      searchParams.force_bounding_box = true;
+    }
+
+    if (filters) {
+      Object.keys(filters).forEach(filter => {
+        if (filters[filter]) {
+          searchParams[filter] = filters[filter];
+        }
+      });
+    }
+
+    SearchService.create({
+      search: searchParams
+    }).then((response) => {
+      this.setState({
+        listings: response.data.data.listings,
+      });
+    })
+  }
+
+  handleSortToggle(eventKey, event) {
+    this.setState({
+      sort: eventKey,
+      customSearch: true
+    }, this.handleSearch)
+  }
+
+  handlePositionChange(bounds, center) {
+    let location = {
+      latitude: center.lat,
+      longitude: center.lng
+    }
+
+    let boundingBox = {
+      left: bounds.sw.lng,
+      right: bounds.ne.lng,
+      bottom: bounds.sw.lat,
+      top: bounds.ne.lat
+    }
+
+    this.setState({
+      location: location,
+      boundingBox: boundingBox,
+      currentSearch: false
+    }, this.handleSearch);
+  }
+
+  handleFilterToggle(filters) {
+    this.setState({
+      filters: filters,
+      currentSearch: true
+    }, this.handleSearch);
+  }
+
+  handleMapDrag(bounds, center) {
+    this.setState({
+      customSearch: true
+    });
+    this.handlePositionChange(bounds, center);
+  }
+
+  handleLocationChange(event) {
+    this.setState({
+      locationName: event.target.value
+    });
+  }
+
+  handlePeriodChange() {
+    console.log(arguments)
   }
 
   render() {
@@ -212,7 +254,11 @@ export default class App extends Component {
                 currentMenuItem={ this.state.currentSelectedView }
                 handleMenuItemSelect={ this.handleMenuItemSelect }
                 toggleModal={ this.toggleModal }
-                handleChangeCurrentUserRole={ this.changeCurrentUserRole } />
+                handleChangeCurrentUserRole={ this.changeCurrentUserRole }
+                handleLocationChange={this.handleLocationChange}
+                handlePeriodChange={this.handlePeriodChange}
+                locationName={this.state.locationName}
+                hideSearchForm={false} />
 
         { this.renderHeaderTopMenu() }
 

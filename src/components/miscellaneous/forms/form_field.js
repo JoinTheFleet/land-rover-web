@@ -87,7 +87,7 @@ export default class FormField extends Component {
                value={ this.props.value || '' }
                placeholder={ this.props.placeholder }
                onChange={ this.props.handleChange }
-               className="col-xs-12" />
+               className={ typeof(this.props.className) === 'string' ? this.props.className : "col-xs-12" }/>
       );
     }
 
