@@ -124,10 +124,7 @@
 
 .listing_map_price {
   cursor: default;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+
   font-size: 14px;
   font-weight: 200;
   border: 1px solid black;
@@ -136,8 +133,16 @@
   display: inline;
   border-radius: 5px;
 
-  &.blue {
-    color: blue;
+  span {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    &.blue {
+      color: blue;
+    }
   }
 }
 

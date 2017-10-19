@@ -25,6 +25,7 @@ class ListingMap extends Component {
 
     this.selectMarker = this.selectMarker.bind(this);
     this.onPositionChange = this.onPositionChange.bind(this);
+    this.mapDragged = this.mapDragged.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
@@ -40,6 +41,10 @@ class ListingMap extends Component {
 
   selectMarker(id) {
     this.setState({markerSelected: `listing_${id}`});
+  }
+
+  mapDragged() {
+    this.setState({mapDragged: true})
   }
 
   renderMarker(listing, index) {
@@ -58,9 +63,10 @@ class ListingMap extends Component {
     else {
       let marker = '';
       let className = 'listing_map_price';
+      let selectedClassName = '';
 
       if (selected) {
-        className += ' blue';
+        selectedClassName = 'blue'
       }
 
       marker = (
@@ -70,8 +76,12 @@ class ListingMap extends Component {
              listing_id={listing.id}
              id={`listing_${listing.id}_map_pin`}
              onClick={(event) => {this.selectMarker(listing.id)}}
-             className={className}>{`${listing.country_configuration.country.currency_symbol}${Math.round(listing.price / 100)}`}</div>
-      )
+             className={className}>
+              <span className={selectedClassName}>
+                {`${listing.country_configuration.country.currency_symbol}${Math.round(listing.price / 100)}`}
+              </span>
+        </div>
+      );
 
       return marker;
     }
@@ -90,7 +100,7 @@ class ListingMap extends Component {
     });
 
     if (this.state.mapDragged) {
-      this.props.onBoundsChange(options.bounds, center)
+      this.props.onDragEnd(options.bounds, center);
     }
     else {
       this.props.onPositionChange(options.bounds, center);
@@ -139,6 +149,7 @@ class ListingMap extends Component {
           onClick={this.onClick}
           draggable={true}
           onChange={this.onPositionChange}
+          onDrag={this.mapDragged}
           center={{ lat: latitude, lng: longitude }}
           zoom={ 10 }
         >
