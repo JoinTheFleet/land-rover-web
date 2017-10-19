@@ -37,7 +37,7 @@ class Homefeed extends Component {
       nearby: [],
       collections: [],
       listings: [], // Added temporarily to show listings on map until HomeFeed endpoint returns locations
-      hasBeenScrolled: false,
+      customSearch: false,
       currentSearch: false,
       sort: 'distance'
     };
@@ -94,7 +94,7 @@ class Homefeed extends Component {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    if ((this.state.hasBeenScrolled || this.state.currentSearch) && this.state.listings && this.state.listings.length > 0) {
+    if ((this.state.customSearch || this.state.currentSearch) && this.state.listings && this.state.listings.length > 0) {
       return (
         <div>
           <div>
@@ -165,7 +165,8 @@ class Homefeed extends Component {
 
   handleSortToggle(eventKey, event) {
     this.setState({
-      sort: eventKey
+      sort: eventKey,
+      customSearch: true
     }, this.handleSearch)
   }
 
@@ -205,7 +206,7 @@ class Homefeed extends Component {
 
   handleMapDrag(bounds, center) {
     this.setState({
-      hasBeenScrolled: true
+      customSearch: true
     });
     this.handlePositionChange(bounds, center);
   }
