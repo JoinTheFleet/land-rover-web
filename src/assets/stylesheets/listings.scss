@@ -148,8 +148,13 @@
 
 .listings-map {
   .listings-map-listing-details-div {
+    z-index: 50000000;
     width: 276px;
     height: 200px;
+
+    * {
+      z-index: 50000000;
+    }
   }
 
   .listing-item {
