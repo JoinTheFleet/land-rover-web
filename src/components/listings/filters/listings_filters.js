@@ -21,7 +21,7 @@ import Toggleable from '../../miscellaneous/toggleable';
 import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
 
-class ListingsFilters extends Component {
+export default class ListingsFilters extends Component {
   constructor(props) {
     super(props);
 
@@ -293,8 +293,6 @@ class ListingsFilters extends Component {
     )
   }
 }
-
-export default injectIntl(ListingsFilters);
 
 ListingsFilters.propTypes = {
   handleFilterToggle: PropTypes.func.isRequired

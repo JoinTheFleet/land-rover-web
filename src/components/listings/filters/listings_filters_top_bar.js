@@ -1,16 +1,15 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import LocalizationService from '../../../shared/libraries/localization_service';
 
 import PropTypes from 'prop-types';
 
 import ListingsFilters from './listings_filters';
 
-export default class ListingsFiltersTopBar extends Component {
+const SORT_FILTERS = ['price', 'name', 'rating', 'distance']
+
+class ListingsFiltersTopBar extends Component {
   constructor(props) {
     super(props);
 
@@ -25,22 +24,36 @@ export default class ListingsFiltersTopBar extends Component {
     this.setState((prevState) => ( { filtersOpen: !prevState.filtersOpen } ));
   }
 
+  sortButton() {
+    return (
+      <Dropdown onSelect={this.props.handleSortToggle}
+                pullRight={true}
+                key='search-sort'
+                id='search-sort'>
+        <Dropdown.Toggle className='secondary-color white-text fs-12 selectListingsSortByBtn'>
+          { LocalizationService.formatMessage(`listings.sort.${this.props.selectedSort}`) }
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {
+            SORT_FILTERS.map((filter) => {
+              return <MenuItem eventKey={filter} active={filter === this.props.selectedSort}>{ LocalizationService.formatMessage(`listings.sort.${filter}`) }</MenuItem>
+            })
+          }
+        </Dropdown.Menu>
+      </Dropdown>
+    )
+  }
+
   render() {
     return (
       <div id="filters_top_bar" className="smoke-grey">
         <a id="selectListingsFiltersBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn"
            onClick={ () => { this.toggleFilters() } }>
-          <FormattedMessage id="application.filter" />
+           { LocalizationService.formatMessage('application.filter') }
         </a>
         <div className="pull-right">
-          <FormattedMessage id="application.sort_by">
-            { (text) => (
-              <span className="tertiary-text-color text-uppercase">{text}</span>
-            ) }
-          </FormattedMessage>
-          <a id="selectListingsSortByBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn" >
-            <FormattedMessage id="listings.sort.price_high_low" />
-          </a>
+          <span className="tertiary-text-color text-uppercase">{ LocalizationService.formatMessage('application.sort_by') }</span>
+          { this.sortButton() }
         </div>
         <ListingsFilters open={ this.state.filtersOpen }
                          handleFilterToggle={ this.props.handleFilterToggle }
@@ -50,6 +63,10 @@ export default class ListingsFiltersTopBar extends Component {
   }
 }
 
+export default injectIntl(ListingsFiltersTopBar);
+
 ListingsFiltersTopBar.propTypes = {
-  handleFilterToggle: PropTypes.func.isRequired
+  handleFilterToggle: PropTypes.func.isRequired,
+  handleSortToggle: PropTypes.func.isRequired,
+  selectedSort: PropTypes.string.isRequired
 }

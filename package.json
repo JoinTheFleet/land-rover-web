@@ -42,6 +42,7 @@
     "promise": "8.0.1",
     "prop-types": "",
     "react": "^15.6.1",
+    "react-bootstrap": "",
     "react-dates": "",
     "react-datez": "",
     "react-addons-shallow-compare": "",

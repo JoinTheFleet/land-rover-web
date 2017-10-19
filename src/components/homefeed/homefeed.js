@@ -38,7 +38,8 @@ class Homefeed extends Component {
       collections: [],
       listings: [], // Added temporarily to show listings on map until HomeFeed endpoint returns locations
       hasBeenScrolled: false,
-      currentSearch: false
+      currentSearch: false,
+      sort: 'distance'
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
@@ -46,6 +47,7 @@ class Homefeed extends Component {
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleFilterToggle = this.handleFilterToggle.bind(this);
+    this.handleSortToggle = this.handleSortToggle.bind(this);
 
     let component = this;
 
@@ -161,8 +163,16 @@ class Homefeed extends Component {
     }, this.handleSearch);
   }
 
+  handleSortToggle(eventKey, event) {
+    this.setState({
+      sort: eventKey
+    }, this.handleSearch)
+  }
+
   handleSearch() {
-    let searchParams = {};
+    let searchParams = {
+      sort: this.state.sort
+    };
     let location = this.state.location;
     let boundingBox = this.state.boundingBox;
     let filters = this.state.filters;
@@ -212,8 +222,8 @@ class Homefeed extends Component {
                   loadingElement={ <div style={{ height: `100%` }} /> }
                   containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  onDragEnd={this.handleMapDrag}
-                  onPositionChange={this.handlePositionChange}
+                  onDragEnd={ this.handleMapDrag }
+                  onPositionChange={ this.handlePositionChange }
                   listings={ this.state.listings } />
     )
   }
@@ -258,7 +268,7 @@ class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <ListingsFiltersTopBar handleFilterToggle={ this.handleFilterToggle } />
+          <ListingsFiltersTopBar selectedSort={ this.state.sort } handleSortToggle={ this.handleSortToggle } handleFilterToggle={ this.handleFilterToggle } />
         </div>
 
         { this.renderListingsToDisplay() }
