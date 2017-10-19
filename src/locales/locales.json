@@ -133,6 +133,7 @@
     "listings.see_listings": "See Listings",
     "listings.add_new_listing": "Add New Listing",
     "listings.complete_listing": "Complete Listing",
+    "listings.price_per_day": "{currency_symbol}{price} per day",
 
     "listings.sort.price_high_low": "Price high - low",
     "listings.sort.price_low_high": "Price low - high",

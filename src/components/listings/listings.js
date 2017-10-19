@@ -5,6 +5,7 @@ import React, {
 import Constants from '../../miscellaneous/constants';
 
 import ListingsOverview from './listings_overview';
+import ListingView from './listing_view';
 import ListingForm from './forms/listing_form';
 
 import Helpers from '../../miscellaneous/helpers';
@@ -44,7 +45,7 @@ export default class Listings extends Component {
         );
         break;
       case listingsViews.view:
-        viewToRender = '';
+        viewToRender = <ListingView listing={ this.state.currentListing } />;
         break;
       default:
         viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);

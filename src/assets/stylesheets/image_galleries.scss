@@ -3,6 +3,18 @@
     position: relative;
   }
 
+  .slick-slider,
+  .slick-list,
+  .slick-track {
+    height: 100%;
+  }
+
+  img:not(.fleet-image-gallery-remove-icon) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .fleet-image-gallery-remove-icon {
     position: absolute;
     right: 5px;
@@ -14,6 +26,32 @@
 
     &:hover {
       opacity: 1;
+    }
+  }
+
+  .slick-dots {
+    bottom: 0;
+
+    li {
+      width: 15px;
+      margin: 0;
+
+      button {
+        &:before {
+          opacity: 0.5;
+          color: black;
+          font-size: 8px;
+        }
+      }
+
+      &.slick-active {
+        button {
+          &:before {
+            color: white;
+            opacity: 1;
+          }
+        }
+      }
     }
   }
 }

@@ -21,14 +21,14 @@ export default class ListingCard extends Component {
     if (this.props.enableEdit) {
       editButton = (
         <button className="listing-card-edit-button btn secondary-color white-text"
-                onClick={ () => { this.props.handleEditButtonClick(item) } }>
+                onClick={ (event) => { event.stopPropagation(); this.props.handleEditButtonClick(item) } }>
           <FormattedMessage id="application.edit" />
         </button>
       )
     }
 
     return (
-      <div className="listing-card">
+      <div className="listing-card" onClick={ () => { if(this.props.handleCardClick) { this.props.handleCardClick(item); } } }>
         <div className="listing-card-photo">
           { image }
         </div>
@@ -49,5 +49,6 @@ export default class ListingCard extends Component {
 ListingCard.propTypes = {
   listing: PropTypes.object.isRequired,
   editButton: PropTypes.bool,
+  handleCardClick: PropTypes.func,
   handleEditButtonClick: PropTypes.func
 }
