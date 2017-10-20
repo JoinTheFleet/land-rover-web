@@ -15,8 +15,9 @@ import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
 import UserManagement from './components/user_management/user_management';
-
+import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
+import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
@@ -35,10 +36,14 @@ export default class App extends Component {
       currentSelectedView: navigationSections.home,
       openModals: [],
       listings: [],
+      searchLocations: [],
       locationName: '',
       currentSearch: false,
       customSearch: false,
-      location: undefined,
+      location: {
+        latitude: 0,
+        longitude: 0
+      },
       boundingBox: undefined,
       sort: 'distance'
     };
@@ -52,10 +57,22 @@ export default class App extends Component {
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  componentWillMount() {
+    let location = this.state.location
+    GeolocationService.getCurrentPosition()
+                      .then(position => {
+                        location.latitude = position.coords.latitude;
+                        location.longitude = position.coords.longitude;
+
+                        this.setState({ location: location });
+                      });
   }
 
   setAccessToken(accessToken) {
@@ -150,6 +167,8 @@ export default class App extends Component {
                                     handleSortToggle={ this.handleSortToggle }
                                     sort={ this.state.sort }
                                     listings={ this.state.listings }
+                                    location={ this.state.location }
+                                    boundingBox={ this.state.boundingBox }
                                     customSearch={ this.state.customSearch }
                                     currentSearch={ this.state.currentSearch } />);
         }
@@ -159,6 +178,24 @@ export default class App extends Component {
     }
 
     return viewToRender;
+  }
+
+  handleLocationSelect(location) {
+    this.setState({
+      locationName: location.name,
+      searchLocations: [],
+      customSearch: true,
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
+      boundingBox: location.bounding_box
+    }, () => {
+      if (this.map) {
+        this.map.setState({ center: this.state.location });
+      }
+      this.handleSearch();
+    })
   }
 
   handleSearch() {
@@ -237,13 +274,31 @@ export default class App extends Component {
   }
 
   handleLocationChange(event) {
+    let location = this.state.location;
+    let term = event.target.value;
+    let latitude = location ? location.latitude : undefined;
+    let longitude = location ? location.longitude : undefined;
+
+    if (this.state.locationTimeout) {
+      clearTimeout(this.state.locationTimeout);
+    }
+
+    let locationTimeout = setTimeout(() => {
+      LocationsService.create(latitude, longitude, term)
+                      .then(response => {
+                        this.setState({
+                          searchLocations: response.data.data.locations
+                        })
+                      });
+    }, 1000)
+
     this.setState({
-      locationName: event.target.value
+      locationName: term,
+      locationTimeout: locationTimeout
     });
   }
 
   handlePeriodChange() {
-    console.log(arguments)
   }
 
   render() {
@@ -255,10 +310,12 @@ export default class App extends Component {
                 handleMenuItemSelect={ this.handleMenuItemSelect }
                 toggleModal={ this.toggleModal }
                 handleChangeCurrentUserRole={ this.changeCurrentUserRole }
-                handleLocationChange={this.handleLocationChange}
-                handlePeriodChange={this.handlePeriodChange}
-                locationName={this.state.locationName}
-                hideSearchForm={false} />
+                handleLocationChange={ this.handleLocationChange }
+                handlePeriodChange={ this.handlePeriodChange }
+                handleLocationSelect={ this.handleLocationSelect }
+                locationName={ this.state.locationName }
+                searchLocations={ this.state.searchLocations }
+                hideSearchForm={ false } />
 
         { this.renderHeaderTopMenu() }
 

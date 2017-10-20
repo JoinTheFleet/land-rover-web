@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import GoogleMapReact from 'google-map-react';
+import { fitBounds } from 'google-map-react/utils';
 
 import ListingItem from '../listings/listing_item';
-import GeolocationService from '../../shared/services/geolocation_service';
 
 import Helpers from '../../miscellaneous/helpers';
 import closest from 'closest';
@@ -13,25 +13,13 @@ class ListingMap extends Component {
     super(props);
 
     this.state = {
-      markerSelected: '',
-      latitude: 0,
-      longitude: 0
+      markerSelected: ''
     };
 
     this.selectMarker = this.selectMarker.bind(this);
     this.onPositionChange = this.onPositionChange.bind(this);
     this.mapDragged = this.mapDragged.bind(this);
     this.onClick = this.onClick.bind(this);
-  }
-
-  componentWillMount() {
-    GeolocationService.getCurrentPosition()
-                      .then(position => {
-                        this.setState({
-                          latitude: position.coords.latitude,
-                          longitude: position.coords.longitude
-                        });
-                      });
   }
 
   selectMarker(id) {
@@ -143,13 +131,51 @@ class ListingMap extends Component {
     };
   }
 
+  boundingBoxIsDefault(boundingBox) {
+    return boundingBox &&
+           Math.floor(Math.abs(boundingBox.top)) == 0 &&
+           Math.floor(Math.abs(boundingBox.bottom)) == 0 &&
+           Math.floor(Math.abs(boundingBox.left)) == 0 &&
+           Math.floor(Math.abs(boundingBox.right)) == 0;
+  }
+
   render() {
     let listings = this.props.listings;
-    let latitude = this.state.latitude;
-    let longitude = this.state.longitude;
+    let latitude = this.props.location.latitude;
+    let longitude = this.props.location.longitude;
+    let boundingBox = this.props.boundingBox;
+    let bounds = undefined;
+    let zoom = this.map ? this.map.props.zoom : 10;
+
+    if (boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+      bounds = {
+        nw: {
+          lat: boundingBox.top,
+          lng: boundingBox.left
+        },
+        sw: {
+          lat: boundingBox.bottom,
+          lng: boundingBox.left
+        },
+        ne: {
+          lat: boundingBox.top,
+          lng: boundingBox.right
+        },
+        se: {
+          lat: boundingBox.bottom,
+          lng: boundingBox.right
+        }
+      }
+
+      let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
+
+      latitude = adjustedBounds.center.lat;
+      longitude = adjustedBounds.center.lng;
+      zoom = adjustedBounds.zoom;
+    }
 
     return (
-      <div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
+      <div ref={(ref) => {this.mapContainer = ref}} style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
         <GoogleMapReact
           id={'map'}
           bootstrapURLKeys={{
@@ -157,12 +183,14 @@ class ListingMap extends Component {
             language: 'EN'
           }}
           onClick={this.onClick}
+          bounds={ bounds ? bounds : undefined }
+          marginBounds={ bounds ? bounds : undefined }
           draggable={true}
           onChange={this.onPositionChange}
           onDrag={this.mapDragged}
           center={{ lat: latitude, lng: longitude }}
-          ref={(ref) => this.map = ref}
-          zoom={ 10 }
+          ref={(ref) => {this.map = ref}}
+          zoom={ zoom }
         >
           {
             listings.map((listing, index) => {

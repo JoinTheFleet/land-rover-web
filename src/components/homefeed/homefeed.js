@@ -125,7 +125,9 @@ class Homefeed extends Component {
                   mapElement={ <div style={{ height: '100%' }}></div> }
                   onDragEnd={ this.props.handleMapDrag }
                   onPositionChange={ this.props.handlePositionChange }
-                  listings={ this.props.listings } />
+                  listings={ this.props.listings }
+                  location={ this.props.location }
+                  boundingBox={ this.props.boundingBox } />
     )
   }
 

@@ -91,7 +91,17 @@ export default class FormField extends Component {
       );
     }
 
-    return renderable;
+    if (this.props.children) {
+      return (
+        <div className='pull-left' >
+          { renderable }
+          { this.props.children }
+        </div>
+      )
+    }
+    else {
+      return renderable;
+    }
   }
 }
 
