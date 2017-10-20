@@ -4,6 +4,7 @@ import { Button, Dropdown } from 'react-bootstrap';
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
+import momentPropTypes from 'react-moment-proptypes';
 
 class ListingPeriodFilter extends Component {
   constructor(props) {
@@ -70,7 +71,16 @@ class ListingPeriodFilter extends Component {
 export default injectIntl(ListingPeriodFilter);
 
 ListingPeriodFilter.propTypes = {
-  handleLocationChange: PropTypes.func.isRequired,
   handlePeriodChange: PropTypes.func.isRequired,
-  hideSearchForm: PropTypes.bool
+  hideSearchForm: PropTypes.bool,
+  handleLocationChange: PropTypes.func.isRequired,
+  handleLocationFocus: PropTypes.func.isRequired,
+  handleDatesChange: PropTypes.func.isRequired,
+  handleLocationSelect: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  startDate: momentPropTypes.momentObj,
+  endDate: momentPropTypes.momentObj,
+  locationName: PropTypes.string,
+  searchLocations: PropTypes.array,
+  showSearchButton: PropTypes.bool
 }
