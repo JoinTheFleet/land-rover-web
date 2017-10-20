@@ -102,8 +102,6 @@ class ListingLocation extends Component {
       };
     }
 
-    console.log(selectedPosition);
-
     return (
       <div className="listing-form-location col-xs-12 no-side-padding">
         <div className="listing-form-location-map col-xs-12 no-side-padding">

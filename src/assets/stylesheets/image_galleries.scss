@@ -29,6 +29,18 @@
     }
   }
 
+  .slick-arrow {
+    z-index: 10;
+
+    &.slick-next {
+      right: 10px;
+    }
+
+    &.slick-prev {
+      left: 10px;
+    }
+  }
+
   .slick-dots {
     bottom: 0;
 

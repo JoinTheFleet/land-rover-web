@@ -425,11 +425,16 @@
   }
 
   .listing-view-listing-title {
+    .listing-view-rating-reviews {
+      float: left;
+      margin-top: 5px;
+    }
+
     .listing-view-listing-year {
       margin-left: 15px;
     }
   }
-  
+
   .listing-view-main-content {
     margin-top: 24px;
 
@@ -461,8 +466,50 @@
 
     & + span {
       float: left;
-      margin-left: 10px;
+      margin-left: 8px;
       margin-top: -5px;
+    }
+  }
+
+  .listing-view-listing-specs {
+    border-top: solid 1px $smoke-grey-two;
+    border-bottom: solid 1px $smoke-grey-two;
+    height: 45px;
+    line-height: 45px;
+
+    .listing-view-listing-spec {
+      display: inline-block;
+
+      img {
+        margin-top: -7px;
+        margin-right: 5px;
+      }
+
+      & + .listing-view-listing-spec {
+        margin-left: calc((100% - 361px) / 2);
+      }
+    }
+  }
+
+  .listing-view-listing-amenities {
+    padding: 10px 0;
+
+    .listing-view-listing-amenities-title {
+      width: 82px;
+    }
+
+    .listing-view-listing-amenities-list {
+      margin-left: 60px;
+      width: calc(100% - 142px);
+
+      .listing-view-listing-amenity {
+        display: inline-block;
+
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
     }
   }
 }
