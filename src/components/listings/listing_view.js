@@ -8,6 +8,8 @@ import RatingInput from '../miscellaneous/rating_input';
 import Loading from '../miscellaneous/loading';
 import Map from '../miscellaneous/map';
 
+import ListingBookNowTile from './listing_book_now_tile';
+
 import specDoorsIcon from '../../assets/images/spec-doors.png';
 import specPassengersIcon from '../../assets/images/spec-passengers.png';
 import specTransmissionIcon from '../../assets/images/spec-transmission.png';
@@ -144,6 +146,20 @@ class ListingView extends Component {
     )
   }
 
+  renderBookingTile() {
+    let bookingDiv = '';
+
+    if (this.props.enableBooking) {
+      bookingDiv = (
+        <div className="listing-view-booking-div">
+          <ListingBookNowTile listing={ this.props.listing } />
+        </div>
+      );
+    }
+
+    return bookingDiv;
+  }
+
   render() {
     let listing = this.props.listing;
 
@@ -160,6 +176,8 @@ class ListingView extends Component {
 
           { this.renderAmenities() }
 
+          { this.renderBookingTile() }
+
           { this.renderMap() }
         </div>
       </div>
@@ -168,7 +186,8 @@ class ListingView extends Component {
 }
 
 ListingView.propTypes = {
-  listing: PropTypes.object
+  listing: PropTypes.object,
+  enableBooking: PropTypes.bool
 };
 
 export default injectIntl(ListingView);

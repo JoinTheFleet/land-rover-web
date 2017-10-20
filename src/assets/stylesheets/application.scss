@@ -1,6 +1,7 @@
 @import "~slick-carousel/slick/slick";
 @import "~slick-carousel/slick/slick-theme";
 @import "~antd/dist/antd.css";
+@import "~react-dates/lib/css/_datepicker.css";
 
 @import 'variables';
 @import 'colors';
@@ -22,5 +23,6 @@
 @import 'footer';
 @import 'home';
 @import 'listings';
+@import 'bookings';
 @import 'panel_form';
 @import 'rdatez-custom';

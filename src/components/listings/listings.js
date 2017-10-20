@@ -45,7 +45,7 @@ export default class Listings extends Component {
         );
         break;
       case listingsViews.view:
-        viewToRender = <ListingView listing={ this.state.currentListing } />;
+        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ true } />;
         break;
       default:
         viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);

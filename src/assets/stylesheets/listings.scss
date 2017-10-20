@@ -437,6 +437,7 @@
 
   .listing-view-main-content {
     margin-top: 24px;
+    margin-bottom: 24px;
 
     .listing-view-user-details {
       position: absolute;
@@ -511,5 +512,9 @@
         }
       }
     }
+  }
+
+  .listing-view-booking-div + .listing-view-map {
+    margin-top: 24px;
   }
 }
