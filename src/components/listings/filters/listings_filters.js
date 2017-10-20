@@ -208,81 +208,87 @@ export default class ListingsFilters extends Component {
     let filterGroups = Object.keys(this.state.filterOptions);
     let selectedFilters = this.state.selectedFilters;
 
-    return (
-      <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
-        {
-          filterGroups.map((filtersGroup, index) => {
-            let filters = this.state.filterOptions[filtersGroup];
-
-            return (
-              <div key={'search_filters_groups_' + filtersGroup}>
-                <FormattedMessage id={ 'listings.' + filtersGroup }>
-                  { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-                </FormattedMessage>
-
-                {
-                  filters
-                    .sort(function(a, b) {
-                      return a.position - b.position;
-                    })
-                    .map(filter => {
-                      return <Dropdown
-                                key={ 'filters_group_' + filter.param }
-                                name={ filter.param }
-                                placeholder={ filter.name }
-                                items={ filter.data }
-                                selectedValue={ selectedFilters[filter.param] }
-                                valueProperty="id"
-                                displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
-                                itemClickHandler={ this.handleFilterSelected } />
-                    })
-                }
-                <div className='listings-filters-divider smoke-grey-two'></div>
-              </div>
-            )
-          })
-        }
-
-        <div>
-          <FormattedMessage id="application.other">
-            { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-          </FormattedMessage>
-          <br/>
-          <FormattedMessage id="listings.on_demand_collection">
-            { (text) => (
-              <div key='on_demand_filter' className="listings-amenity-filter fleet-checkbox">
-                <input type="checkbox" id='on-demand-checkbox' name="on-demand-checkbox" onChange={ (event) => { this.handleFilterSelected('on_demand') } } />
-                <label htmlFor={ 'on-demand-checkbox' } className="fs-16 text-secondary-font-weight">{ text }</label>
-              </div>
-            )}
-          </FormattedMessage>
-        </div>
-
-        <div className="listings-filters-divider smoke-grey-two"></div>
-
-
-        <div className="listings-filters-amenities">
+    if (this.state.open) {
+      return (
+        <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
           {
-            this.state.amenities.map((amenity) => {
-              let checkboxId = 'listings_amenity_' + amenity.id;
+            filterGroups.map((filtersGroup, index) => {
+              let filters = this.state.filterOptions[filtersGroup];
 
               return (
-                <div key={ 'listings_amenity_filter_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
-                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity.id) } } />
-                  <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
+                <div key={'search_filters_groups_' + filtersGroup}>
+                  <FormattedMessage id={ 'listings.' + filtersGroup }>
+                    { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
+                  </FormattedMessage>
+
+                  {
+                    filters
+                      .sort(function(a, b) {
+                        return a.position - b.position;
+                      })
+                      .map(filter => {
+                        return <Dropdown
+                                  key={ 'filters_group_' + filter.param }
+                                  name={ filter.param }
+                                  placeholder={ filter.name }
+                                  items={ filter.data }
+                                  selectedValue={ selectedFilters[filter.param] }
+                                  valueProperty="id"
+                                  displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                                  itemClickHandler={ this.handleFilterSelected } />
+                      })
+                  }
+                  <div className='listings-filters-divider smoke-grey-two'></div>
                 </div>
               )
             })
           }
 
-          <div className="apply-listings-filters-div col-xs-12">
-            <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.props.toggleFilters() } }>
-              <FormattedMessage id="listings.see_listings" />
-            </button>
+          <div>
+            <FormattedMessage id="application.other">
+              { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
+            </FormattedMessage>
+            <br/>
+            <FormattedMessage id="listings.on_demand_collection">
+              { (text) => (
+                <div key='on_demand_filter' className="listings-amenity-filter fleet-checkbox">
+                  <input type="checkbox" id='on-demand-checkbox' name="on-demand-checkbox" onChange={ (event) => { this.handleFilterSelected('on_demand') } } />
+                  <label htmlFor={ 'on-demand-checkbox' } className="fs-16 text-secondary-font-weight">{ text }</label>
+                </div>
+              )}
+            </FormattedMessage>
+          </div>
+
+          <div className="listings-filters-divider smoke-grey-two"></div>
+
+
+          <div className="listings-filters-amenities">
+            {
+              this.state.amenities.map((amenity) => {
+                let checkboxId = 'listings_amenity_' + amenity.id;
+
+                return (
+                  <div key={ 'listings_amenity_filter_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
+                    <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity.id) } } />
+                    <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
+                  </div>
+                )
+              })
+            }
+
+            <div className="apply-listings-filters-div col-xs-12">
+              <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.props.toggleFilters() } }>
+                <FormattedMessage id="listings.see_listings" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
+    else {
+      return <div className="listings-filters white"/>;
+    }
+
   }
 
   render() {
