@@ -60,9 +60,12 @@ export default class FormField extends Component {
           minimumNights={1}
           keepOpenOnDateSelect={false}
           showDefaultInputIcon={false}
+          reopenPickerOnClearDate={false}
           showClearDates={true}
+          reopenPickerOnClearDates={false}
           renderCalendardInfo={false}
           hideKeyboardShortcutsPanel={true}
+          displayFormat={ 'DD/MM/YYYY' }
         />
       )
     }

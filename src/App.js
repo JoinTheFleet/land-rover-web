@@ -40,6 +40,8 @@ export default class App extends Component {
       locationName: '',
       currentSearch: false,
       customSearch: false,
+      startDate: undefined,
+      endDate: undefined,
       location: {
         latitude: 0,
         longitude: 0
@@ -59,20 +61,24 @@ export default class App extends Component {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
+    this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentWillMount() {
-    let location = this.state.location
-    GeolocationService.getCurrentPosition()
-                      .then(position => {
-                        location.latitude = position.coords.latitude;
-                        location.longitude = position.coords.longitude;
+    let location = this.state.location;
 
-                        this.setState({ location: location });
-                      });
+    setTimeout(() => {
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+                          location.latitude = position.coords.latitude;
+                          location.longitude = position.coords.longitude;
+
+                          this.setState({ location: location });
+                        });
+    }, 500);
   }
 
   setAccessToken(accessToken) {
@@ -180,6 +186,13 @@ export default class App extends Component {
     return viewToRender;
   }
 
+  handleDatesChange({startDate, endDate}) {
+    this.setState({
+      startDate: startDate,
+      endDate: endDate
+    }, this.handleSearch);
+  }
+
   handleLocationSelect(location) {
     this.setState({
       locationName: location.name,
@@ -200,9 +213,16 @@ export default class App extends Component {
     let location = this.state.location;
     let boundingBox = this.state.boundingBox;
     let filters = this.state.filters;
+    let startDate = this.state.startDate;
+    let endDate = this.state.endDate;
 
     if (location) {
       searchParams.location = location;
+    }
+
+    if (startDate && endDate) {
+      searchParams.start_at = startDate.utc().unix();
+      searchParams.end_at = endDate.utc().unix();
     }
 
     if (boundingBox) {
@@ -285,15 +305,12 @@ export default class App extends Component {
                           searchLocations: response.data.data.locations
                         })
                       });
-    }, 1000)
+    }, 1000);
 
     this.setState({
       locationName: term,
       locationTimeout: locationTimeout
     });
-  }
-
-  handlePeriodChange() {
   }
 
   render() {
@@ -306,8 +323,10 @@ export default class App extends Component {
                 toggleModal={ this.toggleModal }
                 handleChangeCurrentUserRole={ this.changeCurrentUserRole }
                 handleLocationChange={ this.handleLocationChange }
-                handlePeriodChange={ this.handlePeriodChange }
+                handleDatesChange={ this.handleDatesChange }
                 handleLocationSelect={ this.handleLocationSelect }
+                startDate={ this.state.startDate }
+                endDate={ this.state.endDate }
                 locationName={ this.state.locationName }
                 searchLocations={ this.state.searchLocations }
                 hideSearchForm={ false } />

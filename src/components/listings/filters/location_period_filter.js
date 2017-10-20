@@ -19,7 +19,6 @@ class ListingPeriodFilter extends Component {
   }
 
   handleDateRangePickerFocusChange(focused) {
-    console.log(focused)
     this.setState({ focused: focused });
   }
 
@@ -37,9 +36,9 @@ class ListingPeriodFilter extends Component {
                        className=''
                        id='period'
                        placeholder='Dates'
-                       handleChange={ this.props.handlePeriodChange }
-                       startDate={ this.props.startDate || moment() }
-                       endDate={ this.props.endDate || moment() }
+                       handleChange={ this.props.handleDatesChange }
+                       startDate={ this.props.startDate }
+                       endDate={ this.props.endDate }
                        focused={ this.state.focused }
                        handleFocusChange={ this.handleDateRangePickerFocusChange}/>
             <div className='pull-left location-search-results'>

@@ -47,18 +47,21 @@
     .DateInput_displayText__focused {
       background-color: rgba($secondary-color, 0.3);
       color: white;
+      color: #565a5c;
     }
 
+    .CalendarDay__selected.CalendarDay__selected_span,
     .CalendarDay__selected {
       border: none;
       background-color: $secondary-color;
       color: white;
     }
 
+    .CalendarDay__selected_span,
     .CalendarDay__hovered_span {
       border: none;
-      background-color: rgba($secondary-color, 0.3);
-      color: white;
+      background-color: rgba($secondary-color, 0.2);
+      color: #565a5c;
     }
 
     input#location {
@@ -80,6 +83,17 @@
 
   .DateRangePicker {
     line-height: 20px;
+  }
+
+  .DateRangePickerInput_clearDates {
+    &:active,
+    &:hover {
+      background-color: white;
+    }
+  }
+
+  .DateRangePickerInput_clearDates_svg {
+    fill: $secondary-color;
   }
 }
 
