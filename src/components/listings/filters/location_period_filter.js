@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Button, Dropdown, MenuItem } from 'react-bootstrap';
-import LocalizationService from '../../../shared/libraries/localization_service';
+import { Button, Dropdown } from 'react-bootstrap';
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
-import moment from 'moment';
 
 class ListingPeriodFilter extends Component {
   constructor(props) {
