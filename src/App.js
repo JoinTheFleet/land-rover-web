@@ -68,6 +68,7 @@ export default class App extends Component {
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
     this.performSearch = this.performSearch.bind(this);
   }
 
@@ -195,7 +196,7 @@ export default class App extends Component {
     this.setState({
       startDate: startDate,
       endDate: endDate
-    }, this.handleSearch);
+    }, this.handleSearchIfNotShowingSearchButton);
   }
 
   handleLocationSelect(location) {
@@ -208,7 +209,7 @@ export default class App extends Component {
         longitude: location.longitude
       },
       boundingBox: location.bounding_box
-    }, this.handleSearch);
+    }, this.handleSearchIfNotShowingSearchButton);
   }
 
   handleSearch() {
@@ -216,6 +217,12 @@ export default class App extends Component {
       currentSelectedView: navigationSections.dashboard,
       showSearchButton: false
     }, this.performSearch);
+  }
+
+  handleSearchIfNotShowingSearchButton() {
+    if (!this.state.showSearchButton) {
+      this.handleSearch();
+    }
   }
 
   performSearch() {
