@@ -133,10 +133,10 @@ class ListingMap extends Component {
 
   boundingBoxIsDefault(boundingBox) {
     return boundingBox &&
-           Math.floor(Math.abs(boundingBox.top)) == 0 &&
-           Math.floor(Math.abs(boundingBox.bottom)) == 0 &&
-           Math.floor(Math.abs(boundingBox.left)) == 0 &&
-           Math.floor(Math.abs(boundingBox.right)) == 0;
+           Math.floor(Math.abs(boundingBox.top)) === 0 &&
+           Math.floor(Math.abs(boundingBox.bottom)) === 0 &&
+           Math.floor(Math.abs(boundingBox.left)) === 0 &&
+           Math.floor(Math.abs(boundingBox.right)) === 0;
   }
 
   componentDidUpdate(props, state) {
@@ -148,7 +148,7 @@ class ListingMap extends Component {
       let mapCenter = this.map.props.center;
 
       if (mapCenter && mapCenter.lat !== center.lat && mapCenter.lng !== center.lng) {
-        if (this.props.boundingBox != props.boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+        if (this.props.boundingBox !== props.boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
           bounds = {
             nw: {
               lat: boundingBox.top,

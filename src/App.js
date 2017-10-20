@@ -72,8 +72,6 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    let location = this.state.location;
-
     setTimeout(() => {
       GeolocationService.getCurrentPosition()
                         .then(position => {
