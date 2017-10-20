@@ -190,12 +190,7 @@ export default class App extends Component {
         longitude: location.longitude
       },
       boundingBox: location.bounding_box
-    }, () => {
-      if (this.map) {
-        this.map.setState({ center: this.state.location });
-      }
-      this.handleSearch();
-    })
+    }, this.handleSearch);
   }
 
   handleSearch() {
