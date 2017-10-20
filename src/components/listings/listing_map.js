@@ -147,8 +147,11 @@ class ListingMap extends Component {
       let zoom = this.map ? this.map.props.zoom : 10;
       let mapCenter = this.map.props.center;
 
-      if (mapCenter && mapCenter.lat !== center.lat && mapCenter.lng !== center.lng) {
-        if (this.props.boundingBox !== props.boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+      if (mapCenter && (!center || (mapCenter.lat !== center.lat && mapCenter.lng !== center.lng))) {
+        // NOTE: If the map has previously be centered somewhere else, we need to recalculate the bounds.
+
+        if (boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+          // No point recalculating if we're square on coords 0,0
           bounds = {
             nw: {
               lat: boundingBox.top,
@@ -168,24 +171,35 @@ class ListingMap extends Component {
             }
           }
 
+          // Calculate adjusted bounds to fit the specified bounds exactly within the map container.
           let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
 
           center = adjustedBounds.center;
           zoom = adjustedBounds.zoom;
 
+          let mapPosition = {};
+
+          // Update our map positioning if any of it has changed from the last record.
+          if (zoom !== state.zoom) {
+            mapPosition.zoom = zoom;
+          }
+
+          if (bounds !== state.bounds) {
+            mapPosition.bounds = bounds;
+          }
+
+          if (center !== state.center) {
+            mapPosition.center = center;
+          }
+
           if (zoom !== state.zoom && bounds !== state.bounds && center !== state.center) {
-            this.setState({
-              zoom: zoom,
-              bounds: bounds,
-              center: center
-            });
+            this.setState(mapPosition);
           }
         }
         else {
-          if (center !== state.center) {
-            this.setState({
-              center: center
-            });
+          // Record the new center if we have no bounds, or we're on 0,0.
+          if (center !== state.center && center.lat !== 0 && center.lng !== 0) {
+            this.setState({ center: center });
           }
         }
       }
@@ -194,8 +208,7 @@ class ListingMap extends Component {
 
   render() {
     let listings = this.props.listings;
-    let locationCenter = { lat: 0, lng: 0};
-    let center = this.state.center || locationCenter;
+    let center = this.state.center || { lat: 0, lng: 0 };
     let bounds = this.state.bounds;
     let zoom = this.state.zoom || 10;
 
