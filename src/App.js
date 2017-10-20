@@ -148,7 +148,8 @@ export default class App extends Component {
     if (this.state.accessToken) {
       headerTopMenu = (<HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
                                       currentUserRole={ this.state.currentUserRole }
-                                      handleMenuItemSelect={ this.handleMenuItemSelect } />)
+                                      handleMenuItemSelect={ this.handleMenuItemSelect }
+                                      loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } />)
     }
 
     return headerTopMenu;
