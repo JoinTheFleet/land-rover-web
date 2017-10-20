@@ -213,6 +213,11 @@ class ListingMap extends Component {
           draggable={true}
           onChange={this.onPositionChange}
           onDrag={this.mapDragged}
+          onZoomAnimationEnd={() => { this.onPositionChange({
+            bounds: this.map.props.bounds,
+            center: this.map.props.center
+          })}}
+          resetBoundsOnResize={true}
           center={ center }
           ref={(ref) => {this.map = ref}}
           zoom={ zoom }
