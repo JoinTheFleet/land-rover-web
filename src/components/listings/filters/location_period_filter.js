@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { Button, Dropdown, MenuItem } from 'react-bootstrap';
 import LocalizationService from '../../../shared/libraries/localization_service';
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
@@ -23,6 +23,16 @@ class ListingPeriodFilter extends Component {
   }
 
   render() {
+    let button = '';
+
+    if (this.props.showSearchButton) {
+      button = (
+        <Button bsStyle='primary search'
+                onClick={ this.props.handleSearch }>
+          Search
+        </Button>
+      );
+    }
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
         <div className='row'>
@@ -31,6 +41,7 @@ class ListingPeriodFilter extends Component {
                        id='location'
                        placeholder='Location'
                        handleChange={ this.props.handleLocationChange }
+                       handleFocusChange={ this.props.handleLocationFocus }
                        value={ this.props.locationName }/>
             <FormField type='daterange'
                        className=''
@@ -41,6 +52,8 @@ class ListingPeriodFilter extends Component {
                        endDate={ this.props.endDate }
                        focused={ this.state.focused }
                        handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+
+            { button }
             <div className='pull-left location-search-results'>
               <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
                   <Dropdown.Menu>

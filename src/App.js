@@ -47,7 +47,8 @@ export default class App extends Component {
         longitude: 0
       },
       boundingBox: undefined,
-      sort: 'distance'
+      sort: 'distance',
+      showSearchButton: false
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -57,14 +58,17 @@ export default class App extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
+    this.locationSearch = this.locationSearch.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
+    this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.performSearch = this.performSearch.bind(this);
   }
 
   componentWillMount() {
@@ -73,12 +77,13 @@ export default class App extends Component {
     setTimeout(() => {
       GeolocationService.getCurrentPosition()
                         .then(position => {
-                          location.latitude = position.coords.latitude;
-                          location.longitude = position.coords.longitude;
-
-                          this.setState({ location: location });
+                          let location = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                          };
+                          this.setState({location: location});
                         });
-    }, 500);
+    }, 1000);
   }
 
   setAccessToken(accessToken) {
@@ -118,7 +123,9 @@ export default class App extends Component {
                            });
     }
     else {
-      this.setState({ currentSelectedView: menuItem });
+      this.setState({
+        currentSelectedView: menuItem,
+        showSearchButton: menuItem !== navigationSections.dashboard });
     }
   }
 
@@ -207,6 +214,13 @@ export default class App extends Component {
   }
 
   handleSearch() {
+    this.setState({
+      currentSelectedView: navigationSections.dashboard,
+      showSearchButton: false
+    }, this.performSearch);
+  }
+
+  performSearch() {
     let searchParams = {
       sort: this.state.sort
     };
@@ -288,24 +302,40 @@ export default class App extends Component {
     this.handlePositionChange(bounds, center);
   }
 
-  handleLocationChange(event) {
+  locationSearch(latitude, longitude, term) {
+    LocationsService.create(latitude, longitude, term)
+                    .then(response => {
+                      this.setState({
+                        searchLocations: response.data.data.locations
+                      });
+                    });
+  }
+
+
+  handleLocationFocus(event) {
+    this.handleLocationChange(event, true);
+  }
+
+  handleLocationChange(event, immediate) {
     let location = this.state.location;
     let term = event.target.value;
     let latitude = location ? location.latitude : undefined;
     let longitude = location ? location.longitude : undefined;
+    let locationTimeout = this.state.locationTimeout;
 
-    if (this.state.locationTimeout) {
-      clearTimeout(this.state.locationTimeout);
+    if (locationTimeout) {
+      clearTimeout(locationTimeout);
+      locationTimeout = undefined;
     }
 
-    let locationTimeout = setTimeout(() => {
-      LocationsService.create(latitude, longitude, term)
-                      .then(response => {
-                        this.setState({
-                          searchLocations: response.data.data.locations
-                        })
-                      });
-    }, 1000);
+    if (!immediate) {
+      locationTimeout = setTimeout(() => {
+        this.locationSearch(latitude, longitude, term);
+      }, 1000);
+    }
+    else {
+      this.locationSearch(latitude, longitude, term);
+    }
 
     this.setState({
       locationName: term,
@@ -323,13 +353,16 @@ export default class App extends Component {
                 toggleModal={ this.toggleModal }
                 handleChangeCurrentUserRole={ this.changeCurrentUserRole }
                 handleLocationChange={ this.handleLocationChange }
+                handleLocationFocus={ this.handleLocationFocus }
                 handleDatesChange={ this.handleDatesChange }
                 handleLocationSelect={ this.handleLocationSelect }
+                handleSearch={ this.handleSearch }
                 startDate={ this.state.startDate }
                 endDate={ this.state.endDate }
                 locationName={ this.state.locationName }
                 searchLocations={ this.state.searchLocations }
-                hideSearchForm={ false } />
+                hideSearchForm={ false }
+                showSearchButton={ this.state.showSearchButton } />
 
         { this.renderHeaderTopMenu() }
 

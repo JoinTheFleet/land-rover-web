@@ -7,3 +7,23 @@
     overflow: hidden;
   }
 }
+
+button.search {
+  font-weight: 200;
+  padding: 7px 12px;
+  font-size: 16px;
+  box-shadow: none;
+  margin-left: 10px;
+  background-color: white;
+  border: none;
+  color: $secondary-color;
+
+  &:active,
+  &:hover,
+  &:focus {
+    box-shadow: none;
+    background-color: white !important;
+    border: none;
+    color: $secondary-color !important;
+  }
+}

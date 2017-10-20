@@ -139,40 +139,65 @@ class ListingMap extends Component {
            Math.floor(Math.abs(boundingBox.right)) == 0;
   }
 
-  render() {
-    let listings = this.props.listings;
-    let latitude = this.props.location.latitude;
-    let longitude = this.props.location.longitude;
-    let boundingBox = this.props.boundingBox;
-    let bounds = undefined;
-    let zoom = this.map ? this.map.props.zoom : 10;
+  componentDidUpdate(props, state) {
+    if (this.map) {
+      let center = { lat: this.props.location.latitude, lng: this.props.location.longitude};
+      let boundingBox = this.props.boundingBox;
+      let bounds = undefined;
+      let zoom = this.map ? this.map.props.zoom : 10;
+      let mapCenter = this.map.props.center;
 
-    if (boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
-      bounds = {
-        nw: {
-          lat: boundingBox.top,
-          lng: boundingBox.left
-        },
-        sw: {
-          lat: boundingBox.bottom,
-          lng: boundingBox.left
-        },
-        ne: {
-          lat: boundingBox.top,
-          lng: boundingBox.right
-        },
-        se: {
-          lat: boundingBox.bottom,
-          lng: boundingBox.right
+      if (mapCenter && mapCenter.lat !== center.lat && mapCenter.lng !== center.lng) {
+        if (this.props.boundingBox != props.boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+          bounds = {
+            nw: {
+              lat: boundingBox.top,
+              lng: boundingBox.left
+            },
+            sw: {
+              lat: boundingBox.bottom,
+              lng: boundingBox.left
+            },
+            ne: {
+              lat: boundingBox.top,
+              lng: boundingBox.right
+            },
+            se: {
+              lat: boundingBox.bottom,
+              lng: boundingBox.right
+            }
+          }
+
+          let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
+
+          center = adjustedBounds.center;
+          zoom = adjustedBounds.zoom;
+
+          if (zoom !== state.zoom && bounds !== state.bounds && center !== state.center) {
+            this.setState({
+              zoom: zoom,
+              bounds: bounds,
+              center: center
+            });
+          }
+        }
+        else {
+          if (center !== state.center) {
+            this.setState({
+              center: center
+            });
+          }
         }
       }
-
-      let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
-
-      latitude = adjustedBounds.center.lat;
-      longitude = adjustedBounds.center.lng;
-      zoom = adjustedBounds.zoom;
     }
+  }
+
+  render() {
+    let listings = this.props.listings;
+    let locationCenter = { lat: 0, lng: 0};
+    let center = this.state.center || locationCenter;
+    let bounds = this.state.bounds;
+    let zoom = this.state.zoom || 10;
 
     return (
       <div ref={(ref) => {this.mapContainer = ref}} style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
@@ -183,12 +208,12 @@ class ListingMap extends Component {
             language: 'EN'
           }}
           onClick={this.onClick}
-          bounds={ bounds ? bounds : undefined }
-          marginBounds={ bounds ? bounds : undefined }
+          bounds={ bounds }
+          marginBounds={ bounds }
           draggable={true}
           onChange={this.onPositionChange}
           onDrag={this.mapDragged}
-          center={{ lat: latitude, lng: longitude }}
+          center={ center }
           ref={(ref) => {this.map = ref}}
           zoom={ zoom }
         >
