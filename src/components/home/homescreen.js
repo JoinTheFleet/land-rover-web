@@ -22,18 +22,12 @@ import foraLogo from '../../assets/images/fora-grey.png';
 import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
 import irishtimesLogo from '../../assets/images/irish-times-grey.png';
 
+import LocationPeriodFilter from '../listings/filters/location_period_filter';
+import momentPropTypes from 'react-moment-proptypes';
+
 class Homescreen extends Component {
-
-  handleSearchFormSubmit(event) {
-    event.preventDefault();
-
-    let location = document.getElementById('global_search_location').value;
-    let dates = document.getElementById('global_search_dates').value;
-
-    this.props.addSearchParamHandler({ location: location, dates: dates });
-  }
-
   render() {
+    console.log(this.props)
     return (
       <div>
         <div id="homescreen_top_banner">
@@ -48,13 +42,7 @@ class Homescreen extends Component {
                 <FormattedMessage id="homescreen.top_banner_slogan" />
               </span>
             </p>
-            <form id="homescreen_search_form" className="global-search-form" onSubmit={ (event) => { this.handleSearchFormSubmit(event) }}>
-              <input type="text" name="global_search[location]" id="global_search_location" placeholder={ this.props.intl.formatMessage({id: 'application.location'}) } />
-              <input type="text" name="global_search[dates]" id="global_search_dates" placeholder={ this.props.intl.formatMessage({id: 'application.dates'}) } />
-              <button className="btn secondary-color white-text">
-                <FormattedMessage id="application.search" />
-              </button>
-            </form>
+            <LocationPeriodFilter {...this.props} />
           </div>
           <div id="homescreen_top_banner_insurance_div" className="twilight-blue fs-20 ls-dot-five white-text text-uppercase">
             <FormattedMessage id="homescreen.insurance_partner" />
@@ -95,5 +83,14 @@ export default injectIntl(Homescreen)
 
 Homescreen.propTypes = {
   accessToken: PropTypes.string,
-  addSearchParamHandler: PropTypes.func
+  handleLocationChange: PropTypes.func.isRequired,
+  handleLocationFocus: PropTypes.func.isRequired,
+  handleDatesChange: PropTypes.func.isRequired,
+  handleLocationSelect: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  startDate: momentPropTypes.momentObj,
+  endDate: momentPropTypes.momentObj,
+  locationName: PropTypes.string,
+  searchLocations: PropTypes.array,
+  showSearchButton: PropTypes.bool
 }

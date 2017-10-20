@@ -28,73 +28,77 @@
       margin-right: 18px;
     }
   }
+}
 
-  #header_search_form {
-    display: inline-block;
-    padding-left: 20px;
+.DateRangePickerInput {
+  padding-left: 3px;
+  border-width: 0;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
 
-    .DateRangePickerInput {
-      padding-left: 3px;
-      border-width: 0;
-      border-bottom-right-radius: 5px;
-      border-top-right-radius: 5px;
-    }
+.DateInput {
+  padding: 0;
+}
 
-    .DateInput {
-      padding: 0;
-    }
+.DateInput_displayText__focused {
+  background-color: rgba($secondary-color, 0.3);
+  color: white;
+  color: #565a5c;
+}
 
-    .DateInput_displayText__focused {
-      background-color: rgba($secondary-color, 0.3);
-      color: white;
-      color: #565a5c;
-    }
+.CalendarDay__selected.CalendarDay__selected_span,
+.CalendarDay__selected {
+  border: none;
+  background-color: $secondary-color;
+  color: white;
+}
 
-    .CalendarDay__selected.CalendarDay__selected_span,
-    .CalendarDay__selected {
-      border: none;
-      background-color: $secondary-color;
-      color: white;
-    }
+.CalendarDay__selected_span,
+.CalendarDay__hovered_span {
+  border: none;
+  background-color: rgba($secondary-color, 0.2);
+  color: #565a5c;
+}
 
-    .CalendarDay__selected_span,
-    .CalendarDay__hovered_span {
-      border: none;
-      background-color: rgba($secondary-color, 0.2);
-      color: #565a5c;
-    }
+input#location {
+  color: #565a5c;
+  position: relative;
+  top: 2px;
+  font-weight: 200;
 
-    input#location {
-      color: #565a5c;
-      position: relative;
-      top: 2px;
-      font-weight: 200;
+  font-size: 18px;
+  line-height: 20px;
+  border-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 36px;
+}
 
-      font-size: 18px;
-      line-height: 20px;
-      border-width: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-      height: 36px;
-    }
+#homescreen_top_banner input#location {
+  top: 3px;
+}
+
+#header_search_form {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.DateRangePicker {
+  line-height: 20px;
+}
+
+.DateRangePickerInput_clearDates {
+  &:active,
+  &:hover {
+    background-color: white;
   }
+}
 
-  .DateRangePicker {
-    line-height: 20px;
-  }
-
-  .DateRangePickerInput_clearDates {
-    &:active,
-    &:hover {
-      background-color: white;
-    }
-  }
-
-  .DateRangePickerInput_clearDates_svg {
-    fill: $secondary-color;
-  }
+.DateRangePickerInput_clearDates_svg {
+  fill: $secondary-color;
 }
 
 #header_top_menu {

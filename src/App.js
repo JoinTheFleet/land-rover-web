@@ -185,7 +185,16 @@ export default class App extends Component {
                                     currentSearch={ this.state.currentSearch } />);
         }
         else {
-          viewToRender = (<Homescreen />);
+          viewToRender = (<Homescreen handleLocationChange={ this.handleLocationChange }
+                                      handleLocationFocus={ this.handleLocationFocus }
+                                      handleDatesChange={ this.handleDatesChange }
+                                      handleLocationSelect={ this.handleLocationSelect }
+                                      handleSearch={ this.handleSearch }
+                                      startDate={ this.state.startDate }
+                                      endDate={ this.state.endDate }
+                                      locationName={ this.state.locationName }
+                                      searchLocations={ this.state.searchLocations }
+                                      showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
         }
     }
 
