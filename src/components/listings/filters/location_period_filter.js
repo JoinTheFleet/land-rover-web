@@ -5,14 +5,43 @@ import LocalizationService from '../../../shared/libraries/localization_service'
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
+import moment from 'moment';
 
 class ListingPeriodFilter extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      focused: false
+    };
+
+    this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
+  }
+
+  handleDateRangePickerFocusChange(focused) {
+    console.log(focused)
+    this.setState({ focused: focused });
+  }
+
   render() {
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
         <div className='row'>
-            <FormField type='text' className='' id='location' placeholder='Location' handleChange={ this.props.handleLocationChange } value={ this.props.locationName }/>
-            <FormField type='text' className='' id='period' placeholder='Dates' handleChange={ this.props.handlePeriodChange } value={ this.props.periodDisplay }/>
+            <FormField type='text'
+                       className=''
+                       id='location'
+                       placeholder='Location'
+                       handleChange={ this.props.handleLocationChange }
+                       value={ this.props.locationName }/>
+            <FormField type='daterange'
+                       className=''
+                       id='period'
+                       placeholder='Dates'
+                       handleChange={ this.props.handlePeriodChange }
+                       startDate={ this.props.startDate || moment() }
+                       endDate={ this.props.endDate || moment() }
+                       focused={ this.state.focused }
+                       handleFocusChange={ this.handleDateRangePickerFocusChange}/>
             <div className='pull-left location-search-results'>
               <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
                   <Dropdown.Menu>

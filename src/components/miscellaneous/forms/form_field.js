@@ -45,6 +45,27 @@ export default class FormField extends Component {
         />
       )
     }
+    else if (this.props.type === 'daterange') {
+      renderable = (
+        <DateRangePicker
+          startDate={this.props.startDate}
+          endDate={this.props.endDate}
+          onDatesChange={this.props.handleChange}
+          focusedInput={this.props.focused}
+          onFocusChange={this.props.handleFocusChange}
+          withPortal={false}
+          withFullScreenPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
+          keepOpenOnDateSelect={false}
+          showDefaultInputIcon={false}
+          showClearDates={true}
+          renderCalendardInfo={false}
+          hideKeyboardShortcutsPanel={true}
+        />
+      )
+    }
     else if (this.props.type === 'singleyeardate') {
       let value = (this.props.value || moment()).format('YYYY-MM-DD');
       let startDate = this.props.startDate ? (this.props.startDate).format('YYYY-MM-DD') : undefined;
