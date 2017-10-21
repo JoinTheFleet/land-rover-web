@@ -1,114 +1,107 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-  OverlayView
-} from 'react-google-maps';
+import GoogleMapReact from 'google-map-react';
+import { fitBounds } from 'google-map-react/utils';
 
 import ListingItem from '../listings/listing_item';
-import GeolocationService from '../../shared/services/geolocation_service';
 
-const getPixelPositionOffset = (width, height) => ({
-  x: -(width / 2),
-  y: -(height + 10),
-});
+import Helpers from '../../miscellaneous/helpers';
+import closest from 'closest';
 
 class ListingMap extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      markerSelected: '',
-      latitude: 0,
-      longitude: 0
+      markerSelected: ''
     };
 
-    this.toggleMarker = this.toggleMarker.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
+    this.selectMarker = this.selectMarker.bind(this);
     this.onPositionChange = this.onPositionChange.bind(this);
+    this.mapDragged = this.mapDragged.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
-  componentWillMount() {
-    GeolocationService.getCurrentPosition()
-                      .then(position => {
-                        this.setState({
-                          latitude: position.coords.latitude,
-                          longitude: position.coords.longitude
-                        });
-                      });
+  selectMarker(id) {
+    this.setState({markerSelected: `listing_${id}`});
   }
 
-  toggleMarker(markerKey) {
-    if (this.state.markerSelected === markerKey) {
-      this.setState({
-        markerSelected: ''
-      });
-    }
-    else {
-      this.setState({
-        markerSelected: markerKey
-      });
-    }
+  mapDragged() {
+    this.setState({mapDragged: true})
   }
 
   renderMarker(listing, index) {
-    let markerKey = 'listing_map_item_' + (index + 1);
-    let infoWindow = '';
+    let markerKey = `listing_${listing.id}`;
+    let coordinates = this.listingLocation(listing);
+    let selected = false;
 
     if (this.state.markerSelected === markerKey) {
-      infoWindow = (
-        <OverlayView position={{ lat: listing.location.latitude, lng: listing.location.longitude }}
-                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                     getPixelPositionOffset={getPixelPositionOffset}>
-          <div className="listings-map-listing-details-div">
-            <ListingItem additionalClasses="no-side-padding" listing={listing} />
-          </div>
-        </OverlayView>
-      )
+      selected = true;
     }
 
     if (!listing.location && !listing.geometry) {
       return '';
     }
     else {
-      let coordinates = this.listingLocation(listing);
-      let marker = (
-        <Marker key={ 'listing_map_item_' + (index + 1) }
-                position={ { lat: coordinates.latitude, lng: coordinates.longitude } }
-                onClick={ () => { this.toggleMarker(markerKey) } }>
-          { infoWindow }
-        </Marker>
-      )
+      let marker = '';
+      let className = 'listing_map_price';
+      let selectedClassName = '';
+      let additionalClasses= "no-side-padding";
+
+      if (selected) {
+        marker = (
+          <div lat={coordinates.latitude}
+               lng={coordinates.longitude}
+               key={`listing_${listing.id}`}
+               listing_id={listing.id}
+               id={`listing_${listing.id}_map_pin`}
+               className="listings-map-listing-details-div">
+                <ListingItem additionalClasses={additionalClasses} listing={listing} />
+          </div>
+        )
+      }
+      else {
+        marker = (
+          <div lat={coordinates.latitude}
+               lng={coordinates.longitude}
+               key={`listing_${listing.id}`}
+               listing_id={listing.id}
+               id={`listing_${listing.id}_map_pin`}
+               onClick={(event) => {this.selectMarker(listing.id)}}
+               className={className}>
+                <span className={selectedClassName}>
+                  {`${listing.country_configuration.country.currency_symbol}${Math.round(listing.price / 100)}`}
+                </span>
+          </div>
+        );
+      }
 
       return marker;
     }
   }
 
-  onDragEnd() {
-    let center = this.map.getCenter();
+  onClick(event) {
+    if (this.state.markerSelected && closest(event.event.target, '.listings-map-listing-details-div')) {
+      return;
+    }
 
-    this.setState({
-      latitude: center.lat(),
-      longitude: center.lng()
-    });
-
-    this.props.onDragEnd(this.map.getBounds(), this.map.getCenter());
+    this.setState({markerSelected: undefined})
   }
 
-  onPositionChange() {
-    let center = this.map.getCenter();
+  onPositionChange(options) {
+    let center = options.center;
 
     this.setState({
-      latitude: center.lat(),
-      longitude: center.lng()
+      latitude: options.center.lat,
+      longitude: options.center.lng
     });
 
-    this.props.onPositionChange(this.map.getBounds(), this.map.getCenter());
+    if (this.state.mapDragged) {
+      this.props.onDragEnd(options.bounds, center);
+    }
+    else {
+      this.props.onPositionChange(options.bounds, center);
+    }
   }
 
   listingLocation(listing) {
@@ -138,27 +131,122 @@ class ListingMap extends Component {
     };
   }
 
+  boundingBoxIsDefault(boundingBox) {
+    return boundingBox &&
+           Math.floor(Math.abs(boundingBox.top)) === 0 &&
+           Math.floor(Math.abs(boundingBox.bottom)) === 0 &&
+           Math.floor(Math.abs(boundingBox.left)) === 0 &&
+           Math.floor(Math.abs(boundingBox.right)) === 0;
+  }
+
+  componentDidUpdate(props, state) {
+    if (this.map) {
+      let center = { lat: this.props.location.latitude, lng: this.props.location.longitude};
+      let boundingBox = this.props.boundingBox;
+      let bounds = undefined;
+      let zoom = this.map ? this.map.props.zoom : 10;
+      let mapCenter = this.map.props.center;
+
+      if (mapCenter && (!center || (mapCenter.lat !== center.lat && mapCenter.lng !== center.lng))) {
+        // NOTE: If the map has previously be centered somewhere else, we need to recalculate the bounds.
+
+        if (boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+          // No point recalculating if we're square on coords 0,0
+          bounds = {
+            nw: {
+              lat: boundingBox.top,
+              lng: boundingBox.left
+            },
+            sw: {
+              lat: boundingBox.bottom,
+              lng: boundingBox.left
+            },
+            ne: {
+              lat: boundingBox.top,
+              lng: boundingBox.right
+            },
+            se: {
+              lat: boundingBox.bottom,
+              lng: boundingBox.right
+            }
+          }
+
+          // Calculate adjusted bounds to fit the specified bounds exactly within the map container.
+          let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
+
+          center = adjustedBounds.center;
+          zoom = adjustedBounds.zoom;
+
+          let mapPosition = {};
+
+          // Update our map positioning if any of it has changed from the last record.
+          if (zoom !== state.zoom) {
+            mapPosition.zoom = zoom;
+          }
+
+          if (bounds !== state.bounds) {
+            mapPosition.bounds = bounds;
+          }
+
+          if (center !== state.center) {
+            mapPosition.center = center;
+          }
+
+          if (zoom !== state.zoom && bounds !== state.bounds && center !== state.center) {
+            this.setState(mapPosition);
+          }
+        }
+        else {
+          // Record the new center if we have no bounds, or we're on 0,0.
+          if (center !== state.center && center.lat !== 0 && center.lng !== 0) {
+            this.setState({ center: center });
+          }
+        }
+      }
+    }
+  }
+
   render() {
     let listings = this.props.listings;
-    let latitude = this.state.latitude;
-    let longitude = this.state.longitude;
+    let center = this.state.center || { lat: 0, lng: 0 };
+    let bounds = this.state.bounds;
+    let zoom = this.state.zoom || 10;
 
     return (
-      <GoogleMap defaultZoom={10}
-                 center={ { lat: latitude, lng: longitude } }
-                 className="listingsMap"
-                 onDragEnd={ this.onDragEnd }
-                 onZoomChange={ this.onPositionChange }
-                 onTilesLoaded={ this.onPositionChange }
-                 ref={ (map) => { this.map = map } }>
-        {
-          listings.map((listing, index) => {
-            return this.renderMarker(listing, index);
-          })
-        }
-      </GoogleMap>
+      <div ref={(ref) => {this.mapContainer = ref}} style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
+        <GoogleMapReact
+          id={'map'}
+          bootstrapURLKeys={{
+            key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+            language: 'EN'
+          }}
+          options={{
+            fullscreenControl: false
+          }}
+          onClick={this.onClick}
+          bounds={ bounds }
+          marginBounds={ bounds }
+          draggable={true}
+          onChange={this.onPositionChange}
+          onDrag={this.mapDragged}
+          onZoomAnimationEnd={() => { this.onPositionChange({
+            bounds: this.map.props.bounds,
+            center: this.map.props.center
+          })}}
+          resetBoundsOnResize={true}
+          center={ center }
+          ref={(ref) => {this.map = ref}}
+          zoom={ zoom }
+        >
+          {
+            listings.map((listing, index) => {
+              return this.renderMarker(listing, index);
+            })
+          }
+        </GoogleMapReact>
+      </div>
     )
   }
 }
 
-export default withScriptjs(withGoogleMap(ListingMap));
+export default ListingMap;

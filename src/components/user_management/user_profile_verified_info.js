@@ -160,9 +160,7 @@ class UserProfileVerifiedInfo extends Component {
         this.setState({
           user: response.data.data.user
         });
-
-        console.log(response.data.data.user)
-      })
+      });
     }
   }
 

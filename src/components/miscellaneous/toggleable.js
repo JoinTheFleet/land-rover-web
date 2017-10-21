@@ -16,12 +16,12 @@ export default class Toggleable extends Component {
              duration={ this.props.duration || DEFAULTS.duration }
              opacity={ this.props.open ? 1 : 0 }
              begin={ (anime) => {
-               if (this.props.open) {
+               if (this.props.open && anime.animatables.length > 0) {
                  anime.animatables[0].target.style.display = 'block';
                }
              }}
              complete={ (anime) => {
-               if (!this.props.open) {
+               if (!this.props.open && anime.animatables.length > 0) {
                  anime.animatables[0].target.style.display = 'none';
                }
              }}>

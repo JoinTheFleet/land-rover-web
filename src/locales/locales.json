@@ -133,8 +133,10 @@
     "listings.add_new_listing": "Add New Listing",
     "listings.complete_listing": "Complete Listing",
 
-    "listings.sort.price_high_low": "Price high - low",
-    "listings.sort.price_low_high": "Price low - high",
+    "listings.sort.distance": "Distance",
+    "listings.sort.price": "Price",
+    "listings.sort.rating": "Rating",
+    "listings.sort.name": "Name",
 
     "listings.forms.steps.registration": "Registration",
     "listings.forms.steps.details": "Details",
