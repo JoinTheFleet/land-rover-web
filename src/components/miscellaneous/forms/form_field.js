@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DateRangePicker, SingleDatePicker } from 'react-dates';
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
 import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
@@ -66,6 +66,21 @@ export default class FormField extends Component {
           renderCalendardInfo={false}
           hideKeyboardShortcutsPanel={true}
           displayFormat={ 'DD/MM/YYYY' }
+        />
+      )
+    }
+    else if (this.props.type === 'calendar') {
+      renderable = (
+        <DayPickerRangeController
+          startDate={this.props.startDate}
+          endDate={this.props.endDate}
+          focusedInput={this.props.focusedInput}
+          onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
+          onFocusChange={focusedInput => this.props.handleFocusChange(focusedInput)}
+          withPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
         />
       )
     }
