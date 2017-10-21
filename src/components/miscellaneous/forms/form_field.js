@@ -45,6 +45,30 @@ export default class FormField extends Component {
         />
       )
     }
+    else if (this.props.type === 'daterange') {
+      renderable = (
+        <DateRangePicker
+          startDate={this.props.startDate}
+          endDate={this.props.endDate}
+          onDatesChange={this.props.handleChange}
+          focusedInput={this.props.focused}
+          onFocusChange={this.props.handleFocusChange}
+          withPortal={false}
+          withFullScreenPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
+          keepOpenOnDateSelect={false}
+          showDefaultInputIcon={false}
+          reopenPickerOnClearDate={false}
+          showClearDates={true}
+          reopenPickerOnClearDates={false}
+          renderCalendardInfo={false}
+          hideKeyboardShortcutsPanel={true}
+          displayFormat={ 'DD/MM/YYYY' }
+        />
+      )
+    }
     else if (this.props.type === 'singleyeardate') {
       let value = (this.props.value || moment()).format('YYYY-MM-DD');
       let startDate = this.props.startDate ? (this.props.startDate).format('YYYY-MM-DD') : undefined;
@@ -87,11 +111,22 @@ export default class FormField extends Component {
                value={ this.props.value || '' }
                placeholder={ this.props.placeholder }
                onChange={ this.props.handleChange }
-               className="col-xs-12" />
+               onFocus={ this.props.handleFocusChange }
+               className={ typeof(this.props.className) === 'string' ? this.props.className : "col-xs-12" }/>
       );
     }
 
-    return renderable;
+    if (this.props.children) {
+      return (
+        <div className='pull-left' >
+          { renderable }
+          { this.props.children }
+        </div>
+      )
+    }
+    else {
+      return renderable;
+    }
   }
 }
 
