@@ -7,7 +7,6 @@ import UserImage from './user_profile/user_image';
 import FormButtonRow from '../miscellaneous/forms/form_button_row';
 
 import S3Uploader from '../../shared/external/s3_uploader';
-import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
 
 export default class UserProfileDetails extends Component {

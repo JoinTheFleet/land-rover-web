@@ -1,0 +1,56 @@
+.app-header .location-search-results {
+  margin-top: -20px;
+}
+
+.DateRangePicker_picker {
+  top: 40px;
+}
+
+.location-search-results {
+  margin-left: -1px;
+
+  .dropdown-menu {
+    max-width: 230px;
+    overflow: hidden;
+  }
+
+  .dropdown {
+    display: block;
+  }
+}
+
+button.search {
+  font-weight: 200;
+  padding: 7px 12px;
+  font-size: 16px;
+  box-shadow: none;
+  margin-left: 10px;
+  background-color: white;
+  border: none;
+  color: $secondary-color;
+
+  &:active,
+  &:hover,
+  &:focus {
+    box-shadow: none;
+    background-color: white !important;
+    border: none;
+    color: $secondary-color !important;
+  }
+}
+
+.DateInput__withCaret:after,
+.DateInput__withCaret:before {
+  display: none;
+}
+
+.DateRangePicker_picker {
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 5px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+#homescreen_top_banner button.search {
+  background-color: $secondary-color;
+  color: white;
+}

@@ -1,16 +1,13 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
+import LocalizationService from '../../../shared/libraries/localization_service';
 
 import PropTypes from 'prop-types';
 
 import ListingsFilters from './listings_filters';
+import SortDropdown from './sort_dropdown';
 
-export default class ListingsFiltersTopBar extends Component {
+class ListingsFiltersTopBar extends Component {
   constructor(props) {
     super(props);
 
@@ -30,26 +27,23 @@ export default class ListingsFiltersTopBar extends Component {
       <div id="filters_top_bar" className="smoke-grey">
         <a id="selectListingsFiltersBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn"
            onClick={ () => { this.toggleFilters() } }>
-          <FormattedMessage id="application.filter" />
+           { LocalizationService.formatMessage('application.filter') }
         </a>
         <div className="pull-right">
-          <FormattedMessage id="application.sort_by">
-            { (text) => (
-              <span className="tertiary-text-color text-uppercase">{text}</span>
-            ) }
-          </FormattedMessage>
-          <a id="selectListingsSortByBtn" className="filters-top-bar-control secondary-color white-text fs-12 btn" >
-            <FormattedMessage id="listings.sort.price_high_low" />
-          </a>
+          <SortDropdown handleSortToggle={this.props.handleSortToggle} selectedSort={this.props.selectedSort}/>
         </div>
         <ListingsFilters open={ this.state.filtersOpen }
-                         setCurrentSearchParams={ this.props.setCurrentSearchParams }
+                         handleFilterToggle={ this.props.handleFilterToggle }
                          toggleFilters={ this.toggleFilters } />
       </div>
     )
   }
 }
 
+export default injectIntl(ListingsFiltersTopBar);
+
 ListingsFiltersTopBar.propTypes = {
-  setCurrentSearchParams: PropTypes.func.isRequired
+  handleFilterToggle: PropTypes.func.isRequired,
+  handleSortToggle: PropTypes.func.isRequired,
+  selectedSort: PropTypes.string.isRequired
 }
