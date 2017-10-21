@@ -177,6 +177,7 @@
     "bookings.check_in_date": "Check In Date",
     "bookings.check_out_date": "Check Out Date",
     "bookings.insurance": "Insurance",
+    "bookings.not_available": "This vehicle is not available at the selected dates. Please select another date range.",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 

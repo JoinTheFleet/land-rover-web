@@ -8,7 +8,7 @@ import RatingInput from '../miscellaneous/rating_input';
 import Loading from '../miscellaneous/loading';
 import Map from '../miscellaneous/map';
 
-import ListingBookNowTile from './listing_book_now_tile';
+import BookNowTile from '../bookings/book_now_tile';
 
 import specDoorsIcon from '../../assets/images/spec-doors.png';
 import specPassengersIcon from '../../assets/images/spec-passengers.png';
@@ -152,7 +152,7 @@ class ListingView extends Component {
     if (this.props.enableBooking) {
       bookingDiv = (
         <div className="listing-view-booking-div">
-          <ListingBookNowTile listing={ this.props.listing } />
+          <BookNowTile listing={ this.props.listing } />
         </div>
       );
     }

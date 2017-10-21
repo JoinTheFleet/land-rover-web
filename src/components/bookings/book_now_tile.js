@@ -9,7 +9,7 @@ import Loading from '../miscellaneous/loading';
 
 import ListingQuotationService from '../../shared/services/listings/listing_quotation_service';
 
-class ListingBookNowTile extends Component {
+class BookNowTile extends Component {
   constructor(props) {
     super(props);
 
@@ -67,27 +67,37 @@ class ListingBookNowTile extends Component {
     }
 
     if (pricingQuote) {
+      let bookingRatesContent = (<div className="text-center tertiary-text-color fs-18 text-secondary-font-weight"> <FormattedMessage id="bookings.not_available" /> </div>);
+
+      if (false && pricingQuote.available) {
+        bookingRatesContent = (
+          <div className="col-xs-12 no-side-padding">
+            {
+              pricingQuote.price_items.map((priceItem, index) => {
+                let className = 'book-now-tile-details-rate col-xs-12 no-side-padding text-capitalize tertiary-text-color fs-16 ls-dot-five';
+                className += priceItem.type === 'TOTAL' ? ' subtitle-font-weight' : ' text-secondary-font-weight';
+
+                return (
+                  <div key={ 'booking_details_rate_' + index } className={ className }>
+                    <div className="pull-left"> { priceItem.title } </div>
+                    <div className="pull-right"> { priceItem.total.currency_symbol + priceItem.total.amount.toFixed(2) } </div>
+                  </div>
+                )
+              })
+            }
+            <div className="col-xs-12 no-side-padding text-center">
+              <button className="book-now-button btn secondary-color white-text fs-18"
+                      onClick={ this.handleBookButtonClick }>
+                <FormattedMessage id="bookings.book_now" />
+              </button>
+            </div>
+          </div>
+        );
+      }
+
       bookingRates = (
         <div className="book-now-tile-details-rates col-xs-12 no-side-padding">
-          {
-            pricingQuote.price_items.map((priceItem, index) => {
-              let className = 'book-now-tile-details-rate col-xs-12 no-side-padding text-capitalize tertiary-text-color fs-16 ls-dot-five';
-              className += priceItem.type === 'TOTAL' ? ' subtitle-font-weight' : ' text-secondary-font-weight';
-
-              return (
-                <div key={ 'booking_details_rate_' + index } className={ className }>
-                  <div className="pull-left"> { priceItem.title } </div>
-                  <div className="pull-right"> { priceItem.total.currency_symbol + priceItem.total.amount.toFixed(2) } </div>
-                </div>
-              )
-            })
-          }
-          <div className="col-xs-12 no-side-padding text-center">
-            <button className="book-now-button btn secondary-color white-text fs-18"
-                    onClick={ this.handleBookButtonClick }>
-              <FormattedMessage id="bookings.book_now" />
-            </button>
-          </div>
+          { bookingRatesContent }
         </div>
       )
     }
@@ -136,11 +146,11 @@ class ListingBookNowTile extends Component {
   }
 }
 
-ListingBookNowTile.propTypes = {
+BookNowTile.propTypes = {
   listing: PropTypes.object.isRequired,
   startDate: momentPropTypes.momentObj,
   endDate: momentPropTypes.momentObj,
   handleBookButtonClick: PropTypes.func
 };
 
-export default ListingBookNowTile;
+export default BookNowTile;
