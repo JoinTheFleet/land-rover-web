@@ -220,6 +220,9 @@ class ListingMap extends Component {
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
             language: 'EN'
           }}
+          options={{
+            fullscreenControl: false
+          }}
           onClick={this.onClick}
           bounds={ bounds }
           marginBounds={ bounds }

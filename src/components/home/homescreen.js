@@ -27,7 +27,6 @@ import momentPropTypes from 'react-moment-proptypes';
 
 class Homescreen extends Component {
   render() {
-    console.log(this.props)
     return (
       <div>
         <div id="homescreen_top_banner">

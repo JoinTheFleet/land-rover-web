@@ -66,6 +66,7 @@ export default class App extends Component {
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
+    this.handleFilterToggle = this.handleFilterToggle.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
