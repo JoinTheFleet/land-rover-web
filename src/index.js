@@ -5,6 +5,9 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import WebFont from 'webfontloader';
 
+import { LocaleProvider } from 'antd';
+import enUS from 'antd/lib/locale-provider/en_US';
+
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
 
@@ -33,9 +36,11 @@ WebFont.load({
 });
 
 render(
-  <IntlProvider locale={locale} messages={messages}>
-    <App />
-  </IntlProvider>,
+  (<IntlProvider locale={locale} messages={messages}>
+    <LocaleProvider locale={enUS}>
+      <App />
+    </LocaleProvider>
+  </IntlProvider>),
   document.getElementById('root')
 );
 

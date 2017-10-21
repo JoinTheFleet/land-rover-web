@@ -1,3 +1,7 @@
+@import "~slick-carousel/slick/slick";
+@import "~slick-carousel/slick/slick-theme";
+@import "~antd/dist/antd.css";
+
 @import 'variables';
 @import 'colors';
 @import 'text';
@@ -5,6 +9,7 @@
 @import 'alerts';
 @import 'checkbox';
 @import 'dropdown';
+@import 'image_galleries';
 @import 'loading';
 @import 'pagination';
 @import 'rating_input';

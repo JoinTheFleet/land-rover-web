@@ -32,7 +32,7 @@ export default class Listings extends Component {
 
     switch(this.state.currentView) {
       case listingsViews.new:
-        viewToRender = (<ListingForm></ListingForm>);
+        viewToRender = (<ListingForm setCurrentView={ this.setCurrentView }></ListingForm>);
         break;
       case listingsViews.view:
         viewToRender = '';
