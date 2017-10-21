@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -21,7 +21,7 @@ import Toggleable from '../../miscellaneous/toggleable';
 import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
 
-class ListingsFilters extends Component {
+export default class ListingsFilters extends Component {
   constructor(props) {
     super(props);
 
@@ -59,6 +59,8 @@ class ListingsFilters extends Component {
         vehicleFilters.splice(foundIndex, 1);
       }
 
+      delete selectedFilters.model_id;
+
       VehicleMakeModelsService.index(selectedFilters.make_id).then(response => {
         vehicleFilters.push({
           position: 3,
@@ -66,10 +68,14 @@ class ListingsFilters extends Component {
           data: response.data.data.models,
           name: LocalizationService.formatMessage('filters.model')
         });
-      });
 
-      filterOptions.vehicle = vehicleFilters;
-      this.setState({filterOptions: filterOptions});
+        filterOptions.vehicle = vehicleFilters;
+
+        this.setState({
+          filterOptions: filterOptions,
+          selectedFilters: selectedFilters
+        });
+      });
     }
   }
 
@@ -84,7 +90,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage("filters.body")
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleMakesService.index().then(response => {
@@ -95,7 +101,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.make')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleYearsService.index().then(response => {
@@ -106,7 +112,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.year')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleEngineFuelsService.index().then(response => {
@@ -117,7 +123,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.engine_fuel')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleTransmissionsService.index().then(response => {
@@ -128,7 +134,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.transmission')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleSeatCountsService.index().then(response => {
@@ -139,7 +145,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.seat_count')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
     VehicleDoorCountsService.index().then(response => {
@@ -150,7 +156,7 @@ class ListingsFilters extends Component {
         name: LocalizationService.formatMessage('filters.door_count')
       });
 
-      this.setState({filterOptions: filterOptions})
+      this.setState({filterOptions: filterOptions});
     });
 
 
@@ -162,7 +168,29 @@ class ListingsFilters extends Component {
   handleFilterSelected(name, value) {
     let selectedFilters = JSON.parse(JSON.stringify(this.state.selectedFilters));
 
-    if (value) {
+    if (name === 'amenities') {
+      if (!selectedFilters[name]) {
+        selectedFilters[name] = [];
+      }
+
+      let existingIndex = selectedFilters[name].findIndex(element => element === value);
+
+      if (existingIndex > -1) {
+        selectedFilters[name].splice(existingIndex, 1);
+      }
+      else {
+        selectedFilters[name].push(value);
+      }
+    }
+    else if (name === 'on_demand') {
+      if (selectedFilters[name]) {
+        delete selectedFilters[name];
+      }
+      else {
+        selectedFilters[name] = true;
+      }
+    }
+    else if (value) {
       selectedFilters[name] = value;
     }
     else {
@@ -171,89 +199,96 @@ class ListingsFilters extends Component {
 
     this.setState({
       selectedFilters: selectedFilters
+    }, () => {
+      this.props.handleFilterToggle(selectedFilters)
     });
-  }
-
-  handleApplyFilters() {
-    this.props.toggleFilters();
-    this.props.setCurrentSearchParams(this.state.selectedFilters);
   }
 
   renderListingsFilters() {
     let filterGroups = Object.keys(this.state.filterOptions);
+    let selectedFilters = this.state.selectedFilters;
 
-    return (
-      <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
-        {
-          filterGroups.map((filtersGroup, index) => {
-            let filters = this.state.filterOptions[filtersGroup];
-
-            return (
-              <div key={'search_filters_groups_' + filtersGroup}>
-                <FormattedMessage id={ 'listings.' + filtersGroup }>
-                  { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-                </FormattedMessage>
-
-                {
-                  filters
-                    .sort(function(a, b) {
-                      return a.position - b.position;
-                    })
-                    .map(filter => {
-                      return <Dropdown
-                                key={ 'filters_group_' + filter.param }
-                                name={ filter.param }
-                                placeholder={ filter.name }
-                                items={ filter.data }
-                                valueProperty="id"
-                                displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
-                                itemClickHandler={ this.handleFilterSelected } />
-                    })
-                }
-                <div className='listings-filters-divider smoke-grey-two'></div>
-              </div>
-            )
-          })
-        }
-
-        <div>
-          <FormattedMessage id="application.other">
-            { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-          </FormattedMessage>
-          <br/>
-          <FormattedMessage id="listings.on_demand_collection">
-            { (text) => ( <span className="fs-16 text-secondary-font-weight">{ text }</span> ) }
-          </FormattedMessage>
-        </div>
-
-        <div className="listings-filters-divider smoke-grey-two"></div>
-
-        <div className="listings-filters-amenities">
-          <FormattedMessage id="listings.amenities">
-            { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
-          </FormattedMessage>
-
+    if (this.state.open) {
+      return (
+        <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
           {
-            this.state.amenities.map((amenity) => {
-              let checkboxId = 'listings_amenity_' + amenity.id;
+            filterGroups.map((filtersGroup, index) => {
+              let filters = this.state.filterOptions[filtersGroup];
 
               return (
-                <div key={ 'listings_amenity_filter_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
-                  <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity.id) } } />
-                  <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
+                <div key={'search_filters_groups_' + filtersGroup}>
+                  <FormattedMessage id={ 'listings.' + filtersGroup }>
+                    { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
+                  </FormattedMessage>
+
+                  {
+                    filters
+                      .sort(function(a, b) {
+                        return a.position - b.position;
+                      })
+                      .map(filter => {
+                        return <Dropdown
+                                  key={ 'filters_group_' + filter.param }
+                                  name={ filter.param }
+                                  placeholder={ filter.name }
+                                  items={ filter.data }
+                                  selectedValue={ selectedFilters[filter.param] }
+                                  valueProperty="id"
+                                  displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                                  itemClickHandler={ this.handleFilterSelected } />
+                      })
+                  }
+                  <div className='listings-filters-divider smoke-grey-two'></div>
                 </div>
               )
             })
           }
 
-          <div className="apply-listings-filters-div col-xs-12">
-            <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.handleApplyFilters() } }>
-              <FormattedMessage id="listings.see_listings" />
-            </button>
+          <div>
+            <FormattedMessage id="application.other">
+              { (text) => ( <span className="secondary-text-color text-secondary-font-weight fs-18">{ text }</span> ) }
+            </FormattedMessage>
+            <br/>
+            <FormattedMessage id="listings.on_demand_collection">
+              { (text) => (
+                <div key='on_demand_filter' className="listings-amenity-filter fleet-checkbox">
+                  <input type="checkbox" id='on-demand-checkbox' name="on-demand-checkbox" onChange={ (event) => { this.handleFilterSelected('on_demand') } } />
+                  <label htmlFor={ 'on-demand-checkbox' } className="fs-16 text-secondary-font-weight">{ text }</label>
+                </div>
+              )}
+            </FormattedMessage>
+          </div>
+
+          <div className="listings-filters-divider smoke-grey-two"></div>
+
+
+          <div className="listings-filters-amenities">
+            {
+              this.state.amenities.map((amenity) => {
+                let checkboxId = 'listings_amenity_' + amenity.id;
+
+                return (
+                  <div key={ 'listings_amenity_filter_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
+                    <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleFilterSelected('amenities', amenity.id) } } />
+                    <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
+                  </div>
+                )
+              })
+            }
+
+            <div className="apply-listings-filters-div col-xs-12">
+              <button className="btn secondary-color white-text col-xs-12" onClick={ () => { this.props.toggleFilters() } }>
+                <FormattedMessage id="listings.see_listings" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
+    else {
+      return <div className="listings-filters white"/>;
+    }
+
   }
 
   render() {
@@ -265,8 +300,6 @@ class ListingsFilters extends Component {
   }
 }
 
-export default injectIntl(ListingsFilters);
-
 ListingsFilters.propTypes = {
-  setCurrentSearchParams: PropTypes.func.isRequired
+  handleFilterToggle: PropTypes.func.isRequired
 };

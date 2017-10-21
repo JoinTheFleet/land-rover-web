@@ -11,7 +11,7 @@ import HeaderMenu from './header_menu';
 import Constants from '../../miscellaneous/constants';
 import Helpers from '../../miscellaneous/helpers';
 import Roles from '../../miscellaneous/roles';
-
+import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import logo from '../../assets/images/menu_logo.png';
 
 export default class Header extends Component {
@@ -58,16 +58,13 @@ export default class Header extends Component {
   }
 
   render() {
-    let hideSearchForm = !this.props.loggedIn && this.props.currentMenuItem === Constants.navigationSections().home;
+    let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().home;
 
     return (
       <div className="app-header">
         <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
 
-        <form id="header_search_form" className={ 'global-search-form' + (hideSearchForm ? ' hide' : '') }>
-          <input type="text" name="global_search[location]" id="global_search_location" placeholder="Location" />
-          <input type="text" name="global_search[dates]" id="global_search_dates" placeholder="Dates" />
-        </form>
+        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm }/>
 
         { this.renderSwitchRoleButton() }
 

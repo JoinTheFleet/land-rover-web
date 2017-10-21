@@ -16,8 +16,6 @@ import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar'
 
 // Services / Miscellaneous
 import HomeFeedService from '../../shared/services/home_feed_service';
-import ListingsService from '../../shared/services/listings/listings_service';
-import SearchService from '../../shared/services/search_service';
 import Helpers from '../../miscellaneous/helpers';
 
 // Icons
@@ -35,14 +33,10 @@ class Homefeed extends Component {
     this.state = {
       toggledComponent: '',
       nearby: [],
-      collections: [],
-      listings: [], // Added temporarily to show listings on map until HomeFeed endpoint returns locations
-      hasBeenScrolled: false
+      collections: []
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
-    this.handlePositionChange = this.handlePositionChange.bind(this);
-    this.handleMapDrag = this.handleMapDrag.bind(this);
 
     let component = this;
 
@@ -54,27 +48,15 @@ class Homefeed extends Component {
   }
 
   componentWillMount() {
-    HomeFeedService.show()
-                   .then((response) => {
-                     this.setState({
-                       nearby: response.data.data.home_feed.nearby,
-                       collections: response.data.data.home_feed.collections
-                    }, () => {
-                      // Added temporarily to show listings on map until HomeFeed endpoint returns locations
-                      ListingsService.index()
-                      .then((response) => {
-                        this.setState({
-                          listings: [],
-                        });
-                      })
-                      .catch((error) => {
-                        alert(error); // TODO: Some sort of nice flash service.
-                      });
-                    });
-                   })
-                   .catch((error) => {
-                     alert(error); // TODO: Some sort of nice flash service.
-                   });
+    if (this.props.accessToken) {
+      HomeFeedService.show()
+                     .then((response) => {
+                       this.setState({
+                         nearby: response.data.data.home_feed.nearby,
+                         collections: response.data.data.home_feed.collections
+                       });
+                     });
+    }
   }
 
   toggleComponent(component) {
@@ -89,14 +71,14 @@ class Homefeed extends Component {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    if (this.state.hasBeenScrolled && this.state.listings && this.state.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0))  && this.props.listings && this.props.listings.length > 0) {
       return (
         <div>
           <div>
             <Pageable totalPages={ 60 }
                       currentPage={ 1 }
                       handlePageChange={ this.handlePageChange }>
-              <ListingList scrollable={false} listings={this.state.listings} />
+              <ListingList scrollable={false} listings={this.props.listings} />
             </Pageable>
           </div>
         </div>
@@ -131,41 +113,6 @@ class Homefeed extends Component {
     }
   }
 
-  handlePositionChange(bounds, center) {
-    let latitudes = bounds.f;
-    let longitudes = bounds.b;
-    let location = {
-      latitude: center.lat(),
-      longitude: center.lng()
-    }
-    let boundingBox = {
-      left: longitudes.b,
-      right: longitudes.f,
-      bottom: latitudes.b,
-      top: latitudes.f
-    }
-
-    SearchService.create({
-      search: {
-        location: location,
-        bounding_box: boundingBox,
-        force_bounding_box: true,
-        sort: 'distance'
-      }
-    }).then((response) => {
-      this.setState({
-        listings: response.data.data.listings,
-      });
-    })
-  }
-
-  handleMapDrag(bounds, center) {
-    this.setState({
-      hasBeenScrolled: true
-    });
-    this.handlePositionChange(bounds, center);
-  }
-
   renderListingMap() {
     let googleMapUrl = this.props.intl.formatMessage({
       id: 'google.maps.javascript_api_link',
@@ -178,9 +125,11 @@ class Homefeed extends Component {
                   loadingElement={ <div style={{ height: `100%` }} /> }
                   containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
-                  onDragEnd={this.handleMapDrag}
-                  onPositionChange={this.handlePositionChange}
-                  listings={ this.state.listings } />
+                  onDragEnd={ this.props.handleMapDrag }
+                  onPositionChange={ this.props.handlePositionChange }
+                  listings={ this.props.listings }
+                  location={ this.props.location }
+                  boundingBox={ this.props.boundingBox } />
     )
   }
 
@@ -224,7 +173,7 @@ class Homefeed extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <div className="col-xs-12 no-side-padding">
-          <ListingsFiltersTopBar setCurrentSearchParams={ this.props.setCurrentSearchParams } />
+          <ListingsFiltersTopBar selectedSort={ this.props.sort } handleSortToggle={ this.props.handleSortToggle } handleFilterToggle={ this.props.handleFilterToggle } />
         </div>
 
         { this.renderListingsToDisplay() }
@@ -238,8 +187,14 @@ class Homefeed extends Component {
 }
 
 Homefeed.propTypes = {
-  searchParams: PropTypes.object.isRequired,
-  setCurrentSearchParams: PropTypes.func.isRequired
+  handleSortToggle: PropTypes.func.isRequired,
+  handleFilterToggle: PropTypes.func.isRequired,
+  handleMapDrag: PropTypes.func.isRequired,
+  handlePositionChange: PropTypes.func.isRequired,
+  listings: PropTypes.array.isRequired,
+  sort: PropTypes.string.isRequired,
+  currentSearch: PropTypes.bool.isRequired,
+  customSearch: PropTypes.bool.isRequired
 }
 
 export default injectIntl(Homefeed);
