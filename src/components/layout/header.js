@@ -58,7 +58,7 @@ export default class Header extends Component {
   }
 
   render() {
-    let hideSearchForm = !this.props.loggedIn || this.props.currentMenuItem === Constants.navigationSections().home;
+    let hideSearchForm = this.props.currentMenuItem === Constants.navigationSections().home;
 
     return (
       <div className="app-header">

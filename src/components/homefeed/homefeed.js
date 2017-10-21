@@ -48,13 +48,15 @@ class Homefeed extends Component {
   }
 
   componentWillMount() {
-    HomeFeedService.show()
-                   .then((response) => {
-                     this.setState({
-                       nearby: response.data.data.home_feed.nearby,
-                       collections: response.data.data.home_feed.collections
+    if (this.props.accessToken) {
+      HomeFeedService.show()
+                     .then((response) => {
+                       this.setState({
+                         nearby: response.data.data.home_feed.nearby,
+                         collections: response.data.data.home_feed.collections
+                       });
                      });
-                   });
+    }
   }
 
   toggleComponent(component) {
@@ -69,7 +71,7 @@ class Homefeed extends Component {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    if ((this.props.customSearch || this.props.currentSearch) && this.props.listings && this.props.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0))  && this.props.listings && this.props.listings.length > 0) {
       return (
         <div>
           <div>

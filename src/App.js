@@ -171,32 +171,30 @@ export default class App extends Component {
       case navigationSections.account:
         viewToRender = (<UserManagement></UserManagement>)
         break;
+      case navigationSections.dashboard:
+        viewToRender = (<Homefeed accessToken={ this.state.accessToken }
+                                  handleFilterToggle={ this.handleFilterToggle }
+                                  handleMapDrag={ this.handleMapDrag }
+                                  handlePositionChange={ this.handlePositionChange }
+                                  handleSortToggle={ this.handleSortToggle }
+                                  sort={ this.state.sort }
+                                  listings={ this.state.listings }
+                                  location={ this.state.location }
+                                  boundingBox={ this.state.boundingBox }
+                                  customSearch={ this.state.customSearch }
+                                  currentSearch={ this.state.currentSearch } />);
+        break;
       default:
-        if (this.state.accessToken && this.state.accessToken !== '' ) {
-          viewToRender = (<Homefeed accessToken={ this.state.accessToken }
-                                    handleFilterToggle={ this.handleFilterToggle }
-                                    handleMapDrag={ this.handleMapDrag }
-                                    handlePositionChange={ this.handlePositionChange }
-                                    handleSortToggle={ this.handleSortToggle }
-                                    sort={ this.state.sort }
-                                    listings={ this.state.listings }
-                                    location={ this.state.location }
-                                    boundingBox={ this.state.boundingBox }
-                                    customSearch={ this.state.customSearch }
-                                    currentSearch={ this.state.currentSearch } />);
-        }
-        else {
-          viewToRender = (<Homescreen handleLocationChange={ this.handleLocationChange }
-                                      handleLocationFocus={ this.handleLocationFocus }
-                                      handleDatesChange={ this.handleDatesChange }
-                                      handleLocationSelect={ this.handleLocationSelect }
-                                      handleSearch={ this.handleSearch }
-                                      startDate={ this.state.startDate }
-                                      endDate={ this.state.endDate }
-                                      locationName={ this.state.locationName }
-                                      searchLocations={ this.state.searchLocations }
-                                      showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
-        }
+        viewToRender = (<Homescreen handleLocationChange={ this.handleLocationChange }
+                                    handleLocationFocus={ this.handleLocationFocus }
+                                    handleDatesChange={ this.handleDatesChange }
+                                    handleLocationSelect={ this.handleLocationSelect }
+                                    handleSearch={ this.handleSearch }
+                                    startDate={ this.state.startDate }
+                                    endDate={ this.state.endDate }
+                                    locationName={ this.state.locationName }
+                                    searchLocations={ this.state.searchLocations }
+                                    showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
     }
 
     return viewToRender;
@@ -206,7 +204,11 @@ export default class App extends Component {
     this.setState({
       startDate: startDate,
       endDate: endDate
-    }, this.handleSearchIfNotShowingSearchButton);
+    }, () => {
+      if (startDate && endDate) {
+        this.handleSearchIfNotShowingSearchButton();
+      }
+    });
   }
 
   handleLocationSelect(location) {
@@ -349,7 +351,9 @@ export default class App extends Component {
       }, 1000);
     }
     else {
-      this.locationSearch(latitude, longitude, term);
+      locationTimeout = setTimeout(() => {
+        this.locationSearch(latitude, longitude, term);
+      }, 10);
     }
 
     this.setState({

@@ -53,7 +53,7 @@ class ListingPeriodFilter extends Component {
                        handleFocusChange={ this.handleDateRangePickerFocusChange}/>
 
             { button }
-            <div className='pull-left location-search-results'>
+            <div className='location-search-results'>
               <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
                   <Dropdown.Menu>
                     {
