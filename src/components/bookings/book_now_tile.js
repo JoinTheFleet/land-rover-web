@@ -69,7 +69,7 @@ class BookNowTile extends Component {
     if (pricingQuote) {
       let bookingRatesContent = (<div className="text-center tertiary-text-color fs-18 text-secondary-font-weight"> <FormattedMessage id="bookings.not_available" /> </div>);
 
-      if (false && pricingQuote.available) {
+      if (pricingQuote.available) {
         bookingRatesContent = (
           <div className="col-xs-12 no-side-padding">
             {
