@@ -46,6 +46,8 @@ export default class FormField extends Component {
       )
     }
     else if (this.props.type === 'daterange') {
+      let showClearDates = typeof this.props.showClearDates === 'undefined' ? true : this.props.showClearDates;
+
       renderable = (
         <DateRangePicker
           startDate={this.props.startDate}
@@ -61,11 +63,12 @@ export default class FormField extends Component {
           keepOpenOnDateSelect={false}
           showDefaultInputIcon={false}
           reopenPickerOnClearDate={false}
-          showClearDates={true}
+          showClearDates={showClearDates}
           reopenPickerOnClearDates={false}
           renderCalendardInfo={false}
           hideKeyboardShortcutsPanel={true}
           displayFormat={ 'DD/MM/YYYY' }
+          disabled={this.props.disabled}
         />
       )
     }
@@ -81,6 +84,9 @@ export default class FormField extends Component {
           initialVisibleMonth={null}
           numberOfMonths={2}
           minimumNights={1}
+          renderDay={this.props.renderDay}
+          isDayBlocked={this.props.isDayBlocked}
+          ref={this.props.fieldRef}
         />
       )
     }
