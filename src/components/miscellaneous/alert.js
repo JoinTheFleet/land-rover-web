@@ -26,10 +26,17 @@ export default class Alert extends Component {
       bottomPosition = Helpers.windowHeight() - (alert.offsetTop + alert.clientHeight);
     }
 
+    let closeButton = '';
+
+    if (this.props.closeable) {
+      closeButton = (<a className="close" data-dismiss="alert" aria-label="close" onClick={ this.props.handleClose }>&times;</a>)
+    }
+
     return (
       <Toggleable open={ this.state.visible }>
         <div className={ 'fleet-alert alert alert-dismissable alert-' + this.props.type }
              style={ { bottom: bottomPosition } }>
+          { closeButton }
           { this.props.message }
         </div>
       </Toggleable>
@@ -39,5 +46,7 @@ export default class Alert extends Component {
 
 Alert.propTypes = {
   message: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['success', 'info', 'warning', 'danger']).isRequired
+  type: PropTypes.oneOf(['success', 'info', 'warning', 'danger']).isRequired,
+  closeable: PropTypes.bool,
+  handleClose: PropTypes.func
 };

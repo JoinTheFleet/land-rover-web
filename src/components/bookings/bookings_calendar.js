@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Dropdown, MenuItem } from 'react-bootstrap';
 
+import Alert from '../miscellaneous/alert';
 import Loading from '../miscellaneous/loading';
 import FormField from '../miscellaneous/forms/form_field';
 
 import ListingsService from '../../shared/services/listings/listings_service';
-import ListingAvailabilityService from '../../shared/services/listings/listing_availability_service';
+import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
+import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 class BookingsCalendar extends Component {
@@ -21,19 +23,30 @@ class BookingsCalendar extends Component {
       loading: false,
       focusedInput: 'startDate',
       listings: [],
-      errors: []
+      currentAvailabilities: [],
+      currentBookings: [],
+      changedDays: [],
+      nonAvailableDays: [],
+      currentDailyRate: '',
+      currentAvailableSetting: null,
+      messages: []
     };
 
     this.renderDay = this.renderDay.bind(this);
+    this.isDayBlocked = this.isDayBlocked.bind(this);
     this.fetchListings = this.fetchListings.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
     this.handleDailyRateChange = this.handleDailyRateChange.bind(this);
     this.handleAvailabilityCheckboxChange = this.handleAvailabilityCheckboxChange.bind(this);
     this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
+
+    this.handleCancelRateChanges = this.handleCancelRateChanges.bind(this);
+    this.handleSaveRateChanges = this.handleSaveRateChanges.bind(this);
+    this.handleAlertClose = this.handleAlertClose.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(prevProp, prevState) {
     this.fetchListings();
   }
 
@@ -48,16 +61,40 @@ class BookingsCalendar extends Component {
     this.setState({
       loading: true
     }, () => {
-      ListingAvailabilityService.index(this.state.currentListing.id, moment(startDate).unix(), moment(endDate).unix())
-                                .then(response => {
-                                  let availabilities = response.data.data.availabilities;
-                                  let nonAvailableDays = availabilities.filter(availability => !availability.available);
+      ListingCalendarService.index(this.state.currentListing.id, moment(startDate).unix(), moment(endDate).unix())
+                            .then(response => {
+                              let availabilities = response.data.data.calendar;
+                              let changedDays = availabilities.filter(availability => !availability.standard_rate);
+                              let nonAvailableDays = availabilities.filter(availability => !availability.available);
 
-                                  this.setState({ currentAvailabilities: availabilities, nonAvailableDays: nonAvailableDays, loading: false });
-                                })
-                                .catch((error) => {
-                                  this.setState((prevState) => ({ errors: prevState.errors.push(error), loading: false }));
-                                });
+                              ListingBookingsService.index(this.state.currentListing.id)
+                                                    .then(response => {
+                                                      let bookings = response.data.data.bookings;
+
+                                                      this.setState({
+                                                        loading: false,
+                                                        changedDays: changedDays,
+                                                        nonAvailableDays: nonAvailableDays,
+                                                        currentAvailabilities: availabilities,
+                                                        currentBookings: bookings,
+                                                        startDate: null,
+                                                        endDate: null,
+                                                        focusedInput: 'startDate'
+                                                      });
+                                                    })
+                                                    .catch((error) => {
+                                                      this.setState((prevState) => ({
+                                                        loading: false,
+                                                        messages: prevState.messages.concat([ { type: 'error', message: error } ])
+                                                      }));
+                                                    });
+                            })
+                            .catch((error) => {
+                              this.setState((prevState) => ({
+                                loading: false,
+                                messages: prevState.messages.concat([ { type: 'error', message: error } ])
+                              }));
+                            });
     });
   }
 
@@ -69,51 +106,137 @@ class BookingsCalendar extends Component {
                     .then((response) => {
                       let listings = response.data.data.listings;
 
-                      this.setState({ listings: listings, currentListing: listings[0], currentDailyRate: listings[0].price / 100, loading: false });
+                      this.setState({
+                        listings: listings,
+                        currentListing: listings[0],
+                        currentDailyRate: listings[0].price / 100
+                      }, () => this.fetchCurrentAvailability());
                     })
                     .catch((error) => {
-                      this.setState((prevState) => ({ errors: prevState.errors.push(error), loading: false }));
+                      this.setState((prevState) => ({ messages: prevState.messages.concat([ { type: 'error', message: error } ]), loading: false }));
                     });
     });
   }
 
   handleDatesChange(startDate, endDate) {
-    this.setState({ startDate, endDate });
+    let newState = { startDate, endDate };
+    let selectedDaysAvailabilities = this.state.currentAvailabilities.filter(availability => {
+      let startAt = moment.unix(availability.start_at).utc();
+      let endAt = moment.unix(availability.end_at).utc();
+
+      return startAt.startOf('day').isSameOrAfter(startDate) && endAt.startOf('day').isSameOrBefore(endDate);
+    });
+
+    if (selectedDaysAvailabilities.length > 0) {
+      newState.currentDailyRate = Math.max.apply(Math, selectedDaysAvailabilities.map(availability => availability.rate / 100));
+      newState.currentAvailableSetting = selectedDaysAvailabilities.filter(availability => availability.available).length > 0;
+    }
+
+    this.setState(newState);
   }
 
   handleDateRangePickerFocusChange(focusedInput) {
-    this.setState({ focusedInput });
+    let newState = focusedInput ? { focusedInput } : { focusedInput: 'startDate' };
+
+    this.setState(newState);
   }
 
   handleVehicleSelect(listingId) {
     let listings = this.state.listings;
     let currentListing = listings[listings.findIndex(listing => listing.id === listingId)];
 
-    this.setState({ currentListing: currentListing }, () => {
+    this.setState({ currentListing: currentListing, currentDailyRate: currentListing.price / 100 }, () => {
       this.fetchCurrentAvailability();
     });
   }
 
-  handleAvailabilityCheckboxChange(event) {
-    let target = event.target;
+  handleAvailabilityCheckboxChange(checked, available) {
+    let finalAvailableValue;
 
-    if (target.checked) {
-      let checkboxToDisable = target.value.toString() === '1' ? 'bookings_calendar_checkbox_blocked' : 'bookings_calendar_checkbox_available';
-
+    if (checked) {
+      let checkboxToDisable = available ? 'bookings_calendar_checkbox_blocked' : 'bookings_calendar_checkbox_available';
       document.getElementById(checkboxToDisable).checked = false;
+
+      finalAvailableValue = available;
     }
+
+    this.setState({ currentAvailableSetting: finalAvailableValue });
   }
 
   handleDailyRateChange(event) {
     this.setState({ currentDailyRate: event.target.value });
   }
 
+  handleCancelRateChanges() {
+    this.setState({
+      startDate: null,
+      endDate: null
+    });
+  }
+
+  handleSaveRateChanges() {
+    let available = this.state.currentAvailableSetting;
+    let rate = this.state.currentDailyRate;
+    let startDate = moment(this.state.startDate);
+    let endDate = moment(this.state.endDate);
+    let dates = [];
+
+    this.setState({ loading: true }, () => {
+      do {
+        dates.push({
+          start_at: startDate.utc().startOf('day').unix(),
+          rate: rate * 100,
+          available: available
+        });
+
+        startDate.add(1, 'days');
+      } while(startDate.isSameOrBefore(endDate));
+
+      ListingCalendarService.create(this.state.currentListing.id, dates)
+                            .then(response => {
+                              let message = this.props.intl.formatMessage({ id: 'bookings.saved_changes_successfully' });
+
+                              this.setState(prevState => ({ loading: false, messages: prevState.messages.concat([{ type: 'success', message: message }]) }));
+                            })
+                            .catch(error => {
+                              this.setState(prevState => ({ loading: false, messages: prevState.messages.concat([ { type: 'error', message: error } ]) }));
+                            });
+    });
+  }
+
+  handleAlertClose(messageToRemove) {
+    let messages = this.state.messages;
+    let index = messages.indexOf(messageToRemove);
+
+    if (index > -1) {
+      messages.splice(index, 1);
+
+      this.setState({ messages: messages });
+    }
+  }
+
+  isDayBlocked(day) {
+    let bookings = this.state.currentBookings;
+
+    return bookings.filter(booking => day.utc().isBetween(moment.unix(booking.start_at).utc(), moment.unix(booking.end_at).utc(), null, '[]')).length > 0;
+  }
+
   renderDay(day) {
-    let nonAvailableSpan = '';
+    let changedSpan;
+    let changedDays = this.state.changedDays;
+    let nonAvailableSpan;
     let nonAvailableDays = this.state.nonAvailableDays;
 
-    if (nonAvailableDays) {
-      let index = nonAvailableDays.findIndex(availability => moment.unix(availability.start_at).isSameOrBefore(day) && moment.unix(availability.end_at).isSameOrAfter(day));
+    if (changedDays.length > 0) {
+      let index = changedDays.findIndex(availability => day.utc().isBetween(moment.unix(availability.start_at).utc(), moment.unix(availability.end_at).utc(), null, '[]'));
+
+      if (index > -1) {
+        changedSpan = (<span className="day-changed-span"></span>);
+      }
+    }
+
+    if (nonAvailableDays.length > 0) {
+      let index = nonAvailableDays.findIndex(availability => day.utc().isBetween(moment.unix(availability.start_at).utc(), moment.unix(availability.end_at).utc(), null, '[]'));
 
       if(index > -1) {
         nonAvailableSpan = (<span className="day-not-available-span"></span>);
@@ -123,7 +246,7 @@ class BookingsCalendar extends Component {
     return (
       <span>
         { day.format('D') }
-        { nonAvailableSpan }
+        { nonAvailableSpan || changedSpan }
       </span>
     )
   }
@@ -184,9 +307,31 @@ class BookingsCalendar extends Component {
 
   renderSetRateTile() {
     let setRateTile = '';
+    let setPriceDetails = '';
 
     if (this.state.startDate && this.state.endDate) {
       let currencySymbol = this.state.currentListing.country_configuration.country.currency_symbol;
+
+      if (this.state.currentAvailableSetting !== false) {
+        setPriceDetails = (
+          <div className="bookings-calendar-set-price-details tertiary-text-color col-xs-12 no-side-padding">
+            <div className="subtitle-font-weight col-xs-12 no-side-padding">
+              <FormattedMessage id="bookings.daily_rate" />
+            </div>
+
+            <FormField type="text"
+                      id="bookings_calendar_set_rate_input"
+                      value={ this.state.currentDailyRate }
+                      handleChange={ this.handleDailyRateChange } />
+
+            <Button bsStyle=' secondary-color white-text'>
+              <FormattedMessage id="bookings.reset_to_default">
+                { text => <span> { `${text} (${currencySymbol}${this.state.currentListing.price / 100})` } </span>}
+              </FormattedMessage>
+            </Button>
+          </div>
+        )
+      }
 
       setRateTile = (
         <div className="bookings-calendar-set-rate-tile col-xs-12 no-side-padding">
@@ -200,7 +345,9 @@ class BookingsCalendar extends Component {
                          startDate={ this.state.startDate }
                          endDate={ this.state.endDate }
                          disabled={ true }
-                         showClearDates={ false } />
+                         showClearDates={ false }
+                         handleChange={ () => {} }
+                         handleFocusChange={ () => {} } />
             </div>
 
             <div className="bookings-calendar-set-rate-details tertiary-text-color col-xs-12 no-side-padding">
@@ -211,13 +358,19 @@ class BookingsCalendar extends Component {
               {
                 ['available', 'blocked'].map(status => {
                   let checkboxId = `bookings_calendar_checkbox_${status}`
+                  let availableSetting = status === 'available';
 
                   return (
                     <div key={ 'bookings_calendar_set_availability_' + status } className="text-secondary-font-weight ls-dot-two col-xs-12 no-side-padding">
                       <FormattedMessage id={ 'bookings.' + status } />
 
                       <div className="pull-right fleet-checkbox">
-                        <input type="checkbox" name="bookings_calendar_status" id={ checkboxId } value={ status === 'available' ? 1 : -1 } onChange={ this.handleAvailabilityCheckboxChange } />
+                        <input type="checkbox" name="bookings_calendar_status"
+                               id={ checkboxId }
+                               value={ availableSetting ? 1 : -1 }
+                               checked={ this.state.currentAvailableSetting === availableSetting }
+                               onChange={ (event) => { this.handleAvailabilityCheckboxChange(event.target.checked, availableSetting) } } />
+
                         <label htmlFor={ checkboxId }></label>
                       </div>
                     </div>
@@ -226,29 +379,14 @@ class BookingsCalendar extends Component {
               }
             </div>
 
-            <div className="bookings-calendar-set-price-details tertiary-text-color col-xs-12 no-side-padding">
-              <div className="subtitle-font-weight col-xs-12 no-side-padding">
-                <FormattedMessage id="bookings.daily_rate" />
-              </div>
-
-              <FormField type="text"
-                        id="bookings_calendar_set_rate_input"
-                        value={ this.state.currentDailyRate }
-                        handleChange={ this.handleDailyRateChange } />
-
-              <Button bsStyle=' secondary-color white-text'>
-                <FormattedMessage id="bookings.reset_to_default">
-                  { text => <span> { `${text} (${currencySymbol}${this.state.currentListing.price / 100})` } </span>}
-                </FormattedMessage>
-              </Button>
-            </div>
+            { setPriceDetails }
 
             <div className="bookings-calendar-save-changes tertiary-text-color text-center col-xs-12 no-side-padding">
-              <Button bsStyle=' white secondary-text-color'>
+              <Button bsStyle=' white secondary-text-color' onClick={ this.handleCancelRateChanges }>
                 <FormattedMessage id="application.cancel" />
               </Button>
 
-              <Button bsStyle=' secondary-color white-text'>
+              <Button bsStyle=' secondary-color white-text' onClick={ this.handleSaveRateChanges } disabled={ !this.state.currentDailyRate }>
                 <FormattedMessage id="bookings.save_changes" />
               </Button>
             </div>
@@ -260,6 +398,27 @@ class BookingsCalendar extends Component {
     return setRateTile;
   }
 
+  renderMessages() {
+    let messages = this.state.messages;
+
+    return (
+      <div className="col-xs-12 no-side-padding">
+        {
+          messages.map((message, index) => {
+            return (
+              <Alert key={ `bookings_calendar_messages_${index}` }
+                     type={ message.type }
+                     message={ message.message }
+                     closeable={ true }
+                     handleClose={ () => { this.handleAlertClose(message) } }>
+              </Alert>
+            )
+          })
+        }
+      </div>
+    )
+  }
+
   render() {
 
     return (
@@ -269,25 +428,27 @@ class BookingsCalendar extends Component {
 
         <div className="bookings-calendar-main-container col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           <FormField type='calendar'
-                    className=''
-                    id='bookings_calendar_period'
-                    placeholder='Dates'
-                    startDate={ this.state.startDate }
-                    endDate={ this.state.endDate }
-                    focusedInput={ this.state.focusedInput }
-                    handleChange={ this.handleDatesChange }
-                    handleFocusChange={ this.handleDateRangePickerFocusChange }
-                    renderDay={ this.renderDay }
-                    isDayBlocked={ this.isDayBlocked }
-                    fieldRef={(calendar) => this.calendar = calendar } />
+                     className=''
+                     id='bookings_calendar_period'
+                     placeholder='Dates'
+                     startDate={ this.state.startDate }
+                     endDate={ this.state.endDate }
+                     focusedInput={ this.state.focusedInput }
+                     handleChange={ this.handleDatesChange }
+                     handleFocusChange={ this.handleDateRangePickerFocusChange }
+                     renderDay={ this.renderDay }
+                     isDayBlocked={ this.isDayBlocked }
+                     fieldRef={(calendar) => this.calendar = calendar } />
 
           { this.renderSetRateTile() }
 
           { this.renderLoading() }
+
+          { this.renderMessages() }
         </div>
       </div>
     );
   }
 }
 
-export default BookingsCalendar;
+export default injectIntl(BookingsCalendar);

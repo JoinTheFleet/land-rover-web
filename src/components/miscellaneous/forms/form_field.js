@@ -79,7 +79,7 @@ export default class FormField extends Component {
           endDate={this.props.endDate}
           focusedInput={this.props.focusedInput}
           onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
-          onFocusChange={focusedInput => this.props.handleFocusChange(focusedInput)}
+          onFocusChange={this.props.handleFocusChange}
           withPortal={false}
           initialVisibleMonth={null}
           numberOfMonths={2}

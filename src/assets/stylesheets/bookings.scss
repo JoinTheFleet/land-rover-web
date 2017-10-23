@@ -87,6 +87,7 @@
     .DayPicker {
       margin: auto;
 
+      .day-changed-span,
       .day-not-available-span {
         position: absolute;
         border-radius: 6px;
@@ -94,6 +95,13 @@
         right: 4px;
         width: 6px;
         height: 6px;
+      }
+
+      .day-changed-span {
+        background: $secondary-color;
+      }
+
+      .day-not-available-span {
         background: red;
       }
     }
