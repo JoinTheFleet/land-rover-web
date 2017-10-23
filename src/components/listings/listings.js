@@ -2,15 +2,18 @@ import React, {
   Component
 } from 'react';
 
-import Constants from '../../miscellaneous/constants';
 
 import ListingsOverview from './listings_overview';
 import ListingView from './listing_view';
 import ListingForm from './forms/listing_form';
 
+import Bookings from '../bookings/bookings';
+
+import Constants from '../../miscellaneous/constants';
 import Helpers from '../../miscellaneous/helpers';
 
-const listingsViews = Constants.listingViews();
+const listingsViews = Constants.listingsViews();
+const bookingsViews = Constants.bookingsViews();
 
 export default class Listings extends Component {
   constructor(props) {
@@ -19,7 +22,9 @@ export default class Listings extends Component {
     this.state = {
       currentListing: {},
       currentView: 'index',
-      currentSelectedListingId: -1
+      currentSelectedListingId: -1,
+      currentCheckInDate: null,
+      currentCheckOutDate: null
     };
 
     this.setCurrentView = this.setCurrentView.bind(this);
@@ -45,7 +50,10 @@ export default class Listings extends Component {
         );
         break;
       case listingsViews.view:
-        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ true } />;
+        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ true } handleChangeView={ this.setCurrentView } />;
+        break;
+      case listingsViews.requestBooking:
+        viewToRender = <Bookings currentView={ bookingsViews.new } listing={ this.state.currentListing } checkInDate={ this.state.currentCheckInDate } checkOutDate={ this.state.currentCheckOutDate } />
         break;
       default:
         viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);

@@ -16,7 +16,7 @@ import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 
-const listingsViews = Constants.listingViews();
+const listingsViews = Constants.listingsViews();
 
 export default class ListingsOverview extends Component {
   constructor(props) {

@@ -27,7 +27,7 @@ import ListingRules from './steps/listing_rules';
 import ListingsService from '../../../shared/services/listings/listings_service';
 import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_lookups_service';
 
-const listingsViews = Constants.listingViews();
+const listingsViews = Constants.listingsViews();
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -101,7 +101,6 @@ class ListingForm extends Component {
                                  }));
                                })
                                .catch(error => {
-                                 console.log(error);
                                  this.setState(prevState => ({
                                    loading: false,
                                    errors: prevState.errors.concat([error.message])

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
@@ -87,7 +87,7 @@ class BookNowTile extends Component {
             }
             <div className="col-xs-12 no-side-padding text-center">
               <button className="book-now-button btn secondary-color white-text fs-18"
-                      onClick={ this.handleBookButtonClick }>
+                      onClick={ this.handleBookButtonClick(this.state.startDate, this.state.endDate) }>
                 <FormattedMessage id="bookings.book_now" />
               </button>
             </div>
