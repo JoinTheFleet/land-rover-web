@@ -21,7 +21,7 @@ export default class Alert extends Component {
     let alerts = document.getElementsByClassName('fleet-alert');
     let bottomPosition = 20;
 
-    if (alerts.length > 0) {
+    if (alerts.length > 1) {
       let alert = alerts[alerts.length - 1];
       bottomPosition = Helpers.windowHeight() - (alert.offsetTop + alert.clientHeight);
     }

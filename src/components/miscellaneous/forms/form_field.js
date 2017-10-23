@@ -84,6 +84,8 @@ export default class FormField extends Component {
           initialVisibleMonth={null}
           numberOfMonths={2}
           minimumNights={1}
+          onPrevMonthClick={this.props.handlePrevMonthClick}
+          onNextMonthClick={this.props.handleNextMonthClick}
           renderDay={this.props.renderDay}
           isDayBlocked={this.props.isDayBlocked}
           ref={this.props.fieldRef}

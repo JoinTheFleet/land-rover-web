@@ -46,20 +46,41 @@ class BookingsCalendar extends Component {
     this.handleAlertClose = this.handleAlertClose.bind(this);
   }
 
-  componentDidMount(prevProp, prevState) {
+  componentWillMount() {
     this.fetchListings();
+  }
+
+  fetchListings(){
+    this.setState({
+      loading: true
+    }, () => {
+      ListingsService.index()
+                    .then((response) => {
+                      let listings = response.data.data.listings;
+
+                      this.setState({
+                        listings: listings,
+                        currentListing: listings[0],
+                        currentDailyRate: listings[0].price / 100
+                      }, () => this.fetchCurrentAvailability());
+                    })
+                    .catch((error) => {
+                      this.setState((prevState) => ({ messages: prevState.messages.concat([ { type: 'error', message: error } ]), loading: false }));
+                    });
+    });
   }
 
   fetchCurrentAvailability() {
     let currentVisibleDays = this.calendar.state.visibleDays;
-    let visibleDayMonths = Object.keys(currentVisibleDays);
+    let visibleDayMonths = Object.keys(currentVisibleDays).sort((monthA, monthB) => monthA > monthB);
     let lastVisibleDays = Object.keys(currentVisibleDays[visibleDayMonths[visibleDayMonths.length - 1]]);
 
     let startDate = Object.keys(currentVisibleDays[visibleDayMonths[0]])[0];
     let endDate = lastVisibleDays[lastVisibleDays.length - 1];
 
     this.setState({
-      loading: true
+      loading: true,
+      focusedInput: null
     }, () => {
       ListingCalendarService.index(this.state.currentListing.id, moment(startDate).unix(), moment(endDate).unix())
                             .then(response => {
@@ -95,26 +116,6 @@ class BookingsCalendar extends Component {
                                 messages: prevState.messages.concat([ { type: 'error', message: error } ])
                               }));
                             });
-    });
-  }
-
-  fetchListings(){
-    this.setState({
-      loading: true
-    }, () => {
-      ListingsService.index()
-                    .then((response) => {
-                      let listings = response.data.data.listings;
-
-                      this.setState({
-                        listings: listings,
-                        currentListing: listings[0],
-                        currentDailyRate: listings[0].price / 100
-                      }, () => this.fetchCurrentAvailability());
-                    })
-                    .catch((error) => {
-                      this.setState((prevState) => ({ messages: prevState.messages.concat([ { type: 'error', message: error } ]), loading: false }));
-                    });
     });
   }
 
@@ -196,7 +197,10 @@ class BookingsCalendar extends Component {
                             .then(response => {
                               let message = this.props.intl.formatMessage({ id: 'bookings.saved_changes_successfully' });
 
-                              this.setState(prevState => ({ loading: false, messages: prevState.messages.concat([{ type: 'success', message: message }]) }));
+                              this.setState(
+                                prevState => ({ messages: prevState.messages.concat([{ type: 'success', message: message }]) }),
+                                () => this.fetchCurrentAvailability()
+                              );
                             })
                             .catch(error => {
                               this.setState(prevState => ({ loading: false, messages: prevState.messages.concat([ { type: 'error', message: error } ]) }));
@@ -438,6 +442,8 @@ class BookingsCalendar extends Component {
                      handleFocusChange={ this.handleDateRangePickerFocusChange }
                      renderDay={ this.renderDay }
                      isDayBlocked={ this.isDayBlocked }
+                     handlePrevMonthClick={ () => { this.fetchCurrentAvailability() } }
+                     handleNextMonthClick={ () => { this.fetchCurrentAvailability() } }
                      fieldRef={(calendar) => this.calendar = calendar } />
 
           { this.renderSetRateTile() }
