@@ -19,6 +19,7 @@
     "application.search": "Search",
     "application.sort_by": "Sort By",
     "application.total": "Total",
+    "application.vehicle": "Vehicle",
     "application.view_all": "View All",
     "application.yes": "Yes",
 
@@ -178,6 +179,13 @@
     "bookings.check_out_date": "Check Out Date",
     "bookings.insurance": "Insurance",
     "bookings.not_available": "This vehicle is not available on the selected dates. Please select another date range.",
+    "bookings.availability": "Availability",
+    "bookings.available": "Available",
+    "bookings.blocked": "Blocked",
+    "bookings.daily_rate": "Daily Rate",
+    "bookings.reset_to_default": "Reset to Default",
+    "bookings.save_changes": "Save Changes",
+    "bookings.saved_changes_successfully": "Changes saved successfully",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 

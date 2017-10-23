@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DateRangePicker, SingleDatePicker } from 'react-dates';
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
 import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
@@ -46,6 +46,8 @@ export default class FormField extends Component {
       )
     }
     else if (this.props.type === 'daterange') {
+      let showClearDates = typeof this.props.showClearDates === 'undefined' ? true : this.props.showClearDates;
+
       renderable = (
         <DateRangePicker
           startDate={this.props.startDate}
@@ -61,11 +63,32 @@ export default class FormField extends Component {
           keepOpenOnDateSelect={false}
           showDefaultInputIcon={false}
           reopenPickerOnClearDate={false}
-          showClearDates={true}
+          showClearDates={showClearDates}
           reopenPickerOnClearDates={false}
           renderCalendardInfo={false}
           hideKeyboardShortcutsPanel={true}
           displayFormat={ 'DD/MM/YYYY' }
+          disabled={this.props.disabled}
+        />
+      )
+    }
+    else if (this.props.type === 'calendar') {
+      renderable = (
+        <DayPickerRangeController
+          startDate={this.props.startDate}
+          endDate={this.props.endDate}
+          focusedInput={this.props.focusedInput}
+          onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
+          onFocusChange={this.props.handleFocusChange}
+          withPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
+          onPrevMonthClick={this.props.handlePrevMonthClick}
+          onNextMonthClick={this.props.handleNextMonthClick}
+          renderDay={this.props.renderDay}
+          isDayBlocked={this.props.isDayBlocked}
+          ref={this.props.fieldRef}
         />
       )
     }
