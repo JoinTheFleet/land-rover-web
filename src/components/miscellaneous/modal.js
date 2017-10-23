@@ -35,11 +35,11 @@ export default class Modal extends Component {
               <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
                 <img src={closeGreyIcon} alt="close-modal-icon" />
               </a>
+              { this.renderErrors() }
+
               { title }
 
               { this.props.children }
-
-              { this.renderErrors() }
             </div>
           </div>
         </div>

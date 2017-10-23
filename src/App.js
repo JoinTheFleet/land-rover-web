@@ -5,6 +5,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-datez/dist/css/react-datez.css';
 import 'react-select/dist/react-select.css';
+import 'font-awesome/css/font-awesome.min.css';
 
 import Constants from './miscellaneous/constants';
 import Header from './components/layout/header';
@@ -87,23 +88,25 @@ export default class App extends Component {
   }
 
   setAccessToken(accessToken) {
-    cookies.remove('accessToken');
+    if (accessToken.length > 0) {
+      cookies.remove('accessToken');
 
-    let newState = {
-      accessToken: accessToken,
-      currentSelectedView: navigationSections.dashboard,
-      modalName: undefined
-    };
+      let newState = {
+        accessToken: accessToken,
+        currentSelectedView: navigationSections.dashboard,
+        modalName: undefined
+      };
 
-    this.setState(newState, () => {
-      if (accessToken.length > 0) {
-        cookies.set('accessToken', accessToken);
-        client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-      }
-      else {
-        delete client.defaults.headers.common['Authorization'];
-      }
-    });
+      this.setState(newState, () => {
+        if (accessToken.length > 0) {
+          cookies.set('accessToken', accessToken);
+          client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        }
+        else {
+          delete client.defaults.headers.common['Authorization'];
+        }
+      });
+    }
   }
 
   changeCurrentUserRole() {
