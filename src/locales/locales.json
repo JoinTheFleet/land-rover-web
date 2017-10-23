@@ -178,7 +178,7 @@
     "bookings.check_in_date": "Check In Date",
     "bookings.check_out_date": "Check Out Date",
     "bookings.insurance": "Insurance",
-    "bookings.not_available": "This vehicle is not available at the selected dates. Please select another date range.",
+    "bookings.not_available": "This vehicle is not available on the selected dates. Please select another date range.",
     "bookings.availability": "Availability",
     "bookings.available": "Available",
     "bookings.blocked": "Blocked",

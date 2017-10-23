@@ -17,7 +17,7 @@ import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
 class ListingView extends Component {
 
-  renderTopPart() {
+  renderListingOverview() {
     let listing = this.props.listing;
 
     let vehicleMake = listing.variant.make.name;
@@ -170,7 +170,7 @@ class ListingView extends Component {
         </div>
 
         <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-          { this.renderTopPart() }
+          { this.renderListingOverview() }
 
           { this.renderSpecs() }
 
