@@ -1,7 +1,5 @@
-import React, {
-  Component
-} from 'react';
-
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import ListingsOverview from './listings_overview';
 import ListingView from './listing_view';
@@ -14,6 +12,7 @@ import Helpers from '../../miscellaneous/helpers';
 
 const listingsViews = Constants.listingsViews();
 const bookingsViews = Constants.bookingsViews();
+const userRoles = Constants.userRoles();
 
 export default class Listings extends Component {
   constructor(props) {
@@ -43,14 +42,12 @@ export default class Listings extends Component {
     switch(this.state.currentView) {
       case listingsViews.new:
       case listingsViews.edit:
-        viewToRender = (
-          <ListingForm setCurrentView={ this.setCurrentView }
-                       edit={ this.state.currentView === listingsViews.edit }
-                       listing={ this.state.currentListing } />
-        );
+        viewToRender = (<ListingForm setCurrentView={ this.setCurrentView }
+                                     edit={ this.state.currentView === listingsViews.edit }
+                                     listing={ this.state.currentListing } />);
         break;
       case listingsViews.view:
-        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ true } handleChangeView={ this.setCurrentView } />;
+        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ this.props.currentUserRole === userRoles.renter } handleChangeView={ this.setCurrentView } />;
         break;
       case listingsViews.requestBooking:
         viewToRender = <Bookings currentView={ bookingsViews.new } listing={ this.state.currentListing } checkInDate={ this.state.currentCheckInDate } checkOutDate={ this.state.currentCheckOutDate } />
@@ -69,4 +66,8 @@ export default class Listings extends Component {
       </div>
     )
   }
+}
+
+Listings.propTypes = {
+  currentUserRole: PropTypes.string
 }

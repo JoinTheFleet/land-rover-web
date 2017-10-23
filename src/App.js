@@ -174,7 +174,7 @@ export default class App extends Component {
         viewToRender = (<BookingsCalendar></BookingsCalendar>);
         break;
       case navigationSections.listings:
-        viewToRender = (<Listings></Listings>);
+        viewToRender = (<Listings currentUserRole={ this.state.currentUserRole }></Listings>);
         break;
       case navigationSections.account:
         viewToRender = (<UserManagement></UserManagement>)

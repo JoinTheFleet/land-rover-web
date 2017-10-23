@@ -28,7 +28,7 @@ class ListingView extends Component {
   }
 
   handleBookButtonClick(startDate, endDate) {
-    this.props.handleChangeView(listingsViews, { currentCheckInDate: startDate, currentCheckOutDate: endDate });
+    this.props.handleChangeView(listingsViews.requestBooking, { currentCheckInDate: startDate, currentCheckOutDate: endDate });
   }
 
   renderListingOverview() {

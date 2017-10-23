@@ -87,7 +87,7 @@ class BookNowTile extends Component {
             }
             <div className="col-xs-12 no-side-padding text-center">
               <button className="book-now-button btn secondary-color white-text fs-18"
-                      onClick={ this.handleBookButtonClick(this.state.startDate, this.state.endDate) }>
+                      onClick={ () => { this.props.handleBookButtonClick(this.state.startDate, this.state.endDate) } }>
                 <FormattedMessage id="bookings.book_now" />
               </button>
             </div>

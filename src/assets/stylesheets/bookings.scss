@@ -188,3 +188,24 @@
     }
   }
 }
+
+/* Booking Form */
+.booking-form {
+  .booking-form-listing-user-details {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    img {
+      width: 74px;
+      height: 74px;
+      border-radius: 74px;
+      object-fit: cover;
+
+      & + span {
+        display: block;
+        margin-top: 5px;
+      }
+    }
+  }
+}
