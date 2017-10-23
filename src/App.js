@@ -34,7 +34,7 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
-      currentSelectedView: navigationSections.home,
+      currentSelectedView: cookies.get('accessToken') ? navigationSections.dashboard : navigationSections.home,
       listings: [],
       modalName: undefined,
       searchLocations: [],
@@ -88,9 +88,8 @@ export default class App extends Component {
   }
 
   setAccessToken(accessToken) {
+    cookies.remove('accessToken');
     if (accessToken.length > 0) {
-      cookies.remove('accessToken');
-
       let newState = {
         accessToken: accessToken,
         currentSelectedView: navigationSections.dashboard,

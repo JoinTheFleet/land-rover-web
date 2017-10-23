@@ -10,8 +10,7 @@ import emailIcon from '../../assets/images/email.png';
 
 import Modal from '../miscellaneous/modal';
 import FormField from '../miscellaneous/forms/form_field';
-
-import FontAwesome from 'react-fontawesome';
+import Button from '../miscellaneous/button';
 
 const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
 class Login extends Component {
@@ -64,6 +63,9 @@ class Login extends Component {
     if (event) {
       event.preventDefault();
     }
+
+    this.setState({ loading: true });
+
     AuthenticationService.login(this.state.user.email, this.state.user.password)
                          .then(this.handleSuccessfulLogin)
                          .catch(this.handleErrorOnLogin);
@@ -78,6 +80,7 @@ class Login extends Component {
   }
 
   handleSuccessfulLogin(response) {
+    this.setState({ loading: false });
     let accessToken = response.data.data.token.access_token;
 
     this.props.toggleModal('login');
@@ -85,9 +88,14 @@ class Login extends Component {
   }
 
   handleErrorOnLogin(error) {
-    this.addError(this.props.intl.formatMessage({
-      id: 'errors.authentication.unable_to_log_in'
-    }));
+    this.setState({
+      loading: false,
+      errors: []
+    }, () => {
+      this.addError(this.props.intl.formatMessage({
+        id: 'errors.authentication.unable_to_log_in'
+      }));
+    });
   }
 
   addError(error) {
@@ -151,9 +159,7 @@ class Login extends Component {
         }).then(response => {
           if (response && response.data && response.data.data) {
             let data = response.data.data;
-            console.log(data)
             if (data.user && data.token) {
-              console.log(data)
               this.props.setAccessToken(data.token.access_token)
             }
           }
@@ -172,13 +178,6 @@ class Login extends Component {
 
   renderRegistrationModalBody() {
     let user = this.state.user;
-    let spinner = '';
-
-    if (this.state.loading) {
-      spinner = <FontAwesome name='spinner'
-                             tag='i'
-                             spin />
-    }
 
     return (
       <form onSubmit={ this.registerUser }>
@@ -216,11 +215,12 @@ class Login extends Component {
                          className='form-control text-secondary-font-weight fs-18'
                          type='password' />
           </div>
-          <button className="login-with-email-btn login-btn-with-icon btn secondary-color white-text text-secondary-font-weight fs-18"
-                  onClick={ this.registerUser }>
-            { spinner }
+          <Button className='white-text secondary-color text-secondary-font-weight fs-18'
+                  onClick={ this.registerUser }
+                  spinner={ this.state.loading }
+                  disabled={ this.state.loading } >
             { this.props.intl.formatMessage({id: 'authentication.register'}) }
-          </button>
+          </Button>
         </Anime>
       </form>
     );
@@ -231,12 +231,16 @@ class Login extends Component {
                           this.props.intl.formatMessage({id: 'authentication.log_in'}) :
                           this.props.intl.formatMessage({id: 'authentication.log_in_with_email'});
 
+    let emailAccessory = (
+      <i><img src={emailIcon} alt="email-icone" /></i>
+    );
+
     let email = (
-      <button className="login-with-email-btn login-btn-with-icon btn secondary-color white-text text-secondary-font-weight fs-18"
-              onClick={ () => { this.props.toggleModal('email') }}>
-        <i><img src={emailIcon} alt="email-icon" /></i>
+      <Button className="secondary-color white-text text-secondary-font-weight fs-18"
+              onClick={ () => { this.props.toggleModal('email') }}
+              accessory={ emailAccessory }>
         { loginMessage }
-      </button>
+      </Button>
     );
 
     if (this.props.modalName === 'email') {
@@ -246,24 +250,26 @@ class Login extends Component {
                  duration={500}
                  height={ this.props.modalName === 'email' ? '100%' : 0 }>
              <div className="modal_form">
-               <form>
                  <FormField id='login_username'
                             value={ this.state.user.email }
                             handleChange={ this.setEmail }
                             placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
                             className='form-control text-secondary-font-weight fs-18'
+                            disabled={ this.state.loading }
                             type='text' />
                  <FormField id='login_password'
                             value={ this.state.user.password }
                             handleChange={ this.setPassword }
                             placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
                             className='form-control text-secondary-font-weight fs-18'
+                            disabled={ this.state.loading }
                             type='password' />
-               </form>
              </div>
-             <button className="login-with-email-btn login-btn-with-icon btn secondary-color white-text text-secondary-font-weight fs-18">
+             <Button className="secondary-color white-text text-secondary-font-weight fs-18"
+                     spinner={ this.state.loading }
+                     disabled={ this.state.loading }>
                { loginMessage }
-             </button>
+             </Button>
           </Anime>
         </form>
       );
@@ -275,7 +281,7 @@ class Login extends Component {
                        autoLoad={false}
                        fields="name,email,picture"
                        icon="fa-facebook"
-                       cssClass="login-with-facebook-btn login-btn-with-icon btn facebook-color white-text text-secondary-font-weight fs-18"
+                       cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
                        textButton={ this.props.intl.formatMessage({id: 'authentication.log_in_with_facebook'}) }
                        callback={ this.handleFacebookLogin }
                        onClick={ () => { this.props.toggleModal('facebook') } } />

@@ -58,6 +58,7 @@
     "react-moment-proptypes": "",
     "react-select": "",
     "font-awesome": "",
+    "react-close-on-escape": "",
     "react-fontawesome": "",
     "sass-loader": "",
     "aws-sdk": "",
