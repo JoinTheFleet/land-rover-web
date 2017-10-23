@@ -40,7 +40,7 @@ class BookingsCalendar extends Component {
     this.handleDailyRateChange = this.handleDailyRateChange.bind(this);
     this.handleAvailabilityCheckboxChange = this.handleAvailabilityCheckboxChange.bind(this);
     this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
-
+    this.handleResetRateToDefault = this.handleResetRateToDefault.bind(this);
     this.handleCancelRateChanges = this.handleCancelRateChanges.bind(this);
     this.handleSaveRateChanges = this.handleSaveRateChanges.bind(this);
     this.handleAlertClose = this.handleAlertClose.bind(this);
@@ -166,6 +166,10 @@ class BookingsCalendar extends Component {
 
   handleDailyRateChange(event) {
     this.setState({ currentDailyRate: event.target.value });
+  }
+
+  handleResetRateToDefault() {
+    this.setState({ currentDailyRate: this.state.currentListing.price / 100 });
   }
 
   handleCancelRateChanges() {
@@ -328,7 +332,7 @@ class BookingsCalendar extends Component {
                       value={ this.state.currentDailyRate }
                       handleChange={ this.handleDailyRateChange } />
 
-            <Button bsStyle=' secondary-color white-text'>
+            <Button bsStyle=' secondary-color white-text' onClick={ this.handleResetRateToDefault }>
               <FormattedMessage id="bookings.reset_to_default">
                 { text => <span> { `${text} (${currencySymbol}${this.state.currentListing.price / 100})` } </span>}
               </FormattedMessage>
