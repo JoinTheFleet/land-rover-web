@@ -34,8 +34,8 @@ export default class App extends Component {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
       currentSelectedView: navigationSections.home,
-      openModals: [],
       listings: [],
+      modalName: undefined,
       searchLocations: [],
       locationName: '',
       currentSearch: false,
@@ -89,14 +89,11 @@ export default class App extends Component {
   setAccessToken(accessToken) {
     cookies.remove('accessToken');
 
-    let openModals = this.state.openModals;
     let newState = {
       accessToken: accessToken,
-      currentSelectedView: navigationSections.dashboard
+      currentSelectedView: navigationSections.dashboard,
+      modalName: undefined
     };
-
-    openModals.splice(openModals.indexOf('login'), 1);
-    newState[openModals] = openModals;
 
     this.setState(newState, () => {
       if (accessToken.length > 0) {
@@ -133,17 +130,12 @@ export default class App extends Component {
   }
 
   toggleModal(modal) {
-    let openModals = this.state.openModals;
-    let index = openModals.indexOf(modal);
-
-    if (index > -1) {
-      openModals.splice(index, 1);
+    if (this.state.modalName === modal) {
+      this.setState({ modalName: undefined });
     }
     else {
-      openModals.push(modal);
+      this.setState({ modalName: modal });
     }
-
-    this.setState({openModals: openModals});
   }
 
   renderHeaderTopMenu() {
@@ -393,7 +385,7 @@ export default class App extends Component {
           { this.renderMainContent() }
         </div>
 
-        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal }/>
+        <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
 
         <Footer />
       </div>

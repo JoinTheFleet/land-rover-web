@@ -57,7 +57,7 @@
     }
   }
 
-  .login-with-email-form-div {
+  .modal_form {
     height: 0;
     overflow: hidden;
 
@@ -78,4 +78,10 @@
     display: block;
     margin-bottom: 28px;
   }
+}
+
+
+.registration_form {
+  opacity: 0;
+  height: 100% !important;
 }

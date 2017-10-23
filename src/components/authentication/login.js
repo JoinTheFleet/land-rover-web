@@ -17,8 +17,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      modalOpen: this.props.open,
-      errors: []
+      errors: [],
+      user: {}
     };
 
     this.addError = this.addError.bind(this);
@@ -26,46 +26,39 @@ class Login extends Component {
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
-    this.setUserName = this.setUserName.bind(this);
+    this.setEmail = this.setEmail.bind(this);
     this.setPassword = this.setPassword.bind(this);
+    this.setFirstName = this.setFirstName.bind(this);
+    this.setLastName = this.setLastName.bind(this);
   }
 
   componentDidMount() {
-    this.setSelectedLoginMode('login');
+    this.setSelectedLoginMode();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.open !== this.props.open) {
-      this.setState({
-        modalOpen: this.props.open
-      });
-    }
-  }
-
-  setSelectedLoginMode(mode) {
+  setSelectedLoginMode() {
     this.setState({
-      selectedLoginMode: mode,
-      errors: []
+      errors: [],
     }, () => {
-      if (mode === 'login') {
+      if (this.props.modalName === 'login') {
         this.setState({
           loginTitle: this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}),
-          username: undefined,
-          password: undefined
+          user: {}
+        });
+      }
+      else if (this.props.modalName === 'registration') {
+        this.setState({
+          loginTitle: undefined,
+          user: {}
         });
       }
     });
   }
 
   handleLoginButtonClick() {
-    AuthenticationService.login(this.state.username, this.state.password)
+    AuthenticationService.login(this.state.user.email, this.state.user.password)
                          .then(this.handleSuccessfulLogin)
                          .catch(this.handleErrorOnLogin);
-
-    this.setState({
-      username: undefined,
-      password: undefined
-    });
   }
 
   handleFacebookLogin(response) {
@@ -77,7 +70,7 @@ class Login extends Component {
   handleSuccessfulLogin(response) {
     let accessToken = response.data.data.token.access_token;
 
-    this.setSelectedLoginMode('login');
+    this.props.toggleModal('login');
     this.props.setAccessToken(accessToken);
   }
 
@@ -100,25 +93,102 @@ class Login extends Component {
     });
   }
 
-  setUserName(event) {
-    this.setState({
-      username: event.target.value
-    });
+  setEmail(event) {
+    let user = this.state.user;
+    user.email = event.target.value;
+
+    this.setState({ user: user });
   }
 
   setPassword(event) {
-    this.setState({
-      password: event.target.value
-    });
+    let user = this.state.user;
+    user.password = event.target.value;
+
+    this.setState({ user: user });
   }
 
-  render() {
+  setFirstName(event) {
+    let user = this.state.user;
+    user.first_name = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  setLastName(event) {
+    let user = this.state.user;
+    user.last_name = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  renderRegistrationModalBody() {
+    let user = this.state.user;
+
     return (
-      <Modal open={ this.state.modalOpen }
-             modalName={ this.state.loginMode }
-             title={ this.state.loginTitle }
-             toggleModal={ this.props.toggleModal }
-             errors={ this.state.errors } >
+      <Anime easing="easeOutQuart"
+             duration={3000}
+             opacity={1}>
+        <div className="modal_form registration_form">
+          <form>
+            <FormField id='registration_first_name'
+                       value={ user.first_name }
+                       handleChange={ this.setFirstName }
+                       placeholder={ this.props.intl.formatMessage({id: 'user_profile.first_name'}) }
+                       className='form-control text-secondary-font-weight fs-18'
+                       type='text' />
+            <FormField id='registration_last_name'
+                       value={ user.last_name }
+                       handleChange={ this.setLastName }
+                       placeholder={ this.props.intl.formatMessage({id: 'user_profile.last_name'}) }
+                       className='form-control text-secondary-font-weight fs-18'
+                       type='text' />
+            <FormField id='registration_email'
+                       value={ user.email }
+                       handleChange={ this.setEmail }
+                       placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.email'}) }
+                       className='form-control text-secondary-font-weight fs-18'
+                       type='text' />
+            <FormField id='registration_password'
+                       value={ user.password }
+                       handleChange={ this.setPassword }
+                       placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
+                       className='form-control text-secondary-font-weight fs-18'
+                       type='password' />
+          </form>
+        </div>
+      </Anime>
+    );
+  }
+
+  renderLoginModalBody() {
+    let email = '';
+
+    if (this.props.modalName === 'email') {
+      email = (
+        <Anime easing="easeOutQuart"
+               duration={500}
+               height={ this.props.modalName === 'email' ? (150 + 'px') : 0 }>
+           <div className="modal_form">
+             <form>
+               <FormField id='login_username'
+                          value={ this.state.user.email }
+                          handleChange={ this.setEmail }
+                          placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
+                          className='form-control text-secondary-font-weight fs-18'
+                          type='text' />
+               <FormField id='login_password'
+                          value={ this.state.user.password }
+                          handleChange={ this.setPassword }
+                          placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
+                          className='form-control text-secondary-font-weight fs-18'
+                          type='password' />
+             </form>
+           </div>
+        </Anime>
+      );
+    }
+    return (
+      <div>
         <FacebookLogin appId={facebookAppID}
                        autoLoad={false}
                        fields="name,email,picture"
@@ -126,7 +196,7 @@ class Login extends Component {
                        cssClass="login-with-facebook-btn login-btn-with-icon btn facebook-color white-text text-secondary-font-weight fs-18"
                        textButton={ this.props.intl.formatMessage({id: 'authentication.log_in_with_facebook'}) }
                        callback={ this.handleFacebookLogin }
-                       onClick={ () => { this.setSelectedLoginMode('facebook') } } />
+                       onClick={ () => { this.props.toggleModal('facebook') } } />
 
         <div className="divider with-text">
           <div className="divider-line tertiary-color"></div>
@@ -135,31 +205,12 @@ class Login extends Component {
           </div>
         </div>
 
-        <Anime easing="easeOutQuart"
-               duration={500}
-               height={ this.state.selectedLoginMode === 'email' ? (150 + 'px') : 0 }>
-          <div className="login-with-email-form-div">
-            <form>
-              <FormField id='login_username'
-                         value={ this.state.username }
-                         handleChange={ this.setUserName }
-                         placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
-                         className='form-control text-secondary-font-weight fs-18'
-                         type='text' />
-              <FormField id='login_password'
-                         value={ this.state.password }
-                         handleChange={ this.setPassword }
-                         placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
-                         className='form-control text-secondary-font-weight fs-18'
-                         type='password' />
-            </form>
-          </div>
-        </Anime>
+        { email }
 
         <button className="login-with-email-btn login-btn-with-icon btn secondary-color white-text text-secondary-font-weight fs-18"
                 onClick={ () => {
-                  if (this.state.selectedLoginMode !== 'email') {
-                    this.setSelectedLoginMode('email');
+                  if (this.props.modalName !== 'email') {
+                    this.props.toggleModal('email');
                   }
                   else {
                     this.handleLoginButtonClick();
@@ -178,12 +229,34 @@ class Login extends Component {
           <FormattedMessage id="menu.signup" >
             { (message) => (
               <span className="secondary-text-color subtitle-font-weight"
-                    onClick={ () =>  {this.setSelectedLoginMode('registration') }}>
+                    onClick={ () =>  {this.props.toggleModal('registration') }}>
                 {message}
               </span>
             ) }
           </FormattedMessage>
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    let loginModalBody = '';
+
+    switch (this.props.modalName) {
+      case 'registration':
+        loginModalBody = this.renderRegistrationModalBody();
+        break;
+      default:
+        loginModalBody = this.renderLoginModalBody();
+    }
+
+    return (
+      <Modal open={ this.props.modalName && this.props.modalName.length > 0 }
+             modalName={ this.props.modalName }
+             title={ this.state.loginTitle }
+             toggleModal={ this.props.toggleModal }
+             errors={ this.state.errors } >
+        { loginModalBody }
       </Modal>
     )
   }
