@@ -25,10 +25,11 @@ class Login extends Component {
     };
 
     this.addError = this.addError.bind(this);
-    this.handleErrorOnLogin = this.handleErrorOnLogin.bind(this);
+    this.handleModalError = this.handleModalError.bind(this);
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
+    this.handleForgottenPasswordSubmit = this.handleForgottenPasswordSubmit.bind(this);
     this.setEmail = this.setEmail.bind(this);
     this.setPassword = this.setPassword.bind(this);
     this.setFirstName = this.setFirstName.bind(this);
@@ -68,14 +69,14 @@ class Login extends Component {
 
     AuthenticationService.login(this.state.user.email, this.state.user.password)
                          .then(this.handleSuccessfulLogin)
-                         .catch(this.handleErrorOnLogin);
+                         .catch(this.handleModalError);
   }
 
   handleFacebookLogin(response) {
     if (response && response.name) {
       AuthenticationService.loginWithFacebook(response)
                             .then(this.handleSuccessfulLogin)
-                            .catch(this.handleErrorOnLogin);
+                            .catch(this.handleModalError);
     }
   }
 
@@ -85,17 +86,6 @@ class Login extends Component {
 
     this.props.toggleModal('login');
     this.props.setAccessToken(accessToken);
-  }
-
-  handleErrorOnLogin(error) {
-    this.setState({
-      loading: false,
-      errors: []
-    }, () => {
-      this.addError(this.props.intl.formatMessage({
-        id: 'errors.authentication.unable_to_log_in'
-      }));
-    });
   }
 
   addError(error) {
@@ -162,16 +152,52 @@ class Login extends Component {
             if (data.user && data.token) {
               this.props.setAccessToken(data.token.access_token)
             }
-          }
-        }).catch(error => {
-          if (error && error.response) {
-            let response = error.response;
+            user.password = undefined;
 
-            if (response && response.data && response.data.message) {
-              this.addError(response.data.message);
-            }
+            this.setState({
+              user: user,
+              loading: false
+            });
           }
-        });
+        }).catch(this.handleModalError);
+      });
+    }
+  }
+
+  handleModalError(error) {
+    this.setState({
+      loading: false,
+      errors: []
+    }, () => {
+      if (error && error.response) {
+        let response = error.response;
+
+        if (response && response.data && response.data.message) {
+          this.addError(response.data.message);
+        }
+      }
+    });
+  }
+
+  handleForgottenPasswordSubmit(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    let user = this.state.user;
+
+    if (user && user.email) {
+      this.setState({
+        errors: [],
+        loading: true
+      }, () => {
+        UsersService.resetPassword(user.email)
+                    .then(response => {
+                      this.setState({
+                        loading: false
+                      }, () => {
+                        this.props.toggleModal('email');
+                      });
+                    }).catch(this.handleModalError);
       });
     }
   }
@@ -226,6 +252,46 @@ class Login extends Component {
     );
   }
 
+  renderForgottenPasswordBody() {
+    return (
+      <form onSubmit={ this.handleForgottenPasswordSubmit }>
+        <Anime easing="easeOutQuart"
+               duration={ 500 }
+               opacity={ 1 }>
+           <div className="modal_form">
+               <FormField id='login_username'
+                          value={ this.state.user.email }
+                          handleChange={ this.setEmail }
+                          placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
+                          className='form-control text-secondary-font-weight fs-18'
+                          disabled={ this.state.loading }
+                          type='text' />
+           </div>
+           <Button className="secondary-color white-text text-secondary-font-weight fs-18"
+                   spinner={ this.state.loading }
+                   disabled={ this.state.loading }>
+             { this.props.intl.formatMessage({id: 'authentication.password_reset'}) }
+           </Button>
+           <div className="divider">
+             <div className="divider-line tertiary-color"></div>
+           </div>
+
+           <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
+             <FormattedMessage id="authentication.dont_have_account" />
+             <FormattedMessage id="menu.signup" >
+               { (message) => (
+                 <span className="secondary-text-color subtitle-font-weight"
+                       onClick={ () =>  {this.props.toggleModal('registration') }}>
+                   {message}
+                 </span>
+               ) }
+             </FormattedMessage>
+           </div>
+        </Anime>
+      </form>
+    );
+  }
+
   renderLoginModalBody() {
     let loginMessage = this.props.modalName === 'email' ?
                           this.props.intl.formatMessage({id: 'authentication.log_in'}) :
@@ -245,10 +311,10 @@ class Login extends Component {
 
     if (this.props.modalName === 'email') {
       email = (
-        <form onSubmit={this.handleLoginButtonClick}>
+        <form onSubmit={ this.handleLoginButtonClick }>
           <Anime easing="easeOutQuart"
-                 duration={500}
-                 height={ this.props.modalName === 'email' ? '100%' : 0 }>
+                 duration={ 500 }
+                 opacity={ 1 }>
              <div className="modal_form">
                  <FormField id='login_username'
                             value={ this.state.user.email }
@@ -270,6 +336,11 @@ class Login extends Component {
                      disabled={ this.state.loading }>
                { loginMessage }
              </Button>
+             <div className='row'>
+               <div className='col-xs-12 modal_link text-center secondary-text-color subtitle-font-weight' onClick={ () => { this.props.toggleModal('forgotten-password'); }}>
+                 { this.props.intl.formatMessage({id: 'authentication.forgot_password'}) }
+               </div>
+             </div>
           </Anime>
         </form>
       );
@@ -320,6 +391,9 @@ class Login extends Component {
     switch (this.props.modalName) {
       case 'registration':
         loginModalBody = this.renderRegistrationModalBody();
+        break;
+      case 'forgotten-password':
+        loginModalBody = this.renderForgottenPasswordBody();
         break;
       default:
         loginModalBody = this.renderLoginModalBody();

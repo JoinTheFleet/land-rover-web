@@ -62,7 +62,8 @@
   }
 
   .modal_form {
-    height: 0;
+    height: 100%;
+    opacity: 0;
     overflow: hidden;
     margin-bottom: 15px;
 
@@ -81,10 +82,10 @@
     display: block;
     margin-bottom: 28px;
   }
-}
 
-
-.registration_form {
-  opacity: 0;
-  height: 100% !important;
+  .modal_link {
+    color: $secondary-color;
+    cursor: pointer;
+    margin-top: 20px;
+  }
 }
