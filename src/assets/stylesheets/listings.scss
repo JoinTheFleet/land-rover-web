@@ -227,6 +227,10 @@
     padding: 20px 0;
     height: 100%;
   }
+
+  .listing-card {
+    cursor: pointer;
+  }
 }
 
 .listing-card {
@@ -410,35 +414,7 @@
     height: 350px;
 
     img:not(.fleet-image-gallery-remove-icon) {
-      width: 100%;
       height: 350px;
-      object-fit: cover;
-    }
-
-    .slick-dots {
-      bottom: 0;
-
-      li {
-        width: 15px;
-        margin: 0;
-
-        button {
-          &:before {
-            opacity: 0.5;
-            color: black;
-            font-size: 8px;
-          }
-        }
-
-        &.slick-active {
-          button {
-            &:before {
-              color: white;
-              opacity: 1;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -468,5 +444,106 @@
   #listing_rules {
     resize: none;
     min-height: 200px;
+  }
+}
+
+/* Listing View */
+.listing-view-div {
+  .fleet-image-gallery {
+    height: 475px;
+  }
+
+  .listing-view-listing-title {
+    .listing-view-rating-reviews {
+      float: left;
+      margin-top: 5px;
+    }
+
+    .listing-view-listing-year {
+      margin-left: 15px;
+    }
+  }
+
+  .listing-view-main-content {
+    margin-top: 24px;
+    margin-bottom: 24px;
+
+    .listing-view-user-details {
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      img {
+        width: 74px;
+        height: 74px;
+        border-radius: 74px;
+        object-fit: cover;
+
+        & + span {
+          display: block;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+
+  .rating-input {
+    float: left;
+
+    label {
+      font-size: 15px;
+    }
+
+    & + span {
+      float: left;
+      margin-left: 8px;
+      margin-top: -5px;
+    }
+  }
+
+  .listing-view-listing-specs {
+    border-top: solid 1px $smoke-grey-two;
+    border-bottom: solid 1px $smoke-grey-two;
+    height: 45px;
+    line-height: 45px;
+
+    .listing-view-listing-spec {
+      display: inline-block;
+
+      img {
+        margin-top: -7px;
+        margin-right: 5px;
+      }
+
+      & + .listing-view-listing-spec {
+        margin-left: calc((100% - 361px) / 2);
+      }
+    }
+  }
+
+  .listing-view-listing-amenities {
+    padding: 10px 0;
+
+    .listing-view-listing-amenities-title {
+      width: 82px;
+    }
+
+    .listing-view-listing-amenities-list {
+      margin-left: 60px;
+      width: calc(100% - 142px);
+
+      .listing-view-listing-amenity {
+        display: inline-block;
+
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
+
+  .listing-view-booking-div + .listing-view-map {
+    margin-top: 24px;
   }
 }
