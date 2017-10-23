@@ -22,8 +22,8 @@ class Map extends Component {
     super(props);
 
     this.state = {
-      center: { lat: 52.9893, lng: -6.0751581 },
-      markers: []
+      center: this.props.center || { lat: 0, lng: 0 },
+      markers: this.props.markers || []
     };
 
     this.onPlacesChanged = this.onPlacesChanged.bind(this);

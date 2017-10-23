@@ -434,6 +434,11 @@
     }
   }
 
+  .images-carousel-empty-div img {
+    width: 100%;
+    object-fit: cover;
+  }
+
   #listing_images_uploaded_input {
     width: 0;
     height: 0;
