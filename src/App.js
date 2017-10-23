@@ -106,6 +106,12 @@ export default class App extends Component {
         }
       });
     }
+    else {
+      this.setState({
+        currentSelectedView: navigationSections.home,
+        accessToken: undefined
+      });
+    }
   }
 
   changeCurrentUserRole() {
