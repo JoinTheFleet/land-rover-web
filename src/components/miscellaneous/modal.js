@@ -22,6 +22,11 @@ export default class Modal extends Component {
   }
 
   render() {
+    let title = '';
+
+    if (this.props.title) {
+      title = <p className="title-font-weight fs-28">{ this.props.title }</p>;
+    }
     return (
       <Toggleable open={ this.props.open }>
         <div id="custom_modal" className="modal" role="dialog">
@@ -30,8 +35,7 @@ export default class Modal extends Component {
               <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
                 <img src={closeGreyIcon} alt="close-modal-icon" />
               </a>
-
-              <p className="title-font-weight fs-28">{ this.props.title }</p>
+              { title }
 
               { this.props.children }
 

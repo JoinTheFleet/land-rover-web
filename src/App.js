@@ -90,7 +90,10 @@ export default class App extends Component {
     cookies.remove('accessToken');
 
     let openModals = this.state.openModals;
-    let newState = { accessToken: accessToken };
+    let newState = {
+      accessToken: accessToken,
+      currentSelectedView: navigationSections.dashboard
+    };
 
     openModals.splice(openModals.indexOf('login'), 1);
     newState[openModals] = openModals;

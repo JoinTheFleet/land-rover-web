@@ -8,6 +8,7 @@ import AuthenticationService from '../../shared/services/authentication_service'
 import emailIcon from '../../assets/images/email.png';
 
 import Modal from '../miscellaneous/modal';
+import FormField from '../miscellaneous/forms/form_field';
 
 const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
 class Login extends Component {
@@ -16,7 +17,6 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      selectedLoginMode: '',
       modalOpen: this.props.open,
       errors: []
     };
@@ -26,6 +26,12 @@ class Login extends Component {
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
+    this.setUserName = this.setUserName.bind(this);
+    this.setPassword = this.setPassword.bind(this);
+  }
+
+  componentDidMount() {
+    this.setSelectedLoginMode('login');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -41,20 +47,25 @@ class Login extends Component {
       selectedLoginMode: mode,
       errors: []
     }, () => {
-      if (this.state.selectedLoginMode === '') {
-        document.getElementById('login_username').value = '';
-        document.getElementById('login_password').value = '';
+      if (mode === 'login') {
+        this.setState({
+          loginTitle: this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}),
+          username: undefined,
+          password: undefined
+        });
       }
     });
   }
 
   handleLoginButtonClick() {
-    let username = document.getElementById('login_username').value;
-    let password = document.getElementById('login_password').value;
-
-    AuthenticationService.login(username, password)
+    AuthenticationService.login(this.state.username, this.state.password)
                          .then(this.handleSuccessfulLogin)
                          .catch(this.handleErrorOnLogin);
+
+    this.setState({
+      username: undefined,
+      password: undefined
+    });
   }
 
   handleFacebookLogin(response) {
@@ -66,7 +77,7 @@ class Login extends Component {
   handleSuccessfulLogin(response) {
     let accessToken = response.data.data.token.access_token;
 
-    this.setSelectedLoginMode('');
+    this.setSelectedLoginMode('login');
     this.props.setAccessToken(accessToken);
   }
 
@@ -89,27 +100,23 @@ class Login extends Component {
     });
   }
 
-  renderErrors() {
-    if (this.state.errors.length === 0) {
-      return;
-    }
+  setUserName(event) {
+    this.setState({
+      username: event.target.value
+    });
+  }
 
-    return (
-      <div className="alert alert-danger">
-        {
-          this.state.errors.map((error, index) => {
-            return (<div key={ 'login_error_' + (index + 1) }>{ error }</div>)
-          })
-        }
-      </div>
-    )
+  setPassword(event) {
+    this.setState({
+      password: event.target.value
+    });
   }
 
   render() {
     return (
       <Modal open={ this.state.modalOpen }
-             modalName={ 'login' }
-             title={ this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}) }
+             modalName={ this.state.loginMode }
+             title={ this.state.loginTitle }
              toggleModal={ this.props.toggleModal }
              errors={ this.state.errors } >
         <FacebookLogin appId={facebookAppID}
@@ -133,8 +140,18 @@ class Login extends Component {
                height={ this.state.selectedLoginMode === 'email' ? (150 + 'px') : 0 }>
           <div className="login-with-email-form-div">
             <form>
-              <input type="text" required={true} name="login[email]" id="login_username" className="form-control text-secondary-font-weight fs-18" placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }></input>
-              <input type="password" required={true} name="login[password]" id="login_password" className="form-control text-secondary-font-weight fs-18" placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }></input>
+              <FormField id='login_username'
+                         value={ this.state.username }
+                         handleChange={ this.setUserName }
+                         placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
+                         className='form-control text-secondary-font-weight fs-18'
+                         type='text' />
+              <FormField id='login_password'
+                         value={ this.state.password }
+                         handleChange={ this.setPassword }
+                         placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
+                         className='form-control text-secondary-font-weight fs-18'
+                         type='password' />
             </form>
           </div>
         </Anime>
@@ -160,7 +177,8 @@ class Login extends Component {
           <FormattedMessage id="authentication.dont_have_account" />
           <FormattedMessage id="menu.signup" >
             { (message) => (
-              <span className="secondary-text-color subtitle-font-weight">
+              <span className="secondary-text-color subtitle-font-weight"
+                    onClick={ () =>  {this.setSelectedLoginMode('registration') }}>
                 {message}
               </span>
             ) }
