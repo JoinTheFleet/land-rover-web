@@ -30,6 +30,19 @@ class ListingLocation extends Component {
     this.setLocation = this.setLocation.bind(this);
   }
 
+  componentDidMount() {
+    let location = this.props.listing.location;
+
+    if (location) {
+      let position = {
+        lat: location.latitude,
+        lng: location.longitude
+      };
+
+      this.handleMapClick(position);
+    }
+  }
+
   validateFields() {
     let properties = this.getListingProperties();
 
@@ -80,6 +93,17 @@ class ListingLocation extends Component {
       key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
     });
 
+    let selectedPosition;
+
+    if (Object.keys(this.state.selectedPosition).length > 0) {
+      selectedPosition = {
+        lat: this.state.selectedPosition.latitude,
+        lng: this.state.selectedPosition.longitude
+      };
+    }
+
+    console.log(selectedPosition);
+
     return (
       <div className="listing-form-location col-xs-12 no-side-padding">
         <div className="listing-form-location-map col-xs-12 no-side-padding">
@@ -90,7 +114,9 @@ class ListingLocation extends Component {
                includeSearchBox={ true }
                onPlacesChanged={ this.onPlacesChanged }
                handleMapClick={ this.handleMapClick }
-               draggableMarkers={ true } />
+               draggableMarkers={ true }
+               markers={ selectedPosition ? [{ position: selectedPosition}] : [] } >
+          </Map>
           <div className="listing-form-location-disclaimer white-text text-center col-xs-12 no-side-padding fs-15 text-secondary-font-weight ls-dot-five">
             <FormattedMessage id="listings.location.for_security_reasons" />
           </div>

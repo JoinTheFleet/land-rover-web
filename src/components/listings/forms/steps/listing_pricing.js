@@ -18,10 +18,18 @@ class ListingPricing extends Component {
   constructor(props) {
     super(props);
 
-    let listing = this.props.listing;
+    let listing = Helpers.extendObject(this.props.listing, {});
 
     if (listing.on_demand) {
       listing.on_demand_rates = listing.on_demand_rates || [];
+    }
+
+    if (listing.price) {
+      listing.price = listing.price / 100;
+    }
+
+    if (listing.cleaning_fee) {
+      listing.cleaning_fee = listing.cleaning_fee / 100;
     }
 
     this.state = {

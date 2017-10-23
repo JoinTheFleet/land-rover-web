@@ -230,6 +230,7 @@
 }
 
 .listing-card {
+  position: relative;
   height: 94px;
   border: solid 1px $smoke-grey-two;
 
@@ -249,6 +250,7 @@
     position: relative;
     float: left;
     width: calc(100% - 141px);
+    height: 100%;
 
     & > p {
       display: block;
@@ -260,6 +262,12 @@
         margin-left: 10px;
       }
     }
+  }
+
+  .listing-card-edit-button {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
   }
 
   & + .listing-card {

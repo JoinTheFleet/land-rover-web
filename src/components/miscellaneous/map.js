@@ -23,11 +23,19 @@ class Map extends Component {
 
     this.state = {
       center: { lat: 52.9893, lng: -6.0751581 },
-      markers: []
+      markers: this.props.markers || []
     };
 
     this.onPlacesChanged = this.onPlacesChanged.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if( prevProps.markers !== this.props.markers) {
+      this.setState({
+        markers: this.props.markers
+      });
+    }
   }
 
   onPlacesChanged() {
@@ -126,5 +134,6 @@ Map.propTypes = {
   includeSearchBox: PropTypes.bool,
   onPlacesChanged: PropTypes.func,
   bounds: PropTypes.object,
-  draggableMarkers: PropTypes.bool
+  draggableMarkers: PropTypes.bool,
+  markers: PropTypes.array
 }

@@ -22,8 +22,17 @@ class ListingImages extends Component {
   constructor(props) {
     super(props);
 
+    let listing = this.props.listing;
+    let images = [];
+
+    if (listing.gallery) {
+      images = listing.gallery.map(galleryImage => {
+        return { url: galleryImage.images.original_url };
+      });
+    }
+
     this.state = {
-      images: this.props.listing.images || [],
+      images: images,
       loading: false
     };
 
