@@ -47,6 +47,6 @@ export default class ListingsSelector extends Component {
 
 ListingsSelector.propTypes = {
   listings: PropTypes.array,
-  currentListing: PropTypes.obj,
+  currentListing: PropTypes.object,
   handleVehicleSelect: PropTypes.func.isRequired
 }
