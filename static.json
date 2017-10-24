@@ -1,7 +1,7 @@
 {
    "https_only": true,
    "routes" : {
-     "/**": "index.html"
+     "/**": "app/bin/index.html"
    },
    "headers": {
     "/**": {
