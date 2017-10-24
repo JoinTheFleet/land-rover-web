@@ -15,9 +15,7 @@ class Bookings extends Component {
 
     this.state = {
       currentView: this.props.currentView || bookingsViews.index,
-      listing: this.props.listing || {},
-      currentCheckInDate: this.props.checkInDate,
-      currentCheckOutDate: this.props.checkOutDate
+      listing: this.props.listing || {}
     };
   }
 
@@ -33,7 +31,7 @@ class Bookings extends Component {
 
     switch(this.state.currentView) {
       case bookingsViews.new:
-        viewToRender = (<BookingForm listing={ this.state.listing }  />);
+        viewToRender = (<BookingForm listing={ this.state.listing } pricingQuote={ this.props.pricingQuote } />);
         break;
       case bookingsViews.edit:
         break;
@@ -57,9 +55,8 @@ class Bookings extends Component {
 
 Bookings.propTypes = {
   listing: PropTypes.object,
-  currentView: PropTypes.oneOf(Constants.bookingsViews()),
-  checkInDate: momentPropTypes.momentObj,
-  checkOutDate: momentPropTypes.momentObj
+  currentPricingQuote: PropTypes.object,
+  currentView: PropTypes.oneOf(Constants.bookingsViews())
 };
 
 export default Bookings;

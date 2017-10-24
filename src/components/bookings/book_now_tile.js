@@ -16,8 +16,9 @@ class BookNowTile extends Component {
     this.state = {
       startDate: this.props.startDate,
       endDate: this.props.endDate,
+      pricingQuote: {},
       errors: [],
-      loadingRates: false
+      loadingRates: false,
     };
 
     this.addError = this.addError.bind(this);
@@ -37,15 +38,14 @@ class BookNowTile extends Component {
       endDate
     };
 
-    if (startDate && endDate) {
+    let fetchQuotation = startDate && endDate;
+
+    if (fetchQuotation) {
       newState.loadingRates = true;
     }
 
-    this.setState({
-      startDate,
-      endDate
-    }, () => {
-      if (startDate && endDate) {
+    this.setState(newState, () => {
+      if (fetchQuotation) {
         ListingQuotationService.create(this.props.listing.id, startDate.unix(), endDate.unix(), false, {}, {})
                               .then(response => {
                                 this.setState({
@@ -65,8 +65,7 @@ class BookNowTile extends Component {
     if (this.state.loadingRates) {
       bookingRates = (<Loading />);
     }
-
-    if (pricingQuote) {
+    else if (Object.keys(pricingQuote).length > 0) {
       let bookingRatesContent = (<div className="text-center tertiary-text-color fs-18 text-secondary-font-weight"> <FormattedMessage id="bookings.not_available" /> </div>);
 
       if (pricingQuote.available) {
@@ -87,7 +86,7 @@ class BookNowTile extends Component {
             }
             <div className="col-xs-12 no-side-padding text-center">
               <button className="book-now-button btn secondary-color white-text fs-18"
-                      onClick={ () => { this.props.handleBookButtonClick(this.state.startDate, this.state.endDate) } }>
+                      onClick={ () => { this.props.handleBookButtonClick(this.state.pricingQuote) } }>
                 <FormattedMessage id="bookings.book_now" />
               </button>
             </div>

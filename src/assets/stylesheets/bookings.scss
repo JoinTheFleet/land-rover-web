@@ -192,10 +192,6 @@
 /* Booking Form */
 .booking-form {
   .booking-form-listing-user-details {
-    position: absolute;
-    right: 0;
-    top: 0;
-
     img {
       width: 74px;
       height: 74px;
@@ -207,5 +203,12 @@
         margin-top: 5px;
       }
     }
+  }
+
+  .booking-form-quotation-details {
+    border: solid 1px $smoke-grey-two;
+    margin-top: 8px;
+    padding: 20px;
+    padding-bottom: 5px;
   }
 }

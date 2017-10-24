@@ -53,7 +53,7 @@ export default class FormField extends Component {
           startDate={this.props.startDate}
           endDate={this.props.endDate}
           onDatesChange={this.props.handleChange}
-          focusedInput={this.props.focused}
+          focusedInput={this.props.focusedInput}
           onFocusChange={this.props.handleFocusChange}
           withPortal={false}
           withFullScreenPortal={false}
@@ -64,8 +64,6 @@ export default class FormField extends Component {
           showDefaultInputIcon={false}
           reopenPickerOnClearDate={false}
           showClearDates={showClearDates}
-          reopenPickerOnClearDates={false}
-          renderCalendardInfo={false}
           hideKeyboardShortcutsPanel={true}
           displayFormat={ 'DD/MM/YYYY' }
           disabled={this.props.disabled}
@@ -80,14 +78,16 @@ export default class FormField extends Component {
           focusedInput={this.props.focusedInput}
           onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
           onFocusChange={this.props.handleFocusChange}
-          withPortal={false}
-          initialVisibleMonth={null}
-          numberOfMonths={2}
-          minimumNights={1}
           onPrevMonthClick={this.props.handlePrevMonthClick}
           onNextMonthClick={this.props.handleNextMonthClick}
           renderDay={this.props.renderDay}
           isDayBlocked={this.props.isDayBlocked}
+          withPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
+          renderCalendardInfo={false}
+          hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
         />
       )
@@ -158,6 +158,7 @@ FormField.propTypes = {
   type: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   focused: PropTypes.bool,
+  focusedInput: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
   handleFocusChange: PropTypes.func,
   startDate: momentPropTypes.momentObj,
