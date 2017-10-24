@@ -101,5 +101,6 @@ Dropdown.propTypes = {
   valueProperty: PropTypes.string,
   displayProperty: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   prefixPlaceholder: PropTypes.bool,
+  noPaddingOnList: PropTypes.bool,
   itemClickHandler: PropTypes.func
 };

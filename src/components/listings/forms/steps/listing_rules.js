@@ -1,0 +1,102 @@
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
+import { TimePicker } from 'antd';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+
+import ListingStep from './listing_step';
+import ListingFormFieldGroup from '../listing_form_field_group';
+import FormField from '../../../miscellaneous/forms/form_field';
+
+import Helpers from '../../../../miscellaneous/helpers';
+
+const format = 'HH:mm';
+
+class ListingRules extends Component {
+
+  constructor(props) {
+    super(props);
+
+    let listing = Helpers.extendObject(this.props.listing, {});
+
+    if (listing.check_in_time) {
+      listing.check_in_time = moment("1900-01-01 00:00:00").add(listing.check_in_time, 'seconds');
+    }
+
+    if (listing.check_out_time) {
+      listing.check_out_time = moment("1900-01-01 00:00:00").add(listing.check_out_time, 'seconds');
+    }
+
+    this.state = {
+      listing: listing
+    };
+
+    this.validateFields = this.validateFields.bind(this);
+    this.getListingProperties = this.getListingProperties.bind(this);
+    this.handleRulesInsertion = this.handleRulesInsertion.bind(this);
+    this.handleAddPickupTimeSelected = this.handleAddPickupTimeSelected.bind(this);
+  }
+
+
+  getListingProperties() {
+    let listing = this.state.listing;
+
+    return {
+      check_in_time: listing.check_in_time,
+      check_out_time: listing.check_out_time,
+      rules: this.state.listing.rules
+    };
+  }
+
+  validateFields() {
+    return this.state.listing.rules.length > 0;
+  }
+
+  handleRulesInsertion(rulesText) {
+    this.setState(prevState => ({
+      listing: Helpers.extendObject(prevState.listing, { rules: [ { rule: rulesText } ] })
+    }));
+  }
+
+  handleAddPickupTimeSelected(time, timeString) {
+    this.setState(prevState => ({
+      listing: Helpers.extendObject(prevState.listing, { check_in_time: time, check_out_time: time })
+    }));
+  }
+
+  render() {
+    let listing = this.state.listing;
+
+    return (
+      <div className="listing-form-rules col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
+        <ListingStep validateFields={ this.validateFields }
+                     getListingProperties={ this.getListingProperties }
+                     handleCompleteListing={ this.props.handleCompleteListing }
+                     finalStep={ true }
+                     intl={ this.props.intl }>
+          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.rules'}) }>
+            <FormField id="listing_rules"
+                       type="textarea"
+                       value={ listing.rules ? listing.rules[0].rule : '' }
+                       handleChange={ (event) => { this.handleRulesInsertion(event.target.value) } } />
+
+          </ListingFormFieldGroup>
+
+          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.pick_up_time'}) }>
+            <TimePicker onChange={ this.handleAddPickupTimeSelected }
+                        defaultValue={ this.state.listing.check_in_time || moment('00:00', format) }
+                        format={ format } />
+
+          </ListingFormFieldGroup>
+        </ListingStep>
+      </div>
+    )
+  }
+}
+
+ListingRules.propTypes = {
+  handleCompleteListing: PropTypes.func.isRequired,
+  listing: PropTypes.object
+};
+
+export default injectIntl(ListingRules);

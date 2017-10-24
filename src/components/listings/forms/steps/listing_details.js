@@ -12,22 +12,14 @@ import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
 import ListingFormField from '../listing_form_field';
 import Dropdown from '../../../miscellaneous/dropdown';
+import FormField from '../../../miscellaneous/forms/form_field';
 
-import VehicleBodiesService from '../../../../shared/services/vehicles/vehicle_bodies_service';
-import VehicleMakesService from '../../../../shared/services/vehicles/vehicle_makes_service';
-import VehicleMakeModelsService from '../../../../shared/services/vehicles/vehicle_make_models_service';
-import VehicleEngineFuelsService from '../../../../shared/services/vehicles/vehicle_engine_fuels_service';
-import VehicleTransmissionService from '../../../../shared/services/vehicles/vehicle_transmissions_service';
-import VehicleSeatCountsService from '../../../../shared/services/vehicles/vehicle_seat_counts_service';
-import VehicleDoorCountsService from '../../../../shared/services/vehicles/vehicle_door_counts_service';
 import ListingAmenitiesService from '../../../../shared/services/listings/listing_amenities_service';
 
 import Helpers from '../../../../miscellaneous/helpers';
 import Constants from '../../../../miscellaneous/constants';
 
-const listingFiltersDisplayProperties = Constants.listingFiltersDisplayProperties();
-const filtersToLoadFirst = ['bodies', 'makes', 'amenities', 'engine_fuels', 'transmissions', 'seat_counts', 'door_counts'];
-const requiredFields = ['body', 'make', 'model', 'fuel', 'transmission', 'passengers', 'doors'];
+const filtersDisplayProperties = Constants.listingFiltersDisplayProperties();
 
 class ListingDetails extends Component {
 
@@ -37,15 +29,8 @@ class ListingDetails extends Component {
     this.state = {
       errors: [],
       selectedParams: {
-        body: '',
-        make: '',
-        model: '',
-        fuel: '',
-        transmission: '',
-        passengers: '',
-        doors: '',
-        odc: '',
-        amenities: []
+        on_demand: this.props.listing.on_demand || false,
+        amenities: this.props.listing.amenities.map(amenity => amenity.id) || []
       },
       filtersData: {}
     };
@@ -55,90 +40,13 @@ class ListingDetails extends Component {
     this.addFiltersData = this.addFiltersData.bind(this);
     this.addSelectedParam = this.addSelectedParam.bind(this);
     this.handleAmenitySelected = this.handleAmenitySelected.bind(this);
-    this.checkInitialDataLoaded = this.checkInitialDataLoaded.bind(this);
     this.getListingProperties = this.getListingProperties.bind(this);
   }
 
   componentDidMount() {
-    let loadedFiltersData = {};
-
-    VehicleBodiesService.index()
-                        .then((response) => {
-                          loadedFiltersData = Helpers.extendObject(loadedFiltersData, { bodies: response.data.data.bodies });
-                          this.checkInitialDataLoaded(loadedFiltersData);
-                        })
-                        .catch((error) => { this.addError(error); });
-
-    VehicleMakesService.index()
-                        .then((response) => {
-                          loadedFiltersData = Helpers.extendObject(loadedFiltersData, { makes: response.data.data.makes });
-                          this.checkInitialDataLoaded(loadedFiltersData);
-                        })
-                        .catch((error) => { this.addError(error); });
-
-    VehicleEngineFuelsService.index()
-                             .then((response) => {
-                               loadedFiltersData = Helpers.extendObject(loadedFiltersData, { engine_fuels: response.data.data.engine_fuels });
-                               this.checkInitialDataLoaded(loadedFiltersData);
-                             })
-                             .catch((error) => { this.addError(error); });
-
-    VehicleTransmissionService.index()
-                              .then((response) => {
-                                loadedFiltersData = Helpers.extendObject(loadedFiltersData, { transmissions: response.data.data.transmissions });
-                                this.checkInitialDataLoaded(loadedFiltersData);
-                              })
-                              .catch((error) => { this.addError(error); });
-
-    VehicleSeatCountsService.index()
-                            .then((response) => {
-                              loadedFiltersData = Helpers.extendObject(loadedFiltersData, { seat_counts: response.data.data.seat_counts });
-                              this.checkInitialDataLoaded(loadedFiltersData);
-                            })
-                            .catch((error) => { this.addError(error); });
-
-    VehicleDoorCountsService.index()
-                            .then((response) => {
-                              loadedFiltersData = Helpers.extendObject(loadedFiltersData, { door_counts: response.data.data.door_counts });
-                              this.checkInitialDataLoaded(loadedFiltersData);
-                            })
-                            .catch((error) => { this.addError(error); });
-
     ListingAmenitiesService.index()
-                           .then((response) => {
-                            loadedFiltersData = Helpers.extendObject(loadedFiltersData, { amenities: response.data.data.amenities });
-                             this.checkInitialDataLoaded(loadedFiltersData);
-                            })
+                           .then((response) => { this.addFiltersData({ amenities: response.data.data.amenities }); })
                            .catch((error) => { this.addError(error); });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    let selectedParams = this.state.selectedParams;
-
-    if (selectedParams.make !== prevState.selectedParams.make) {
-      VehicleMakeModelsService.index(selectedParams.make)
-                              .then((response) => {
-                                this.addFiltersData({ models: response.data.data.models });
-                              })
-                              .catch((error) => { this.addError(error); });
-    }
-  }
-
-  checkInitialDataLoaded(loadedFiltersData) {
-    let allDataLoaded = true;
-    let currentFilter;
-
-    for(let i = 0; i < filtersToLoadFirst.length; i++) {
-      currentFilter = filtersToLoadFirst[i];
-
-      if(!loadedFiltersData[currentFilter]) {
-        allDataLoaded = false;
-      }
-    }
-
-    if (allDataLoaded) {
-      this.addFiltersData(loadedFiltersData);
-    }
   }
 
   addSelectedParam(name, value) {
@@ -187,20 +95,11 @@ class ListingDetails extends Component {
   }
 
   validateFields() {
-    let valid = true;
-    let properties = this.state.selectedParams;
-
-    for(let i = 0; i < requiredFields.length; i++ ) {
-      if (properties[requiredFields[i]].length === 0) {
-        valid = false;
-      }
-    }
-
-    return valid;
+    return this.state.selectedParams.amenities.length > 0;
   }
 
   getListingProperties() {
-    return this.state.selectedParams;
+    return { on_demand: this.state.selectedParams.on_demand, amenities: this.state.selectedParams.amenities };
   }
 
   handleAmenitySelected(selected, value) {
@@ -224,18 +123,12 @@ class ListingDetails extends Component {
                      intl={ this.props.intl }>
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.vehicle'}) }>
             {
-              [ ['body', 'bodies'], ['make', 'makes'], ['model', 'models']].map((param) => {
-                let paramName = param[0];
-                let paramType = param[1];
-
+              [ 'body', 'make', 'model'].map(param => {
                 return (
-                  <ListingFormField key={ 'listings_vehicle_' + paramName } label={ this.props.intl.formatMessage({id: 'listings.' + paramName}) }>
-                    <Dropdown name={ paramName }
-                              placeholder={ listing[paramName] || this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
-                              items={ filtersData[paramType] || [] }
-                              valueProperty="id"
-                              displayProperty={ listingFiltersDisplayProperties }
-                              itemClickHandler={ this.addSelectedParam } />
+                  <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
+                    <span className="listings-readonly-value">
+                      { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
+                    </span>
                   </ListingFormField>
                 )
               })
@@ -244,18 +137,12 @@ class ListingDetails extends Component {
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.details'}) }>
             {
-              [['fuel', 'engine_fuels'], ['transmission', 'transmissions'], ['passengers', 'seat_counts'], ['doors', 'door_counts']].map((param) => {
-                let paramName = param[0];
-                let paramType = param[1];
-
+              [ 'engine_fuel', 'transmission', 'seat_count', 'door_count' ].map(param => {
                 return (
-                  <ListingFormField key={ 'listings_vehicle_' + paramName } label={ this.props.intl.formatMessage({id: 'listings.' + paramName}) }>
-                    <Dropdown name={ paramName }
-                              placeholder={ listing[paramName] || this.props.intl.formatMessage({ id: 'listings.' + paramName }) }
-                              items={ filtersData[paramType] || [] }
-                              valueProperty="id"
-                              displayProperty={ listingFiltersDisplayProperties }
-                              itemClickHandler={ this.addSelectedParam } />
+                  <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
+                    <span className="listings-readonly-value">
+                      { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
+                    </span>
                   </ListingFormField>
                 )
               })
@@ -264,11 +151,13 @@ class ListingDetails extends Component {
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) }>
-              <Dropdown name='odc'
-                        placeholder={ listing.on_demand_collection || this.props.intl.formatMessage({ id: 'listings.on_demand_collection' }) }
-                        items={ [ this.props.intl.formatMessage({ id: 'application.no' }),
-                                  this.props.intl.formatMessage({ id: 'application.yes' }) ] }
-                        itemClickHandler={ this.addSelectedParam } />
+              <FormField id="listing_on_demand"
+                         type="select"
+                         value={ this.state.selectedParams.on_demand }
+                         options={ [ { value: false, label: this.props.intl.formatMessage({ id: 'application.no' }) },
+                                     { value: true, label: this.props.intl.formatMessage({ id: 'application.yes' }) } ] }
+                         placeholder={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }
+                         handleChange={ (selectedOption) => { this.addSelectedParam('on_demand', selectedOption.value) } } />
             </ListingFormField>
           </ListingFormFieldGroup>
 
@@ -279,7 +168,7 @@ class ListingDetails extends Component {
 
                 return (
                   <div key={ 'listing_amenity_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
-                    <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleAmenitySelected(event.target.checked, amenity.id) } } />
+                    <input type="checkbox" id={ checkboxId } name="amenities[]" defaultChecked={ this.state.selectedParams.amenities.indexOf(amenity.id) >= 0 } onChange={ (event) => { this.handleAmenitySelected(event.target.checked, amenity.id) } } />
                     <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
                   </div>
                 )

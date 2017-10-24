@@ -75,7 +75,8 @@ export default class Constants {
       details: 'details',
       location: 'location',
       images: 'images',
-      pricing: 'pricing'
+      pricing: 'pricing',
+      rules: 'rules'
     };
   }
 
@@ -96,7 +97,7 @@ export default class Constants {
   }
 
   static listingFiltersDisplayProperties() {
-    return ['body', 'name', 'display', 'fuel', 'year', 'seats', 'doors', 'transmission'];
+    return ['trim', 'body', 'name', 'display', 'fuel', 'year', 'seats', 'doors', 'transmission'];
   }
 
   static types() {

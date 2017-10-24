@@ -8,6 +8,7 @@ import 'react-select/dist/react-select.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 import Constants from './miscellaneous/constants';
+
 import Header from './components/layout/header';
 import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
@@ -16,12 +17,15 @@ import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
 import UserManagement from './components/user_management/user_management';
+import BookingsCalendar from './components/bookings/bookings_calendar';
+
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
 import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
+
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -168,6 +172,9 @@ export default class App extends Component {
       case navigationSections.bookings:
         break;
       case navigationSections.messages:
+        break;
+      case navigationSections.calendar:
+        viewToRender = (<BookingsCalendar></BookingsCalendar>);
         break;
       case navigationSections.listings:
         viewToRender = (<Listings></Listings>);

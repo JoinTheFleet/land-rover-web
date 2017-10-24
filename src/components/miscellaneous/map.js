@@ -12,22 +12,33 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  Circle
 } from 'react-google-maps';
 
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
+
+const DEFAULT_CIRCLE_RADIUS = 750;
 
 class Map extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      center: { lat: 52.9893, lng: -6.0751581 },
-      markers: []
+      center: this.props.center || {},
+      markers: this.props.markers || []
     };
 
     this.onPlacesChanged = this.onPlacesChanged.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if( prevProps.markers !== this.props.markers) {
+      this.setState({
+        markers: this.props.markers
+      });
+    }
   }
 
   onPlacesChanged() {
@@ -55,6 +66,10 @@ class Map extends Component {
   }
 
   handleMapClick(location) {
+    if (this.props.disableClick) {
+      return;
+    }
+
     let marker = {
       position: {
         lat: location.latLng.lat(),
@@ -70,7 +85,8 @@ class Map extends Component {
   }
 
   render() {
-    let markers = this.state.markers || [];
+    let markers = this.state.markers;
+    let circles = this.props.circles || [];
     let searchBox = '';
 
     if (this.props.includeSearchBox) {
@@ -99,8 +115,9 @@ class Map extends Component {
     }
 
     return (
-      <GoogleMap defaultZoom={ 10 }
+      <GoogleMap defaultZoom={ this.props.zoom || 10 }
                  center={ this.state.center }
+                 options={ this.props.options }
                  className="fleet-map"
                  onClick={ this.handleMapClick }
                  ref={ (map) => { this.map = map } }>
@@ -109,9 +126,20 @@ class Map extends Component {
         {
           markers.map((marker, index) => {
             return (
-              <Marker key={ 'listing_map_item_' + (index + 1) }
+              <Marker key={ 'map_marker_' + (index + 1) }
                       position={ marker.position }
                       draggable={ this.props.draggableMarkers } />
+            )
+          })
+        }
+
+        {
+          circles.map((circle, index) => {
+            return (
+              <Circle key={ 'map_circle_' + index }
+                      defaultCenter={ circle.position }
+                      defaultRadius={ circle.radius || DEFAULT_CIRCLE_RADIUS }
+                      options={ circle.options } />
             )
           })
         }
@@ -126,5 +154,6 @@ Map.propTypes = {
   includeSearchBox: PropTypes.bool,
   onPlacesChanged: PropTypes.func,
   bounds: PropTypes.object,
-  draggableMarkers: PropTypes.bool
+  draggableMarkers: PropTypes.bool,
+  markers: PropTypes.array
 }

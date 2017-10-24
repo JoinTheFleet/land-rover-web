@@ -13,6 +13,21 @@
   .dropdown-items {
     ul {
       list-style: none;
+
+      li {
+        &:hover {
+          background: $secondary-color;
+          color: white;
+        }
+      }
+
+      &.no-padding-on-list {
+        padding-left: 0;
+
+        li {
+          padding-left: 20px;
+        }
+      }
     }
   }
 }
