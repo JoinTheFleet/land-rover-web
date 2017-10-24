@@ -89,6 +89,7 @@ export default class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
     this.performSearch = this.performSearch.bind(this);
+    this.hideSearchResults = this.hideSearchResults.bind(this);
   }
 
   componentWillMount() {
@@ -129,6 +130,10 @@ export default class App extends Component {
         accessToken: undefined
       });
     }
+  }
+
+  hideSearchResults() {
+    this.setState({ searchLocations: [] });
   }
 
   changeCurrentUserRole() {
@@ -213,6 +218,7 @@ export default class App extends Component {
                                     startDate={ this.state.startDate }
                                     endDate={ this.state.endDate }
                                     locationName={ this.state.locationName }
+                                    hideSearchResults={ this.hideSearchResults }
                                     searchLocations={ this.state.searchLocations }
                                     showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
     }
@@ -400,6 +406,7 @@ export default class App extends Component {
                 startDate={ this.state.startDate }
                 endDate={ this.state.endDate }
                 locationName={ this.state.locationName }
+                hideSearchResults={ this.hideSearchResults }
                 searchLocations={ this.state.searchLocations }
                 hideSearchForm={ false }
                 showSearchButton={ this.state.showSearchButton } />

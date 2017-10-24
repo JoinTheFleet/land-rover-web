@@ -61,6 +61,13 @@
   color: #565a5c;
 }
 
+.search_inputs {
+  height: 100%;
+  background-color: white;
+  border-radius: 5px;
+  display: inline-flex;
+}
+
 input#location {
   position: relative;
   height: inherit;
@@ -68,7 +75,6 @@ input#location {
   font-size: 17px;
   padding-top: 6px;
   padding-bottom: 7px;
-  top: 1px;
   height: inherit;
 
   color: #565a5c;
@@ -80,6 +86,10 @@ input#location {
   border-radius: 0;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+}
+
+.DateInput_input {
+  font-size: 15px;
 }
 
 #header_search_form {

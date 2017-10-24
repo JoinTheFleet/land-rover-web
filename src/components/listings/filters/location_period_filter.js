@@ -5,6 +5,7 @@ import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
 import momentPropTypes from 'react-moment-proptypes';
+import CloseOnEscape from 'react-close-on-escape';
 
 class ListingPeriodFilter extends Component {
   constructor(props) {
@@ -34,31 +35,35 @@ class ListingPeriodFilter extends Component {
     }
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
-        <FormField type='text'
-                   className=''
-                   id='location'
-                   placeholder='Location'
-                   handleChange={ this.props.handleLocationChange }
-                   handleFocusChange={ this.props.handleLocationFocus }
-                   value={ this.props.locationName }/>
-        <FormField type='daterange'
-                   className=''
-                   id='period'
-                   placeholder='Dates'
-                   handleChange={ this.props.handleDatesChange }
-                   startDate={ this.props.startDate }
-                   endDate={ this.props.endDate }
-                   focused={ this.state.focused }
-                   handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+        <div className='search_inputs'>
+          <FormField type='text'
+                     className=''
+                     id='location'
+                     placeholder='Location'
+                     handleChange={ this.props.handleLocationChange }
+                     handleFocusChange={ this.props.handleLocationFocus }
+                     value={ this.props.locationName }/>
+          <FormField type='daterange'
+                     className=''
+                     id='period'
+                     placeholder='Dates'
+                     handleChange={ this.props.handleDatesChange }
+                     startDate={ this.props.startDate }
+                     endDate={ this.props.endDate }
+                     focused={ this.state.focused }
+                     handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+         </div>
         { button }
         <div className='location-search-results'>
-          <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
-              <Dropdown.Menu>
-                {
-                  this.props.searchLocations.map(location => { return <LocationMenuItem location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
-                }
-              </Dropdown.Menu>
-          </Dropdown>
+          <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
+            <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
+                <Dropdown.Menu>
+                  {
+                    this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                  }
+                </Dropdown.Menu>
+            </Dropdown>
+          </CloseOnEscape>
         </div>
       </div>
     )
@@ -68,6 +73,7 @@ class ListingPeriodFilter extends Component {
 export default injectIntl(ListingPeriodFilter);
 
 ListingPeriodFilter.propTypes = {
+  hideSearchResults: PropTypes.func.isRequired,
   handlePeriodChange: PropTypes.func.isRequired,
   hideSearchForm: PropTypes.bool,
   handleLocationChange: PropTypes.func.isRequired,
