@@ -22,6 +22,7 @@ import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
 import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
+import MessagingController from './components/messaging/messaging_controller';
 
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
@@ -186,6 +187,7 @@ export default class App extends Component {
       case navigationSections.bookings:
         break;
       case navigationSections.messages:
+        viewToRender = (<MessagingController role={ this.state.currentUserRole } />);
         break;
       case navigationSections.calendar:
         viewToRender = (<BookingsCalendar></BookingsCalendar>);
