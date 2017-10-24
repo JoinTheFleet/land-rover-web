@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import FacebookLogin from 'react-facebook-login';
 import Anime from 'react-anime';
+import Alert from 'react-s-alert';
 
 import AuthenticationService from '../../shared/services/authentication_service';
 import UsersService from '../../shared/services/users/users_service';
@@ -19,7 +20,6 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      errors: [],
       user: {},
       loading: false
     };
@@ -42,22 +42,18 @@ class Login extends Component {
   }
 
   setSelectedLoginMode() {
-    this.setState({
-      errors: [],
-    }, () => {
-      if (this.props.modalName === 'login') {
-        this.setState({
-          loginTitle: this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}),
-          user: {}
-        });
-      }
-      else if (this.props.modalName === 'registration') {
-        this.setState({
-          loginTitle: undefined,
-          user: {}
-        });
-      }
-    });
+    if (this.props.modalName === 'login') {
+      this.setState({
+        loginTitle: this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}),
+        user: {}
+      });
+    }
+    else if (this.props.modalName === 'registration') {
+      this.setState({
+        loginTitle: undefined,
+        user: {}
+      });
+    }
   }
 
   handleLoginButtonClick(event) {
@@ -92,16 +88,7 @@ class Login extends Component {
     this.setState({
       loading: false
     }, () => {
-      if (error === '') {
-        return;
-      }
-
-      let errors = this.state.errors;
-      errors.push(error);
-
-      this.setState({
-        errors: errors
-      });
+      Alert.error(error);
     });
   }
 
@@ -141,7 +128,6 @@ class Login extends Component {
 
     if (user && user.first_name && user.last_name && user.email && user.password) {
       this.setState({
-        errors: [],
         loading: true
       }, () => {
         UsersService.create({
@@ -166,8 +152,7 @@ class Login extends Component {
 
   handleModalError(error) {
     this.setState({
-      loading: false,
-      errors: []
+      loading: false
     }, () => {
       if (error && error.response) {
         let response = error.response;
@@ -187,7 +172,6 @@ class Login extends Component {
 
     if (user && user.email) {
       this.setState({
-        errors: [],
         loading: true
       }, () => {
         UsersService.resetPassword(user.email)
@@ -403,8 +387,7 @@ class Login extends Component {
       <Modal open={ this.props.modalName && this.props.modalName.length > 0 }
              modalName={ this.props.modalName }
              title={ this.state.loginTitle }
-             toggleModal={ this.props.toggleModal }
-             errors={ this.state.errors } >
+             toggleModal={ this.props.toggleModal } >
         { loginModalBody }
       </Modal>
     )

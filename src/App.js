@@ -6,6 +6,10 @@ import 'react-dates/lib/css/_datepicker.css';
 import 'react-datez/dist/css/react-datez.css';
 import 'react-select/dist/react-select.css';
 import 'font-awesome/css/font-awesome.min.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
+
+import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
 
@@ -30,6 +34,15 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
+const ALERT_OPTIONS = {
+  position: 'top',
+  theme: 'dark',
+  timeout: 10000,
+  effect: 'stackslide',
+  stack: {
+    limit: 1
+  }
+}
 
 export default class App extends Component {
   constructor(props) {
@@ -127,12 +140,8 @@ export default class App extends Component {
   handleMenuItemSelect(menuItem) {
     if (menuItem === navigationSections.logout) {
       AuthenticationService.logout()
-                           .then((success) => {
-                             this.setAccessToken('');
-                           })
-                           .catch((error) => {
-                             alert(error);
-                           });
+                           .then(() => { this.setAccessToken(''); })
+                           .catch(() => { this.setAccessToken(''); });
     }
     else {
       this.setState({
@@ -376,6 +385,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
+        <Alert {...ALERT_OPTIONS} />
         <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
                 currentUserRole={ this.state.currentUserRole }
                 currentMenuItem={ this.state.currentSelectedView }

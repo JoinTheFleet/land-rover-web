@@ -6,22 +6,6 @@ import closeGreyIcon from '../../assets/images/close-grey.png';
 import CloseOnEscape from 'react-close-on-escape';
 
 export default class Modal extends Component {
-  renderErrors() {
-    if (this.props.errors.length === 0) {
-      return;
-    }
-
-    return (
-      <div className="alert alert-danger">
-        {
-          this.props.errors.map((error, index) => {
-            return (<div key={ 'login_error_' + (index + 1) }>{ error }</div>)
-          })
-        }
-      </div>
-    );
-  }
-
   render() {
     let title = '';
 
@@ -37,8 +21,6 @@ export default class Modal extends Component {
                 <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
                   <img src={closeGreyIcon} alt="close-modal-icon" />
                 </a>
-                { this.renderErrors() }
-
                 { title }
 
                 { this.props.children }
@@ -52,7 +34,6 @@ export default class Modal extends Component {
 }
 
 Modal.propTypes = {
-  errors: PropTypes.array,
   open: PropTypes.bool,
   title: PropTypes.string.isRequired,
   modalName: PropTypes.string.isRequired,
