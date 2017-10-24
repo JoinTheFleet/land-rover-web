@@ -22,7 +22,8 @@ export default class Listings extends Component {
       currentListing: {},
       currentView: 'index',
       currentSelectedListingId: -1,
-      currentPricingQuote: {}
+      currentPricingQuote: {},
+      currentQuotation: {}
     };
 
     this.setCurrentView = this.setCurrentView.bind(this);
@@ -46,13 +47,18 @@ export default class Listings extends Component {
                                      listing={ this.state.currentListing } />);
         break;
       case listingsViews.view:
-        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ this.props.currentUserRole === userRoles.renter } handleChangeView={ this.setCurrentView } />;
+        viewToRender = (<ListingView listing={ this.state.currentListing }
+                                     enableBooking={ this.props.currentUserRole === userRoles.renter }
+                                     handleChangeView={ this.setCurrentView } />);
         break;
       case listingsViews.requestBooking:
-        viewToRender = <Bookings currentView={ bookingsViews.new } listing={ this.state.currentListing } pricingQuote={ this.state.currentPricingQuote } />
+        viewToRender = (<Bookings currentView={ bookingsViews.new }
+                                  listing={ this.state.currentListing }
+                                  quotation={ this.state.currentQuotation }
+                                  pricingQuote={ this.state.currentPricingQuote } />);
         break;
       default:
-        viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);
+        viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView } />);
     }
 
     return viewToRender;

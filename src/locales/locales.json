@@ -186,6 +186,14 @@
     "bookings.reset_to_default": "Reset to Default",
     "bookings.save_changes": "Save Changes",
     "bookings.saved_changes_successfully": "Changes saved successfully",
+    "bookings.pick_up_time": "Pick up time",
+    "bookings.drop_off_time": "Drop off time",
+    "bookings.pick_up_location": "Pick up location",
+    "bookings.drop_off_location": "Drop off location",
+    "bookings.payment_method": "Payment method",
+    "bookings.message_to_owner": "Message to Owner",
+    "bookings.agree_to_vehicle_rules": "Agree to Vehicle Rules",
+    "bookings.agree_to_insurance_terms": "Agree to Insurance Terms",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 

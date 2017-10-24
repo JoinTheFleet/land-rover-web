@@ -18,6 +18,8 @@ import {
 
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
 
+import GeolocationService from '../../shared/services/geolocation_service';
+
 const DEFAULT_CIRCLE_RADIUS = 750;
 
 class Map extends Component {
@@ -31,6 +33,20 @@ class Map extends Component {
 
     this.onPlacesChanged = this.onPlacesChanged.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.state.center.lat === 0 && this.state.center.lng === 0) {
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+                          this.setState({
+                            center: {
+                              latitude: position.coords.latitude,
+                              longitude: position.coords.longitude
+                            }
+                          });
+                        });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {

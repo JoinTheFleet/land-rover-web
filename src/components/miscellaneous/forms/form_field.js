@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
+import moment from 'moment';
+import Select from 'react-select';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
-import moment from 'moment';
-import momentPropTypes from 'react-moment-proptypes';
-import Select from 'react-select';
+import { TimePicker } from 'antd';
 import { countries } from '../countries';
 
 const COUNTRIES = countries.map(function(country) {
@@ -109,6 +110,13 @@ export default class FormField extends Component {
           position={this.props.position || 'left'}
           placeholder={this.props.placeholder}
         />
+      )
+    }
+    else if (this.props.type === 'timepicker') {
+      renderable = (
+        <TimePicker onChange={ this.props.handleChange }
+                    defaultValue={ this.props.value || moment('00:00', this.props.format || 'HH:mm') }
+                    format={ this.props.format || 'HH:mm' } />
       )
     }
     else if (this.props.type === 'select') {

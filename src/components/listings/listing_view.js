@@ -27,8 +27,8 @@ class ListingView extends Component {
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
   }
 
-  handleBookButtonClick(pricingQuote) {
-    this.props.handleChangeView(listingsViews.requestBooking, { currentPricingQuote: pricingQuote });
+  handleBookButtonClick(quotation, pricingQuote) {
+    this.props.handleChangeView(listingsViews.requestBooking, { currentQuotation: quotation, currentPricingQuote: pricingQuote });
   }
 
   renderListingOverview() {
