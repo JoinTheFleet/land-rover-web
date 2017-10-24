@@ -52,7 +52,7 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
-      currentSelectedView: cookies.get('accessToken') ? navigationSections.dashboard : navigationSections.home,
+      currentSelectedView: cookies.get('accessToken') ? navigationSections.messages : navigationSections.home,
       listings: [],
       modalName: undefined,
       searchLocations: [],
