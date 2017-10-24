@@ -168,7 +168,7 @@ class ListingDetails extends Component {
 
                 return (
                   <div key={ 'listing_amenity_' + amenity.id } className="listings-amenity-filter fleet-checkbox">
-                    <input type="checkbox" id={ checkboxId } name="amenities[]" onChange={ (event) => { this.handleAmenitySelected(event.target.checked, amenity.id) } } />
+                    <input type="checkbox" id={ checkboxId } name="amenities[]" defaultChecked={ this.state.selectedParams.amenities.indexOf(amenity.id) >= 0 } onChange={ (event) => { this.handleAmenitySelected(event.target.checked, amenity.id) } } />
                     <label htmlFor={ checkboxId } className="fs-16 text-secondary-font-weight">{ amenity.name }</label>
                   </div>
                 )

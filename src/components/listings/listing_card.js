@@ -1,12 +1,12 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
 export default class ListingCard extends Component {
   render() {
     let image;
+    let editButton = '';
     let item = this.props.listing;
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
@@ -18,8 +18,17 @@ export default class ListingCard extends Component {
       );
     }
 
+    if (this.props.enableEdit) {
+      editButton = (
+        <button className="listing-card-edit-button btn secondary-color white-text"
+                onClick={ (event) => { event.stopPropagation(); this.props.handleEditButtonClick(item) } }>
+          <FormattedMessage id="application.edit" />
+        </button>
+      )
+    }
+
     return (
-      <div className="listing-card">
+      <div className="listing-card" onClick={ () => { if(this.props.handleCardClick) { this.props.handleCardClick(item); } } }>
         <div className="listing-card-photo">
           { image }
         </div>
@@ -30,11 +39,16 @@ export default class ListingCard extends Component {
             <span className="listing-item-year fs-18">{ item.variant.year.year }</span>
           </p>
         </div>
+
+        { editButton }
       </div>
     )
   }
 }
 
 ListingCard.propTypes = {
-  listing: PropTypes.object.isRequired
+  listing: PropTypes.object.isRequired,
+  editButton: PropTypes.bool,
+  handleCardClick: PropTypes.func,
+  handleEditButtonClick: PropTypes.func
 }

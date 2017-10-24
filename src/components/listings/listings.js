@@ -5,7 +5,10 @@ import React, {
 import Constants from '../../miscellaneous/constants';
 
 import ListingsOverview from './listings_overview';
+import ListingView from './listing_view';
 import ListingForm from './forms/listing_form';
+
+import Helpers from '../../miscellaneous/helpers';
 
 const listingsViews = Constants.listingViews();
 
@@ -14,6 +17,7 @@ export default class Listings extends Component {
     super(props);
 
     this.state = {
+      currentListing: {},
       currentView: 'index',
       currentSelectedListingId: -1
     };
@@ -21,10 +25,11 @@ export default class Listings extends Component {
     this.setCurrentView = this.setCurrentView.bind(this);
   }
 
-  setCurrentView(view) {
-    this.setState({
-      currentView: view
-    });
+  setCurrentView(view, params) {
+    let newState = { currentView: view };
+    let additionalParams = params || {};
+
+    this.setState(Helpers.extendObject(newState, additionalParams));
   }
 
   getViewToRender() {
@@ -32,10 +37,15 @@ export default class Listings extends Component {
 
     switch(this.state.currentView) {
       case listingsViews.new:
-        viewToRender = (<ListingForm setCurrentView={ this.setCurrentView }></ListingForm>);
+      case listingsViews.edit:
+        viewToRender = (
+          <ListingForm setCurrentView={ this.setCurrentView }
+                       edit={ this.state.currentView === listingsViews.edit }
+                       listing={ this.state.currentListing } />
+        );
         break;
       case listingsViews.view:
-        viewToRender = '';
+        viewToRender = <ListingView listing={ this.state.currentListing } enableBooking={ true } />;
         break;
       default:
         viewToRender = (<ListingsOverview handleChangeView={ this.setCurrentView }></ListingsOverview>);

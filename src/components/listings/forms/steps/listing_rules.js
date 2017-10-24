@@ -17,8 +17,18 @@ class ListingRules extends Component {
   constructor(props) {
     super(props);
 
+    let listing = Helpers.extendObject(this.props.listing, {});
+
+    if (listing.check_in_time) {
+      listing.check_in_time = moment("1900-01-01 00:00:00").add(listing.check_in_time, 'seconds');
+    }
+
+    if (listing.check_out_time) {
+      listing.check_out_time = moment("1900-01-01 00:00:00").add(listing.check_out_time, 'seconds');
+    }
+
     this.state = {
-      listing: this.props.listing
+      listing: listing
     };
 
     this.validateFields = this.validateFields.bind(this);
@@ -74,12 +84,10 @@ class ListingRules extends Component {
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.pick_up_time'}) }>
             <TimePicker onChange={ this.handleAddPickupTimeSelected }
-                        defaultValue={moment('00:00', format)}
-                        format={format} />
+                        defaultValue={ this.state.listing.check_in_time || moment('00:00', format) }
+                        format={ format } />
 
           </ListingFormFieldGroup>
-
-          
         </ListingStep>
       </div>
     )

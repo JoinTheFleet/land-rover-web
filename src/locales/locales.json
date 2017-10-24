@@ -1,8 +1,10 @@
 {
   "en": {
     "application.blog": "Blog",
+    "application.cancel": "Cancel",
     "application.country": "Country",
     "application.dates": "Dates",
+    "application.edit": "Edit",
     "application.filter": "Filter",
     "application.loading": "Loading",
     "application.location": "Location",
@@ -13,12 +15,13 @@
     "application.previous": "Previous",
     "application.registration": "Registration",
     "application.renter": "Renter",
+    "application.save": "Save",
     "application.search": "Search",
     "application.sort_by": "Sort By",
+    "application.total": "Total",
+    "application.vehicle": "Vehicle",
     "application.view_all": "View All",
     "application.yes": "Yes",
-    "application.save": "Save",
-    "application.cancel": "Cancel",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -132,6 +135,7 @@
     "listings.see_listings": "See Listings",
     "listings.add_new_listing": "Add New Listing",
     "listings.complete_listing": "Complete Listing",
+    "listings.price_per_day": "{currency_symbol}{price} per day",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",
@@ -168,6 +172,20 @@
     "listings.rules.rules": "Rules",
     "listings.rules.rules_eg": "Rules eg. No Dogs",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
+
+    "bookings.book_now": "Book Now",
+    "bookings.book_now_from": "Book now from",
+    "bookings.check_in_date": "Check In Date",
+    "bookings.check_out_date": "Check Out Date",
+    "bookings.insurance": "Insurance",
+    "bookings.not_available": "This vehicle is not available on the selected dates. Please select another date range.",
+    "bookings.availability": "Availability",
+    "bookings.available": "Available",
+    "bookings.blocked": "Blocked",
+    "bookings.daily_rate": "Daily Rate",
+    "bookings.reset_to_default": "Reset to Default",
+    "bookings.save_changes": "Save Changes",
+    "bookings.saved_changes_successfully": "Changes saved successfully",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 
