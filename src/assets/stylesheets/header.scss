@@ -61,6 +61,14 @@
   color: #565a5c;
 }
 
+.search_inputs {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  display: inline;
+}
+
 input#location {
   position: relative;
   height: inherit;

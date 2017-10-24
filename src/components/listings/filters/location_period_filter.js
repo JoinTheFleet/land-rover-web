@@ -35,22 +35,24 @@ class ListingPeriodFilter extends Component {
     }
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
-        <FormField type='text'
-                   className=''
-                   id='location'
-                   placeholder='Location'
-                   handleChange={ this.props.handleLocationChange }
-                   handleFocusChange={ this.props.handleLocationFocus }
-                   value={ this.props.locationName }/>
-        <FormField type='daterange'
-                   className=''
-                   id='period'
-                   placeholder='Dates'
-                   handleChange={ this.props.handleDatesChange }
-                   startDate={ this.props.startDate }
-                   endDate={ this.props.endDate }
-                   focused={ this.state.focused }
-                   handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+        <div className='search_inputs'>
+          <FormField type='text'
+                     className=''
+                     id='location'
+                     placeholder='Location'
+                     handleChange={ this.props.handleLocationChange }
+                     handleFocusChange={ this.props.handleLocationFocus }
+                     value={ this.props.locationName }/>
+          <FormField type='daterange'
+                     className=''
+                     id='period'
+                     placeholder='Dates'
+                     handleChange={ this.props.handleDatesChange }
+                     startDate={ this.props.startDate }
+                     endDate={ this.props.endDate }
+                     focused={ this.state.focused }
+                     handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+         </div>
         { button }
         <div className='location-search-results'>
           <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
