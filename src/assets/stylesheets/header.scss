@@ -64,17 +64,17 @@
 input#location {
   color: #565a5c;
   position: relative;
-  top: 2px;
   font-weight: 200;
 
   font-size: 18px;
   line-height: 20px;
   border-width: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  height: 36px;
+}
+
+.location_search {
+  border-radius: 5px;
+  display: inline-flex;
+  height: 37px;
 }
 
 #header_search_form {

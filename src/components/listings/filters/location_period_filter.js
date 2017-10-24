@@ -34,7 +34,7 @@ class ListingPeriodFilter extends Component {
     }
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
-        <div className='row'>
+          <div className='DateRangePickerInput DateRangePickerInput_1 location_search'>
             <FormField type='text'
                        className=''
                        id='location'
@@ -51,18 +51,17 @@ class ListingPeriodFilter extends Component {
                        endDate={ this.props.endDate }
                        focused={ this.state.focused }
                        handleFocusChange={ this.handleDateRangePickerFocusChange}/>
-
-            { button }
-            <div className='location-search-results'>
-              <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
-                  <Dropdown.Menu>
-                    {
-                      this.props.searchLocations.map(location => { return <LocationMenuItem location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
-                    }
-                  </Dropdown.Menu>
-              </Dropdown>
-            </div>
-        </div>
+          </div>
+          { button }
+          <div className='location-search-results'>
+            <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
+                <Dropdown.Menu>
+                  {
+                    this.props.searchLocations.map(location => { return <LocationMenuItem location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                  }
+                </Dropdown.Menu>
+            </Dropdown>
+          </div>
       </div>
     )
   }

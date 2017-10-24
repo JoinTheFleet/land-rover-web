@@ -59,6 +59,8 @@
     "react-select": "",
     "font-awesome": "",
     "react-close-on-escape": "",
+    "flash-notification-react-redux": "",
+    "redux-thunk": "",
     "react-fontawesome": "",
     "sass-loader": "",
     "aws-sdk": "",
