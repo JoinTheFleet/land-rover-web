@@ -25,7 +25,7 @@ class Map extends Component {
     super(props);
 
     this.state = {
-      center: this.props.center || {},
+      center: this.props.center || { lat: 0, lng: 0 },
       markers: this.props.markers || []
     };
 
