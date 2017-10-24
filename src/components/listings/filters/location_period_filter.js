@@ -34,34 +34,31 @@ class ListingPeriodFilter extends Component {
     }
     return (
       <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
-        <div className='row'>
-            <FormField type='text'
-                       className=''
-                       id='location'
-                       placeholder='Location'
-                       handleChange={ this.props.handleLocationChange }
-                       handleFocusChange={ this.props.handleLocationFocus }
-                       value={ this.props.locationName }/>
-            <FormField type='daterange'
-                       className=''
-                       id='period'
-                       placeholder='Dates'
-                       handleChange={ this.props.handleDatesChange }
-                       startDate={ this.props.startDate }
-                       endDate={ this.props.endDate }
-                       focused={ this.state.focused }
-                       handleFocusChange={ this.handleDateRangePickerFocusChange}/>
-
-            { button }
-            <div className='location-search-results'>
-              <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
-                  <Dropdown.Menu>
-                    {
-                      this.props.searchLocations.map(location => { return <LocationMenuItem location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
-                    }
-                  </Dropdown.Menu>
-              </Dropdown>
-            </div>
+        <FormField type='text'
+                   className=''
+                   id='location'
+                   placeholder='Location'
+                   handleChange={ this.props.handleLocationChange }
+                   handleFocusChange={ this.props.handleLocationFocus }
+                   value={ this.props.locationName }/>
+        <FormField type='daterange'
+                   className=''
+                   id='period'
+                   placeholder='Dates'
+                   handleChange={ this.props.handleDatesChange }
+                   startDate={ this.props.startDate }
+                   endDate={ this.props.endDate }
+                   focused={ this.state.focused }
+                   handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+        { button }
+        <div className='location-search-results'>
+          <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
+              <Dropdown.Menu>
+                {
+                  this.props.searchLocations.map(location => { return <LocationMenuItem location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                }
+              </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
     )
