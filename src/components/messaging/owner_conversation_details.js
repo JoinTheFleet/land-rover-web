@@ -25,24 +25,16 @@ export default class OwnerConversationDetails extends Component {
           <div className='col-xs-2 col-lg-1'>
             <Avatar src={ imageURL } round />
           </div>
-          <div className='col-xs-8 col-lg-9'>
+          <div className='col-xs-8 col-lg-9 owner-message-information'>
             <div className='col-xs-12'>
               <span className='strong-font-weight conversation-header'>
-                { variant.make.display }, { variant.model.name }
-              </span>
-              <span className='conversation-header'>
-                { variant.year.year }
+                { renter.name }
               </span>
             </div>
             <div className='col-xs-12'>
-              <span>{ listing.address }</span>
-              &nbsp; &bull; &nbsp;
               <DateRange start={ start } end={ end } />
             </div>
-            <div className='col-xs-12'>
-              { owner.name }
-            </div>
-            <div className={ `col-xs-12 ${messageClassName}` }>
+            <div className={ `col-xs-12 owner-message-text ${messageClassName}` }>
               { message.text }
             </div>
           </div>
