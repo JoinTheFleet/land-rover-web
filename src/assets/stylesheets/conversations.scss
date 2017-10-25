@@ -1,0 +1,28 @@
+.conversation-detail {
+  font-size: 15px;
+  border: 1px solid $smoke-grey-two;
+  padding: 8px;
+  cursor: pointer;
+
+  img {
+    padding: 0;
+    max-height: 200px;
+  }
+
+  img.renter {
+    border-radius: 50px;
+  }
+}
+
+.conversation-detail + .conversation-detail {
+  margin-top: 20px;
+}
+
+.conversation-detail:last-of-type {
+  margin-bottom: 20px;
+}
+
+.conversation-header {
+  font-size: 19px;
+  margin-right: 10px;
+}

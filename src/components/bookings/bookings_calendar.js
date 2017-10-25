@@ -15,6 +15,8 @@ import ListingCalendarService from '../../shared/services/listings/listing_calen
 import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
+import ListingsSelector from '../listings/listings_selector';
+
 class BookingsCalendar extends Component {
   constructor(props) {
     super(props);
@@ -142,11 +144,8 @@ class BookingsCalendar extends Component {
     this.setState(newState);
   }
 
-  handleVehicleSelect(listingId) {
-    let listings = this.state.listings;
-    let currentListing = listings[listings.findIndex(listing => listing.id === listingId)];
-
-    this.setState({ currentListing: currentListing, currentDailyRate: currentListing.price / 100 }, () => {
+  handleVehicleSelect(listing) {
+    this.setState({ currentListing: listing, currentDailyRate: listing.price / 100 }, () => {
       this.fetchCurrentAvailability();
     });
   }
@@ -272,45 +271,11 @@ class BookingsCalendar extends Component {
   }
 
   renderTopBar() {
-    let listings = this.state.listings;
-    let currentListing = this.state.currentListing;
-    let vehicleDropdownPlaceholder = LocalizationService.formatMessage('application.vehicle');
-
-    if (currentListing) {
-      vehicleDropdownPlaceholder = `${currentListing.variant.make.name} ${currentListing.variant.model.name} ${currentListing.variant.year.year}`
-    }
-
     return (
-      <div className="bookings-calendar-top-bar smoke-grey text-right">
-        <FormattedMessage id="application.vehicle">
-          { (text) => (<span className="text-uppercase tertiary-text-color">{ text }</span>) }
-        </FormattedMessage>
-
-        <Dropdown onSelect={this.handleVehicleSelect}
-                  pullRight={true}
-                  key='bookings_calendar_listing'
-                  id='bookings_calendar_listing'>
-
-          <Dropdown.Toggle className='secondary-color white-text fs-12'>
-            { vehicleDropdownPlaceholder }
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            {
-              listings.map(listing => {
-                return (
-                  <MenuItem key={`bookings_calendar_vehicle_${listing.id}`}
-                            eventKey={listing.id}
-                            active={listing.id === this.state.currentListingId}>
-                    { `${listing.variant.make.name} ${listing.variant.model.name} ${listing.variant.year.year}` }
-                  </MenuItem>
-                )
-              })
-            }
-          </Dropdown.Menu>
-      </Dropdown>
-      </div>
-    )
+      <ListingsSelector listings={ this.state.listings }
+                        currentListing={ this.state.currentListing }
+                        handleVehicleSelect= { this.handleVehicleSelect } />
+    );
   }
 
   renderSetRateTile() {
