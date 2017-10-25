@@ -12,7 +12,8 @@ export default class MessagingController extends Component {
     this.state = {
       listings: [],
       listing: undefined,
-      loading: false
+      loading: false,
+      selectedConversation: undefined
     };
 
     this.selectConversation = this.selectConversation.bind(this);
@@ -42,8 +43,8 @@ export default class MessagingController extends Component {
                                        listings: response.data.data.listings,
                                        loading: false
                                      })
+                                   })
                                    .catch(error => this.setState({ loading: false }));
-                                   });
       })
     }
   }
