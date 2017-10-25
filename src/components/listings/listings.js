@@ -19,9 +19,9 @@ export default class Listings extends Component {
     super(props);
 
     this.state = {
-      currentListing: {},
-      currentView: 'index',
-      currentSelectedListingId: -1,
+      currentListing: this.props.currentListing || {},
+      currentView: this.props.currentView || 'index',
+      currentSelectedListingId: this.props.currentSelectedListingId || -1,
       currentPricingQuote: {},
       currentQuotation: {}
     };
@@ -74,5 +74,7 @@ export default class Listings extends Component {
 }
 
 Listings.propTypes = {
-  currentUserRole: PropTypes.string
+  currentUserRole: PropTypes.string,
+  currentView: PropTypes.oneOf(listingsViews),
+  currentSelectedListingId: PropTypes.number
 }

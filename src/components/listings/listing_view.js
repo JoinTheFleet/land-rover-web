@@ -129,6 +129,11 @@ class ListingView extends Component {
 
   renderMap() {
     let listing = this.props.listing;
+
+    if (!listing.location) {
+      return <div className="listing-view-map col-xs-12 no-side-padding"></div>;
+    }
+
     let listingCircle = {
       position: {
         lat: listing.location.latitude,

@@ -12,6 +12,7 @@ import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
 import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
+import Helpers from './miscellaneous/helpers';
 
 import Header from './components/layout/header';
 import HeaderTopMenu from './components/layout/header_top_menu';
@@ -66,7 +67,8 @@ export default class App extends Component {
       },
       boundingBox: undefined,
       sort: 'distance',
-      showSearchButton: false
+      showSearchButton: false,
+      viewsProps: {}
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -74,22 +76,23 @@ export default class App extends Component {
     }
 
     this.toggleModal = this.toggleModal.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleMapDrag = this.handleMapDrag.bind(this);
+    this.performSearch = this.performSearch.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
-    this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.locationSearch = this.locationSearch.bind(this);
+    this.handleSortToggle = this.handleSortToggle.bind(this);
+    this.changeCurrentView = this.changeCurrentView.bind(this);
+    this.handleDatesChange = this.handleDatesChange.bind(this);
+    this.hideSearchResults = this.hideSearchResults.bind(this);
+    this.handleFilterToggle = this.handleFilterToggle.bind(this);
+    this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
-    this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
-    this.handleDatesChange = this.handleDatesChange.bind(this);
-    this.handleMapDrag = this.handleMapDrag.bind(this);
-    this.handleFilterToggle = this.handleFilterToggle.bind(this);
-    this.handleSortToggle = this.handleSortToggle.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
+    this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
-    this.performSearch = this.performSearch.bind(this);
-    this.hideSearchResults = this.hideSearchResults.bind(this);
   }
 
   componentWillMount() {
@@ -149,10 +152,19 @@ export default class App extends Component {
                            .catch(() => { this.setAccessToken(''); });
     }
     else {
-      this.setState({
-        currentSelectedView: menuItem,
-        showSearchButton: menuItem !== navigationSections.dashboard });
+      this.changeCurrentView(menuItem);
     }
+  }
+
+  changeCurrentView(view, viewProps) {
+    let currentViewsProps = this.state.viewsProps;
+    currentViewsProps[view] = viewProps || {};
+
+    this.setState({
+      currentSelectedView: view,
+      showSearchButton: view !== navigationSections.dashboard,
+      viewsProps: currentViewsProps
+    });
   }
 
   toggleModal(modal) {
@@ -179,6 +191,11 @@ export default class App extends Component {
 
   renderMainContent() {
     let viewToRender;
+    let currentViewProps = this.state.viewsProps[this.state.currentSelectedView];
+    let viewProps = Helpers.extendObject(currentViewProps || {}, {
+      currentUserRole: this.state.currentUserRole,
+      changeCurrentView: this.changeCurrentView
+    });
 
     switch(this.state.currentSelectedView) {
       case navigationSections.profile:
@@ -188,39 +205,43 @@ export default class App extends Component {
       case navigationSections.messages:
         break;
       case navigationSections.calendar:
-        viewToRender = (<BookingsCalendar></BookingsCalendar>);
+        viewToRender = (<BookingsCalendar {...viewProps} />);
         break;
       case navigationSections.listings:
-        viewToRender = (<Listings currentUserRole={ this.state.currentUserRole }></Listings>);
+        viewToRender = (<Listings {...viewProps} />);
         break;
       case navigationSections.account:
-        viewToRender = (<UserManagement></UserManagement>)
+        viewToRender = (<UserManagement {...viewProps} />)
         break;
       case navigationSections.dashboard:
-        viewToRender = (<Homefeed accessToken={ this.state.accessToken }
-                                  handleFilterToggle={ this.handleFilterToggle }
-                                  handleMapDrag={ this.handleMapDrag }
-                                  handlePositionChange={ this.handlePositionChange }
-                                  handleSortToggle={ this.handleSortToggle }
-                                  sort={ this.state.sort }
-                                  listings={ this.state.listings }
-                                  location={ this.state.location }
-                                  boundingBox={ this.state.boundingBox }
-                                  customSearch={ this.state.customSearch }
-                                  currentSearch={ this.state.currentSearch } />);
+        viewProps.accessToken = this.state.accessToken;
+        viewProps.handleFilterToggle = this.handleFilterToggle;
+        viewProps.handleMapDrag = this.handleMapDrag;
+        viewProps.handlePositionChange = this.handlePositionChange;
+        viewProps.handleSortToggle = this.handleSortToggle;
+        viewProps.sort = this.state.sort;
+        viewProps.listings = this.state.listings;
+        viewProps.location = this.state.location;
+        viewProps.boundingBox = this.state.boundingBox;
+        viewProps.customSearch = this.state.customSearch;
+        viewProps.currentSearch = this.state.currentSearch;
+
+        viewToRender = (<Homefeed {...viewProps} />);
         break;
       default:
-        viewToRender = (<Homescreen handleLocationChange={ this.handleLocationChange }
-                                    handleLocationFocus={ this.handleLocationFocus }
-                                    handleDatesChange={ this.handleDatesChange }
-                                    handleLocationSelect={ this.handleLocationSelect }
-                                    handleSearch={ this.handleSearch }
-                                    startDate={ this.state.startDate }
-                                    endDate={ this.state.endDate }
-                                    locationName={ this.state.locationName }
-                                    hideSearchResults={ this.hideSearchResults }
-                                    searchLocations={ this.state.searchLocations }
-                                    showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
+        viewProps.handleLocationChange = this.handleLocationChange;
+        viewProps.handleLocationFocus = this.handleLocationFocus;
+        viewProps.handleDatesChange = this.handleDatesChange;
+        viewProps.handleLocationSelect = this.handleLocationSelect;
+        viewProps.handleSearch = this.handleSearch;
+        viewProps.startDate = this.state.startDate;
+        viewProps.endDate = this.state.endDate;
+        viewProps.locationName = this.state.locationName;
+        viewProps.hideSearchResults = this.hideSearchResults;
+        viewProps.searchLocations = this.searchLocations;
+        viewProps.showSearchButton = !this.state.accessToken || this.state.showSearchButton;
+
+        viewToRender = (<Homescreen {...viewProps} />);
     }
 
     return viewToRender;

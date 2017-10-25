@@ -55,7 +55,7 @@ export default class FormField extends Component {
           startDate={ this.props.startDate }
           endDate={ this.props.endDate }
           onDatesChange={ this.props.handleChange }
-          focusedInput={ this.props.focused }
+          focusedInput={ this.props.focusedInput || this.props.focused }
           onFocusChange={ this.props.handleFocusChange }
           withPortal={ false }
           withFullScreenPortal={ false }
@@ -65,7 +65,7 @@ export default class FormField extends Component {
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
           reopenPickerOnClearDate={ false }
-          showClearDates={ true }
+          showClearDates={ showClearDates }
           reopenPickerOnClearDates={ false }
           renderCalendardInfo={ false }
           hideKeyboardShortcutsPanel={ true }

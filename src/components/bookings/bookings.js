@@ -19,6 +19,8 @@ class Bookings extends Component {
       quotation: this.props.quotation || {},
       pricingQuote: this.props.pricingQuote || {}
     };
+
+    this.setCurrentView = this.setCurrentView.bind(this);
   }
 
   setCurrentView(view, params) {
@@ -35,7 +37,8 @@ class Bookings extends Component {
       case bookingsViews.new:
         viewToRender = (<BookingForm listing={ this.state.listing }
                                      quotation={ this.state.quotation }
-                                     pricingQuote={ this.state.pricingQuote } />);
+                                     pricingQuote={ this.state.pricingQuote }
+                                     setCurrentView={ this.setCurrentView } />);
         break;
       case bookingsViews.edit:
         break;
