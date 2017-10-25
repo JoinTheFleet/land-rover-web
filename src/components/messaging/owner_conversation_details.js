@@ -20,7 +20,7 @@ export default class OwnerConversationDetails extends Component {
     let imageURL = renter.images.small_url;
 
     return (
-      <div className='col-xs-12 conversation-detail'>
+      <div className='col-xs-12 conversation-detail' onClick={ this.props.onClick }>
         <div className='row'>
           <div className='col-xs-2 col-lg-1'>
             <Avatar src={ imageURL } round />

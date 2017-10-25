@@ -13,7 +13,7 @@ export default class MessagingController extends Component {
       listings: [],
       listing: undefined,
       loading: false,
-      selectedConversation: undefined
+      conversation: undefined
     };
 
     this.selectConversation = this.selectConversation.bind(this);
@@ -49,8 +49,8 @@ export default class MessagingController extends Component {
     }
   }
 
-  selectConversation(id) {
-    this.setState({conversationID: id});
+  selectConversation(conversation) {
+    this.setState({ conversation: conversation });
   }
 
   handleVehicleSelect(listing) {
@@ -69,8 +69,8 @@ export default class MessagingController extends Component {
       )
     }
 
-    if (this.state.conversationID) {
-      conversationView = (<Conversation id={ this.state.conversationID } />);
+    if (this.state.conversation) {
+      conversationView = (<Conversation conversation={ this.state.conversation } {...this.props} />);
     }
     else {
       conversationView = (<ConversationList selectConversation={ this.selectConversation } listing={ this.state.listing } {...this.props} />);

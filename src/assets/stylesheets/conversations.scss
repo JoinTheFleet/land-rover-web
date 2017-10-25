@@ -37,3 +37,31 @@
   padding-bottom: 5px;
   bottom: 0;
 }
+
+
+.conversation-thread {
+  .panel-form {
+    .form-body {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #message-input-row {
+      border-top: 1px solid $smoke-grey-two;
+    }
+
+    #message-input {
+      padding: 0;
+      width: 100%;
+      border-width: 0;
+    }
+  }
+}
+
+.message-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 100px;
+}
