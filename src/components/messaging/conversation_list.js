@@ -4,6 +4,7 @@ import ConversationService from '../../shared/services/conversations/conversatio
 import ListingConversationsService from '../../shared/services/listings/listing_conversations_service';
 
 import RenterConversationDetails from './renter_conversation_details';
+import OwnerConversationDetails from './owner_conversation_details';
 
 import Pageable from '../miscellaneous/pageable';
 
@@ -37,7 +38,7 @@ export default class ConversationList extends Component {
         totalPages: 1,
         currentPage: 0
       }, () => {
-        this.forceDataRefresh(this.state.currentPage, props);
+        this.forceDataRefresh(this.state.currentPage);
       });
     }
     else {
@@ -49,14 +50,11 @@ export default class ConversationList extends Component {
     this.forceDataRefresh(pageNumber - 1);
   }
 
-  forceDataRefresh(pageNumber, newProps) {
-    let role = newProps ? newProps.role : this.props.role;
-    let listingChanged = newProps && newProps.listing && (!this.props.listing || (newProps.listing.id !== this.props.listing.id));
-
+  forceDataRefresh(pageNumber) {
     this.setState({
       loading: true
     }, () => {
-      if (role === 'renter') {
+      if (this.props.role === 'renter') {
         ConversationService.index({ offset: pageNumber * this.state.limit, limit: this.state.limit })
                            .then(response => {
                              let data = response.data.data;
@@ -68,8 +66,8 @@ export default class ConversationList extends Component {
                              });
                            })
       }
-      else if (listingChanged) {
-        ListingConversationsService.index(newProps.listing.id, { offset: pageNumber * this.state.limit, limit: this.state.limit })
+      else if (this.props.listing) {
+        ListingConversationsService.index(this.props.listing.id, { offset: pageNumber * this.state.limit, limit: this.state.limit })
                                    .then(response => {
                                      let data = response.data.data;
                                      this.setState({
@@ -95,7 +93,12 @@ export default class ConversationList extends Component {
         <div>
         {
           this.state.conversations.map((conversation) => {
-            return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />
+            if (this.props.role === 'renter') {
+              return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />
+            }
+            else {
+              return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />
+            }
           })
         }
         </div>
