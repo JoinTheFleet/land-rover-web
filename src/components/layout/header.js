@@ -69,9 +69,9 @@ export default class Header extends Component {
         { this.renderSwitchRoleButton() }
 
         <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
-          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('listings') }}>List your car</a>
-          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login') }}>Log in</a>
-          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('register') }}>Sign up</a>
+          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.props.handleMenuItemSelect('listings'); }}>List your car</a>
+          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}>Log in</a>
+          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}>Sign up</a>
         </div>
 
         <HeaderMenu loggedIn={ this.props.loggedIn }

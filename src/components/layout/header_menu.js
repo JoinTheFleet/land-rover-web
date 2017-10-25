@@ -1,15 +1,13 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Toggleable from '../miscellaneous/toggleable';
 
 import Helpers from '../../miscellaneous/helpers';
 import Constants from '../../miscellaneous/constants';
+
+import CloseOnEscape from 'react-close-on-escape';
 
 const navigationSections = Constants.navigationSections();
 
@@ -72,9 +70,11 @@ export default class HeaderMenu extends Component {
 
   render() {
     return (
-      <Toggleable open={ this.state.open }>
-        { this.renderMenu() }
-      </Toggleable>
+      <CloseOnEscape onEscape={ () =>  {this.props.toggleModal(this.props.currentMenuItem)} }>
+        <Toggleable open={ this.state.open }>
+          { this.renderMenu() }
+        </Toggleable>
+      </CloseOnEscape>
     )
   }
 }

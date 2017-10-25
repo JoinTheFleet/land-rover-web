@@ -5,6 +5,11 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'react-datez/dist/css/react-datez.css';
 import 'react-select/dist/react-select.css';
+import 'font-awesome/css/font-awesome.min.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
+
+import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
 
@@ -29,6 +34,15 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
+const ALERT_OPTIONS = {
+  position: 'top',
+  theme: 'dark',
+  timeout: 10000,
+  effect: 'stackslide',
+  stack: {
+    limit: 1
+  }
+}
 
 export default class App extends Component {
   constructor(props) {
@@ -37,9 +51,9 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
-      currentSelectedView: navigationSections.home,
-      openModals: [],
+      currentSelectedView: cookies.get('accessToken') ? navigationSections.dashboard : navigationSections.home,
       listings: [],
+      modalName: undefined,
       searchLocations: [],
       locationName: '',
       currentSearch: false,
@@ -75,6 +89,7 @@ export default class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
     this.performSearch = this.performSearch.bind(this);
+    this.hideSearchResults = this.hideSearchResults.bind(this);
   }
 
   componentWillMount() {
@@ -92,22 +107,33 @@ export default class App extends Component {
 
   setAccessToken(accessToken) {
     cookies.remove('accessToken');
+    if (accessToken.length > 0) {
+      let newState = {
+        accessToken: accessToken,
+        currentSelectedView: navigationSections.dashboard,
+        modalName: undefined
+      };
 
-    let openModals = this.state.openModals;
-    let newState = { accessToken: accessToken };
+      this.setState(newState, () => {
+        if (accessToken.length > 0) {
+          cookies.set('accessToken', accessToken);
+          client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+        }
+        else {
+          delete client.defaults.headers.common['Authorization'];
+        }
+      });
+    }
+    else {
+      this.setState({
+        currentSelectedView: navigationSections.home,
+        accessToken: undefined
+      });
+    }
+  }
 
-    openModals.splice(openModals.indexOf('login'), 1);
-    newState[openModals] = openModals;
-
-    this.setState(newState, () => {
-      if (accessToken.length > 0) {
-        cookies.set('accessToken', accessToken);
-        client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-      }
-      else {
-        delete client.defaults.headers.common['Authorization'];
-      }
-    });
+  hideSearchResults() {
+    this.setState({ searchLocations: [] });
   }
 
   changeCurrentUserRole() {
@@ -119,12 +145,8 @@ export default class App extends Component {
   handleMenuItemSelect(menuItem) {
     if (menuItem === navigationSections.logout) {
       AuthenticationService.logout()
-                           .then((success) => {
-                             this.setAccessToken('');
-                           })
-                           .catch((error) => {
-                             alert(error);
-                           });
+                           .then(() => { this.setAccessToken(''); })
+                           .catch(() => { this.setAccessToken(''); });
     }
     else {
       this.setState({
@@ -134,17 +156,12 @@ export default class App extends Component {
   }
 
   toggleModal(modal) {
-    let openModals = this.state.openModals;
-    let index = openModals.indexOf(modal);
-
-    if (index > -1) {
-      openModals.splice(index, 1);
+    if (this.state.modalName === modal) {
+      this.setState({ modalName: undefined });
     }
     else {
-      openModals.push(modal);
+      this.setState({ modalName: modal });
     }
-
-    this.setState({openModals: openModals});
   }
 
   renderHeaderTopMenu() {
@@ -201,6 +218,7 @@ export default class App extends Component {
                                     startDate={ this.state.startDate }
                                     endDate={ this.state.endDate }
                                     locationName={ this.state.locationName }
+                                    hideSearchResults={ this.hideSearchResults }
                                     searchLocations={ this.state.searchLocations }
                                     showSearchButton={ !this.state.accessToken || this.state.showSearchButton } />);
     }
@@ -373,6 +391,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
+        <Alert {...ALERT_OPTIONS} />
         <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
                 currentUserRole={ this.state.currentUserRole }
                 currentMenuItem={ this.state.currentSelectedView }
@@ -387,6 +406,7 @@ export default class App extends Component {
                 startDate={ this.state.startDate }
                 endDate={ this.state.endDate }
                 locationName={ this.state.locationName }
+                hideSearchResults={ this.hideSearchResults }
                 searchLocations={ this.state.searchLocations }
                 hideSearchForm={ false }
                 showSearchButton={ this.state.showSearchButton } />
@@ -397,7 +417,7 @@ export default class App extends Component {
           { this.renderMainContent() }
         </div>
 
-        <Login open={this.state.openModals.indexOf('login') > -1} setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal }/>
+        <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
 
         <Footer />
       </div>

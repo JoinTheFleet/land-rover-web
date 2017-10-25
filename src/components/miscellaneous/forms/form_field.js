@@ -22,6 +22,7 @@ export default class FormField extends Component {
     if (this.props.type === 'textarea') {
       renderable = (
         <textarea id={ this.props.id }
+                  disabled={ this.props.disabled }
                   value={ this.props.value || '' }
                   placeholder={ this.props.placeholder }
                   onChange={ this.props.handleChange }
@@ -31,18 +32,18 @@ export default class FormField extends Component {
     else if (this.props.type === 'singledate') {
       renderable = (
         <SingleDatePicker
-          date={this.props.value}
-          onDateChange={this.props.handleChange}
-          focused={this.props.focused}
-          onFocusChange={this.props.handleFocusChange}
-          showClearDate={false}
-          withPortal={false}
-          withFullScreenPortal={false}
-          initialVisibleMonth={null}
-          numberOfMonths={1}
-          keepOpenOnDateSelect={false}
-          renderCalendardInfo={false}
-          hideKeyboardShortcutsPanel={true}
+          date={ this.props.value }
+          onDateChange={ this.props.handleChange }
+          focused={ this.props.focused }
+          onFocusChange={ this.props.handleFocusChange }
+          showClearDate={ false }
+          withPortal={ false }
+          withFullScreenPortal={ false }
+          initialVisibleMonth={ null }
+          numberOfMonths={ 1 }
+          keepOpenOnDateSelect={ false }
+          renderCalendardInfo={ false }
+          hideKeyboardShortcutsPanel={ true }
         />
       )
     }
@@ -51,21 +52,23 @@ export default class FormField extends Component {
 
       renderable = (
         <DateRangePicker
-          startDate={this.props.startDate}
-          endDate={this.props.endDate}
-          onDatesChange={this.props.handleChange}
-          focusedInput={this.props.focusedInput}
-          onFocusChange={this.props.handleFocusChange}
-          withPortal={false}
-          withFullScreenPortal={false}
-          initialVisibleMonth={null}
-          numberOfMonths={2}
-          minimumNights={1}
-          keepOpenOnDateSelect={false}
-          showDefaultInputIcon={false}
-          reopenPickerOnClearDate={false}
-          showClearDates={showClearDates}
-          hideKeyboardShortcutsPanel={true}
+          startDate={ this.props.startDate }
+          endDate={ this.props.endDate }
+          onDatesChange={ this.props.handleChange }
+          focusedInput={ this.props.focused }
+          onFocusChange={ this.props.handleFocusChange }
+          withPortal={ false }
+          withFullScreenPortal={ false }
+          initialVisibleMonth={ null }
+          numberOfMonths={ 2 }
+          minimumNights={ 1 }
+          keepOpenOnDateSelect={ false }
+          showDefaultInputIcon={ false }
+          reopenPickerOnClearDate={ false }
+          showClearDates={ true }
+          reopenPickerOnClearDates={ false }
+          renderCalendardInfo={ false }
+          hideKeyboardShortcutsPanel={ true }
           displayFormat={ 'DD/MM/YYYY' }
           disabled={this.props.disabled}
         />
@@ -99,16 +102,16 @@ export default class FormField extends Component {
       let endDate = this.props.endDate ? (this.props.endDate).format('YYYY-MM-DD') : undefined;
       renderable = (
         <ReactDatez
-          value={value}
-          handleChange={this.props.handleChange}
-          highlightWeekends={true}
-          yearJump={this.props.yearJump || true}
-          allowPast={this.props.allowPast || true}
-          allowFuture={this.props.allowFuture || true}
-          startDate={startDate}
-          endDate={endDate}
-          position={this.props.position || 'left'}
-          placeholder={this.props.placeholder}
+          value={ value }
+          handleChange={ this.props.handleChange }
+          highlightWeekends={ true }
+          yearJump={ this.props.yearJump || true }
+          allowPast={ this.props.allowPast || true }
+          allowFuture={ this.props.allowFuture || true }
+          startDate={ startDate }
+          endDate={ endDate }
+          position={ this.props.position || 'left' }
+          placeholder={ this.props.placeholder}
         />
       )
     }
@@ -121,18 +124,20 @@ export default class FormField extends Component {
     }
     else if (this.props.type === 'select') {
       renderable = (
-        <Select value={this.props.value}
-                options={this.props.options}
-                onChange={this.props.handleChange}
-                className={this.props.className} />
+        <Select value={ this.props.value }
+                options={ this.props.options }
+                disabled={ this.props.disabled }
+                onChange={ this.props.handleChange }
+                className={ this.props.className } />
         );
     }
     else if (this.props.type === 'country') {
       renderable = (
-        <Select value={this.props.value}
-                options={COUNTRIES}
-                onChange={this.props.handleChange}
-                className={this.props.className} />
+        <Select value={ this.props.value }
+                options={ COUNTRIES }
+                disabled={ this.props.disabled }
+                onChange={ this.props.handleChange }
+                className={ this.props.className } />
         );
     }
     else {
@@ -143,6 +148,7 @@ export default class FormField extends Component {
                placeholder={ this.props.placeholder }
                onChange={ this.props.handleChange }
                onFocus={ this.props.handleFocusChange }
+               disabled={ this.props.disabled }
                className={ typeof(this.props.className) === 'string' ? this.props.className : "col-xs-12" }/>
       );
     }
