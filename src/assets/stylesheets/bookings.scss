@@ -67,20 +67,6 @@
     }
   }
 
-  .bookings-calendar-top-bar {
-    height: 50px;
-    line-height: 50px;
-    padding: 0 24px;
-
-    & > span {
-      margin-right: 12px;
-
-      & + .dropdown {
-        margin-top: -2px;
-      }
-    }
-  }
-
   .bookings-calendar-main-container {
     padding: 25px 0;
 

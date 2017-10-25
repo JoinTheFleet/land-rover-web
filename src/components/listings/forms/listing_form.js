@@ -101,7 +101,6 @@ class ListingForm extends Component {
                                  }));
                                })
                                .catch(error => {
-                                 console.log(error);
                                  this.setState(prevState => ({
                                    loading: false,
                                    errors: prevState.errors.concat([error.message])

@@ -190,6 +190,14 @@
     "bookings.save_changes": "Save Changes",
     "bookings.saved_changes_successfully": "Changes saved successfully",
 
+    "bookings.statuses.completed": "Completed",
+    "bookings.statuses.in_progress": "In Progress",
+    "bookings.statuses.cancelled": "Cancelled",
+    "bookings.statuses.pending": "Pending",
+    "bookings.statuses.rejected": "Rejected",
+    "bookings.statuses.confirmed": "Confirmed",
+    "bookings.statuses.timed_out": "Timed Out",
+
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 
     "errors.authentication.unable_to_log_in": "Unable to log in, please ensure you provided the correct credentials.",
