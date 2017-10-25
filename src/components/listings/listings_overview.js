@@ -25,10 +25,10 @@ export default class ListingsOverview extends Component {
     this.state = {
       selectedListingId: '',
       listings: [],
-      loaded: false,
       currentPage: 1,
       totalPages: 1,
-      errors: []
+      errors: [],
+      loading: false
     };
 
     this.fetchListings = this.fetchListings.bind(this);
@@ -48,12 +48,16 @@ export default class ListingsOverview extends Component {
   }
 
   fetchListings(){
-    ListingsService.index()
-    .then((response) => {
-      this.setState({ listings: response.data.data.listings, loaded: true });
-    })
-    .catch((error) => {
-      this.setState((prevState) => ({ errors: prevState.errors.push(error), loaded: true }));
+    this.setState({
+      loading: true
+    }, () => {
+      ListingsService.index()
+      .then((response) => {
+        this.setState({ listings: response.data.data.listings, loading: false });
+      })
+      .catch((error) => {
+        this.setState((prevState) => ({ errors: prevState.errors.push(error), loading: false }));
+      });
     });
   }
 
@@ -73,26 +77,21 @@ export default class ListingsOverview extends Component {
   }
 
   renderMainContent() {
-    if (!this.state.loaded) {
-      return (<Loading></Loading>);
-    }
-    else {
-      return (
-        <div>
-          {
-            this.state.listings.map((listing) => {
-              return (
-                <ListingCard key={'listing_' + listing.id}
-                             listing={ listing }
-                             enableEdit={ true }
-                             handleCardClick={ this.handleListingCardClick }
-                             handleEditButtonClick={ this.handleEditButtonClick } />
-              )
-            })
-          }
-        </div>
-      )
-    }
+    return (
+      <div>
+        {
+          this.state.listings.map((listing) => {
+            return (
+              <ListingCard key={'listing_' + listing.id}
+                           listing={ listing }
+                           enableEdit={ true }
+                           handleCardClick={ this.handleListingCardClick }
+                           handleEditButtonClick={ this.handleEditButtonClick } />
+            )
+          })
+        }
+      </div>
+    );
   }
 
   render() {
@@ -109,7 +108,8 @@ export default class ListingsOverview extends Component {
 
         <Pageable currentPage={ this.state.currentPage }
                   totalPages={ this.state.totalPages }
-                  handlePageChange={ this.handlePageChange }>
+                  handlePageChange={ this.handlePageChange }
+                  loading={ this.state.loading }>
           <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             { this.renderMainContent() }
           </div>

@@ -1,10 +1,7 @@
-import React, {
-  Component
-} from 'react';
-
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import Pagination from './pagination';
+import Loading from './loading';
 
 export default class Pageable extends Component {
   render() {
@@ -18,9 +15,15 @@ export default class Pageable extends Component {
       )
     }
 
+    let childElements = this.props.children;
+
+    if (this.props.loading) {
+      childElements = <Loading />;
+    }
+
     return (
       <div className="pageable">
-        { this.props.children }
+        { childElements }
         { paginationDiv }
       </div>
     )
@@ -28,7 +31,8 @@ export default class Pageable extends Component {
 }
 
 Pageable.propTypes = {
-  currentPage: PropTypes.number,
+  loading: PropTypes.bool,
+  currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   handlePageChange: PropTypes.func.isRequired
 }

@@ -15,7 +15,8 @@ export default class ConversationList extends Component {
       conversations: [],
       totalPages: 1,
       limit: 20,
-      currentPage: 0
+      currentPage: 0,
+      loading: false
     };
 
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -23,7 +24,7 @@ export default class ConversationList extends Component {
   }
 
   componentWillMount() {
-    this.forceDataRefresh();
+    this.forceDataRefresh(this.state.currentPage);
   }
 
   componentWillReceiveProps(props) {
@@ -34,9 +35,9 @@ export default class ConversationList extends Component {
       this.setState({
         conversations: [],
         totalPages: 1,
-        currentPage: 20
+        currentPage: 0
       }, () => {
-        this.forceDataRefresh(props);
+        this.forceDataRefresh(this.state.currentPage, props);
       });
     }
     else {
@@ -45,41 +46,52 @@ export default class ConversationList extends Component {
   }
 
   handlePageChange(pageNumber) {
-    this.setState({ currentPage: pageNumber - 1 }, this.forceDataRefresh);
+    this.forceDataRefresh(pageNumber - 1);
   }
 
-  forceDataRefresh(newProps) {
+  forceDataRefresh(pageNumber, newProps) {
     let role = newProps ? newProps.role : this.props.role;
     let listingChanged = newProps && newProps.listing && (!this.props.listing || (newProps.listing.id !== this.props.listing.id));
 
-    if (role === 'renter') {
-      ConversationService.index({ offset: this.state.currentPage * this.state.limit, limit: this.state.limit })
-                         .then(response => {
-                           let data = response.data.data;
-                           this.setState({
-                             conversations: data.conversations,
-                             totalPages: data.total_pages
-                           });
-                         })
-    }
-    else if (listingChanged) {
-      ListingConversationsService.index(newProps.listing.id, { offset: this.state.currentPage * this.state.limit, limit: this.state.limit })
-                                 .then(response => {
-                                   let data = response.data.data;
-                                   this.setState({
-                                     conversations: data.conversations,
-                                     totalPages: data.total_pages
+    this.setState({
+      loading: true
+    }, () => {
+      if (role === 'renter') {
+        ConversationService.index({ offset: pageNumber * this.state.limit, limit: this.state.limit })
+                           .then(response => {
+                             let data = response.data.data;
+                             this.setState({
+                               currentPage: pageNumber,
+                               conversations: data.conversations,
+                               totalPages: data.total_pages,
+                               loading: false
+                             });
+                           })
+      }
+      else if (listingChanged) {
+        ListingConversationsService.index(newProps.listing.id, { offset: pageNumber * this.state.limit, limit: this.state.limit })
+                                   .then(response => {
+                                     let data = response.data.data;
+                                     this.setState({
+                                       currentPage: pageNumber,
+                                       conversations: data.conversations,
+                                       totalPages: data.total_pages,
+                                       loading: false
+                                     });
                                    });
-                                 });
-    }
-    else {
-      this.setState({ conversations: [] });
-    }
+      }
+      else {
+        this.setState({
+          conversations: [],
+          loading: false
+        });
+      }
+    })
   }
 
   render() {
     return (
-      <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage } handlePageChange={ this.handlePageChange }>
+      <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage + 1 } handlePageChange={ this.handlePageChange } loading={ this.state.loading }>
         <div>
         {
           this.state.conversations.map((conversation) => {
