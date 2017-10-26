@@ -240,7 +240,7 @@ export default class App extends Component {
         viewProps.endDate = this.state.endDate;
         viewProps.locationName = this.state.locationName;
         viewProps.hideSearchResults = this.hideSearchResults;
-        viewProps.searchLocations = this.searchLocations;
+        viewProps.searchLocations = this.state.searchLocations;
         viewProps.showSearchButton = !this.state.accessToken || this.state.showSearchButton;
 
         viewToRender = (<Homescreen {...viewProps} />);

@@ -78,6 +78,6 @@ ListingPeriodFilter.propTypes = {
   startDate: momentPropTypes.momentObj,
   endDate: momentPropTypes.momentObj,
   locationName: PropTypes.string,
-  searchLocations: PropTypes.array,
+  searchLocations: PropTypes.array.isRequired,
   showSearchButton: PropTypes.bool
 }
