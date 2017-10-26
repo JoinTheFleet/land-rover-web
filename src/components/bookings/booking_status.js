@@ -25,7 +25,7 @@ export default class BookingStatus extends Component {
     }
 
     return (
-      <span className={ className }>
+      <span className={ `pull-right ${className}` }>
         { LocalizationService.formatMessage(`bookings.statuses.${booking.status}`) }
       </span>
     );

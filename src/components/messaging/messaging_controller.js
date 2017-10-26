@@ -3,6 +3,7 @@ import Conversation from './conversation';
 import ConversationList from './conversation_list';
 import ConversationListingsService from '../../shared/services/conversations/conversation_listings_service';
 import ListingsSelector from '../listings/listings_selector';
+import Loading from '../miscellaneous/loading';
 
 export default class MessagingController extends Component {
   constructor(props) {
@@ -10,7 +11,9 @@ export default class MessagingController extends Component {
 
     this.state = {
       listings: [],
-      listing: undefined
+      listing: undefined,
+      loading: false,
+      selectedConversation: undefined
     };
 
     this.selectConversation = this.selectConversation.bind(this);
@@ -23,7 +26,6 @@ export default class MessagingController extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props)
     this.refreshData(props);
   }
 
@@ -32,10 +34,18 @@ export default class MessagingController extends Component {
       this.setState({ listings: [] })
     }
     else {
-      ConversationListingsService.index()
-                                 .then(response => {
-                                   this.setState({ listings: response.data.data.listings })
-                                 });
+      this.setState({
+        loading: true
+      }, () => {
+        ConversationListingsService.index()
+                                   .then(response => {
+                                     this.setState({
+                                       listings: response.data.data.listings,
+                                       loading: false
+                                     })
+                                   })
+                                   .catch(error => this.setState({ loading: false }));
+      })
     }
   }
 
@@ -66,13 +76,18 @@ export default class MessagingController extends Component {
       conversationView = (<ConversationList selectConversation={ this.selectConversation } listing={ this.state.listing } {...this.props} />);
     }
 
-    return (
-      <div>
-        { listingsSelector }
-        <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
-          { conversationView }
+    if (this.state.loading) {
+      return <Loading />;
+    }
+    else {
+      return (
+        <div>
+          { listingsSelector }
+          <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
+            { conversationView }
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }

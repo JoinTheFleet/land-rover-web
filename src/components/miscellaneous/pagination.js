@@ -10,22 +10,6 @@ import PropTypes from 'prop-types';
 
 
 export default class Pagination extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentPage: this.props.currentPage || 1
-    };
-
-    this.changePage = this.changePage.bind(this);
-  }
-
-  changePage(page) {
-    this.setState({ currentPage: page }, () => {
-      this.props.handlePageChange(page);
-    });
-  }
-
   render() {
     let paginationLinks = [];
     let previousPageLink = '';
@@ -33,11 +17,11 @@ export default class Pagination extends Component {
     let paginationLink;
 
     for(let i = 1; i <= this.props.totalPages; i++) {
-      if (i === this.state.currentPage) {
+      if (i === this.props.currentPage) {
         paginationLink = (<span className="secondary-text-color">{ i }</span>);
       }
       else {
-        paginationLink = (<a className="static-link tertiary-text-color" onClick={ () => { this.changePage(i) } }> { i } </a>);
+        paginationLink = (<a className="static-link tertiary-text-color" onClick={ () => { this.props.handlePageChange(i) } }> { i } </a>);
       }
 
       paginationLinks.push((
@@ -47,20 +31,20 @@ export default class Pagination extends Component {
       ));
     }
 
-    if (this.state.currentPage > 1) {
+    if (this.props.currentPage > 1) {
       previousPageLink = (
         <div className="pagination-nav-link previous-page-link">
-          <a className="static-link" onClick={ () => { this.changePage(this.state.currentPage - 1) } }>
+          <a className="static-link" onClick={ () => { this.props.handlePageChange(this.props.currentPage - 1) } }>
             <FormattedMessage id="application.previous" />
           </a>
         </div>
       );
     }
 
-    if (this.state.currentPage < this.props.totalPages ) {
+    if (this.props.currentPage < this.props.totalPages ) {
       nextPageLink = (
         <div className="pagination-nav-link next-page-link">
-          <a className="static-link" onClick={ () => { this.changePage(this.state.currentPage + 1) } }>
+          <a className="static-link" onClick={ () => { this.props.handlePageChange(this.props.currentPage + 1) } }>
             <FormattedMessage id="application.next" />
           </a>
         </div>
@@ -82,7 +66,7 @@ export default class Pagination extends Component {
 }
 
 Pagination.propTypes = {
-  currentPage: PropTypes.number,
+  currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   handlePageChange: PropTypes.func.isRequired
 };
