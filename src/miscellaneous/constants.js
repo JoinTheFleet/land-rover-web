@@ -1,3 +1,5 @@
+import Helpers from './helpers';
+
 export default class Constants {
   static s3BucketFolderName(folder_name) {
     return {
@@ -35,13 +37,23 @@ export default class Constants {
     };
   }
 
-  static listingViews() {
+  static defaultViews() {
     return {
       index: 'index',
       view: 'view',
       new: 'new',
       edit: 'edit'
     };
+  }
+
+  static bookingsViews() {
+    return Constants.defaultViews();
+  }
+
+  static listingsViews() {
+    return Helpers.extendObject(Constants.defaultViews(), {
+      requestBooking: 'requestBooking'
+    });
   }
 
   static userManagementViews() {

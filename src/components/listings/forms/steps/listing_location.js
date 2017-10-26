@@ -65,20 +65,22 @@ class ListingLocation extends Component {
   }
 
   handleMapClick(position) {
-    let geocoder = new window.google.maps.Geocoder();
-    let component = this;
+    if (window.google) {
+      let geocoder = new window.google.maps.Geocoder();
+      let component = this;
 
-    geocoder.geocode({ location: position}, function(results, status) {
-      if (status === 'OK') {
-        if (results[0]) {
-          component.setLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng(), results[0].formatted_address);
+      geocoder.geocode({ location: position }, function(results, status) {
+        if (status === 'OK') {
+          if (results[0]) {
+            component.setLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng(), results[0].formatted_address);
+          } else {
+            window.alert('No results found');
+          }
         } else {
-          window.alert('No results found');
+          window.alert('Geocoder failed due to: ' + status);
         }
-      } else {
-        window.alert('Geocoder failed due to: ' + status);
-      }
-    });
+      });
+    }
   }
 
   render() {

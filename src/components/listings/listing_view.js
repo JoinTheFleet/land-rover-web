@@ -10,12 +10,26 @@ import Map from '../miscellaneous/map';
 
 import BookNowTile from '../bookings/book_now_tile';
 
+import Constants from '../../miscellaneous/constants';
+
+// Icons
 import specDoorsIcon from '../../assets/images/spec-doors.png';
 import specPassengersIcon from '../../assets/images/spec-passengers.png';
 import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
+const listingsViews = Constants.listingsViews();
 
 class ListingView extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
+  }
+
+  handleBookButtonClick(quotation, pricingQuote) {
+    this.props.handleChangeView(listingsViews.requestBooking, { currentQuotation: quotation, currentPricingQuote: pricingQuote });
+  }
 
   renderListingOverview() {
     let listing = this.props.listing;
@@ -115,6 +129,11 @@ class ListingView extends Component {
 
   renderMap() {
     let listing = this.props.listing;
+
+    if (!listing.location) {
+      return <div className="listing-view-map col-xs-12 no-side-padding"></div>;
+    }
+
     let listingCircle = {
       position: {
         lat: listing.location.latitude,
@@ -152,7 +171,7 @@ class ListingView extends Component {
     if (this.props.enableBooking) {
       bookingDiv = (
         <div className="listing-view-booking-div">
-          <BookNowTile listing={ this.props.listing } />
+          <BookNowTile listing={ this.props.listing } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
     }
@@ -187,7 +206,8 @@ class ListingView extends Component {
 
 ListingView.propTypes = {
   listing: PropTypes.object,
-  enableBooking: PropTypes.bool
+  enableBooking: PropTypes.bool,
+  handleChangeView: PropTypes.func
 };
 
 export default injectIntl(ListingView);
