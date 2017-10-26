@@ -174,3 +174,153 @@
     }
   }
 }
+
+/* Booking Form */
+.booking-form {
+  & > div:first-child {
+    padding: 24px 15px;
+  }
+
+  .booking-form-listing-user-details {
+    img {
+      width: 74px;
+      height: 74px;
+      border-radius: 74px;
+      object-fit: cover;
+
+      & + span {
+        display: block;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .booking-form-box {
+    border: solid 1px #e0e0e0;
+    padding: 0 20px;
+
+    & + .booking-form-box {
+      margin-top: 24px;
+    }
+  }
+
+  .booking-form-details-row {
+    padding: 8px 0;
+
+    & + .booking-form-details-row {
+      border-top: solid 1px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .booking-form-quotation-details {
+    padding-top: 20px;
+    padding-bottom: 5px;
+
+    .booking-form-quotation-datepicker-title {
+      div:last-child {
+        padding-left: 20px;
+      }
+    }
+
+    .DateRangePicker {
+      width: 100%;
+
+      .DateRangePickerInput {
+        width: 100%;
+        padding-left: 0;
+
+        .DateInput {
+          width: calc((100% - 24px) / 2);
+
+          &:first-child {
+            .DateInput_displayText {
+              padding-left: 5px;
+            }
+          }
+        }
+      }
+
+      & + div {
+        margin-top: 14px;
+      }
+    }
+
+    .booking-form-quotation-details-rate {
+      padding: 8px 0;
+
+      & + .booking-form-quotation-details-rate {
+        border-top: solid 1px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .booking-form-quotation-on-demand {
+      padding-bottom: 8px;
+      border-bottom: solid 1px $smoke-grey-two;
+
+      & + div {
+        margin-top: 8px;
+      }
+    }
+
+    .booking-form-quotation-on-demand-details {
+      padding: 12px 0;
+
+      .booking-form-quotation-on-demand-times {
+        .ant-time-picker {
+          display: block;
+        }
+      }
+
+      .booking-form-quotation-on-demand-locations {
+        margin-top: 20px;
+
+        input {
+          border: solid 1px #e0e0e0;
+          padding-left: 12px;
+          height: 46px;
+        }
+
+        div + div {
+          input {
+            border-left: none;
+          }
+        }
+      }
+    }
+  }
+
+  .booking-form-insurance-criteria-row {
+    input[type=text] {
+      width: 40px;
+      text-align: center;
+    }
+  }
+
+  .booking-form-terms-and-rules {
+    #booking_form_message_to_owner {
+      height: 150px;
+      resize: none;
+    }
+  }
+
+  .booking-form-request-booking {
+    padding: 17px 15px;
+    box-shadow: 0 -1px 0 0 $smoke-grey-two;
+
+    .booking-form-request-booking-button {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 364px;
+    }
+  }
+
+  .fleet-checkbox label {
+    height: 18px;
+    margin-bottom: 0;
+
+    &:before {
+      left: 1px !important;
+    }
+  }
+}

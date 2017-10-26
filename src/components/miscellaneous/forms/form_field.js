@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
+import moment from 'moment';
+import Select from 'react-select';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
-import moment from 'moment';
-import momentPropTypes from 'react-moment-proptypes';
-import Select from 'react-select';
+import { TimePicker } from 'antd';
 import { countries } from '../countries';
 
 const COUNTRIES = countries.map(function(country) {
@@ -54,7 +55,7 @@ export default class FormField extends Component {
           startDate={ this.props.startDate }
           endDate={ this.props.endDate }
           onDatesChange={ this.props.handleChange }
-          focusedInput={ this.props.focused }
+          focusedInput={ this.props.focusedInput || this.props.focused }
           onFocusChange={ this.props.handleFocusChange }
           withPortal={ false }
           withFullScreenPortal={ false }
@@ -64,7 +65,7 @@ export default class FormField extends Component {
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
           reopenPickerOnClearDate={ false }
-          showClearDates={ true }
+          showClearDates={ showClearDates }
           reopenPickerOnClearDates={ false }
           renderCalendardInfo={ false }
           hideKeyboardShortcutsPanel={ true }
@@ -81,14 +82,16 @@ export default class FormField extends Component {
           focusedInput={this.props.focusedInput}
           onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
           onFocusChange={this.props.handleFocusChange}
-          withPortal={false}
-          initialVisibleMonth={null}
-          numberOfMonths={2}
-          minimumNights={1}
           onPrevMonthClick={this.props.handlePrevMonthClick}
           onNextMonthClick={this.props.handleNextMonthClick}
           renderDay={this.props.renderDay}
           isDayBlocked={this.props.isDayBlocked}
+          withPortal={false}
+          initialVisibleMonth={null}
+          numberOfMonths={2}
+          minimumNights={1}
+          renderCalendardInfo={false}
+          hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
         />
       )
@@ -110,6 +113,13 @@ export default class FormField extends Component {
           position={ this.props.position || 'left' }
           placeholder={ this.props.placeholder}
         />
+      )
+    }
+    else if (this.props.type === 'timepicker') {
+      renderable = (
+        <TimePicker onChange={ this.props.handleChange }
+                    defaultValue={ this.props.value || moment('00:00', this.props.format || 'HH:mm') }
+                    format={ this.props.format || 'HH:mm' } />
       )
     }
     else if (this.props.type === 'select') {
@@ -162,6 +172,7 @@ FormField.propTypes = {
   type: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   focused: PropTypes.bool,
+  focusedInput: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
   handleFocusChange: PropTypes.func,
   startDate: momentPropTypes.momentObj,

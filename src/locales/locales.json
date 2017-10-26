@@ -1,5 +1,6 @@
 {
   "en": {
+    "application.add": "Add",
     "application.blog": "Blog",
     "application.cancel": "Cancel",
     "application.country": "Country",
@@ -10,6 +11,7 @@
     "application.location": "Location",
     "application.next": "Next",
     "application.no": "No",
+    "application.none": "None",
     "application.other": "Other",
     "application.owner": "Owner",
     "application.previous": "Previous",
@@ -189,6 +191,18 @@
     "bookings.reset_to_default": "Reset to Default",
     "bookings.save_changes": "Save Changes",
     "bookings.saved_changes_successfully": "Changes saved successfully",
+    "bookings.pick_up_time": "Pick up time",
+    "bookings.drop_off_time": "Drop off time",
+    "bookings.pick_up_location": "Pick up location",
+    "bookings.drop_off_location": "Drop off location",
+    "bookings.message_to_owner": "Message to Owner",
+    "bookings.write_a_message_for_the_owner": "Write a message for the owner to see",
+    "bookings.agree_to_vehicle_rules": "Agree to Vehicle Rules",
+    "bookings.agree_to_insurance_terms": "Agree to Insurance Terms",
+    "bookings.request_booking": "Request Booking",
+
+    "payment_methods.payment_method": "Payment method",
+    "payment_methods.payment_method_card": "{brand} **** {last_four}",
 
     "bookings.statuses.completed": "Completed",
     "bookings.statuses.in_progress": "In Progress",

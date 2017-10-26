@@ -14,12 +14,6 @@ class ListingPeriodFilter extends Component {
     this.state = {
       focused: false
     };
-
-    this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
-  }
-
-  handleDateRangePickerFocusChange(focused) {
-    this.setState({ focused: focused });
   }
 
   render() {

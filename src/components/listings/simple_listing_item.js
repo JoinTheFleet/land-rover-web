@@ -12,7 +12,25 @@ import RatingInput from '../miscellaneous/rating_input';
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
+import ListingsService from '../../shared/services/listings/listings_service';
+
 export default class SimpleListingItem extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.handleListingSelect = this.handleListingSelect.bind(this);
+  }
+
+  handleListingSelect() {
+    ListingsService.show(this.props.listing.id)
+                   .then(response => {
+                     this.props.handleListingSelect(response.data.data.listing);
+                   })
+                   .catch(error => {
+                     // TODO: add error handling (alert or something)
+                   });
+  }
 
   renderItem() {
     let item = this.props.listing;
@@ -54,12 +72,16 @@ export default class SimpleListingItem extends Component {
 
   render() {
     return (
-      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }> { this.renderItem() } </div>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }
+           onClick={ () => this.handleListingSelect() }>
+        { this.renderItem() }
+      </div>
     )
   }
 }
 
 SimpleListingItem.propTypes = {
   listing: PropTypes.object,
-  additionalClasses: PropTypes.string
+  additionalClasses: PropTypes.string,
+  handleListingSelect: PropTypes.func
 }

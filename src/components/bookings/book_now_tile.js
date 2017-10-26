@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
+import moment from 'moment';
 
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
@@ -16,8 +17,10 @@ class BookNowTile extends Component {
     this.state = {
       startDate: this.props.startDate,
       endDate: this.props.endDate,
+      pricingQuote: {},
+      quotation: {},
       errors: [],
-      loadingRates: false
+      loadingRates: false,
     };
 
     this.addError = this.addError.bind(this);
@@ -31,22 +34,24 @@ class BookNowTile extends Component {
     }));
   }
 
-  handleDatesChange(startDate, endDate) {
-    let newState = {
-      startDate,
-      endDate
-    };
+  handleDatesChange(dates) {
+    let quotation = this.state.quotation;
+    quotation.start_at = dates.startDate.unix();
 
-    if (startDate && endDate) {
+    if (dates.endDate) {
+      quotation.end_at = dates.endDate.unix();
+    }
+
+    let newState = { quotation: quotation };
+    let fetchQuotation = dates.startDate && dates.endDate;
+
+    if (fetchQuotation) {
       newState.loadingRates = true;
     }
 
-    this.setState({
-      startDate,
-      endDate
-    }, () => {
-      if (startDate && endDate) {
-        ListingQuotationService.create(this.props.listing.id, startDate.unix(), endDate.unix(), false, {}, {})
+    this.setState(newState, () => {
+      if (fetchQuotation) {
+        ListingQuotationService.create(this.props.listing.id, quotation.start_at, quotation.end_at, false, {}, {})
                               .then(response => {
                                 this.setState({
                                   pricingQuote: response.data.data.pricing_quote,
@@ -65,8 +70,7 @@ class BookNowTile extends Component {
     if (this.state.loadingRates) {
       bookingRates = (<Loading />);
     }
-
-    if (pricingQuote) {
+    else if (Object.keys(pricingQuote).length > 0) {
       let bookingRatesContent = (<div className="text-center tertiary-text-color fs-18 text-secondary-font-weight"> <FormattedMessage id="bookings.not_available" /> </div>);
 
       if (pricingQuote.available) {
@@ -87,7 +91,7 @@ class BookNowTile extends Component {
             }
             <div className="col-xs-12 no-side-padding text-center">
               <button className="book-now-button btn secondary-color white-text fs-18"
-                      onClick={ this.handleBookButtonClick }>
+                      onClick={ () => { this.props.handleBookButtonClick(this.state.quotation, this.state.pricingQuote) } }>
                 <FormattedMessage id="bookings.book_now" />
               </button>
             </div>
@@ -107,6 +111,8 @@ class BookNowTile extends Component {
 
   render() {
     let listing = this.props.listing;
+    let startDate = this.state.quotation.start_at ? moment.unix(this.state.quotation.start_at) : null;
+    let endDate = this.state.quotation.end_at ? moment.unix(this.state.quotation.end_at) : null;
 
     return (
       <div className="book-now-tile">
@@ -133,11 +139,11 @@ class BookNowTile extends Component {
             </div>
           </div>
 
-          <DateRangePicker startDate={this.state.startDate}
-                           endDate={this.state.endDate}
-                           onDatesChange={({ startDate, endDate }) => this.handleDatesChange(startDate, endDate) }
+          <DateRangePicker startDate={ startDate }
+                           endDate={ endDate }
                            focusedInput={this.state.focusedInput}
-                           onFocusChange={focusedInput => this.setState({ focusedInput })} />
+                           onDatesChange={ this.handleDatesChange }
+                           onFocusChange={ focusedInput => this.setState({ focusedInput }) } />
 
           { this.renderBookingRates() }
         </div>

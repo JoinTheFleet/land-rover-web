@@ -14,6 +14,11 @@ import ListingItem from './listing_item';
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
 
+import Contants from '../../miscellaneous/constants';
+
+const navigationSections = Contants.navigationSections();
+const listingsViews = Contants.listingsViews();
+
 export default class ListingList extends Component {
 
   constructor(props) {
@@ -23,6 +28,7 @@ export default class ListingList extends Component {
       currentPosition: 0
     };
 
+    this.handleListingSelect = this.handleListingSelect.bind(this);
     this.handleNavigationClick = this.handleNavigationClick.bind(this);
   }
 
@@ -47,6 +53,10 @@ export default class ListingList extends Component {
     }
   }
 
+  handleListingSelect(listing) {
+    this.props.changeCurrentView(navigationSections.listings, { currentView: listingsViews.view, currentListing: listing, currentSelectedListingId: listing.id });
+  }
+
   renderListingList() {
     let listings = this.props.listings;
 
@@ -56,12 +66,12 @@ export default class ListingList extends Component {
       if (this.props.simpleListing) {
         listingItems = this.props.listings.map((listing) => {
           return (
-            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing }/>
+            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing } handleListingSelect={ this.handleListingSelect } />
           )
         });
       }
       else {
-        listingItems = this.props.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing }/>));
+        listingItems = this.props.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing } handleListingSelect={ this.handleListingSelect } />));
       }
 
       return listingItems;
@@ -115,5 +125,6 @@ ListingList.propTypes = {
   scrollable: PropTypes.bool,
   accessToken: PropTypes.string,
   simpleListing: PropTypes.bool,
-  listingsService: PropTypes.func
+  listingsService: PropTypes.func,
+  changeCurrentView: PropTypes.func
 }
