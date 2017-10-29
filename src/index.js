@@ -7,6 +7,7 @@ import WebFont from 'webfontloader';
 
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
@@ -38,7 +39,9 @@ WebFont.load({
 render(
   (<IntlProvider locale={locale} messages={messages}>
     <LocaleProvider locale={enUS}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </LocaleProvider>
   </IntlProvider>),
   document.getElementById('root')

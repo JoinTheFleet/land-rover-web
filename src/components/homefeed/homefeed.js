@@ -92,7 +92,7 @@ class Homefeed extends Component {
               <FormattedMessage id="listings.nearby" />
             </p>
 
-            <ListingList scrollable={true} simpleListing={true} listings={nearbyListings} changeCurrentView={ this.props.changeCurrentView } />
+            <ListingList scrollable={true} simpleListing={true} listings={nearbyListings} />
           </div>
 
           {
@@ -103,7 +103,7 @@ class Homefeed extends Component {
                     <span>{collection.name}</span>
                   </p>
 
-                  <ListingList scrollable={true} simpleListing={true} listings={collection.objects} changeCurrentView={ this.props.changeCurrentView } />
+                  <ListingList scrollable={true} simpleListing={true} listings={collection.objects} />
                 </div>
               );
             })
@@ -194,8 +194,7 @@ Homefeed.propTypes = {
   listings: PropTypes.array.isRequired,
   sort: PropTypes.string.isRequired,
   currentSearch: PropTypes.bool.isRequired,
-  customSearch: PropTypes.bool.isRequired,
-  changeCurrentView: PropTypes.func
+  customSearch: PropTypes.bool.isRequired
 }
 
 export default injectIntl(Homefeed);
