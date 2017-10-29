@@ -1,10 +1,5 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -21,13 +16,15 @@ export default class HeaderTopMenu extends Component {
       let divider;
       let className;
 
-
       menu = (
         <div id="header_top_menu" className="white tertiary-text-color">
           <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             {
               menuItems.map((menuItem) => {
-                itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
+                if (this.props.currentUserRole === 'owner') {
+                  itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
+                }
+
                 divider = itemHasDivider ? (<div className="header-top-menu-divider tertiary-color"></div>) : '';
 
                 className = 'header-top-menu-item';
