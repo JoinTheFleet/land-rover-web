@@ -28,6 +28,8 @@ import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_loo
 import Alert from 'react-s-alert';
 
 const listingsViews = Constants.listingsViews();
+import { Redirect } from 'react-router-dom';
+
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -133,7 +135,7 @@ class ListingForm extends Component {
       if (this.props.edit) {
         ListingsService.update(this.state.listing.id, { listing: submissionParams })
                        .then(response => {
-                         this.props.setCurrentView(listingsViews.index);
+                         this.setState({ currentStep: 'finished', previousStep: this.state.currentStep })
                        })
                        .catch(error => {
                          Alert.error(error.response.data.message);
@@ -142,10 +144,20 @@ class ListingForm extends Component {
       else {
         ListingsService.create({ listing: submissionParams})
                        .then(response => {
-                         this.props.setCurrentView(listingsViews.index);
+                         this.setState({
+                           listing: response.data.data.listing,
+                           currentStep: 'finished',
+                           previousStep: this.state.currentStep
+                         });
                        })
                        .catch(error => {
-                         Alert.error(error.response.data.message);
+                         this.setState({
+                           loading: false,
+                           currentStep: listingSteps.details,
+                           previousStep: undefined
+                         }, () => {
+                           Alert.error(error.response.data.message);
+                         });
                        });
       }
     });
@@ -176,7 +188,7 @@ class ListingForm extends Component {
     let steps = {};
     let listingStepsKeys = Object.keys(listingSteps);
 
-    for(let i = 0; i < listingStepsKeys.length; i++) {
+    for(let i = 0; i < listingStepsKeys.length - 1; i++) {
       step = listingStepsKeys[i];
       steps[step]= this.props.intl.formatMessage({ id: 'listings.forms.steps.' + step });
     }
@@ -231,18 +243,23 @@ class ListingForm extends Component {
   }
 
   render() {
-    let currentRenderedStep = this.renderStep(this.state.currentStep);
+    if (this.state.currentStep === listingSteps.finished) {
+      return <Redirect push to={ `/listings/${this.state.listing.id}`} />;
+    }
+    else {
+      let currentRenderedStep = this.renderStep(this.state.currentStep);
 
-    return (
-      <div className="listing-form">
-        {
-          this.renderStepper()
-        }
-        {
-          currentRenderedStep
-        }
-      </div>
-    )
+      return (
+        <div className="listing-form">
+          {
+            this.renderStepper()
+          }
+          {
+            currentRenderedStep
+          }
+        </div>
+      )
+    }
   }
 }
 

@@ -88,7 +88,8 @@ export default class Constants {
       location: 'location',
       images: 'images',
       pricing: 'pricing',
-      rules: 'rules'
+      rules: 'rules',
+      finished: 'finished'
     };
   }
 
