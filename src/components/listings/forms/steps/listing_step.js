@@ -15,11 +15,11 @@ class ListingStep extends Component {
     super(props);
 
     this.proceedToNextStep = this.proceedToNextStep.bind(this);
+    this.handleNextEvent = this.handleNextEvent.bind(this);
   }
 
   proceedToNextStep() {
     if (this.props.validateFields()) {
-
       if ( this.props.finalStep ) {
         this.props.handleCompleteListing(this.props.getListingProperties());
       }
@@ -33,22 +33,35 @@ class ListingStep extends Component {
     }
   }
 
+  handleNextEvent(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (this.props.validateFields()) {
+      this.proceedToNextStep();
+    }
+  }
+
   render() {
     let nextButtonText = (<FormattedMessage id="application.next" />);
 
-    if ( this.props.finalStep ) {
+    if (this.props.finalStep)  {
       nextButtonText = (<FormattedMessage id="listings.complete_listing" />);
     }
 
     return (
-      <div className="col-xs-12 no-side-padding">
-        { this.props.children }
+      <form onSubmit={ this.handleNextEvent }>
+        <div className="col-xs-12 no-side-padding">
+          { this.props.children }
 
-        <button className="proceed-to-step-btn btn secondary-color white-text fs-12 pull-right"
-                onClick={ this.proceedToNextStep }>
-          { nextButtonText }
-        </button>
-      </div>
+          <button className="proceed-to-step-btn btn secondary-color white-text fs-12 pull-right"
+                  onClick={ this.handleNextEvent }
+                  disabled={ !this.props.validateFields() }>
+            { nextButtonText }
+          </button>
+        </div>
+      </form>
     )
   }
 }
