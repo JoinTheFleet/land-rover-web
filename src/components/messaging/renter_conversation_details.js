@@ -3,6 +3,7 @@ import moment from 'moment';
 import DateRange from '../miscellaneous/date_range';
 import BookingStatus from '../bookings/booking_status';
 import Avatar from 'react-avatar';
+import { Link } from 'react-router-dom';
 
 export default class RenterConversationDetails extends Component {
   render() {
@@ -23,37 +24,39 @@ export default class RenterConversationDetails extends Component {
     }
 
     return (
-      <div className='col-xs-12 conversation-detail'>
-        <div className='row'>
-          <div className='col-xs-2 col-lg-1'>
-            <Avatar src={ imageURL } round />
-          </div>
-          <div className='col-xs-8 col-lg-9'>
-            <div className='col-xs-12'>
-              <span className='strong-font-weight conversation-header'>
-                { variant.make.display }, { variant.model.name }
-              </span>
-              <span className='conversation-header'>
-                { variant.year.year }
-              </span>
+      <Link key={ `conversation_link_${conversation.id}` } to={ `/messages/${conversation.id}` }>
+        <div className='col-xs-12 conversation-detail' onClick={ this.props.onClick }>
+          <div className='row'>
+            <div className='col-xs-2 col-lg-1'>
+              <Avatar src={ imageURL } round />
             </div>
-            <div className='col-xs-12'>
-              <span>{ listing.address }</span>
-              &nbsp; &bull; &nbsp;
-              <DateRange start={ start } end={ end } />
+            <div className='col-xs-8 col-lg-9'>
+              <div className='col-xs-12'>
+                <span className='strong-font-weight conversation-header'>
+                  { variant.make.display }, { variant.model.name }
+                </span>
+                <span className='conversation-header'>
+                  { variant.year.year }
+                </span>
+              </div>
+              <div className='col-xs-12'>
+                <span>{ listing.address }</span>
+                &nbsp; &bull; &nbsp;
+                <DateRange start={ start } end={ end } />
+              </div>
+              <div className='col-xs-12'>
+                { owner.name }
+              </div>
+              <div className={ `col-xs-12 ${messageClassName}` }>
+                { message.text }
+              </div>
             </div>
-            <div className='col-xs-12'>
-              { owner.name }
+            <div className='col-xs-2 col-lg-2'>
+              <BookingStatus booking={ booking } />
             </div>
-            <div className={ `col-xs-12 ${messageClassName}` }>
-              { message.text }
-            </div>
-          </div>
-          <div className='col-xs-2 col-lg-2'>
-            <BookingStatus booking={ booking } />
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 }

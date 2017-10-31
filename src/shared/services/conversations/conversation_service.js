@@ -18,6 +18,10 @@ class ConversationService extends Service {
     return client.post(this.muteURL(id));
   }
 
+  static latestMessageID(id) {
+    return client.get(this.baseURL + id + '/latest_message_id');
+  }
+
   static get actions() {
     return {
       index: true,

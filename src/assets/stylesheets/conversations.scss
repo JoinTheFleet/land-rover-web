@@ -4,6 +4,16 @@
   padding: 8px;
   cursor: pointer;
 
+  color: black;
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus {
+    color: black;
+    text-decoration: none;
+  }
+
   img {
     padding: 0;
     max-height: 200px;
@@ -36,4 +46,71 @@
   position: absolute;
   padding-bottom: 5px;
   bottom: 0;
+}
+
+.conversation-thread {
+  .panel-form {
+    .form-body {
+      padding-top: 0;
+      padding-bottom: 5px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    #message-input-row {
+      padding-top: 5px;
+      border-top: 1px solid $smoke-grey-two;
+
+      i {
+        cursor: pointer;
+        padding-right: 35px;
+
+        img {
+          height: 20px;
+          width: 20px;
+        }
+      }
+    }
+
+    #message-input {
+      padding: 0;
+      width: 100%;
+      border-width: 0;
+      padding-left: 5px;
+    }
+
+    #message-input[disabled] {
+      background-color: white;
+    }
+  }
+}
+
+.message-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 500px;
+}
+
+.rce-mbox-right {
+  background-color: $secondary-color;
+  color: white;
+
+  .rce-mbox-time {
+    color: white;
+  }
+}
+
+.rce-mbox-location {
+  height: inherit;
+}
+
+.rce-mbox-photo--img img {
+  max-width: 250px;
+  object-fit: fill;
+  height: inherit;
+  min-height: inherit;
+}
+
+.rce-mbox-right-notch {
+  fill: $secondary-color;
 }

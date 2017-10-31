@@ -8,6 +8,7 @@ import 'react-select/dist/react-select.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
+import 'react-chat-elements/dist/main.css';
 
 import Alert from 'react-s-alert';
 
@@ -31,7 +32,8 @@ import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -53,7 +55,6 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
-      currentSelectedView: cookies.get('accessToken') ? navigationSections.messages : navigationSections.home,
       listings: [],
       modalName: undefined,
       searchLocations: [],
@@ -68,7 +69,6 @@ export default class App extends Component {
       },
       boundingBox: undefined,
       sort: 'distance',
-      showSearchButton: false,
       viewsProps: {}
     };
 
@@ -83,7 +83,6 @@ export default class App extends Component {
     this.setAccessToken = this.setAccessToken.bind(this);
     this.locationSearch = this.locationSearch.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
-    this.changeCurrentView = this.changeCurrentView.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.hideSearchResults = this.hideSearchResults.bind(this);
     this.handleFilterToggle = this.handleFilterToggle.bind(this);
@@ -114,7 +113,6 @@ export default class App extends Component {
     if (accessToken.length > 0) {
       let newState = {
         accessToken: accessToken,
-        currentSelectedView: navigationSections.dashboard,
         modalName: undefined
       };
 
@@ -130,7 +128,6 @@ export default class App extends Component {
     }
     else {
       this.setState({
-        currentSelectedView: navigationSections.home,
         accessToken: undefined
       });
     }
@@ -152,20 +149,6 @@ export default class App extends Component {
                            .then(() => { this.setAccessToken(''); })
                            .catch(() => { this.setAccessToken(''); });
     }
-    else {
-      this.changeCurrentView(menuItem);
-    }
-  }
-
-  changeCurrentView(view, viewProps) {
-    let currentViewsProps = this.state.viewsProps;
-    currentViewsProps[view] = viewProps || {};
-
-    this.setState({
-      currentSelectedView: view,
-      showSearchButton: view !== navigationSections.dashboard,
-      viewsProps: currentViewsProps
-    });
   }
 
   toggleModal(modal) {
@@ -178,75 +161,10 @@ export default class App extends Component {
   }
 
   renderHeaderTopMenu() {
-    let headerTopMenu = '';
-
-    if (this.state.accessToken) {
-      headerTopMenu = (<HeaderTopMenu currentMenuItem={ this.state.currentSelectedView }
-                                      currentUserRole={ this.state.currentUserRole }
-                                      handleMenuItemSelect={ this.handleMenuItemSelect }
-                                      loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } />)
-    }
-
-    return headerTopMenu;
-  }
-
-  renderMainContent() {
-    let viewToRender;
-    let currentViewProps = this.state.viewsProps[this.state.currentSelectedView];
-    let viewProps = Helpers.extendObject(currentViewProps || {}, {
-      currentUserRole: this.state.currentUserRole,
-      changeCurrentView: this.changeCurrentView
-    });
-
-    switch(this.state.currentSelectedView) {
-      case navigationSections.profile:
-        break;
-      case navigationSections.bookings:
-        break;
-      case navigationSections.messages:
-        viewToRender = (<MessagingController role={ this.state.currentUserRole } />);
-        break;
-      case navigationSections.calendar:
-        viewToRender = (<BookingsCalendar {...viewProps} />);
-        break;
-      case navigationSections.listings:
-        viewToRender = (<Listings {...viewProps} />);
-        break;
-      case navigationSections.account:
-        viewToRender = (<UserManagement {...viewProps} />)
-        break;
-      case navigationSections.dashboard:
-        viewProps.accessToken = this.state.accessToken;
-        viewProps.handleFilterToggle = this.handleFilterToggle;
-        viewProps.handleMapDrag = this.handleMapDrag;
-        viewProps.handlePositionChange = this.handlePositionChange;
-        viewProps.handleSortToggle = this.handleSortToggle;
-        viewProps.sort = this.state.sort;
-        viewProps.listings = this.state.listings;
-        viewProps.location = this.state.location;
-        viewProps.boundingBox = this.state.boundingBox;
-        viewProps.customSearch = this.state.customSearch;
-        viewProps.currentSearch = this.state.currentSearch;
-
-        viewToRender = (<Homefeed {...viewProps} />);
-        break;
-      default:
-        viewProps.handleLocationChange = this.handleLocationChange;
-        viewProps.handleLocationFocus = this.handleLocationFocus;
-        viewProps.handleDatesChange = this.handleDatesChange;
-        viewProps.handleLocationSelect = this.handleLocationSelect;
-        viewProps.handleSearch = this.handleSearch;
-        viewProps.startDate = this.state.startDate;
-        viewProps.endDate = this.state.endDate;
-        viewProps.locationName = this.state.locationName;
-        viewProps.hideSearchResults = this.hideSearchResults;
-        viewProps.searchLocations = this.searchLocations;
-        viewProps.showSearchButton = !this.state.accessToken || this.state.showSearchButton;
-
-        viewToRender = (<Homescreen {...viewProps} />);
-    }
-
-    return viewToRender;
+    return (
+      <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
+                     loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } />
+    )
   }
 
   handleDatesChange({startDate, endDate}) {
@@ -274,16 +192,11 @@ export default class App extends Component {
   }
 
   handleSearch() {
-    this.setState({
-      currentSelectedView: navigationSections.dashboard,
-      showSearchButton: false
-    }, this.performSearch);
+    this.performSearch();
   }
 
   handleSearchIfNotShowingSearchButton() {
-    if (!this.state.showSearchButton) {
-      this.handleSearch();
-    }
+    this.handleSearch();
   }
 
   performSearch() {
@@ -417,7 +330,6 @@ export default class App extends Component {
         <Alert {...ALERT_OPTIONS} />
         <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
                 currentUserRole={ this.state.currentUserRole }
-                currentMenuItem={ this.state.currentSelectedView }
                 handleMenuItemSelect={ this.handleMenuItemSelect }
                 toggleModal={ this.toggleModal }
                 handleChangeCurrentUserRole={ this.changeCurrentUserRole }
@@ -432,12 +344,70 @@ export default class App extends Component {
                 hideSearchResults={ this.hideSearchResults }
                 searchLocations={ this.state.searchLocations }
                 hideSearchForm={ false }
-                showSearchButton={ this.state.showSearchButton } />
+                showSearchButton={ true } />
 
         { this.renderHeaderTopMenu() }
 
         <div id="main_container" className="col-xs-12 no-side-padding">
-          { this.renderMainContent() }
+          <Route exact path="/" render={(props) => {
+            if (this.state.accessToken && this.state.accessToken.length > 0) {
+              return (
+                <Redirect to="/dashboard" />
+              )
+            }
+            else {
+              return (
+                <Homescreen {...props}
+                            currentUserRole={ this.state.currentUserRole }
+                            handleLocationChange={ this.handleLocationChange }
+                            handleLocationFocus={ this.handleLocationFocus }
+                            handleDatesChange={ this.handleDatesChange }
+                            handleLocationSelect={ this.handleLocationSelect }
+                            handleSearch={ this.handleSearch }
+                            startDate={ this.state.startDate }
+                            endDate={ this.state.endDate }
+                            locationName={ this.state.locationName }
+                            hideSearchResults={ this.hideSearchResults }
+                            searchLocations={ this.state.searchLocations }
+                            showSearchButton={ true } />
+              )
+            }
+          }} />
+          <Route exact path="/home" render={() => <Redirect to="/" /> } />
+          <Route path="/dashboard" render={(props) => {
+            return (
+              <Homefeed {...props}
+                        currentUserRole={ this.state.currentUserRole }
+                        accessToken={ this.state.accessToken }
+                        handleFilterToggle={ this.handleFilterToggle }
+                        handleMapDrag={ this.handleMapDrag }
+                        handlePositionChange={ this.handlePositionChange }
+                        handleSortToggle={ this.handleSortToggle }
+                        sort={ this.state.sort }
+                        listings={ this.state.listings }
+                        location={ this.state.location }
+                        boundingBox={ this.state.boundingBox }
+                        customSearch={ this.state.customSearch }
+                        currentSearch={ this.state.currentSearch } />
+            )
+          }} />
+          <Route path="/messages" render={(props) => {
+            return (<MessagingController {...props}
+                                         role={ this.state.currentUserRole } />)
+          }} />
+          <Route path="/listings" render={(props) => {
+            return (<Listings {...props}
+                              currentUserRole={ this.state.currentUserRole } />)
+          }} />
+          <Route path="/account" render={(props) => {
+            return (<UserManagement {...props}
+                                    currentUserRole={ this.state.currentUserRole} />)
+          }} />
+          <Route path="/calendar" render={(props) => {
+            return ( <BookingsCalendar /> )
+          }} />
+          <Route path="/users" render={(props) => { return (<div />)}} />
+          <Route path="/bookings" render={(props) => { return (<div />)}} />
         </div>
 
         <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>

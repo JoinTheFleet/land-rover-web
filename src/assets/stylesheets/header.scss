@@ -119,6 +119,15 @@ input#location {
     display: inline-block;
     position: relative;
     cursor: pointer;
+    color: $tertiary-text-color;
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: $tertiary-text-color;
+      text-decoration: none;
+    }
 
     &.with-divider {
       padding-right: 16px;

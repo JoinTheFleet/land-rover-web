@@ -42,7 +42,7 @@ export default class FormField extends Component {
           initialVisibleMonth={ null }
           numberOfMonths={ 1 }
           keepOpenOnDateSelect={ false }
-          renderCalendardInfo={ false }
+          renderCalendarInfo={ false }
           hideKeyboardShortcutsPanel={ true }
         />
       )
@@ -67,7 +67,7 @@ export default class FormField extends Component {
           reopenPickerOnClearDate={ false }
           showClearDates={ showClearDates }
           reopenPickerOnClearDates={ false }
-          renderCalendardInfo={ false }
+          renderCalendarInfo={ false }
           hideKeyboardShortcutsPanel={ true }
           displayFormat={ 'DD/MM/YYYY' }
           disabled={this.props.disabled}
@@ -90,7 +90,7 @@ export default class FormField extends Component {
           initialVisibleMonth={null}
           numberOfMonths={2}
           minimumNights={1}
-          renderCalendardInfo={false}
+          renderCalendarInfo={false}
           hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
         />

@@ -17,14 +17,27 @@ import specDoorsIcon from '../../assets/images/spec-doors.png';
 import specPassengersIcon from '../../assets/images/spec-passengers.png';
 import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
+import ListingsService from '../../shared/services/listings/listings_service';
+
 const listingsViews = Constants.listingsViews();
 
 class ListingView extends Component {
-
   constructor(props) {
     super(props);
 
+    this.state = {
+      listing: undefined
+    };
+
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
+  }
+
+  componentWillMount() {
+    ListingsService.show(this.props.match.params.id)
+                   .then(response => {
+                     let listing = response.data.data.listing;
+                     this.setState({ listing: response.data.data.listing }, () => { console.log(this.state)});
+                   });
   }
 
   handleBookButtonClick(quotation, pricingQuote) {
@@ -32,7 +45,7 @@ class ListingView extends Component {
   }
 
   renderListingOverview() {
-    let listing = this.props.listing;
+    let listing = this.state.listing;
 
     let vehicleMake = listing.variant.make.name;
     let vehicleModel = listing.variant.model.name;
@@ -69,7 +82,7 @@ class ListingView extends Component {
   }
 
   renderSpecs() {
-    let listing = this.props.listing;
+    let listing = this.state.listing;
 
     return (
       <div className="listing-view-listing-specs col-xs-12 no-side-padding">
@@ -104,6 +117,8 @@ class ListingView extends Component {
   }
 
   renderAmenities() {
+    let listing = this.state.listing;
+
     return (
       <div className="listing-view-listing-amenities col-xs-12 no-side-padding">
         <div className="listing-view-listing-amenities-title fs-18 subtitle-font-weight pull-left">
@@ -112,8 +127,8 @@ class ListingView extends Component {
 
         <div className="listing-view-listing-amenities-list pull-left">
           {
-            this.props.listing.amenities.sort((amenity_A, amenity_B) => amenity_A.name > amenity_B.name)
-                                        .map(amenity => {
+            listing.amenities.sort((amenity_A, amenity_B) => amenity_A.name > amenity_B.name)
+                             .map(amenity => {
               return (
                 <div key={ 'listing_amenity_' + amenity.id } className="listing-view-listing-amenity col-xs-12 col-sm-4 no-side-padding">
                   <img src={ amenity.images.small_url } alt={ amenity.name } />
@@ -128,7 +143,7 @@ class ListingView extends Component {
   }
 
   renderMap() {
-    let listing = this.props.listing;
+    let listing = this.state.listing;
 
     if (!listing.location) {
       return <div className="listing-view-map col-xs-12 no-side-padding"></div>;
@@ -171,7 +186,7 @@ class ListingView extends Component {
     if (this.props.enableBooking) {
       bookingDiv = (
         <div className="listing-view-booking-div">
-          <BookNowTile listing={ this.props.listing } handleBookButtonClick={ this.handleBookButtonClick } />
+          <BookNowTile listing={ this.state.listing } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
     }
@@ -180,27 +195,32 @@ class ListingView extends Component {
   }
 
   render() {
-    let listing = this.props.listing;
+    let listing = this.state.listing;
 
-    return (
-      <div className="listing-view-div col-xs-12 no-side-padding">
-        <div className="listing-view-image-gallery">
-          <ImageGallery images={ listing.gallery.map(galleryImage => galleryImage.images.original_url) } />
+    if (listing) {
+      return (
+        <div className="listing-view-div col-xs-12 no-side-padding">
+          <div className="listing-view-image-gallery">
+            <ImageGallery images={ listing.gallery.map(galleryImage => galleryImage.images.original_url) } />
+          </div>
+
+          <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+            { this.renderListingOverview() }
+
+            { this.renderSpecs() }
+
+            { this.renderAmenities() }
+
+            { this.renderBookingTile() }
+
+            { this.renderMap() }
+          </div>
         </div>
-
-        <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-          { this.renderListingOverview() }
-
-          { this.renderSpecs() }
-
-          { this.renderAmenities() }
-
-          { this.renderBookingTile() }
-
-          { this.renderMap() }
-        </div>
-      </div>
-    );
+      );
+    }
+    else {
+      return <div></div>;
+    }
   }
 }
 

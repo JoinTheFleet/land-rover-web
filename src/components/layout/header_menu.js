@@ -9,6 +9,8 @@ import Constants from '../../miscellaneous/constants';
 
 import CloseOnEscape from 'react-close-on-escape';
 
+import { NavLink } from 'react-router-dom';
+
 const navigationSections = Constants.navigationSections();
 
 export default class HeaderMenu extends Component {
@@ -32,7 +34,7 @@ export default class HeaderMenu extends Component {
     let menuItems = [];
     let items = [navigationSections.home, navigationSections.signup, navigationSections.login];
     let itemsWithDivider = ['home'];
-    let itemsWithModal = ['login'];
+    let itemsWithModal = ['login', 'signup'];
 
     if (this.props.loggedIn) {
       items = [navigationSections.home, navigationSections.profile,
@@ -47,10 +49,19 @@ export default class HeaderMenu extends Component {
 
       menuItems.push(
         (<div key={'header_menu_' + item} className="menu-item">
-          <span className={ this.props.currentMenuItem === item ? 'secondary-text-color' : ''}
-                onClick={ () => { (itemsWithModal.indexOf(item) > -1) ? this.props.toggleModal(item) : this.props.handleMenuItemSelect(item); } } >
+          <NavLink  to={ `/${item}`}
+                    activeClassName={ 'secondary-text-color' }
+                    onClick={ (event) => {
+                      if (itemsWithModal.indexOf(item) > -1) {
+                        event.preventDefault();
+                        this.props.toggleModal(item);
+                      }
+                      else {
+                        this.props.handleMenuItemSelect(item);
+                      }
+                    }} >
             <FormattedMessage id={'menu.' + item} />
-          </span>
+          </NavLink>
         </div>)
       );
 

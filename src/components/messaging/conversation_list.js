@@ -64,7 +64,7 @@ export default class ConversationList extends Component {
                                totalPages: data.total_pages,
                                loading: false
                              });
-                           })
+                           });
       }
       else if (this.props.listing) {
         ListingConversationsService.index(this.props.listing.id, { offset: pageNumber * this.state.limit, limit: this.state.limit })
@@ -90,17 +90,17 @@ export default class ConversationList extends Component {
   render() {
     return (
       <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage + 1 } handlePageChange={ this.handlePageChange } loading={ this.state.loading }>
-        <div>
-        {
-          this.state.conversations.map((conversation) => {
-            if (this.props.role === 'renter') {
-              return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />
-            }
-            else {
-              return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />
-            }
-          })
-        }
+        <div className='col-xs-12'>
+          {
+            this.state.conversations.map((conversation) => {
+              if (this.props.role === 'renter') {
+                return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
+              }
+              else {
+                return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
+              }
+            })
+          }
         </div>
       </Pageable>
     );
