@@ -9,12 +9,11 @@ export default class Menus {
       navigationSections.dashboard,
       navigationSections.bookings,
       navigationSections.messages,
-      navigationSections.account,
-      navigationSections.listings,
-      navigationSections.calendar
+      navigationSections.account
     ];
 
     if (role === userRoles.owner) {
+      menu.push(navigationSections.listings);
       menu.push(navigationSections.calendar);
     }
 

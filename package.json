@@ -68,6 +68,8 @@
     "react-close-on-escape": "",
     "react-s-alert": "",
     "react-fontawesome": "",
+    "react-router": "",
+    "react-router-dom": "",
     "react-slick": "",
     "react-chat-elements": "file:../react-chat-elements",
     "sass-loader": "",

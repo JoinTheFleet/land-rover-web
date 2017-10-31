@@ -14,7 +14,6 @@ import Constants from '../../../miscellaneous/constants';
 import Helpers from '../../../miscellaneous/helpers';
 
 import Stepper from '../../miscellaneous/stepper';
-import Alert from '../../miscellaneous/alert';
 import Loading from '../../miscellaneous/loading';
 
 import ListingRegistration from './steps/listing_registration';
@@ -26,6 +25,7 @@ import ListingRules from './steps/listing_rules';
 
 import ListingsService from '../../../shared/services/listings/listings_service';
 import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_lookups_service';
+import Alert from 'react-s-alert';
 
 const listingsViews = Constants.listingsViews();
 const listingSteps = Constants.listingSteps();
@@ -38,10 +38,9 @@ class ListingForm extends Component {
 
     this.state = {
       loading: false,
-      listing: this.props.listing || {},
+      listing: {},
       currentStep: listingSteps[Object.keys(listingSteps)[0]],
       previousStep: '',
-      errors: []
     };
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
@@ -51,14 +50,21 @@ class ListingForm extends Component {
     this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
   }
 
-  componentDidMount() {
-    if (this.props.edit) {
-      let listing = this.state.listing;
-
-      this.proceedToStepAndAddProperties(stepDirections.next, {
-        license_plate_number: listing.license_plate_number,
-        country: listing.country_configuration.country.alpha2
-      });
+  componentWillMount() {
+    if (this.props.match.params.id) {
+      ListingsService.show(this.props.match.params.id)
+                     .then(response => {
+                       this.setState({
+                         listing: response.data.data.listing
+                       }, () => {
+                         if (this.props.edit) {
+                           this.proceedToStepAndAddProperties(stepDirections.next, {
+                             license_plate_number: this.state.listing.license_plate_number,
+                             country: this.state.listing.country_configuration.country.alpha2
+                           });
+                         }
+                       });
+                     });
     }
   }
 
@@ -101,10 +107,9 @@ class ListingForm extends Component {
                                  }));
                                })
                                .catch(error => {
-                                 this.setState(prevState => ({
-                                   loading: false,
-                                   errors: prevState.errors.concat([error.message])
-                                 }));
+                                 this.setState({
+                                   loading: false
+                                 }, () => { Alert.error(error.response.data.message); });
                                });
         });
       }
@@ -131,7 +136,7 @@ class ListingForm extends Component {
                          this.props.setCurrentView(listingsViews.index);
                        })
                        .catch(error => {
-                         this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
+                         Alert.error(error.response.data.message);
                        });
       }
       else {
@@ -140,7 +145,7 @@ class ListingForm extends Component {
                          this.props.setCurrentView(listingsViews.index);
                        })
                        .catch(error => {
-                         this.setState(prevState => ({ errors: prevState.errors.concat([error.message]) }));
+                         Alert.error(error.response.data.message);
                        });
       }
     });
@@ -226,7 +231,6 @@ class ListingForm extends Component {
   }
 
   render() {
-    let errors = this.state.errors;
     let currentRenderedStep = this.renderStep(this.state.currentStep);
 
     return (
@@ -236,11 +240,6 @@ class ListingForm extends Component {
         }
         {
           currentRenderedStep
-        }
-        {
-          errors.map((error, index) => {
-            return (<Alert key={ "error" + index } type="danger" message={ error } />)
-          })
         }
       </div>
     )

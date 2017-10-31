@@ -15,6 +15,7 @@ import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings/listings_service';
+import { Redirect, Link } from 'react-router-dom';
 
 const listingsViews = Constants.listingsViews();
 
@@ -34,7 +35,6 @@ export default class ListingsOverview extends Component {
     this.fetchListings = this.fetchListings.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-    this.handleListingCardClick = this.handleListingCardClick.bind(this);
   }
 
   componentWillMount() {
@@ -68,10 +68,6 @@ export default class ListingsOverview extends Component {
     });
   }
 
-  handleListingCardClick(listing) {
-    this.props.handleChangeView(listingsViews.view, { currentListing: listing });
-  }
-
   handleEditButtonClick(listing) {
     this.props.handleChangeView(listingsViews.edit, { currentListing: listing });
   }
@@ -85,7 +81,6 @@ export default class ListingsOverview extends Component {
               <ListingCard key={'listing_' + listing.id}
                            listing={ listing }
                            enableEdit={ true }
-                           handleCardClick={ this.handleListingCardClick }
                            handleEditButtonClick={ this.handleEditButtonClick } />
             )
           })
@@ -100,9 +95,10 @@ export default class ListingsOverview extends Component {
 
         <div className="listings-overview-top-bar smoke-grey col-xs-12">
           <div className="pull-right">
-            <button className="btn secondary-color white-text" onClick={ () => { this.props.handleChangeView(listingsViews.new) } }>
+            <Link to="/listings/new"
+                  className="btn secondary-color white-text">
               <FormattedMessage id="listings.add_new_listing" />
-            </button>
+            </Link>
           </div>
         </div>
 

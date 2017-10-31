@@ -6,6 +6,16 @@
   z-index: 10;
   opacity: 0;
 
+  a {
+    color: $tertiary-text-color;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: $tertiary-text-color;
+    }
+  }
+
   .menu-item {
     height: 70px;
     line-height: 70px;

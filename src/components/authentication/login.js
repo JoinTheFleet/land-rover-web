@@ -376,6 +376,9 @@ class Login extends Component {
       case 'registration':
         loginModalBody = this.renderRegistrationModalBody();
         break;
+      case 'signup':
+        loginModalBody = this.renderRegistrationModalBody();
+        break;
       case 'forgotten-password':
         loginModalBody = this.renderForgottenPasswordBody();
         break;
