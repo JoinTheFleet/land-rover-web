@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Button, Dropdown, MenuItem } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import Alert from '../miscellaneous/alert';
 import Loading from '../miscellaneous/loading';
@@ -13,7 +12,6 @@ import FormField from '../miscellaneous/forms/form_field';
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
 import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
-import LocalizationService from '../../shared/libraries/localization_service';
 
 import ListingsSelector from '../listings/listings_selector';
 

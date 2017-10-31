@@ -13,7 +13,6 @@ import 'react-chat-elements/dist/main.css';
 import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
-import Helpers from './miscellaneous/helpers';
 
 import Header from './components/layout/header';
 import HeaderTopMenu from './components/layout/header_top_menu';
@@ -32,8 +31,7 @@ import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();

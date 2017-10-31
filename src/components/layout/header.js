@@ -8,7 +8,6 @@ import {
 
 import PropTypes from 'prop-types';
 import HeaderMenu from './header_menu';
-import Constants from '../../miscellaneous/constants';
 import Helpers from '../../miscellaneous/helpers';
 import Roles from '../../miscellaneous/roles';
 import LocationPeriodFilter from '../listings/filters/location_period_filter';

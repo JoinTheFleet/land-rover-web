@@ -53,7 +53,6 @@ export default class MessagingController extends Component {
   }
 
   render() {
-    let conversationView = '';
     let listingsSelector = '';
 
     if (this.props.role === 'owner' && this.state.listings.length > 0) {

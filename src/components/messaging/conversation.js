@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Alert from 'react-s-alert';
+
 import FormPanel from '../miscellaneous/forms/form_panel';
 import MessageInput from './message_input';
 import ConversationService from '../../shared/services/conversations/conversation_service';
 import ConversationMessagesService from '../../shared/services/conversations/conversation_messages_service';
+
 import Loading from '../miscellaneous/loading';
-import Helpers from '../../miscellaneous/helpers';
-import ReactDOM from 'react-dom';
 import Message from './message';
 
 const REFRESH_PERIOD = 5000;
@@ -58,7 +57,7 @@ export default class Conversation extends Component {
         ConversationService.latestMessageID(conversation.id)
                            .then(response => {
                              let messageID = response.data.data.message_id;
-                             if (mostRecentMessageID != messageID) {
+                             if (mostRecentMessageID !== messageID) {
                                this.reloadData();
                              }
                            })
@@ -77,7 +76,6 @@ export default class Conversation extends Component {
           offset: 0
         }).then(response => {
           let data = response.data.data;
-          let messages = data.messages;
 
           this.setState({
             currentPage: 1,

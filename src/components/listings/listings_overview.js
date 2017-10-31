@@ -1,21 +1,15 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
 import Constants from '../../miscellaneous/constants';
 
 import ListingCard from './listing_card';
-import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings/listings_service';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const listingsViews = Constants.listingsViews();
 
@@ -24,7 +18,6 @@ export default class ListingsOverview extends Component {
     super(props);
 
     this.state = {
-      selectedListingId: '',
       listings: [],
       currentPage: 1,
       totalPages: 1,

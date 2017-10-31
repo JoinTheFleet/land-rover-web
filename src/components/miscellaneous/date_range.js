@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 
 export default class DateRange extends Component {
@@ -10,11 +9,15 @@ export default class DateRange extends Component {
     let end = this.props.end;
     let range = end.format(endFormat);
 
-    if (end.month() !== start.month() || end.year() !== end.year()) {
+    if (end.month() !== start.month() || end.year() !== start.year()) {
       startFormat += '/MM';
     }
 
     if (end.year() !== start.year()) {
+      if (startFormat.includes('/MM')) {
+        startFormat += '/MM';
+      }
+
       startFormat += '/YYYY';
     }
 

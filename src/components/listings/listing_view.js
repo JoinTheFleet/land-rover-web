@@ -35,8 +35,7 @@ class ListingView extends Component {
   componentWillMount() {
     ListingsService.show(this.props.match.params.id)
                    .then(response => {
-                     let listing = response.data.data.listing;
-                     this.setState({ listing: response.data.data.listing }, () => { console.log(this.state)});
+                     this.setState({ listing: response.data.data.listing });
                    });
   }
 
