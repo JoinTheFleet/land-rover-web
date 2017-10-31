@@ -282,7 +282,7 @@ class Login extends Component {
                           this.props.intl.formatMessage({id: 'authentication.log_in_with_email'});
 
     let emailAccessory = (
-      <i><img src={emailIcon} alt="email-icone" /></i>
+      <i><img src={emailIcon} alt="email icon" /></i>
     );
 
     let email = (

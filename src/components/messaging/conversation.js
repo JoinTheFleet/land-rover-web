@@ -14,7 +14,6 @@ export default class Conversation extends Component {
     this.state = {
       currentPage: 0,
       messages: [],
-      rawMessages: [],
       totalMessages: 1,
       limit: 20,
       loading: false,
@@ -22,11 +21,37 @@ export default class Conversation extends Component {
     }
 
     this.refreshData = this.refreshData.bind(this);
+    this.reloadData = this.reloadData.bind(this);
     this.scroll = this.scroll.bind(this);
   }
 
   componentWillMount() {
     this.refreshData();
+  }
+
+  reloadData() {
+    this.setState({ loading: true }, () => {
+      ConversationMessagesService.index(this.props.conversation.id, {
+        limit: this.state.limit,
+        offset: 0
+      }).then(response => {
+        let data = response.data.data;
+        let messages = data.messages;
+
+        this.setState({
+          currentPage: 1,
+          totalMessages: data.total_messages,
+          messages: data.messages,
+          loading: false
+        }, () => {
+          if (this.refs.messageList) {
+            this.refs.messageList.scrollTop = this.refs.messageList.scrollHeight;
+          }
+        });
+      }).catch(error => {
+        this.setState({ loading: false });
+      });
+    });
   }
 
   refreshData() {
@@ -71,9 +96,7 @@ export default class Conversation extends Component {
   }
 
   scroll(event) {
-    console.log(this.refs.messageList.scrollTop)
     if (this.refs.messageList.scrollTop === 0 && !this.state.loading) {
-
       this.refreshData();
     }
   }
@@ -83,18 +106,19 @@ export default class Conversation extends Component {
     let booking = conversation.booking;
     let listing = conversation.listing;
     let owner = listing.user;
-    let renter = booking.user;
+    let renter = booking.renter;
+    let viewer = this.props.role === 'renter' ? renter : owner;
     let otherParticpant = this.props.role === 'renter' ? owner : renter;
 
     return (
       <FormPanel title={ otherParticpant.name } className='conversation-thread'>
         <div className='message-list' onScroll={ this.scroll } ref='messageList'>
           {
-            [...this.state.messages].reverse().map(message => { return <Message message={ message } /> })
+            [...this.state.messages].reverse().map(message => { return <Message message={ message } viewer={ viewer } /> })
           }
         </div>
         <div id='bottomPlaceholder' ref='bottomPlaceholder' />
-        <MessageInput conversation={ this.props.conversation } />
+        <MessageInput conversation={ this.props.conversation } reloadData={ this.reloadData }/>
       </FormPanel>
     );
   }

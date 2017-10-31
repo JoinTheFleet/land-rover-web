@@ -8,6 +8,7 @@ import 'react-select/dist/react-select.css';
 import 'font-awesome/css/font-awesome.min.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
+import 'react-chat-elements/dist/main.css';
 
 import Alert from 'react-s-alert';
 
