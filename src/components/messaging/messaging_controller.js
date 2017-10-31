@@ -4,6 +4,7 @@ import ConversationList from './conversation_list';
 import ConversationListingsService from '../../shared/services/conversations/conversation_listings_service';
 import ListingsSelector from '../listings/listings_selector';
 import Loading from '../miscellaneous/loading';
+import { Switch, Route } from "react-router-dom";
 
 export default class MessagingController extends Component {
   constructor(props) {
@@ -12,11 +13,9 @@ export default class MessagingController extends Component {
     this.state = {
       listings: [],
       listing: undefined,
-      loading: false,
-      conversation: undefined
+      loading: false
     };
 
-    this.selectConversation = this.selectConversation.bind(this);
     this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
     this.refreshData = this.refreshData.bind(this);
   }
@@ -49,10 +48,6 @@ export default class MessagingController extends Component {
     }
   }
 
-  selectConversation(conversation) {
-    this.setState({ conversation: conversation });
-  }
-
   handleVehicleSelect(listing) {
     this.setState({ listing: listing })
   }
@@ -69,13 +64,6 @@ export default class MessagingController extends Component {
       )
     }
 
-    if (this.state.conversation) {
-      conversationView = (<Conversation conversation={ this.state.conversation } {...this.props} />);
-    }
-    else {
-      conversationView = (<ConversationList selectConversation={ this.selectConversation } listing={ this.state.listing } {...this.props} />);
-    }
-
     if (this.state.loading) {
       return <Loading />;
     }
@@ -84,7 +72,14 @@ export default class MessagingController extends Component {
         <div>
           { listingsSelector }
           <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
-            { conversationView }
+            <Switch>
+              <Route path="/messages/:id" render={(props) => {
+                return <Conversation {...this.props} {...props} />;
+              }} />
+              <Route path="/messages" render={(props) => {
+                return <ConversationList listing={ this.state.listing } {...this.props} />;
+              }} />
+            </Switch>
           </div>
         </div>
       );

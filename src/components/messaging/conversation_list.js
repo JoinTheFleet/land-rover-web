@@ -94,10 +94,10 @@ export default class ConversationList extends Component {
           {
             this.state.conversations.map((conversation) => {
               if (this.props.role === 'renter') {
-                return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } onClick={ () => { this.props.selectConversation(conversation) } } />;
+                return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
               }
               else {
-                return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } onClick={ () => { this.props.selectConversation(conversation) } } />;
+                return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
               }
             })
           }

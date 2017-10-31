@@ -3,6 +3,7 @@ import FormField from '../miscellaneous/forms/form_field';
 import ConversationMessagesService from '../../shared/services/conversations/conversation_messages_service';
 import addFileImage from '../../assets/images/add-file.png';
 import S3Uploader from '../../shared/external/s3_uploader';
+import Alert from 'react-s-alert';
 
 export default class MessageInput extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ export default class MessageInput extends Component {
                                          submitting: false
                                        }, this.props.reloadData)
                                      })
-                                     .catch(() => { this.setState({ submitting: false })});
+                                     .catch((error) => { this.setState({ submitting: false }, () => { Alert.error(error.response.data.message); }) });
         }
         else if (this.state.attachmentURL) {
           ConversationMessagesService.create(this.props.conversation.id, '', this.buildImageAttachment())
@@ -74,7 +75,7 @@ export default class MessageInput extends Component {
                                          attachmentURL: undefined
                                        }, this.props.reloadData)
                                      })
-                                     .catch(() => { this.setState({ submitting: false })});
+                                     .catch((error) => { this.setState({ submitting: false, attachmentURL: undefined }, () => { Alert.error(error.response.data.message); }) });
 
         }
       })
@@ -90,7 +91,7 @@ export default class MessageInput extends Component {
             <FormField id='message-input' type='text' handleChange={ this.handleMessageInput } value={ this.state.text } disabled={ this.state.submitting } />
           </div>
           <div className='col-xs-1 no-side-padding' onClick={ (event) => this.imageInput.click() }>
-            <i className='pull-right'><img src={addFileImage} alt="Add Image" /></i>
+            <i className='pull-right'><img src={addFileImage} alt='' /></i>
           </div>
         </form>
       </div>

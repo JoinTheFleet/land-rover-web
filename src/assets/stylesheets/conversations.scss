@@ -4,6 +4,16 @@
   padding: 8px;
   cursor: pointer;
 
+  color: black;
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus {
+    color: black;
+    text-decoration: none;
+  }
+
   img {
     padding: 0;
     max-height: 200px;
@@ -88,6 +98,10 @@
   .rce-mbox-time {
     color: white;
   }
+}
+
+.rce-mbox-location {
+  height: inherit;
 }
 
 .rce-mbox-photo--img img {

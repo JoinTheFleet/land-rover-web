@@ -71,7 +71,7 @@
     "react-router": "",
     "react-router-dom": "",
     "react-slick": "",
-    "react-chat-elements": "file:../react-chat-elements",
+    "react-chat-elements": "",
     "sass-loader": "",
     "slick-carousel": "",
     "sw-precache-webpack-plugin": "0.11.4",
