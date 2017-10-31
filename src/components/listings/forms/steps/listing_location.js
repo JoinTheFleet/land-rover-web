@@ -8,13 +8,22 @@ import ListingStep from './listing_step';
 
 import Map from '../../../miscellaneous/map';
 import Loading from '../../../miscellaneous/loading';
+import GeolocationService from '../../../../shared/services/geolocation_service';
+
 
 class ListingLocation extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedPosition: {},
+      center: {
+        lat: 0,
+        lng: 0
+      },
+      selectedPosition: {
+        latitude: 0,
+        longitude: 0
+      },
       selectedAddress: ''
     };
 
@@ -23,6 +32,22 @@ class ListingLocation extends Component {
     this.getListingProperties = this.getListingProperties.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
+  }
+
+  componentWillMount() {
+    GeolocationService.getCurrentPosition()
+                      .then(position => {
+                        this.setState({
+                          center: {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                          },
+                          selectedPosition: {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                          }
+                        }, () => { this.handleMapClick(this.state.center); });
+                      });
   }
 
   componentDidMount() {
@@ -70,14 +95,8 @@ class ListingLocation extends Component {
       let component = this;
 
       geocoder.geocode({ location: position }, function(results, status) {
-        if (status === 'OK') {
-          if (results[0]) {
-            component.setLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng(), results[0].formatted_address);
-          } else {
-            window.alert('No results found');
-          }
-        } else {
-          window.alert('Geocoder failed due to: ' + status);
+        if (status === 'OK' && results[0]) {
+          component.setLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng(), results[0].formatted_address);
         }
       });
     }
@@ -109,6 +128,7 @@ class ListingLocation extends Component {
                includeSearchBox={ true }
                onPlacesChanged={ this.onPlacesChanged }
                handleMapClick={ this.handleMapClick }
+               center={ this.state.center }
                draggableMarkers={ true }
                markers={ selectedPosition ? [{ position: selectedPosition}] : [] } >
           </Map>
