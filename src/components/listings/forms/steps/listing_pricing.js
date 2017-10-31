@@ -25,11 +25,11 @@ class ListingPricing extends Component {
     }
 
     if (listing.price) {
-      listing.price = listing.price / 100;
+      listing.price = listing.price;
     }
 
     if (listing.cleaning_fee) {
-      listing.cleaning_fee = listing.cleaning_fee / 100;
+      listing.cleaning_fee = listing.cleaning_fee;
     }
 
     this.state = {

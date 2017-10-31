@@ -26,17 +26,27 @@ class ListingView extends Component {
     super(props);
 
     this.state = {
-      listing: undefined
+      listing: undefined,
+      loading: false
     };
 
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
   }
 
   componentWillMount() {
-    ListingsService.show(this.props.match.params.id)
-                   .then(response => {
-                     this.setState({ listing: response.data.data.listing });
-                   });
+    let location = this.props.location;
+
+    if (location && location.state && location.state.listing) {
+      this.setState({ listing: location.state.listing })
+    }
+    else {
+      this.setState({ loading: true }, () => {
+        ListingsService.show(this.props.match.params.id)
+                       .then(response => {
+                         this.setState({ listing: response.data.data.listing, loading: false });
+                       });
+      });
+    }
   }
 
   handleBookButtonClick(quotation, pricingQuote) {
@@ -196,7 +206,10 @@ class ListingView extends Component {
   render() {
     let listing = this.state.listing;
 
-    if (listing) {
+    if (this.state.loading) {
+      return <Loading />;
+    }
+    else if (listing) {
       return (
         <div className="listing-view-div col-xs-12 no-side-padding">
           <div className="listing-view-image-gallery">
