@@ -40,17 +40,27 @@ export default class Stepper extends Component {
             </Anime>
           </div>
           {
-            steps.map((step) => {
+            steps.map((step, index) => {
               let stepIndex = steps.indexOf(step);
               let stepLeftValue = 'calc(' + (stepIndex * (100 / (steps.length - 1))) + '% - ' + (stepIndex * stepIconWidth + stepIconWidth / 2)  + 'px)';
               let stepCompleted = stepIndex <= currentStepIndex;
               let icon = stepCompleted ? stepCompleteIcon : stepIncompleteIcon;
               let numberTextColor = stepCompleted ? ' white-text' : ' tertiary-text-color';
               let stepTextColor = stepCompleted ? ' secondary-text-color' : ' tertiary-text-color';
+              let className = 'fleet-stepper-step';
+
+              if (index <= currentStepIndex) {
+                className += ' active';
+              }
 
               return (
                 <div key={'step_' + step}
-                     className="fleet-stepper-step"
+                     className={ className }
+                     onClick={ () => {
+                       if (index <= currentStepIndex) {
+                         this.props.handleStepChange(index)
+                       }
+                     }}
                      style={ { left: stepLeftValue, width: stepIconWidth } }>
                   <img src={ icon } alt="step_icon" />
 
@@ -73,5 +83,6 @@ export default class Stepper extends Component {
 Stepper.propTypes = {
   steps: PropTypes.object.isRequired,
   currentStep: PropTypes.string.isRequired,
-  previousStep: PropTypes.string
+  previousStep: PropTypes.string,
+  handleStepChange: PropTypes.func
 }

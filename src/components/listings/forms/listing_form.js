@@ -43,6 +43,7 @@ class ListingForm extends Component {
     this.handleCompleteListing = this.handleCompleteListing.bind(this);
     this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
     this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
+    this.handleStepChange = this.handleStepChange.bind(this);
   }
 
   componentWillMount() {
@@ -137,6 +138,20 @@ class ListingForm extends Component {
     }
   }
 
+  handleStepChange(index) {
+    let newStep = listingSteps[Object.keys(listingSteps)[index]];
+    let newPreviousStep = undefined;
+
+    if (index > 0) {
+      newPreviousStep = listingSteps[Object.keys(listingSteps)[index - 1]];
+    }
+
+    this.setState({
+      currentStep: newStep,
+      previousStep: newPreviousStep
+    })
+  }
+
   handleCompleteListing(propertiesToAdd) {
     this.setState((prevState) => ({
       loading: true,
@@ -207,6 +222,7 @@ class ListingForm extends Component {
 
     return (
       <Stepper steps={ steps }
+               handleStepChange={ this.handleStepChange }
                currentStep={ this.state.currentStep }
                previousStep={ this.state.previousStep }>
       </Stepper>
@@ -239,10 +255,12 @@ class ListingForm extends Component {
           break;
         case listingSteps.rules:
           renderedStep = (<ListingRules listing={ this.state.listing }
+                                        finalStep={ true }
                                         handleCompleteListing={ this.handleCompleteListing } />)
           break;
         default:
           renderedStep = (<ListingRegistration listing={ this.state.listing }
+                                               firstStep={ true }
                                                handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />);
       }
     }
