@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import Alert from '../../../miscellaneous/alert';
+import Alert from 'react-s-alert';
 
 import Constants from '../../../../miscellaneous/constants';
 
@@ -13,10 +13,6 @@ class ListingStep extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      errors: []
-    };
 
     this.proceedToNextStep = this.proceedToNextStep.bind(this);
   }
@@ -33,16 +29,11 @@ class ListingStep extends Component {
     }
     else {
       let errorMessage = this.props.intl.formatMessage({ id: 'errors.forms.fill_up_all_required_fields' });
-      let errors = this.state.errors;
-      errors.push(errorMessage);
-
-      this.setState({ errors: errors });
+      Alert.error(errorMessage);
     }
   }
 
   render() {
-    let errors = this.state.errors;
-
     let nextButtonText = (<FormattedMessage id="application.next" />);
 
     if ( this.props.finalStep ) {
@@ -57,11 +48,6 @@ class ListingStep extends Component {
                 onClick={ this.proceedToNextStep }>
           { nextButtonText }
         </button>
-        {
-          errors.map((error, index) => {
-            return (<Alert key={ "error" + index } type="danger" message={ error } />)
-          })
-        }
       </div>
     )
   }

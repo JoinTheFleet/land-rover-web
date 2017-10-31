@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
 
@@ -21,7 +22,6 @@ export default class ListingsOverview extends Component {
       listings: [],
       currentPage: 1,
       totalPages: 1,
-      errors: [],
       loading: false
     };
 
@@ -49,7 +49,7 @@ export default class ListingsOverview extends Component {
         this.setState({ listings: response.data.data.listings, loading: false });
       })
       .catch((error) => {
-        this.setState((prevState) => ({ errors: prevState.errors.push(error), loading: false }));
+        this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
       });
     });
   }
