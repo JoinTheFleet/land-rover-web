@@ -35,19 +35,21 @@ class ListingLocation extends Component {
   }
 
   componentWillMount() {
-    GeolocationService.getCurrentPosition()
-                      .then(position => {
-                        this.setState({
-                          center: {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                          },
-                          selectedPosition: {
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude
-                          }
-                        }, () => { this.handleMapClick(this.state.center); });
-                      });
+    if (!this.props.listing.location) {
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+                          this.setState({
+                            center: {
+                              lat: position.coords.latitude,
+                              lng: position.coords.longitude
+                            },
+                            selectedPosition: {
+                              latitude: position.coords.latitude,
+                              longitude: position.coords.longitude
+                            }
+                          }, () => { this.handleMapClick(this.state.center); });
+                        });
+    }
   }
 
   componentDidMount() {
@@ -59,7 +61,13 @@ class ListingLocation extends Component {
         lng: location.longitude
       };
 
-      this.handleMapClick(position);
+      this.setState({
+        center: position,
+        selectedPosition: {
+          latitude: position.lat,
+          longitude: position.lng
+        }
+      }, () => { this.handleMapClick(this.state.center) })
     }
   }
 
