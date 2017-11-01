@@ -31,7 +31,7 @@ import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -67,7 +67,8 @@ export default class App extends Component {
       },
       boundingBox: undefined,
       sort: 'distance',
-      viewsProps: {}
+      viewsProps: {},
+      visitedDashboard: false
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -110,6 +111,7 @@ export default class App extends Component {
     cookies.remove('accessToken');
     if (accessToken.length > 0) {
       let newState = {
+        visitedDashboard: this.state.accessToken,
         accessToken: accessToken,
         modalName: undefined
       };
@@ -146,6 +148,7 @@ export default class App extends Component {
       AuthenticationService.logout()
                            .then(() => { this.setAccessToken(''); })
                            .catch(() => { this.setAccessToken(''); });
+      return (<Redirect to='/' />);
     }
   }
 
@@ -347,15 +350,14 @@ export default class App extends Component {
         { this.renderHeaderTopMenu() }
 
         <div id="main_container" className="col-xs-12 no-side-padding">
-          <Route exact path="/" render={(props) => {
-            if (this.state.accessToken && this.state.accessToken.length > 0) {
-              return (
-                <Redirect to="/dashboard" />
-              )
-            }
-            else {
-              return (
-                <Homescreen {...props}
+          <Switch>
+            <Route exact path="/" render={(props) => {
+              if (this.state.accessToken && !this.state.visitedDashboard) {
+                this.setState({ visitedDashboard: true });
+                return <Redirect to='/dashboard' />
+              }
+              else {
+                return <Homescreen {...props}
                             currentUserRole={ this.state.currentUserRole }
                             handleLocationChange={ this.handleLocationChange }
                             handleLocationFocus={ this.handleLocationFocus }
@@ -368,48 +370,57 @@ export default class App extends Component {
                             hideSearchResults={ this.hideSearchResults }
                             searchLocations={ this.state.searchLocations }
                             showSearchButton={ true } />
+              }
+            }} />
+            <Route path="/dashboard" render={(props) => {
+              return (
+                <Homefeed {...props}
+                          currentUserRole={ this.state.currentUserRole }
+                          accessToken={ this.state.accessToken }
+                          handleFilterToggle={ this.handleFilterToggle }
+                          handleMapDrag={ this.handleMapDrag }
+                          handlePositionChange={ this.handlePositionChange }
+                          handleSortToggle={ this.handleSortToggle }
+                          sort={ this.state.sort }
+                          listings={ this.state.listings }
+                          location={ this.state.location }
+                          boundingBox={ this.state.boundingBox }
+                          customSearch={ this.state.customSearch }
+                          currentSearch={ this.state.currentSearch } />
               )
+            }} />
+
+            if (this.state.accessToken && this.state.accessToken.length > 0) {
+              <Switch>
+                <Route exact path="/home" render={() => <Redirect to="/" /> } />
+
+                <Route path="/messages" render={(props) => {
+                  return (<MessagingController {...props}
+                                               role={ this.state.currentUserRole } />)
+                }} />
+                <Route path="/listings" render={(props) => {
+                  return (<Listings {...props}
+                                    currentUserRole={ this.state.currentUserRole } />)
+                }} />
+                <Route path="/account" render={(props) => {
+                  return (<UserManagement {...props}
+                                          currentUserRole={ this.state.currentUserRole} />)
+                }} />
+                <Route path="/calendar" render={(props) => {
+                  return ( <BookingsCalendar /> )
+                }} />
+                <Route path="/users" render={(props) => { return (<div />)}} />
+                <Route path="/bookings" render={(props) => { return (<div />)}} />
+                <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
+              </Switch>
             }
-          }} />
-          <Route exact path="/home" render={() => <Redirect to="/" /> } />
-          <Route path="/dashboard" render={(props) => {
-            return (
-              <Homefeed {...props}
-                        currentUserRole={ this.state.currentUserRole }
-                        accessToken={ this.state.accessToken }
-                        handleFilterToggle={ this.handleFilterToggle }
-                        handleMapDrag={ this.handleMapDrag }
-                        handlePositionChange={ this.handlePositionChange }
-                        handleSortToggle={ this.handleSortToggle }
-                        sort={ this.state.sort }
-                        listings={ this.state.listings }
-                        location={ this.state.location }
-                        boundingBox={ this.state.boundingBox }
-                        customSearch={ this.state.customSearch }
-                        currentSearch={ this.state.currentSearch } />
-            )
-          }} />
-          <Route path="/messages" render={(props) => {
-            return (<MessagingController {...props}
-                                         role={ this.state.currentUserRole } />)
-          }} />
-          <Route path="/listings" render={(props) => {
-            return (<Listings {...props}
-                              currentUserRole={ this.state.currentUserRole } />)
-          }} />
-          <Route path="/account" render={(props) => {
-            return (<UserManagement {...props}
-                                    currentUserRole={ this.state.currentUserRole} />)
-          }} />
-          <Route path="/calendar" render={(props) => {
-            return ( <BookingsCalendar /> )
-          }} />
-          <Route path="/users" render={(props) => { return (<div />)}} />
-          <Route path="/bookings" render={(props) => { return (<div />)}} />
+            else {
+              <Redirect to='/' />
+            }
+            <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
+          </Switch>
         </div>
-
         <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
-
         <Footer />
       </div>
     );
