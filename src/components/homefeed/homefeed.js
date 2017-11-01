@@ -63,22 +63,18 @@ class Homefeed extends Component {
     this.setState({ toggledComponent: component });
   }
 
-  handlePageChange() {
-
-  }
-
   renderListingLists() {
     let nearbyListings = this.state.nearby;
     let collections = this.state.collections;
 
-    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0))  && this.props.listings && this.props.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings && this.props.listings.length > 0) {
       return (
         <div>
           <div>
-            <Pageable totalPages={ 60 }
-                      currentPage={ 1 }
-                      handlePageChange={ this.handlePageChange }>
-              <ListingList scrollable={false} listings={this.props.listings} />
+            <Pageable totalPages={ this.props.pages }
+                      currentPage={ this.props.page }
+                      handlePageChange={ this.props.handlePageChange }>
+              <ListingList scrollable={ false } listings={ this.props.listings } />
             </Pageable>
           </div>
         </div>

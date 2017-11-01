@@ -68,7 +68,10 @@ export default class App extends Component {
       boundingBox: undefined,
       sort: 'distance',
       viewsProps: {},
-      visitedDashboard: false
+      visitedDashboard: false,
+      limit: 20,
+      page: 0,
+      pages: 1
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -76,8 +79,8 @@ export default class App extends Component {
     }
 
     this.toggleModal = this.toggleModal.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.performSearch = this.performSearch.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
     this.locationSearch = this.locationSearch.bind(this);
@@ -91,7 +94,6 @@ export default class App extends Component {
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
-    this.handleSearchIfNotShowingSearchButton = this.handleSearchIfNotShowingSearchButton.bind(this);
   }
 
   componentWillMount() {
@@ -171,10 +173,12 @@ export default class App extends Component {
   handleDatesChange({startDate, endDate}) {
     this.setState({
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      pages: 1,
+      page: 0
     }, () => {
       if (startDate && endDate) {
-        this.handleSearchIfNotShowingSearchButton();
+        this.performSearch();
       }
     });
   }
@@ -184,20 +188,20 @@ export default class App extends Component {
       locationName: location.name,
       searchLocations: [],
       customSearch: true,
+      pages: 1,
+      page: 0,
       location: {
         latitude: location.latitude,
         longitude: location.longitude
       },
       boundingBox: location.bounding_box
-    }, this.handleSearchIfNotShowingSearchButton);
+    }, this.performSearch);
   }
 
-  handleSearch() {
-    this.performSearch();
-  }
-
-  handleSearchIfNotShowingSearchButton() {
-    this.handleSearch();
+  handlePageChange(pageNumber) {
+    this.setState({
+      page: pageNumber - 1
+    }, this.performSearch);
   }
 
   performSearch() {
@@ -233,19 +237,24 @@ export default class App extends Component {
     }
 
     SearchService.create({
-      search: searchParams
+      search: searchParams,
+      limit: this.state.limit,
+      offset: this.state.page * this.state.limit
     }).then((response) => {
       this.setState({
         listings: response.data.data.listings,
+        pages: Math.ceil(response.data.data.total_count / this.state.limit)
       });
     })
   }
 
   handleSortToggle(eventKey, event) {
     this.setState({
+      page: 0,
+      pages: 1,
       sort: eventKey,
       customSearch: true
-    }, this.handleSearch)
+    }, this.performSearch)
   }
 
   handlePositionChange(bounds, center) {
@@ -262,21 +271,27 @@ export default class App extends Component {
     }
 
     this.setState({
+      page: 0,
+      pages: 1,
       location: location,
       boundingBox: boundingBox,
       currentSearch: false
-    }, this.handleSearch);
+    }, this.performSearch);
   }
 
   handleFilterToggle(filters) {
     this.setState({
+      page: 0,
+      pages: 1,
       filters: filters,
       currentSearch: true
-    }, this.handleSearch);
+    }, this.performSearch);
   }
 
   handleMapDrag(bounds, center) {
     this.setState({
+      page: 0,
+      pages: 1,
       customSearch: true
     });
     this.handlePositionChange(bounds, center);
@@ -338,7 +353,7 @@ export default class App extends Component {
                 handleLocationFocus={ this.handleLocationFocus }
                 handleDatesChange={ this.handleDatesChange }
                 handleLocationSelect={ this.handleLocationSelect }
-                handleSearch={ this.handleSearch }
+                handleSearch={ this.performSearch }
                 startDate={ this.state.startDate }
                 endDate={ this.state.endDate }
                 locationName={ this.state.locationName }
@@ -363,7 +378,7 @@ export default class App extends Component {
                             handleLocationFocus={ this.handleLocationFocus }
                             handleDatesChange={ this.handleDatesChange }
                             handleLocationSelect={ this.handleLocationSelect }
-                            handleSearch={ this.handleSearch }
+                            handleSearch={ this.performSearch }
                             startDate={ this.state.startDate }
                             endDate={ this.state.endDate }
                             locationName={ this.state.locationName }
@@ -386,7 +401,10 @@ export default class App extends Component {
                           location={ this.state.location }
                           boundingBox={ this.state.boundingBox }
                           customSearch={ this.state.customSearch }
-                          currentSearch={ this.state.currentSearch } />
+                          currentSearch={ this.state.currentSearch }
+                          handlePageChange={ this.handlePageChange }
+                          pages={ this.state.pages }
+                          page={ this.state.page + 1 } />
               )
             }} />
 
