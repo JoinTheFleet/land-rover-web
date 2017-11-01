@@ -17,18 +17,8 @@ class ListingRules extends Component {
   constructor(props) {
     super(props);
 
-    let listing = Helpers.extendObject(this.props.listing, {});
-
-    if (listing.check_in_time) {
-      listing.check_in_time = moment("1900-01-01 00:00:00").add(listing.check_in_time, 'seconds');
-    }
-
-    if (listing.check_out_time) {
-      listing.check_out_time = moment("1900-01-01 00:00:00").add(listing.check_out_time, 'seconds');
-    }
-
     this.state = {
-      listing: listing
+      listing: this.props.listing
     };
 
     this.validateFields = this.validateFields.bind(this);
@@ -42,26 +32,22 @@ class ListingRules extends Component {
     let listing = this.state.listing;
 
     return {
-      check_in_time: listing.check_in_time,
-      check_out_time: listing.check_out_time,
+      check_in_time: listing.check_in_time || 0,
+      check_out_time: listing.check_out_time || 0,
       rules: this.state.listing.rules
     };
   }
 
   validateFields() {
-    return this.state.listing.rules.length > 0;
+    return this.state.listing.rules && this.state.listing.rules.length > 0;
   }
 
   handleRulesInsertion(rulesText) {
-    this.setState(prevState => ({
-      listing: Helpers.extendObject(prevState.listing, { rules: [ { rule: rulesText } ] })
-    }));
+    this.setState({ listing: Helpers.extendObject(this.state.listing, { rules: [ { rule: rulesText } ] }) });
   }
 
   handleAddPickupTimeSelected(time, timeString) {
-    this.setState(prevState => ({
-      listing: Helpers.extendObject(prevState.listing, { check_in_time: time, check_out_time: time })
-    }));
+    this.setState({ listing: Helpers.extendObject(this.state.listing, { check_in_time: time.unix(), check_out_time: time.unix() }) });
   }
 
   render() {
@@ -84,7 +70,7 @@ class ListingRules extends Component {
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.pick_up_time'}) }>
             <TimePicker onChange={ this.handleAddPickupTimeSelected }
-                        defaultValue={ this.state.listing.check_in_time || moment('00:00', format) }
+                        defaultValue={ moment.unix(this.state.listing.check_in_time || 0).utc() }
                         format={ format } />
 
           </ListingFormFieldGroup>

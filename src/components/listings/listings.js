@@ -5,39 +5,10 @@ import ListingsOverview from './listings_overview';
 import ListingView from './listing_view';
 import ListingForm from './forms/listing_form';
 
-import Bookings from '../bookings/bookings';
-
-import Constants from '../../miscellaneous/constants';
-import Helpers from '../../miscellaneous/helpers';
 
 import { Switch, Route } from "react-router-dom";
 
-const listingsViews = Constants.listingsViews();
-const bookingsViews = Constants.bookingsViews();
-const userRoles = Constants.userRoles();
-
 export default class Listings extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentListing: this.props.currentListing || {},
-      currentView: this.props.currentView || 'index',
-      currentSelectedListingId: this.props.currentSelectedListingId || -1,
-      currentPricingQuote: {},
-      currentQuotation: {}
-    };
-
-    this.setCurrentView = this.setCurrentView.bind(this);
-  }
-
-  setCurrentView(view, params) {
-    let newState = { currentView: view };
-    let additionalParams = params || {};
-
-    this.setState(Helpers.extendObject(newState, additionalParams));
-  }
-
   render() {
     return (
       <div className="col-xs-12 no-side-padding">
@@ -49,9 +20,7 @@ export default class Listings extends Component {
           }} />
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
-                                listing={ this.state.currentListing }
-                                enableBooking={ this.props.currentUserRole === userRoles.renter }
-                                handleChangeView={ this.setCurrentView } />
+                                enableBooking={ this.props.currentUserRole === 'renter' } />
           }} />
           <Route path="/listings" component={ ListingsOverview } />
         </Switch>

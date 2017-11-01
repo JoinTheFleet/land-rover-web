@@ -25,11 +25,11 @@ class ListingPricing extends Component {
     }
 
     if (listing.price) {
-      listing.price = listing.price / 100;
+      listing.price = listing.price;
     }
 
     if (listing.cleaning_fee) {
-      listing.cleaning_fee = listing.cleaning_fee / 100;
+      listing.cleaning_fee = listing.cleaning_fee;
     }
 
     this.state = {
@@ -82,7 +82,10 @@ class ListingPricing extends Component {
     }));
   }
 
-  handleAddODCRate() {
+  handleAddODCRate(event) {
+    if (event) {
+      event.preventDefault();
+    }
     let on_demand_rates = this.state.listing.on_demand_rates;
 
     on_demand_rates.push({ distance: '', rate: '' });
@@ -107,15 +110,15 @@ class ListingPricing extends Component {
                   <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.distance'}) }>
                     <FormField id={ 'listing_od_rate_distance_' + index }
                               type="text"
-                              value={ listing.on_demand_rates[index].distance }
-                              handleChange={ (event) => { this.handleRateInsertion(index, 'distance', event.target.value) } } />
+                              value={ listing.on_demand_rates[index].distance / 100.0 }
+                              handleChange={ (event) => { this.handleRateInsertion(index, 'distance', event.target.value * 100) } } />
                   </ListingFormField>
 
                   <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.price'}) }>
                     <FormField id={ 'listing_od_rate_rate_' + index }
                               type="text"
-                              value={ listing.on_demand_rates[index].rate }
-                              handleChange={ (event) => { this.handleRateInsertion(index, 'rate', event.target.value) } } />
+                              value={ listing.on_demand_rates[index].rate / 100.0 }
+                              handleChange={ (event) => { this.handleRateInsertion(index, 'rate', event.target.value * 100) } } />
                   </ListingFormField>
                 </div>
               )
@@ -139,15 +142,15 @@ class ListingPricing extends Component {
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.daily'}) }>
               <FormField id="listing_price"
                          type="text"
-                         value={ listing.price }
-                         handleChange={ (event) => { this.handleInputChange('price', parseInt(event.target.value, 10)) } } />
+                         value={ listing.price / 100.0 }
+                         handleChange={ (event) => { this.handleInputChange('price', event.target.value * 100) } } />
             </ListingFormField>
 
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.cleaning'}) }>
               <FormField id="listing_cleaning_fee"
                         type="text"
-                        value={ listing.cleaning_fee }
-                        handleChange={ (event) => { this.handleInputChange('cleaning_fee', parseInt(event.target.value, 10)) } } />
+                        value={ listing.cleaning_fee / 100.0 }
+                        handleChange={ (event) => { this.handleInputChange('cleaning_fee', event.target.value * 100) } } />
             </ListingFormField>
 
           </ListingFormFieldGroup>

@@ -1,11 +1,5 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -17,6 +11,8 @@ import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
 import ImageGallery from '../../../miscellaneous/image_gallery';
 import Loading from '../../../miscellaneous/loading';
+
+const MINIMUM_IMAGE_COUNT = 3;
 
 class ListingImages extends Component {
   constructor(props) {
@@ -37,6 +33,7 @@ class ListingImages extends Component {
     };
 
     this.validateFields = this.validateFields.bind(this);
+    this.requiredImagesText = this.requiredImagesText.bind(this);
     this.getListingProperties = this.getListingProperties.bind(this);
     this.addUploadedImage = this.addUploadedImage.bind(this);
     this.handleRemoveImage = this.handleRemoveImage.bind(this);
@@ -58,11 +55,22 @@ class ListingImages extends Component {
   }
 
   validateFields() {
-    return this.getListingProperties().images.length > 0;
+    return this.state.images.length >= MINIMUM_IMAGE_COUNT;
   }
 
   getListingProperties() {
     return { images: this.state.images };
+  }
+
+  requiredImagesText() {
+    let requiredCount = Math.max(0, MINIMUM_IMAGE_COUNT - this.state.images.length);
+
+    if (requiredCount > 0) {
+      return ` (${requiredCount} ${this.props.intl.formatMessage({id: 'listings.images.more_images_required'})})`;
+    }
+    else {
+      return '';
+    }
   }
 
   setupImagesDrop() {
@@ -163,7 +171,7 @@ class ListingImages extends Component {
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
                      intl={ this.props.intl }>
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.images.vehicle_images'}) }>
+          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.images.vehicle_images'}) + this.requiredImagesText() }>
             { this.renderImagesCarousel() }
             <button className="listing-form-images-upload-btn btn secondary-color white-text fs-12 ls-dot-five col-xs-12"
                     onClick={ () => { this.handleUploadImagesButtonClick() } }>

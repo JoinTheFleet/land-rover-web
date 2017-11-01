@@ -21,7 +21,12 @@ export default class ListingCard extends Component {
 
     if (this.props.enableEdit) {
       editButton = (
-        <Link to={ `/listings/${this.props.listing.id}/edit` }
+        <Link to={{
+                pathname: `/listings/${this.props.listing.id}/edit`,
+                state: {
+                  listing: this.props.listing
+                }
+              }}
               className="listing-card-edit-button btn secondary-color white-text">
           <FormattedMessage id="application.edit" />
         </Link>
@@ -29,7 +34,12 @@ export default class ListingCard extends Component {
     }
 
     return (
-      <Link to={ `/listings/${this.props.listing.id}`}
+      <Link to={{
+              pathname: `/listings/${this.props.listing.id}`,
+              state: {
+                listing: this.props.listing
+              }
+            }}
             className='listing-card-link'>
         <div className="listing-card">
           <div className="listing-card-photo">

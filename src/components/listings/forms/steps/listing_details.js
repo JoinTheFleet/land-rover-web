@@ -1,17 +1,11 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  injectIntl
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
 import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
 import ListingFormField from '../listing_form_field';
-import Dropdown from '../../../miscellaneous/dropdown';
 import FormField from '../../../miscellaneous/forms/form_field';
 
 import ListingAmenitiesService from '../../../../shared/services/listings/listing_amenities_service';
@@ -112,7 +106,6 @@ class ListingDetails extends Component {
   }
 
   render() {
-    let listing = this.props.listing;
     let filtersData = this.state.filtersData;
 
     return (

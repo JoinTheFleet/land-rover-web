@@ -36,21 +36,27 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    if (this.state.center.lat === 0 && this.state.center.lng === 0) {
+    if (!this.props.center) {
       GeolocationService.getCurrentPosition()
                         .then(position => {
                           this.setState({
                             center: {
-                              latitude: position.coords.latitude,
-                              longitude: position.coords.longitude
+                              lat: position.coords.latitude,
+                              lng: position.coords.longitude
                             }
                           });
                         });
     }
   }
 
+  componentWillReceiveProps(props) {
+    if (props.center) {
+      this.setState({ center: props.center });
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    if( prevProps.markers !== this.props.markers) {
+    if(prevProps.markers !== this.props.markers) {
       this.setState({
         markers: this.props.markers
       });

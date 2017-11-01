@@ -18,6 +18,10 @@
       position: relative;
       top: -2px;
 
+      &.active {
+        cursor: pointer;
+      }
+
       .fleet-stepper-step-number {
         position: absolute;
         left: 50%;

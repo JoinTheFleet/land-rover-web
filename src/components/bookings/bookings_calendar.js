@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import moment from 'moment';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Button, Dropdown, MenuItem } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-import Alert from '../miscellaneous/alert';
+import Alert from 'react-s-alert';
 import Loading from '../miscellaneous/loading';
 import FormField from '../miscellaneous/forms/form_field';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
 import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
-import LocalizationService from '../../shared/libraries/localization_service';
 
 import ListingsSelector from '../listings/listings_selector';
 
@@ -30,8 +28,7 @@ class BookingsCalendar extends Component {
       changedDays: [],
       nonAvailableDays: [],
       currentDailyRate: '',
-      currentAvailableSetting: null,
-      messages: []
+      currentAvailableSetting: null
     };
 
     this.renderDay = this.renderDay.bind(this);
@@ -45,7 +42,6 @@ class BookingsCalendar extends Component {
     this.handleResetRateToDefault = this.handleResetRateToDefault.bind(this);
     this.handleCancelRateChanges = this.handleCancelRateChanges.bind(this);
     this.handleSaveRateChanges = this.handleSaveRateChanges.bind(this);
-    this.handleAlertClose = this.handleAlertClose.bind(this);
   }
 
   componentWillMount() {
@@ -67,7 +63,7 @@ class BookingsCalendar extends Component {
                       }, () => this.fetchCurrentAvailability());
                     })
                     .catch((error) => {
-                      this.setState((prevState) => ({ messages: prevState.messages.concat([ { type: 'error', message: error } ]), loading: false }));
+                      this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
                     });
     });
   }
@@ -106,17 +102,11 @@ class BookingsCalendar extends Component {
                                                       });
                                                     })
                                                     .catch((error) => {
-                                                      this.setState((prevState) => ({
-                                                        loading: false,
-                                                        messages: prevState.messages.concat([ { type: 'error', message: error } ])
-                                                      }));
+                                                      this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
                                                     });
                             })
                             .catch((error) => {
-                              this.setState((prevState) => ({
-                                loading: false,
-                                messages: prevState.messages.concat([ { type: 'error', message: error } ])
-                              }));
+                              this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
                             });
     });
   }
@@ -200,26 +190,13 @@ class BookingsCalendar extends Component {
                             .then(response => {
                               let message = this.props.intl.formatMessage({ id: 'bookings.saved_changes_successfully' });
 
-                              this.setState(
-                                prevState => ({ messages: prevState.messages.concat([{ type: 'success', message: message }]) }),
-                                () => this.fetchCurrentAvailability()
-                              );
+                              Alert.success(message);
+                              this.fetchCurrentAvailability();
                             })
                             .catch(error => {
-                              this.setState(prevState => ({ loading: false, messages: prevState.messages.concat([ { type: 'error', message: error } ]) }));
+                              this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
                             });
     });
-  }
-
-  handleAlertClose(messageToRemove) {
-    let messages = this.state.messages;
-    let index = messages.indexOf(messageToRemove);
-
-    if (index > -1) {
-      messages.splice(index, 1);
-
-      this.setState({ messages: messages });
-    }
   }
 
   isDayBlocked(day) {
@@ -371,27 +348,6 @@ class BookingsCalendar extends Component {
     return setRateTile;
   }
 
-  renderMessages() {
-    let messages = this.state.messages;
-
-    return (
-      <div className="col-xs-12 no-side-padding">
-        {
-          messages.map((message, index) => {
-            return (
-              <Alert key={ `bookings_calendar_messages_${index}` }
-                     type={ message.type }
-                     message={ message.message }
-                     closeable={ true }
-                     handleClose={ () => { this.handleAlertClose(message) } }>
-              </Alert>
-            )
-          })
-        }
-      </div>
-    )
-  }
-
   render() {
 
     return (
@@ -418,8 +374,6 @@ class BookingsCalendar extends Component {
           { this.renderSetRateTile() }
 
           { this.renderLoading() }
-
-          { this.renderMessages() }
         </div>
       </div>
     );

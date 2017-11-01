@@ -7,7 +7,7 @@ import WebFont from 'webfontloader';
 
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";

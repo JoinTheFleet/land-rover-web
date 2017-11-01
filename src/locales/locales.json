@@ -10,6 +10,7 @@
     "application.loading": "Loading",
     "application.location": "Location",
     "application.next": "Next",
+    "application.previous": "Previous",
     "application.no": "No",
     "application.none": "None",
     "application.other": "Other",
@@ -164,6 +165,7 @@
     "listings.location.address_location": "Address Location",
 
     "listings.images.vehicle_images": "Vehicle Images",
+    "listings.images.more_images_required": "More Images Required",
     "listings.images.upload_vehicle_images": "Upload Vehicle Image(s)",
 
     "listings.pricing.prices": "Prices",

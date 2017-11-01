@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Alert from 'react-s-alert';
+
 import ConversationService from '../../shared/services/conversations/conversation_service';
 import ListingConversationsService from '../../shared/services/listings/listing_conversations_service';
 
