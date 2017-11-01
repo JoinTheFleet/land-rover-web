@@ -32,10 +32,17 @@ export default class Conversation extends Component {
   }
 
   componentWillMount() {
-    ConversationService.show(this.props.match.params.id)
-                       .then(response => {
-                         this.setState({ conversation: response.data.data.conversation }, this.refreshData);
-                       }, );
+    let location = this.props.location;
+
+    if (location && location.state && location.state.conversation) {
+      this.setState({ conversation: location.state.conversation }, this.refreshData);
+    }
+    else {
+      ConversationService.show(this.props.match.params.id)
+                         .then(response => {
+                           this.setState({ conversation: response.data.data.conversation }, this.refreshData);
+                         });
+    }
   }
 
   componentDidMount() {

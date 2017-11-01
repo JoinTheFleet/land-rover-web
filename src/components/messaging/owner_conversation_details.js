@@ -18,7 +18,13 @@ export default class OwnerConversationDetails extends Component {
     let imageURL = renter.images.small_url;
 
     return (
-      <Link key={ `conversation_link_${conversation.id}` } to={ `/messages/${conversation.id}` }>
+      <Link key={ `conversation_link_${conversation.id}` }
+            to={{
+              pathname: `/messages/${conversation.id}`,
+              state: {
+                conversation: conversation
+              }
+            }}>
         <div className='col-xs-12 conversation-detail' onClick={ this.props.onClick }>
           <div className='row'>
             <div className='col-xs-2 col-lg-1'>

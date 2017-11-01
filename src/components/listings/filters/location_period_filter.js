@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
 import momentPropTypes from 'react-moment-proptypes';
 import CloseOnEscape from 'react-close-on-escape';
+import { Link } from 'react-router-dom';
 
 class ListingPeriodFilter extends Component {
   constructor(props) {
@@ -29,10 +30,12 @@ class ListingPeriodFilter extends Component {
 
     if (this.props.showSearchButton) {
       button = (
-        <Button bsStyle='primary search'
-                onClick={ this.props.handleSearch }>
-          Search
-        </Button>
+        <Link to='/dashboard'>
+          <Button bsStyle='primary search'
+                  onClick={ this.props.handleSearch }>
+            Search
+          </Button>
+        </Link>
       );
     }
     return (

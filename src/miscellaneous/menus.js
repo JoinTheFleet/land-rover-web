@@ -1,7 +1,6 @@
 import Constants from './constants';
 
 const navigationSections = Constants.navigationSections();
-const userRoles = Constants.userRoles;
 
 export default class Menus {
   static getTopMenuForUserRole(role) {
@@ -12,7 +11,7 @@ export default class Menus {
       navigationSections.account
     ];
 
-    if (role === userRoles.owner) {
+    if (role === 'owner') {
       menu.push(navigationSections.listings);
       menu.push(navigationSections.calendar);
     }
