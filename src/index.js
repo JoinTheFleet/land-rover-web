@@ -9,6 +9,8 @@ import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import {StripeProvider} from 'react-stripe-elements';
+
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
 
@@ -39,9 +41,11 @@ WebFont.load({
 render(
   (<IntlProvider locale={locale} messages={messages}>
     <LocaleProvider locale={enUS}>
-      <Router>
-        <App />
-      </Router>
+      <StripeProvider apiKey={ process.env.REACT_APP_STRIPE_API_KEY }>
+        <Router>
+          <App />
+        </Router>
+      </StripeProvider>
     </LocaleProvider>
   </IntlProvider>),
   document.getElementById('root')

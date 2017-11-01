@@ -29,7 +29,7 @@ export default class Loading extends Component {
     }
 
     let loadingDiv = (
-      <div className="loading-div text-center">
+      <div className={ `${this.props.className} loading-div text-center` }>
         <div>
           { loader }
           { loadingText }
@@ -48,5 +48,6 @@ export default class Loading extends Component {
 Loading.propTypes = {
   fullWidthLoading: PropTypes.bool,
   hiddenText: PropTypes.bool,
-  fixedSize: PropTypes.string
+  fixedSize: PropTypes.string,
+  className: PropTypes.string
 }

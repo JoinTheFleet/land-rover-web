@@ -71,6 +71,7 @@
     "react-router": "",
     "react-router-dom": "",
     "react-slick": "",
+    "react-stripe-elements": "",
     "react-chat-elements": "",
     "sass-loader": "",
     "slick-carousel": "",
