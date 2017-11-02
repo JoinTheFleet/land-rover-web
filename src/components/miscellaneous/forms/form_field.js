@@ -8,6 +8,7 @@ import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'rea
 import { ReactDatez } from 'react-datez';
 import { TimePicker } from 'antd';
 import { countries } from '../countries';
+import countryCodes from 'country-calling-codes';
 
 const COUNTRIES = countries.map(function(country) {
   return {
@@ -16,12 +17,16 @@ const COUNTRIES = countries.map(function(country) {
   };
 });
 
-const COUNTRY_CODES = countries.map(function(country) {
-  return {
-    value: country['country-code'],
-    label: country['name']
-  }
-})
+const COUNTRY_CODES =
+  countryCodes
+    .filter(function(country) {
+      return !country.value.includes("undefined");
+    }).map(function(country) {
+      return {
+        value: country.value.match(/(\d+)/)[0],
+        label: country.label
+      }
+   })
 
 export default class FormField extends Component {
   render() {
