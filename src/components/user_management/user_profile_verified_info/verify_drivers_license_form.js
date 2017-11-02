@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 import moment from 'moment';
 
-import FormRow from '../../miscellaneous/forms/form_row';
-import FormGroup from '../../miscellaneous/forms/form_group';
 import FormField from '../../miscellaneous/forms/form_field';
 import Button from '../../miscellaneous/button';
 import LocalizationService from '../../../shared/libraries/localization_service';

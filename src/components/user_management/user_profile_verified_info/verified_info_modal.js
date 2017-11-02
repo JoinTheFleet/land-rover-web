@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 
-import FormRow from '../../miscellaneous/forms/form_row';
-import FormGroup from '../../miscellaneous/forms/form_group';
-import FormField from '../../miscellaneous/forms/form_field';
 import Modal from '../../miscellaneous/modal';
-import Button from '../../miscellaneous/button';
+
 import VerifyPhoneNumberForm from './verify_phone_number_form';
 import VerifyDriversLicenseForm from './verify_drivers_license_form';
 
-
-class VerifiedInfoModal extends Component {
+export default class VerifiedInfoModal extends Component {
   render() {
     let modalBody = '';
 
@@ -28,5 +23,3 @@ class VerifiedInfoModal extends Component {
     )
   }
 }
-
-export default injectIntl(VerifiedInfoModal)

@@ -7,7 +7,6 @@ import FormField from '../../miscellaneous/forms/form_field';
 import VerifiedInfoModal from './verified_info_modal';
 import moment from 'moment';
 
-
 class UserForm extends Component {
   constructor(props) {
     super(props);
