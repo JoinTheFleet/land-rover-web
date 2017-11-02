@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import Select from 'react-select';
+import Button from '../button';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
 import { TimePicker } from 'antd';
 import { countries } from '../countries';
+import countryCodes from 'country-calling-codes';
 
 const COUNTRIES = countries.map(function(country) {
   return {
@@ -14,6 +16,17 @@ const COUNTRIES = countries.map(function(country) {
     label: country['name']
   };
 });
+
+const COUNTRY_CODES =
+  countryCodes
+    .filter(function(country) {
+      return !country.value.includes("undefined");
+    }).map(function(country) {
+      return {
+        value: country.value.match(/(\d+)/)[0],
+        label: country.label
+      }
+   })
 
 export default class FormField extends Component {
   render() {
@@ -28,6 +41,14 @@ export default class FormField extends Component {
                   onChange={ this.props.handleChange }
                   className='col-xs-12' />
       );
+    }
+    else if (this.props.type === 'button') {
+      renderable = (
+        <Button onClick={ this.props.handleChange }
+                className={ this.props.className }>
+          { this.props.value }
+        </Button>
+      )
     }
     else if (this.props.type === 'singledate') {
       renderable = (
@@ -135,6 +156,15 @@ export default class FormField extends Component {
       renderable = (
         <Select value={ this.props.value }
                 options={ COUNTRIES }
+                disabled={ this.props.disabled }
+                onChange={ this.props.handleChange }
+                className={ this.props.className } />
+        );
+    }
+    else if (this.props.type === 'country-code') {
+      renderable = (
+        <Select value={ this.props.value }
+                options={ COUNTRY_CODES }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
                 className={ this.props.className } />
