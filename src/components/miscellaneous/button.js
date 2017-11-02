@@ -30,5 +30,5 @@ Button.propTypes = {
   spinnerClass: PropTypes.string,
   onClick: PropTypes.func,
   className: PropTypes.string,
-  accessory: PropTypes.component
+  accessory: PropTypes.element
 };

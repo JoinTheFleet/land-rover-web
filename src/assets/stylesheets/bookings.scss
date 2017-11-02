@@ -323,4 +323,26 @@
       left: 1px !important;
     }
   }
+
+  .location-search-results .dropdown-menu {
+    max-width: inherit !important;
+  }
+
+  .insurance-criteria-info-icon {
+    &:hover ~ .insurance-criteria-info-div {
+      opacity: 1;
+      z-index: 1000;
+      transition: ease-in 0.2s;
+    }
+  }
+
+  .insurance-criteria-info-div {
+    opacity: 0;
+    position: absolute;
+    background: white;
+    top: 100%;
+    padding: 15px;
+    z-index: -1;
+    box-shadow: 0px 0px 3px 1px $smoke-grey-two;
+  }
 }

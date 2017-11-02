@@ -42,4 +42,26 @@ export default class Geolocation {
 
     return { latitude: avgLat, longitude: avgLng };
   }
+
+  static getLocationFromListing(listing) {
+    let latitude = 0;
+    let longitude = 0;
+
+    if (listing.location) {
+      latitude = listing.location.latitude;
+      longitude = listing.location.longitude;
+    }
+    else if (listing.geometry && listing.geometry.bounds) {
+      let northeast = listing.geometry.bounds.northeast;
+      let southwest = listing.geometry.bounds.southwest;
+
+      latitude = (northeast.latitude + southwest.latitude) / 2;
+      longitude = (northeast.longitude + southwest.longitude) / 2;
+    }
+
+    return {
+      latitude: latitude,
+      longitude: longitude
+    };
+  }
 }

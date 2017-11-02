@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@google/maps": "",
     "accept-language": "",
     "antd": "",
     "autoprefixer": "7.1.2",

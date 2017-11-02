@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export default class LocationMenuItem extends Component {
   render() {
     return (
-      <MenuItem eventKey={ this.props.location.id } onClick={ (menuItem) => { this.props.handleLocationSelect(this.props.location) } }>{ this.props.location.name }</MenuItem>
+      <MenuItem eventKey={ this.props.location.id } onClick={ (menuItem) => { this.props.handleLocationSelect(this.props.location) } }>{ this.props.location.address || this.props.location.name }</MenuItem>
     )
   }
 }

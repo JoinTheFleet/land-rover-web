@@ -36,8 +36,8 @@ class ListingView extends Component {
   componentWillMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.listing) {
-      this.setState({ listing: location.state.listing })
+    if (location && location.state && location.state.listing && location.state.listing.variant) {
+      this.setState({ listing: location.state.listing });
     }
     else {
       this.setState({ loading: true }, () => {
