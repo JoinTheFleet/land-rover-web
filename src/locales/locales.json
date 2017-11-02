@@ -25,6 +25,8 @@
     "application.vehicle": "Vehicle",
     "application.view_all": "View All",
     "application.yes": "Yes",
+    "application.delete": "Delete",
+    "application.manage": "Manage",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -226,6 +228,7 @@
     "user_profile_menu.settings": "Settings",
     "user_profile_menu.support": "Support",
     "user_profile_menu.t_and_cs": "T's & C's",
+    "user_profile_menu.payment_methods": "Payment Methods",
 
     "user_profile.profile_photo": "Profile Photo",
     "user_profile.upload_profile_pic": "Upload Profile Pic",
@@ -248,6 +251,11 @@
     "user_profile_verified_info.address.post_code": "Post Code",
     "user_profile_verified_info.address.country": "Country",
     "user_profile_verified_info.email": "Email",
+    "user_profile_verified_info.make_default": "Make Default",
+    "user_profile_verified_info.payment_methods": "Payment Methods",
+    "user_profile_verified_info.add_card": "Add A New Card",
+    "user_profile_verified_info.phone_number": "Phone Number",
+    "user_profile_verified_info.drivers_license": "Drivers License",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",

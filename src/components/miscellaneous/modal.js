@@ -35,7 +35,7 @@ export default class Modal extends Component {
 
 Modal.propTypes = {
   open: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  modalName: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  modalName: PropTypes.string,
   toggleModal: PropTypes.func.isRequired
 };

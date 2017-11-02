@@ -66,6 +66,10 @@ export default class Constants {
         key: 'verified_info',
         display: 'Verified Info'
       },
+      payment_methods: {
+        key: 'payment_methods',
+        display: 'Payment Methods'
+      },
       settings: {
         key: 'settings',
         display: 'Settings'

@@ -10,6 +10,9 @@ import UserProfileSupport from './user_profile_support';
 import UserProfileTerms from './user_profile_terms';
 import UserProfileVerifiedInfo from './user_profile_verified_info';
 import UserProfileMenu from './user_profile_menu';
+import UserPaymentMethods from './user_payment_methods';
+
+import { Elements } from 'react-stripe-elements';
 
 const userManagementViews = Constants.userManagementViews();
 
@@ -39,6 +42,13 @@ export default class UserManagement extends Component {
         break;
       case userManagementViews.support.key:
         viewToRender = (<UserProfileSupport></UserProfileSupport>);
+        break;
+      case userManagementViews.payment_methods.key:
+        viewToRender = (
+          <Elements>
+            <UserPaymentMethods />
+          </Elements>
+        );
         break;
       case userManagementViews.t_and_cs.key:
         viewToRender = (<UserProfileTerms></UserProfileTerms>);

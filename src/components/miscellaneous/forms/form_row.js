@@ -18,7 +18,8 @@ class FormRow extends Component {
                        id={ this.props.id }
                        value={ this.props.value }
                        placeholder={ this.props.placeholder }
-                       options={ this.props.options} />
+                       options={ this.props.options}
+                       className={ this.props.className } />
           </div>
         </div>
       </div>
