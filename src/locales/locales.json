@@ -27,6 +27,7 @@
     "application.yes": "Yes",
     "application.delete": "Delete",
     "application.manage": "Manage",
+    "application.verify": "Verify",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -257,6 +258,11 @@
     "user_profile_verified_info.add_card": "Add A New Card",
     "user_profile_verified_info.phone_number": "Phone Number",
     "user_profile_verified_info.drivers_license": "Drivers License",
+    "user_profile_verified_info.sent_verification": "We have sent a verification code to ",
+    "user_profile_verified_info.enter_verification": "Please enter the verification code",
+    "user_profile_verified_info.successfully_verified": "Your phone number has been verified.",
+    "user_profile_verified_info.add_phone_number": "Add phone number:",
+    "user_profile_verified_info.select_country": "Select Country",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",
