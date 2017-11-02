@@ -33,7 +33,7 @@ class UserProfileVerifiedInfo extends Component {
   handleDateChange(date) {
     let user = this.state.user;
 
-    user.date_of_birth = moment(date).unix();
+    user.date_of_birth = moment(date).utc().unix();
 
     this.setState({user: user})
   }

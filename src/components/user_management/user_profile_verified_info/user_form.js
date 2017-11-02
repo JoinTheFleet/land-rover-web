@@ -29,19 +29,22 @@ class UserForm extends Component {
 
   showPhoneDialog() {
     this.setState({
-      open: true
+      open: true,
+      type: 'phone'
     });
   }
 
   showLicenseDialog() {
     this.setState({
-      open: true
+      open: true,
+      type: 'license'
     });
   }
 
   toggleModal() {
     this.setState({
-      open: false
+      open: false,
+      type: undefined
     });
   }
 
@@ -71,10 +74,10 @@ class UserForm extends Component {
         { addressForm }
 
         <FormRow type='text' id='user-email' handleChange={ this.props.handleEmailChange } value={ this.props.user.email } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.email'}) } />
-        <FormRow type='button' id='user-phone' handleChange={ this.showPhoneDialog } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.phone_number'}) } value={ this.props.intl.formatMessage({id: 'application.manage'}) } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
-        <FormRow type='button' id='user-license' handleChange={ this.showLicenseDialog } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.drivers_license'}) } value={ this.props.intl.formatMessage({id: 'application.manage'}) } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
+        <FormRow type='button' id='user-phone' handleChange={ this.showPhoneDialog } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.phone_number'}) } value={ this.props.intl.formatMessage({id: 'application.manage' }) } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
+        <FormRow type='button' id='user-license' handleChange={ this.showLicenseDialog } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.drivers_license'}) } value={ this.props.intl.formatMessage({id: 'application.manage' }) } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
 
-        <VerifiedInfoModal open={ this.state.open } toggleModal={ this.toggleModal } type={ 'phone' } user={ this.props.user }/>
+        <VerifiedInfoModal open={ this.state.open } toggleModal={ this.toggleModal } type={ this.state.type } user={ this.props.user }/>
       </div>
     )
   }

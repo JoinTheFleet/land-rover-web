@@ -7,20 +7,10 @@ import FormField from '../../miscellaneous/forms/form_field';
 import Modal from '../../miscellaneous/modal';
 import Button from '../../miscellaneous/button';
 import VerifyPhoneNumberForm from './verify_phone_number_form';
+import VerifyDriversLicenseForm from './verify_drivers_license_form';
 
 
 class VerifiedInfoModal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderDriverLicenseForm = this.renderDriverLicenseForm.bind(this);
-  }
-
-  renderDriverLicenseForm() {
-
-  }
-
-
   render() {
     let modalBody = '';
 
@@ -28,7 +18,7 @@ class VerifiedInfoModal extends Component {
       modalBody = <VerifyPhoneNumberForm toggleModal={ this.props.toggleModal }/>
     }
     else {
-      modalBody =  this.renderDriverLicenseForm();
+      modalBody = <VerifyDriversLicenseForm toggleModal={ this.props.toggleModal }/>
     }
 
     return (

@@ -28,8 +28,6 @@ export default class UserManagement extends Component {
     this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-
-
   getViewToRender() {
     let viewToRender;
 
