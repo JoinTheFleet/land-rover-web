@@ -7,6 +7,7 @@ export default class BookingStatus extends Component {
   render() {
     let booking = this.props.booking;
     let className = 'secondary-text-color';
+
     switch (booking.status) {
       case 'rejected':
       case 'pending':
