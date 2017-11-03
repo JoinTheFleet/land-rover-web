@@ -429,6 +429,10 @@ export default class App extends Component {
                 <Route path="/calendar" render={(props) => {
                   return ( <BookingsCalendar /> )
                 }} />
+                <Route path="/bookings" render={(props) => {
+                  return (<Bookings {...props}
+                                    currentUserRole={ this.state.currentUserRole} />)
+                }} />
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             }
