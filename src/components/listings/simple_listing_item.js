@@ -13,7 +13,7 @@ import ListingsService from '../../shared/services/listings/listings_service';
 export default class SimpleListingItem extends Component {
   renderItem() {
     let item = this.props.listing;
-    let image = <img src='' />;
+    let image = <img src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
 
     let vehicleMake = item.make;
     let vehicleModel = item.model;
