@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 
+import BookingFormCheckIn from './booking_form_check_in';
 import LocationMenuItem from '../../listings/filters/location_menu_item';
 import FormField from '../../miscellaneous/forms/form_field';
 import Loading from '../../miscellaneous/loading';
@@ -853,23 +854,28 @@ class BookingForm extends Component {
     let actionButtonsDiv = '';
 
     if (role === 'owner') {
-      if (status === 'pending') {
-        actionButtonsDiv = (
-          <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
-            <div className="col-xs-12 no-side-padding">
-              <button className="booking-form-action-button btn secondary-color white-text fs-18 col-xs-12"
-                      onClick={ () => { this.respondToBookingRequest(true) } }>
-                { LocalizationService.formatMessage('bookings.accept_booking') }
-              </button>
+      switch(status) {
+        case 'pending':
+          actionButtonsDiv = (
+            <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
+              <div className="col-xs-12 no-side-padding">
+                <button className="booking-form-action-button btn secondary-color white-text fs-18 col-xs-12"
+                        onClick={ () => { this.respondToBookingRequest(true) } }>
+                  { LocalizationService.formatMessage('bookings.accept_booking') }
+                </button>
+              </div>
+              <div className="col-xs-12 no-side-padding">
+                <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
+                        onClick={ () => { this.respondToBookingRequest(false) } }>
+                  { LocalizationService.formatMessage('bookings.reject_booking') }
+                </button>
+              </div>
             </div>
-            <div className="col-xs-12 no-side-padding">
-              <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
-                      onClick={ () => { this.respondToBookingRequest(false) } }>
-                { LocalizationService.formatMessage('bookings.reject_booking') }
-              </button>
-            </div>
-          </div>
-        )
+          )
+          break;
+        case 'confirmed':
+          actionButtonsDiv = <BookingFormCheckIn />;
+        default:
       }
     }
     else {

@@ -222,6 +222,10 @@
     "bookings.booking_accepted_successfully": "Booking accepted successfully",
     "bookings.booking_rejected_successfully": "Booking rejected successfully",
     "bookings.get_directions": "Get Directions",
+    "bookings.please_sign_in_below": "Please sign below as confirmation of your acceptance of Fleet’s {terms_and_conditions} and owners user policy.",
+    "bookings.terms_and_conditions": "Terms & Conditions",
+    "bookings.renter_signature": "Renter's Signature",
+    "bookings.owner_signature": "Owner's Signature",
 
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",
