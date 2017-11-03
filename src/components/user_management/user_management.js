@@ -5,9 +5,6 @@ import React, {
 import Constants from '../../miscellaneous/constants';
 
 import UserProfileDetails from './user_profile_details';
-import UserProfileSettings from './user_profile_settings';
-import UserProfileSupport from './user_profile_support';
-import UserProfileTerms from './user_profile_terms';
 import UserProfileVerifiedInfo from './user_profile_verified_info';
 import UserProfileMenu from './user_profile_menu';
 import UserPaymentMethods from './user_payment_methods';
@@ -28,8 +25,6 @@ export default class UserManagement extends Component {
     this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-
-
   getViewToRender() {
     let viewToRender;
 
@@ -37,21 +32,12 @@ export default class UserManagement extends Component {
       case userManagementViews.verified_info.key:
         viewToRender = (<UserProfileVerifiedInfo></UserProfileVerifiedInfo>);
         break;
-      case userManagementViews.settings.key:
-        viewToRender = (<UserProfileSettings></UserProfileSettings>);
-        break;
-      case userManagementViews.support.key:
-        viewToRender = (<UserProfileSupport></UserProfileSupport>);
-        break;
       case userManagementViews.payment_methods.key:
         viewToRender = (
           <Elements>
             <UserPaymentMethods />
           </Elements>
         );
-        break;
-      case userManagementViews.t_and_cs.key:
-        viewToRender = (<UserProfileTerms></UserProfileTerms>);
         break;
       default:
         viewToRender = (<UserProfileDetails></UserProfileDetails>);

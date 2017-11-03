@@ -18,7 +18,14 @@ export default class UserProfileMenu extends Component {
             return (
               <div key={'header_menu_' + menuItem.key} className="menu-item">
                 <span className={ this.props.currentViewKey === menuItem.key ? 'secondary-text-color' : ''}
-                      onClick={ () => { this.props.handleMenuClick(menuItem.key); } } >
+                      onClick={ () => {
+                        if (menuItem.url) {
+                          window.open(menuItem.url)
+                        }
+                        else {
+                          this.props.handleMenuClick(menuItem.key);
+                        }
+                      }} >
                   <FormattedMessage id={'user_profile_menu.' + menuItem.key} />
                 </span>
               </div>);

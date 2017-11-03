@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import Alert from 'react-s-alert';
 
-import FormRow from '../../miscellaneous/forms/form_row';
-import FormGroup from '../../miscellaneous/forms/form_group';
 import FormField from '../../miscellaneous/forms/form_field';
 import Button from '../../miscellaneous/button';
 import LocalizationService from '../../../shared/libraries/localization_service';
 import UserPhoneNumbersService from '../../../shared/services/users/user_phone_numbers_service';
 
-class VerifiedInfoModal extends Component {
+export default class VerifyPhoneNumberForm extends Component {
   constructor(props) {
     super(props);
 
@@ -33,7 +30,9 @@ class VerifiedInfoModal extends Component {
   }
 
   handleCountryChange(country) {
-    this.setState({ countryCode: country.value });
+    if (country) {
+      this.setState({ countryCode: country.value });
+    }
   }
 
   handlePhoneNumberChange(event) {
@@ -84,8 +83,6 @@ class VerifiedInfoModal extends Component {
   }
 
   afterPhoneNumberValidation() {
-    this.props.toggleModal();
-
     this.setState({
       loading: false,
       countryCode: undefined,
@@ -95,6 +92,7 @@ class VerifiedInfoModal extends Component {
       verificationCode: undefined
     }, () => {
       Alert.success(LocalizationService.formatMessage('user_profile_verified_info.successfully_verified'));
+      this.props.toggleModal();
     })
   }
 
@@ -107,11 +105,12 @@ class VerifiedInfoModal extends Component {
       UserPhoneNumbersService.confirm(this.state.verificationID, this.state.verificationCode)
                              .then(this.afterPhoneNumberValidation)
                              .catch(error => {
+                               Alert.error(error.response.data.message)
                                this.setState({
                                  loading: false
                                }, () => {
                                  if (error.response) {
-                                   Alert.error(error.response.data.message)
+                                   Alert.error(error.response.data.message);
                                  }
                                })
                              })
@@ -140,7 +139,7 @@ class VerifiedInfoModal extends Component {
               </div>
               <div className='col-xs-12 col-sm-4 modal-row'>
                 <Button className='btn btn-primary text-center no-side-padding inherit-width modal-button' spinner={ this.state.loading } disabled={ this.state.loading }>
-                  { LocalizationService.formatMessage('application.save') }
+                  { LocalizationService.formatMessage('application.verify') }
                 </Button>
               </div>
             </div>
@@ -152,7 +151,6 @@ class VerifiedInfoModal extends Component {
 
   renderPhoneNumberForm() {
     let addPhoneForm = '';
-    let verify = '';
 
     if (this.state.countryCode) {
       addPhoneForm = (
@@ -170,7 +168,7 @@ class VerifiedInfoModal extends Component {
           </div>
           <div className='col-xs-12 col-sm-4 modal-row'>
             <Button className='btn btn-primary text-center no-side-padding inherit-width modal-button' spinner={ this.state.loading } disabled={ this.state.loading || !this.canSubmitPhoneNumber() }>
-              { LocalizationService.formatMessage('application.save') }
+              { LocalizationService.formatMessage('application.verify') }
             </Button>
           </div>
         </div>
@@ -185,7 +183,7 @@ class VerifiedInfoModal extends Component {
               { LocalizationService.formatMessage('user_profile_verified_info.select_country') }
             </div>
             <div className='col-xs-12'>
-              <FormField id='user-phone-country' handleChange={ this.handleCountryChange } type='country-code' value={ this.state.countryCode } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.country'})}/>
+              <FormField id='user-phone-country' handleChange={ this.handleCountryChange } type='country-code' value={ this.state.countryCode } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country') }/>
             </div>
             { addPhoneForm }
           </div>
@@ -203,5 +201,3 @@ class VerifiedInfoModal extends Component {
     }
   }
 }
-
-export default injectIntl(VerifiedInfoModal)

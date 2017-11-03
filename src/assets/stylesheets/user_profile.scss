@@ -1,0 +1,56 @@
+.user-profile {
+  margin-top:  10px;
+  .user-avatar {
+    width: initial !important;
+
+    @media screen and (max-width: 767px) {
+      width: 100% !important;
+
+      img {
+        width: 100px !important;
+        height: 100px !important;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+      }
+    }
+  }
+  .user-name {
+    line-height: 1;
+    font-size: 44px;
+  }
+  .user-rating {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  .rating-text {
+    font-size: 18px;
+    padding-left: 10px;
+  }
+
+  .rating-input label {
+    font-size: 15px;
+  }
+
+  .user-header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid $smoke-grey;
+  }
+
+  .user-option-rating {
+    margin-top: 5px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .user-avatar {
+      height: 100px !important;
+      margin-bottom: 10px;
+    }
+
+    .user-name {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

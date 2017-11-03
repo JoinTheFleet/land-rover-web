@@ -17,6 +17,17 @@ const COUNTRIES = countries.map(function(country) {
   };
 });
 
+const EU_COUNTRIES = countries
+  .filter(function(country) {
+    return country['region'] && country['region'].toLowerCase().includes('europe');
+  })
+  .map(function(country) {
+    return {
+      value: country['alpha-2'],
+      label: country['name']
+    };
+  });
+
 const COUNTRY_CODES =
   countryCodes
     .filter(function(country) {
@@ -157,6 +168,15 @@ export default class FormField extends Component {
       renderable = (
         <Select value={ this.props.value }
                 options={ COUNTRIES }
+                disabled={ this.props.disabled }
+                onChange={ this.props.handleChange }
+                className={ this.props.className } />
+        );
+    }
+    else if (this.props.type === 'eu-country') {
+      renderable = (
+        <Select value={ this.props.value }
+                options={ EU_COUNTRIES }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
                 className={ this.props.className } />
