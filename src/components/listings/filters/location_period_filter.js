@@ -61,7 +61,7 @@ class ListingPeriodFilter extends Component {
         { button }
         <div className='location-search-results'>
           <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
-            <Dropdown open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
+            <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
                 <Dropdown.Menu>
                   {
                     this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
@@ -79,7 +79,6 @@ export default injectIntl(ListingPeriodFilter);
 
 ListingPeriodFilter.propTypes = {
   hideSearchResults: PropTypes.func.isRequired,
-  handlePeriodChange: PropTypes.func.isRequired,
   hideSearchForm: PropTypes.bool,
   handleLocationChange: PropTypes.func.isRequired,
   handleLocationFocus: PropTypes.func.isRequired,

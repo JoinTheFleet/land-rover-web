@@ -1,5 +1,9 @@
 var geolocation = require('geolocation');
 
+var googleMapsClient = require('@google/maps').createClient({
+  key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+});
+
 class GeolocationService {
   static getCurrentPosition() {
     return new Promise(function(resolve, reject) {
@@ -16,18 +20,12 @@ class GeolocationService {
 
   static getLocationFromPosition(position) {
     return new Promise(function(resolve, reject) {
-      if (!window.google) {
-        reject();
-      }
-
-      let geocoder = new window.google.maps.Geocoder();
-
-      geocoder.geocode({ location: position }, function(results, status) {
-        if (status === 'OK') {
-          resolve(results);
+      googleMapsClient.reverseGeocode({ latlng: `${position.latitude},${position.longitude}` }, function(err, response) {
+        if (!err) {
+          resolve(response.json.results);
         }
         else {
-          reject();
+          reject(err);
         }
       });
     });

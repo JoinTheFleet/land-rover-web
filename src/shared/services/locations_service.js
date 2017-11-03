@@ -15,7 +15,7 @@ class LocationsService extends Service {
 
     if (latitude && longitude) {
       search.latitude = latitude;
-      search.longitude = longitude
+      search.longitude = longitude;
     }
 
     return client.post(this.baseURL, {

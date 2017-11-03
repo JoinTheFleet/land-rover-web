@@ -63,7 +63,7 @@ export default class Header extends Component {
       <div className="app-header">
         <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
 
-        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm }/>
+        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm } />
 
         { this.renderSwitchRoleButton() }
 
@@ -75,7 +75,6 @@ export default class Header extends Component {
 
         <HeaderMenu loggedIn={ this.props.loggedIn }
                     menuOpen={ this.state.menuOpen }
-                    currentMenuItem={ this.props.currentMenuItem }
                     handleMenuItemSelect={ this.handleMenuItemSelect }
                     toggleModal={ this.toggleModal } />
       </div>
@@ -86,7 +85,6 @@ export default class Header extends Component {
 Header.propTypes = {
   loggedIn: PropTypes.bool,
   currentUserRole: PropTypes.string,
-  currentMenuItem: PropTypes.string.isRequired,
   handleMenuItemSelect: PropTypes.func.isRequired,
   handleChangeCurrentUserRole: PropTypes.func.isRequired
 }

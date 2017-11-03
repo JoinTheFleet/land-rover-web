@@ -1,69 +1,41 @@
 import React, { Component } from 'react';
+import { Switch, Route } from "react-router-dom";
+
 import PropTypes from 'prop-types';
 
 import BookingForm from './forms/booking_form';
+import OwnerBookingsOverview from './owner_bookings_overview';
+import RenterBookingsOverview from './renter_bookings_overview';
 
 import Constants from '../../miscellaneous/constants';
-import Helpers from '../../miscellaneous/helpers';
 
-const bookingsViews = Constants.bookingsViews();
+const userRoles = Constants.userRoles();
 
 class Bookings extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentView: this.props.currentView || bookingsViews.index,
-      listing: this.props.listing || {},
-      quotation: this.props.quotation || {},
-      pricingQuote: this.props.pricingQuote || {}
-    };
-
-    this.setCurrentView = this.setCurrentView.bind(this);
-  }
-
-  setCurrentView(view, params) {
-    let newState = { currentView: view };
-    let additionalParams = params || {};
-
-    this.setState(Helpers.extendObject(newState, additionalParams));
-  }
-
-  getViewToRender() {
-    let viewToRender;
-
-    switch(this.state.currentView) {
-      case bookingsViews.new:
-        viewToRender = (<BookingForm listing={ this.state.listing }
-                                     quotation={ this.state.quotation }
-                                     pricingQuote={ this.state.pricingQuote }
-                                     setCurrentView={ this.setCurrentView } />);
-        break;
-      case bookingsViews.edit:
-        break;
-      case bookingsViews.view:
-        break;
-      default:
-        viewToRender = (<div></div>);
-    }
-
-    return viewToRender;
-  }
 
   render() {
     return (
-      <div className="col-xs-12 no-side-padding">
-        { this.getViewToRender() }
-      </div>
+      <Switch>
+        <Route path="/listings/:listing_id/bookings/new" render={(props) => {
+          return (<BookingForm {...props} />)
+        }} />
+
+        <Route path="/bookings" render={(props) => {
+          let overviewDiv = (<OwnerBookingsOverview {...props} currentUserRole={ this.props.currentUserRole }  />);
+
+          if (this.props.currentUserRole === userRoles.renter) {
+            overviewDiv = (<RenterBookingsOverview {...props} currentUserRole={ this.props.currentUserRole }  />);
+          }
+
+          return overviewDiv;
+        }} />
+      </Switch>
     );
   }
 }
 
 Bookings.propTypes = {
-  listing: PropTypes.object,
-  pricingQuote: PropTypes.object,
-  quotation: PropTypes.object,
-  currentView: PropTypes.oneOf(Constants.bookingsViews())
-};
+  currentUserRole: PropTypes.string
+}
 
 export default Bookings;

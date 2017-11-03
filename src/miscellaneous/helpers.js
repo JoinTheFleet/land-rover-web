@@ -6,6 +6,10 @@ export default class Helpers {
     return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
   }
 
+  static pageWidth() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  }
+
   static windowHeight() {
     return window.innerHeight;
   }

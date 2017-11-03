@@ -1,6 +1,7 @@
 .loading-div {
   display: table;
   width: 100%;
+  z-index: 9999;
 
   & > div {
     display: table-cell;

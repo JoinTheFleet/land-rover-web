@@ -51,7 +51,7 @@ class ListingForm extends Component {
 
 
     if (location && location.state && location.state.listing) {
-      this.setState({ listing: location.state.listing }, this.allowForEdit)
+      this.setState({ listing: location.state.listing }, this.allowForEdit);
     }
     else if (this.props.match.params.id) {
       this.setState({ loading: true }, () => {
