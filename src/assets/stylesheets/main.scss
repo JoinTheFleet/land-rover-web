@@ -75,3 +75,8 @@ form {
     }
   }
 }
+
+.DateRangePickerInput__disabled,
+.DateInput_input__disabled {
+  background: white !important;
+}

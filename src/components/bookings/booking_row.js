@@ -57,19 +57,19 @@ class BookingRow extends Component {
     let detailsView = this.props.currentUserRole === Constants.userRoles().renter ? this.renderDetailsForRenter() : this.renderDetailsForOwner();
 
     return (
-      <Link to={{
-        pathname: `bookings/${this.props.booking.id}`,
-        state: { booking: this.props.booking } }}>
 
-        <div className="booking-row col-xs-12 no-side-padding">
+      <div className="booking-row col-xs-12 no-side-padding">
+        <Link to={{
+          pathname: `bookings/${this.props.booking.id}`,
+          state: { booking: this.props.booking } }}>
           { detailsView }
 
           <div className="booking-row-status">
             <BookingStatus booking={ this.props.booking } />
           </div>
-        </div>
+        </Link>
+      </div>
 
-      </Link>
     );
   }
 }

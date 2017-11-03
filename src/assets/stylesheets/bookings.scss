@@ -229,6 +229,13 @@
         margin-left: 5px;
       }
     }
+
+    .booking-form-renter-identification {
+      .booking-form-details-row:first-child {
+        border-top: solid 1px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+      }
+    }
   }
 
   .booking-form-box {
@@ -339,15 +346,35 @@
     }
   }
 
-  .booking-form-request-booking {
+  .booking-form-action-buttons {
     padding: 17px 15px;
     box-shadow: 0 -1px 0 0 $smoke-grey-two;
 
-    .booking-form-request-booking-button {
+    & > div {
+      & + div {
+        margin-top: 17px;
+      }
+    }
+
+    button {
       position: relative;
       left: 50%;
       transform: translateX(-50%);
       max-width: 364px;
+    }
+  }
+
+  .booking-form-get-listing-directions {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    & > span {
+      display: inline-block;
+      width: calc(100% - 105px);
+    }
+
+    & > a {
+      width: 105px;
     }
   }
 

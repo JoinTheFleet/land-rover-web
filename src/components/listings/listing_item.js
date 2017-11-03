@@ -58,8 +58,7 @@ export default class ListingItem extends Component {
 
   render() {
     return (
-      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }
-           onClick={ () => this.props.handleListingSelect(this.props.listing) }>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }>
         { this.renderItem() }
       </div>
     )
@@ -67,6 +66,5 @@ export default class ListingItem extends Component {
 }
 
 ListingItem.propTypes = {
-  listing: PropTypes.object,
-  handleListingSelect: PropTypes.func
+  listing: PropTypes.object
 }

@@ -8,6 +8,6 @@ export default class Errors {
       }
     }
 
-    return error;
+    return error.toString();
   }
 }
