@@ -21,6 +21,7 @@ import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
+import Bookings from './components/bookings/bookings';
 import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
@@ -428,7 +429,10 @@ export default class App extends Component {
                   return ( <BookingsCalendar /> )
                 }} />
                 <Route path="/users" render={(props) => { return (<div />)}} />
-                <Route path="/bookings" render={(props) => { return (<div />)}} />
+                <Route path="/bookings" render={(props) => {
+                  return (<Bookings {...props}
+                                    currentUserRole={ this.state.currentUserRole} />)
+                }} />
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             }

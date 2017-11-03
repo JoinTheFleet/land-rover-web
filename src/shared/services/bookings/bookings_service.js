@@ -1,6 +1,8 @@
 import client from '../../libraries/client';
 import Service from '../service';
 
+import Helpers from '../../../miscellaneous/helpers';
+
 class BookingsService extends Service {
   static get baseURL() {
     return '/api/v1/bookings/';
@@ -10,15 +12,15 @@ class BookingsService extends Service {
     return this.baseURL + ':booking_id/';
   }
 
-  static index(scope) {
+  static index(scope, params) {
     if (!scope) {
       scope = 'current';
     }
 
     return client.get(this.baseURL, {
-      params: {
+      params: Helpers.extendObject(params || {}, {
         scope: scope
-      }
+      })
     });
   }
 
