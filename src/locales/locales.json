@@ -28,6 +28,7 @@
     "application.delete": "Delete",
     "application.manage": "Manage",
     "application.verify": "Verify",
+    "application.image_failed": "There was an error processing your image, please try again.",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -263,6 +264,7 @@
     "user_profile_verified_info.successfully_verified": "Your phone number has been verified.",
     "user_profile_verified_info.add_phone_number": "Add phone number:",
     "user_profile_verified_info.select_country": "Select Country",
+    "user_profile_verified_info.license_pending": "Your license has been recorded and will be verified shortly.",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",
