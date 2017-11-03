@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 import Review from './review';
 
@@ -34,7 +35,7 @@ export default class ReviewList extends Component {
       <div>
         <div className='col-xs-12 no-side-padding review-title'>
           <span className='main-text-color title'>
-            Reviews
+            { LocalizationService.formatMessage('reviews.reviews') }
           </span>
         </div>
         { body }

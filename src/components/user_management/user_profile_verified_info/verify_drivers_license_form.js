@@ -269,7 +269,7 @@ export default class VerifyDriversLicenseForm extends Component {
           <div className='drivers-license-form'>
             <div className='col-xs-12 modal-row'>
               <div className='col-xs-12 col-sm-6 form-label'>
-                License Number
+                { LocalizationService.formatMessage('user_profile_verified_info.license_number') }
               </div>
               <div className='col-xs-12 col-sm-6'>
                 <FormField id='license-number' type={ 'text' } handleChange={ this.handleLicenseNumberChange } value={ this.state.licenseNumber } />
@@ -277,7 +277,7 @@ export default class VerifyDriversLicenseForm extends Component {
             </div>
             <div className='col-xs-12 modal-row'>
               <div className='col-xs-12 col-sm-6 form-label'>
-                Issue Date
+                { LocalizationService.formatMessage('user_profile_verified_info.issue_date') }
               </div>
               <div className='col-xs-12 col-sm-6'>
                 <FormField id='license-issue' type={ 'singleyeardate' } handleChange={ this.handleIssueDateChange } value={ this.state.issueDate } />
@@ -285,7 +285,7 @@ export default class VerifyDriversLicenseForm extends Component {
             </div>
             <div className='col-xs-12 modal-row'>
               <div className='col-xs-12 col-sm-6 form-label'>
-                Front of Driving License
+                { LocalizationService.formatMessage('user_profile_verified_info.front_of_license') }
               </div>
               <div className='col-xs-12 col-sm-6'>
                 <FormField id='license-front' type={ 'file' } handleChange={ this.handleFrontImageChange } value={ this.state.frontImage } />
@@ -293,7 +293,7 @@ export default class VerifyDriversLicenseForm extends Component {
             </div>
             <div className='col-xs-12 modal-row'>
               <div className='col-xs-12 col-sm-6 form-label'>
-                Back of Driving License
+                { LocalizationService.formatMessage('user_profile_verified_info.back_of_license') }
               </div>
               <div className='col-xs-12 col-sm-6'>
                 <FormField id='license-front' type={ 'file' } handleChange={ this.handleBackImageChange } value={ this.state.backImage } />
