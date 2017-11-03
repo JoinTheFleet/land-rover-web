@@ -57,7 +57,7 @@ export default class Header extends Component {
   }
 
   render() {
-    let hideSearchForm = !this.props.loggedIn;
+    let hideSearchForm = !this.props.loggedIn || this.props.hideSearchForm;
 
     return (
       <div className="app-header">
