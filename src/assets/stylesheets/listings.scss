@@ -86,6 +86,17 @@
   float: none;
   display: inline-block;
 
+  a {
+    color: $main-text-color;
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
   .listing-item-photo-and-title {
     position: relative;
     height: 300px;
@@ -184,7 +195,7 @@
       }
 
       .listing-item-title {
-        bottom: -1px;
+        bottom: 25px;
         font-size: 12px;
       }
     }
