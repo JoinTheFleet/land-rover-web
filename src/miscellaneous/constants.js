@@ -70,17 +70,15 @@ export default class Constants {
         key: 'payment_methods',
         display: 'Payment Methods'
       },
-      settings: {
-        key: 'settings',
-        display: 'Settings'
-      },
       support: {
         key: 'support',
-        display: 'Support'
+        display: 'Support',
+        url: process.env.REACT_APP_FLEET_SUPPORT_URL
       },
       t_and_cs: {
         key: 't_and_cs',
-        display: "T's and C's"
+        display: "T's and C's",
+        url: process.env.REACT_APP_FLEET_TERMS_URL
       }
     }
   }
