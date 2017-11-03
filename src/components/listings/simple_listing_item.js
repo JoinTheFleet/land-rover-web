@@ -1,10 +1,6 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import RatingInput from '../miscellaneous/rating_input';
@@ -50,7 +46,14 @@ export default class SimpleListingItem extends Component {
     return (
       <div>
         <div className="listing-item-photo-and-title">
-          { image }
+          <Link to={{
+                  pathname: `/listings/${this.props.listing.id}`,
+                  state: {
+                    listing: this.props.listing
+                  }
+                }}>
+            { image }
+          </Link>
           <div className="listing-item-title fs-16">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
             <span className="listing-item-year">{ item.year }</span>

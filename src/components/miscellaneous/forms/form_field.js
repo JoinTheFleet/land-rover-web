@@ -93,7 +93,7 @@ export default class FormField extends Component {
           withPortal={ false }
           withFullScreenPortal={ false }
           initialVisibleMonth={ null }
-          numberOfMonths={ 2 }
+          numberOfMonths={ this.props.numberOfMonths || 2 }
           minimumNights={ 1 }
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }

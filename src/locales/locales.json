@@ -206,6 +206,7 @@
     "bookings.agree_to_vehicle_rules": "Agree to Vehicle Rules",
     "bookings.agree_to_insurance_terms": "Agree to Insurance Terms",
     "bookings.request_booking": "Request Booking",
+    "bookings.booking_requested_successfully": "Booking requested successfully",
 
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",
