@@ -20,6 +20,10 @@ class Bookings extends Component {
           return (<BookingForm {...props} />)
         }} />
 
+        <Route path="/bookings/:id" render={(props) => {
+          return (<BookingForm {...props} currentUserRole={ this.props.currentUserRole } />)
+        }} />
+
         <Route path="/bookings" render={(props) => {
           let overviewDiv = (<OwnerBookingsOverview {...props} currentUserRole={ this.props.currentUserRole }  />);
 

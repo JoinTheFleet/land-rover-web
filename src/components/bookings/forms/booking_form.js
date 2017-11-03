@@ -10,10 +10,12 @@ import LocationMenuItem from '../../listings/filters/location_menu_item';
 import FormField from '../../miscellaneous/forms/form_field';
 import Loading from '../../miscellaneous/loading';
 import Toggleable from '../../miscellaneous/toggleable';
+import RatingInput from '../../miscellaneous/rating_input';
 
 import ListingQuotationService from '../../../shared/services/listings/listing_quotation_service';
 import ListingBookingsService from '../../../shared/services/listings/listing_bookings_service';
 import ListingsService from '../../../shared/services/listings/listings_service';
+import BookingsService from '../../../shared/services/bookings/bookings_service';
 import PaymentMethodsService from '../../../shared/services/payment_methods_service';
 import GeolocationService from '../../../shared/services/geolocation_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
@@ -77,10 +79,27 @@ class BookingForm extends Component {
     let location = this.props.location;
 
     if (location && location.state && location.state.booking) {
-      this.setState({ booking: location.state.booking });
+      this.setState({
+        booking: location.state.booking,
+        listing: location.state.booking.listing,
+        pricingQuote: location.state.booking.quotation
+      });
     }
     else {
-      if (this.props.match.params.listing_id) {
+      if (this.props.match.params.id) {
+        this.setState({ loading: true }, () => {
+          BookingsService.show(this.props.match.params.id)
+                        .then(response => {
+                          this.setState({
+                            booking: response.data.data.booking,
+                            listing: response.data.data.booking.listing,
+                            pricingQuote: response.data.data.booking.quotation
+                          });
+                        })
+                        .catch(error => this.addError(Errors.extractErrorMessage(error)));
+        });
+      }
+      else if (this.props.match.params.listing_id) {
         this.setState({ loading: true }, () => {
           ListingsService.show(this.props.match.params.listing_id)
                          .then(response => {
@@ -369,18 +388,53 @@ class BookingForm extends Component {
     }
 
     let vehicleTitle = `${listing.variant.make.name}, ${listing.variant.model.name}`;
+    let listingOwnerDetails = '';
+
+    if (this.props.currentUserRole !== 'owner') {
+      listingOwnerDetails = (
+        <div className="booking-form-listing-user-details text-center pull-right">
+          <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
+          <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+        </div>
+      );
+    }
 
     return (
       <div className="booking-form-listing-details col-xs-12 no-side-padding">
         <span className="subtitle-font-weight fs-36">{ vehicleTitle }</span>
         <span className="fs-36"> { ` ${listing.variant.year.year}` } </span>
 
-        <div className="booking-form-listing-user-details text-center pull-right">
-          <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
-          <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
-        </div>
+        { listingOwnerDetails }
       </div>
     )
+  }
+
+  renderRenterDetails() {
+    let renterDetailsDiv = '';
+    let booking = this.state.booking;
+
+    if (!booking) {
+      return '';
+    }
+
+    if (this.props.currentUserRole === 'owner') {
+
+      renterDetailsDiv = (
+        <div className="booking-form-renter-details booking-form-box col-xs-12 no-side-padding">
+          <div className="booking-form-renter-image-and-name">
+            <div className="booking-form-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
+            <div className="booking-form-renter-name-and-rating pull-left">
+              <div className="fs-18 secondary-text-color"> { booking.renter.name } </div>
+
+              <RatingInput rating={ booking.renter.renter_review_summary.rating } />
+              <span className="fs-18"> { LocalizationService.formatMessage('listings.total_reviews', { total_reviews: booking.renter.renter_review_summary.total_reviews }) } </span>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return renterDetailsDiv;
   }
 
   renderQuotationDetails() {
@@ -679,6 +733,8 @@ class BookingForm extends Component {
       <div className="booking-form col-xs-12 no-side-padding">
         <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           { this.renderListingDetails() }
+
+          { this.renderRenterDetails() }
 
           { this.renderQuotationDetails() }
 
