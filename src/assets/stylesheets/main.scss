@@ -12,6 +12,10 @@ body {
   color: $main-text-color;
 }
 
+a {
+  color: initial;
+}
+
 form {
   input {
     &::-webkit-input-placeholder {
