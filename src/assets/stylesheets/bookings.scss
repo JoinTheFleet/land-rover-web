@@ -346,3 +346,99 @@
     box-shadow: 0px 0px 3px 1px $smoke-grey-two;
   }
 }
+
+.bookings-overview {
+  padding-bottom: 30px;
+
+  .listings-selector-bar {
+    margin-bottom: 30px;
+  }
+
+  & > div:first-child:not(.listings-selector-bar) {
+    margin-top: 30px;
+  }
+
+  .renter-bookings-overview-previous-list {
+    margin-top: 30px;
+  }
+
+  .bookings-overview-list-expand {
+    span {
+      cursor: pointer;
+    }
+  }
+}
+
+.booking-row {
+  border: solid 1px #e0e0e0;
+  height: 94px;
+
+  .booking-row-vehicle-and-owner {
+    height: 100%;
+
+    .booking-row-vehicle-image {
+      width: 140px;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .booking-row-vehicle-and-owner-info {
+      width: calc(100% - 140px);
+      height: 100%;
+      padding: 7px 10px;
+    }
+  }
+
+  .booking-row-renter-and-dates {
+    padding: 7px 12px;
+
+    .booking-row-renter-image {
+      width: 64px;
+      height: 64px;
+      border-radius: 64px;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .booking-row-renter-and-dates-info {
+      padding-left: 10px;
+      width: calc(100% - 64px);
+      height: 100%;
+    }
+  }
+
+  .booking-row-status {
+    position: absolute;
+    right: 18px;
+    top: 7px;
+  }
+
+  & + .booking-row {
+    margin-top: 24px;
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    height: 80px;
+
+    .booking-row-vehicle-and-owner {
+      .booking-row-vehicle-image {
+        width: 80px;
+      }
+
+      .booking-row-vehicle-and-owner-info {
+        div {
+          font-size: 12px !important;
+
+          &.fs-18 {
+            font-size: 14px !important;
+          }
+        }
+      }
+    }
+
+    .booking-row-status {
+      right: 10px;
+    }
+  }
+}

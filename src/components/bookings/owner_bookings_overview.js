@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 
-import BookingCard from './booking_card';
+import BookingRow from './booking_row';
+import Pageable from '../miscellaneous/pageable';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingsBookingsService from '../../shared/services/listings/listing_bookings_service';
@@ -10,7 +11,8 @@ import ListingsBookingsService from '../../shared/services/listings/listing_book
 import Errors from '../../miscellaneous/errors';
 
 import ListingsSelector from '../listings/listings_selector';
-import Loading from '../miscellaneous/loading';
+
+const BOOKINGS_PER_PAGE = 10;
 
 class OwnerBookingsOverview extends Component {
   constructor(props) {
@@ -20,12 +22,16 @@ class OwnerBookingsOverview extends Component {
       listings: [],
       bookings: [],
       currentListing: null,
+      currentPage: 1,
+      totalPages: 1,
       loading: false
     };
 
     this.addError = this.addError.bind(this);
     this.fetchListings = this.fetchListings.bind(this);
     this.fetchBookings = this.fetchBookings.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
   }
 
   componentWillMount() {
@@ -58,10 +64,13 @@ class OwnerBookingsOverview extends Component {
     this.setState({
       loading: true
     }, () => {
-      ListingsBookingsService.index(this.state.selectedListingId)
+      let offset = (this.state.currentPage - 1) * BOOKINGS_PER_PAGE;
+
+      ListingsBookingsService.index(this.state.currentListing.id, { limit: BOOKINGS_PER_PAGE, offset: offset })
                              .then(response => {
                                this.setState({
                                  bookings: response.data.data.bookings,
+                                 totalPages: Math.ceil(response.data.data.count / BOOKINGS_PER_PAGE),
                                  loading: false
                                });
                              })
@@ -73,6 +82,19 @@ class OwnerBookingsOverview extends Component {
     this.setState({ loading: false }, Alert.error(error));
   }
 
+  handleVehicleSelect(listing) {
+    this.setState({
+      currentListing: listing,
+      loading: true
+    }, () => {
+      this.fetchBookings();
+    });
+  }
+
+  handlePageChange(page) {
+    this.setState({ currentPage: page }, this.fetchBookings);
+  }
+
   renderTopBar() {
     return (
       <ListingsSelector listings={ this.state.listings }
@@ -81,24 +103,20 @@ class OwnerBookingsOverview extends Component {
     );
   }
 
-  renderLoading() {
-    if (!this.state.loading) {
-      return '';
-    }
-
-    return (<Loading fullWidthLoading={ true } />);
-  }
-
   render() {
     return (
       <div className="bookings-overview col-xs-12 no-side-padding">
         { this.renderTopBar() }
 
-        <div className="owner-bookings-overview-list col-xs-12 no-side-padding">
-          { this.state.bookings.map((booking, index) => (<BookingCard key={ `owner_bookings_${index}` } booking={ booking } />)) }
-        </div>
 
-        { this.renderLoading() }
+        <Pageable currentPage={ this.state.currentPage }
+                  totalPages={ this.state.totalPages }
+                  loading={ this.state.loading }
+                  handlePageChange={ this.handlePageChange }>
+          <div className="owner-bookings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+            { this.state.bookings.map((booking, index) => (<BookingRow key={ `owner_bookings_${index}` } booking={ booking } currentUserRole={ this.props.currentUserRole } />)) }
+          </div>
+        </Pageable>
       </div>
     );
   }

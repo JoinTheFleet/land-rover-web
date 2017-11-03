@@ -18,7 +18,7 @@ class ListingBookingsService extends Service {
   }
 
   static index(id, params) {
-    return client.get(this.baseURL.replace(':listing_id', id), params);
+    return client.get(this.baseURL.replace(':listing_id', id), { params: params });
   }
 }
 
