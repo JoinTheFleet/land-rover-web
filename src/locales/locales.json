@@ -29,6 +29,7 @@
     "application.manage": "Manage",
     "application.verify": "Verify",
     "application.image_failed": "There was an error processing your image, please try again.",
+    "application.see_all": "See All",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -224,6 +225,9 @@
     "errors.forms.fill_up_all_required_fields": "Please fill up all required fields",
 
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
+
+    "reviews.reviews": "Reviews",
+
 
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
