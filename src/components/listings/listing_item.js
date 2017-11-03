@@ -11,7 +11,7 @@ import likedIcon from '../../assets/images/liked.png';
 export default class ListingItem extends Component {
   renderItem() {
     let item = this.props.listing;
-    let image = <img src='' />;
+    let image = <img src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
 
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
