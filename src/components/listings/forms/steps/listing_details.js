@@ -89,7 +89,7 @@ class ListingDetails extends Component {
   }
 
   validateFields() {
-    return this.state.selectedParams.amenities.length > 0;
+    return true;
   }
 
   getListingProperties() {
