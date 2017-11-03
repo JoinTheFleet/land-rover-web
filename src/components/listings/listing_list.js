@@ -28,7 +28,6 @@ export default class ListingList extends Component {
       currentPosition: 0
     };
 
-    this.handleListingSelect = this.handleListingSelect.bind(this);
     this.handleNavigationClick = this.handleNavigationClick.bind(this);
   }
 
@@ -53,10 +52,6 @@ export default class ListingList extends Component {
     }
   }
 
-  handleListingSelect(listing) {
-    this.props.changeCurrentView(navigationSections.listings, { currentView: listingsViews.view, currentListing: listing, currentSelectedListingId: listing.id });
-  }
-
   renderListingList() {
     let listings = this.props.listings;
 
@@ -66,12 +61,12 @@ export default class ListingList extends Component {
       if (this.props.simpleListing) {
         listingItems = this.props.listings.map((listing) => {
           return (
-            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing } handleListingSelect={ this.handleListingSelect } />
+            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing } />
           )
         });
       }
       else {
-        listingItems = this.props.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing } handleListingSelect={ this.handleListingSelect } />));
+        listingItems = this.props.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing } />));
       }
 
       return listingItems;

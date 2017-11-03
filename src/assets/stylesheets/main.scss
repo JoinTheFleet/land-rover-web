@@ -12,6 +12,10 @@ body {
   color: $main-text-color;
 }
 
+a {
+  color: initial;
+}
+
 form {
   input {
     &::-webkit-input-placeholder {
@@ -74,4 +78,9 @@ form {
       width: 85px;
     }
   }
+}
+
+.DateRangePickerInput__disabled,
+.DateInput_input__disabled {
+  background: white !important;
 }

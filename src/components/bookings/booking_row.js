@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import BookingStatus from './booking_status';
@@ -56,13 +57,19 @@ class BookingRow extends Component {
     let detailsView = this.props.currentUserRole === Constants.userRoles().renter ? this.renderDetailsForRenter() : this.renderDetailsForOwner();
 
     return (
-      <div className="booking-row col-xs-12 no-side-padding">
-        { detailsView }
 
-        <div className="booking-row-status">
-          <BookingStatus booking={ this.props.booking } />
-        </div>
+      <div className="booking-row col-xs-12 no-side-padding">
+        <Link to={{
+          pathname: `bookings/${this.props.booking.id}`,
+          state: { booking: this.props.booking } }}>
+          { detailsView }
+
+          <div className="booking-row-status">
+            <BookingStatus booking={ this.props.booking } />
+          </div>
+        </Link>
       </div>
+
     );
   }
 }

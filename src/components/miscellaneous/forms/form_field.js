@@ -36,8 +36,8 @@ const COUNTRY_CODES =
       return {
         value: country.value.match(/(\d+)/)[0],
         label: country.label
-      }
-   })
+      };
+   });
 
 export default class FormField extends Component {
   render() {
@@ -151,6 +151,7 @@ export default class FormField extends Component {
       renderable = (
         <TimePicker onChange={ this.props.handleChange }
                     defaultValue={ this.props.value || moment('00:00', this.props.format || 'HH:mm') }
+                    disabled={ this.props.disabled }
                     format={ this.props.format || 'HH:mm' } />
       )
     }

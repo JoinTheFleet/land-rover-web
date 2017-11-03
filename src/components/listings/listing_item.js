@@ -65,6 +65,5 @@ export default class ListingItem extends Component {
 }
 
 ListingItem.propTypes = {
-  listing: PropTypes.object,
-  handleListingSelect: PropTypes.func
+  listing: PropTypes.object
 }
