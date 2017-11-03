@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { FormattedMessage } from 'react-intl';
 
+import SignatureBox from '../../miscellaneous/signature_box';
+
 import LocalizationService from '../../../shared/libraries/localization_service';
 
 class BookingFormCheckIn extends Component {
@@ -23,6 +25,10 @@ class BookingFormCheckIn extends Component {
         <p>
           <FormattedMessage id="bookings.please_sign_in_below" values={ {terms_and_conditions: termsAndConditions } } />
         </p>
+
+        <div className="booking-form-check-in-signatures">
+          <SignatureBox placeholder={  }></SignatureBox>
+        </div>
       </div>
     );
   }
