@@ -27,7 +27,7 @@ export default class RatingInput extends Component {
     let inputName = this.props.inputName || 'rating';
     let inputId = this.props.inputId || 'star';
 
-    let className = 'rating-input';
+    let className = `${this.props.className} rating-input`;
 
     if (this.state.disabled) {
       className += ' disabled';
@@ -44,13 +44,14 @@ export default class RatingInput extends Component {
                        name={ inputName + '_' + inputNameSufix }
                        disabled={ this.state.disabled }
                        value={ index }
-                       defaultChecked={index <= this.state.currentRating }
+                       defaultChecked={ index <= this.state.currentRating }
                        onChange={ this.handleOnChange } />
                 <label htmlFor={inputId + index}></label>
               </div>
             )
           })
         }
+        { this.props.children  }
       </div>
     )
   }

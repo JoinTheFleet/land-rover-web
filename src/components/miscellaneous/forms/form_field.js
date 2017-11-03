@@ -62,7 +62,6 @@ export default class FormField extends Component {
       )
     }
     else if (this.props.type === 'singledate') {
-      console.log(this.props)
       renderable = (
         <SingleDatePicker
           date={ this.props.value }

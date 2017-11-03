@@ -25,6 +25,7 @@ import Bookings from './components/bookings/bookings';
 import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
+import UserController from './components/users/user_controller';
 
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
@@ -408,11 +409,11 @@ export default class App extends Component {
                           page={ this.state.page + 1 } />
               )
             }} />
+            <Route path='/users/:id' component={ UserController } />
 
             if (this.state.accessToken && this.state.accessToken.length > 0) {
               <Switch>
                 <Route exact path="/home" render={() => <Redirect to="/" /> } />
-
                 <Route path="/messages" render={(props) => {
                   return (<MessagingController {...props}
                                                role={ this.state.currentUserRole } />)
@@ -427,11 +428,6 @@ export default class App extends Component {
                 }} />
                 <Route path="/calendar" render={(props) => {
                   return ( <BookingsCalendar /> )
-                }} />
-                <Route path="/users" render={(props) => { return (<div />)}} />
-                <Route path="/bookings" render={(props) => {
-                  return (<Bookings {...props}
-                                    currentUserRole={ this.state.currentUserRole} />)
                 }} />
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>

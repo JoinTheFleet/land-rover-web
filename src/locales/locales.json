@@ -30,6 +30,7 @@
     "application.view_all": "View All",
     "application.yes": "Yes",
     "application.image_failed": "There was an error processing your image, please try again.",
+    "application.see_all": "See All",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -230,6 +231,9 @@
 
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
 
+    "reviews.reviews": "Reviews",
+
+
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
     "user_profile_menu.settings": "Settings",
@@ -269,6 +273,10 @@
     "user_profile_verified_info.add_phone_number": "Add phone number:",
     "user_profile_verified_info.select_country": "Select Country",
     "user_profile_verified_info.license_pending": "Your license has been recorded and will be verified shortly.",
+    "user_profile_verified_info.front_of_license": "Front of Driving License",
+    "user_profile_verified_info.back_of_license": "Back of Driving License",
+    "user_profile_verified_info.issue_date": "Issue Date",
+    "user_profile_verified_info.license_number": "License Number",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",
