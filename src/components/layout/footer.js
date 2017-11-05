@@ -30,11 +30,11 @@ class Footer extends Component {
                 <FormattedMessage id="footer.get_android_app" />
               </a>
               <br/>
-              <a className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.rent_a_car" />
               </a>
               <br/>
-              <a className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.make_your_car" />
               </a>
             </p>
@@ -45,15 +45,15 @@ class Footer extends Component {
               <FormattedMessage id="footer.learn_more" />
             </span>
             <p className="footer-links-list">
-              <a href={ this.props.intl.formatMessage({id: 'company_info.customer_service'}) } target="_blank" className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.customer_service" />
               </a>
               <br/>
-              <a href={ this.props.intl.formatMessage({id: 'company_info.terms_and_conditions'}) } target="_blank" className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_TERMS_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.terms_and_conditions" />
               </a>
               <br/>
-              <a href={ this.props.intl.formatMessage({id: 'company_info.faqs'}) } target="_blank" className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.faqs" />
               </a>
             </p>
@@ -99,7 +99,7 @@ class Footer extends Component {
                 </a>
               </div>
 
-              <a href={ this.props.intl.formatMessage({id: 'company_info.blog'}) } target="_blank" className="white-text">
+              <a href={ process.env.REACT_APP_FLEET_BLOG_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.read_our_blog" />
               </a>
               <br/>

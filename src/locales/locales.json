@@ -150,6 +150,8 @@
     "listings.add_new_listing": "Add New Listing",
     "listings.complete_listing": "Complete Listing",
     "listings.price_per_day": "{currency_symbol}{price} per day",
+    "listings.per_day": "per day",
+    "listings.listings": "Listings",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",

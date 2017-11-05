@@ -11,26 +11,9 @@ import likedIcon from '../../assets/images/liked.png';
 import ListingsService from '../../shared/services/listings/listings_service';
 
 export default class SimpleListingItem extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.handleListingSelect = this.handleListingSelect.bind(this);
-  }
-
-  handleListingSelect() {
-    ListingsService.show(this.props.listing.id)
-                   .then(response => {
-                     this.props.handleListingSelect(response.data.data.listing);
-                   })
-                   .catch(error => {
-                     // TODO: add error handling (alert or something)
-                   });
-  }
-
   renderItem() {
     let item = this.props.listing;
-    let image;
+    let image = <img src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
 
     let vehicleMake = item.make;
     let vehicleModel = item.model;
@@ -53,21 +36,21 @@ export default class SimpleListingItem extends Component {
                   }
                 }}>
             { image }
+            <div className="listing-item-title fs-16">
+              <span className="subtitle-font-weight">{ vehicleTitle }</span>
+              <span className="listing-item-year">{ item.year }</span>
+            </div>
+            <div className="listing-item-liked">
+              <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+            </div>
+            <div className="listing-item-info">
+              <div>
+                { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
+              </div>
+              <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
+              <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
+            </div>
           </Link>
-          <div className="listing-item-title fs-16">
-            <span className="subtitle-font-weight">{ vehicleTitle }</span>
-            <span className="listing-item-year">{ item.year }</span>
-          </div>
-          <div className="listing-item-liked">
-            <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
-          </div>
-        </div>
-        <div className="listing-item-info">
-          <div>
-            { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
-          </div>
-          <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
-          <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
         </div>
       </div>
     )
@@ -75,8 +58,7 @@ export default class SimpleListingItem extends Component {
 
   render() {
     return (
-      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }
-           onClick={ () => this.handleListingSelect() }>
+      <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }>
         { this.renderItem() }
       </div>
     )

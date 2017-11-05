@@ -6,7 +6,6 @@ import Loading from './loading';
 export default class Pageable extends Component {
   render() {
     let paginationDiv = '';
-    let loadingDiv = '';
 
     if (this.props.totalPages > 1) {
       paginationDiv = (
@@ -19,16 +18,16 @@ export default class Pageable extends Component {
     let childElements = this.props.children;
 
     if (this.props.loading) {
-      loadingDiv = <Loading fullWidthLoading={ true } />;
+      return <Loading />;
     }
-
-    return (
-      <div className="pageable">
-        { childElements }
-        { paginationDiv }
-        { loadingDiv }
-      </div>
-    )
+    else {
+      return (
+        <div className="pageable">
+          { childElements }
+          { paginationDiv }
+        </div>
+      )
+    }
   }
 }
 

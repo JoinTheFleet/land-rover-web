@@ -7,6 +7,7 @@ import Loading from '../miscellaneous/loading';
 
 import User from './user';
 import UserReviews from './user_reviews';
+import UserListings from './user_listings';
 import { Switch, Route } from 'react-router-dom';
 
 export default class UserController extends Component {
@@ -73,7 +74,7 @@ export default class UserController extends Component {
         <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
           <Switch>
             <Route path='/users/:id/reviews' render={(props) => { return <UserReviews user={ this.state.user } {...props} {...this.props} />}} />
-            <Route path='/users/:id/listings' render={(props) => { return <User user={ this.state.user } {...props} {...this.props} />}} />
+            <Route path='/users/:id/listings' render={(props) => { return <UserListings user={ this.state.user } {...props} {...this.props} />}} />
             <Route path='/users/:id' render={(props) => { return <User user={ this.state.user } {...props} {...this.props} />}} />
           </Switch>
         </div>

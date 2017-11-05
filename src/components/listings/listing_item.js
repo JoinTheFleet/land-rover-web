@@ -9,10 +9,9 @@ import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
 export default class ListingItem extends Component {
-
   renderItem() {
     let item = this.props.listing;
-    let image;
+    let image = <img src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
 
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
@@ -36,21 +35,21 @@ export default class ListingItem extends Component {
                   }
                 }}>
             { image }
+            <div className="listing-item-title fs-16">
+              <span className="subtitle-font-weight">{ vehicleTitle }</span>
+              <span className="listing-item-year">{ item.variant.year.year }</span>
+            </div>
+            <div className="listing-item-liked">
+              <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+            </div>
+            <div className="listing-item-info">
+              <div>
+                { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' }
+              </div>
+              <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
+              <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
+            </div>
           </Link>
-          <div className="listing-item-title fs-16">
-            <span className="subtitle-font-weight">{ vehicleTitle }</span>
-            <span className="listing-item-year">{ item.variant.year.year }</span>
-          </div>
-          <div className="listing-item-liked">
-            <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
-          </div>
-        </div>
-        <div className="listing-item-info">
-          <div>
-            { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' }
-          </div>
-          <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
-          <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
         </div>
       </div>
     )

@@ -8,6 +8,9 @@ import UserListingsService from '../../shared/services/users/user_listings_servi
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import ReviewSummary from '../reviews/review_summary';
+import UserListingsSummary from '../user_listings/user_listings_summary';
+
+const LIMIT = 5;
 
 export default class User extends Component {
   constructor(props) {
@@ -30,11 +33,20 @@ export default class User extends Component {
 
   render() {
     let reviews  = '';
+    let listings = '';
 
     if (this.state.reviewSummary.total_reviews > 0) {
       reviews = (
         <div className='col-xs-12 no-side-padding user-reviews'>
           <ReviewSummary {...this.props} />
+        </div>
+      )
+    }
+
+    if (this.props.user.listing_count > 0) {
+      listings = (
+        <div className='col-xs-12 no-side-padding user-listings'>
+          <UserListingsSummary {...this.props} />
         </div>
       )
     }
@@ -56,8 +68,7 @@ export default class User extends Component {
             </div>
           </div>
           { reviews }
-          <div className='col-xs-12 user-listings'>
-          </div>
+          { listings }
         </div>
       </div>
     );

@@ -19,6 +19,8 @@ import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 
+import { Link } from 'react-router-dom';
+
 const listingsViews = Constants.listingsViews();
 
 class ListingView extends Component {
@@ -83,8 +85,15 @@ class ListingView extends Component {
         </div>
 
         <div className="listing-view-user-details text-center pull-right">
-          <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
-          <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+          <Link to={{
+            pathname: `/users/${listing.user.id}`,
+            state: {
+              user: listing.user
+            }
+          }} >
+            <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
+            <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+          </Link>
         </div>
       </div>
     )
