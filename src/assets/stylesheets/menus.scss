@@ -43,4 +43,14 @@
   &:last-of-type {
     padding-bottom: 0;
   }
+
+  a {
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
 }

@@ -118,7 +118,7 @@ export default class UserNotificationSettings extends Component {
 
 
           <div className='col-xs-12 no-side-padding'>
-            <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
+            <Button className="btn btn-primary button-row text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.loading }
                     disabled={ this.state.loading }
                     onClick={ this.updateSettings } >
