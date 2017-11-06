@@ -154,6 +154,7 @@ class BookNowTile extends Component {
 
           <DateRangePicker startDate={ startDate }
                            endDate={ endDate }
+                           minimumNights={ 0 }
                            focusedInput={this.state.focusedInput}
                            onDatesChange={ this.handleDatesChange }
                            onFocusChange={ focusedInput => this.setState({ focusedInput }) }

@@ -270,9 +270,9 @@ class BookingsCalendar extends Component {
             </div>
 
             <FormField type="text"
-                      id="bookings_calendar_set_rate_input"
-                      value={ this.state.currentDailyRate }
-                      handleChange={ this.handleDailyRateChange } />
+                       id="bookings_calendar_set_rate_input"
+                       value={ this.state.currentDailyRate }
+                       handleChange={ this.handleDailyRateChange } />
 
             <Button bsStyle=' secondary-color white-text' onClick={ this.handleResetRateToDefault }>
               <FormattedMessage id="bookings.reset_to_default">
@@ -362,6 +362,7 @@ class BookingsCalendar extends Component {
                      placeholder='Dates'
                      startDate={ this.state.startDate }
                      endDate={ this.state.endDate }
+                     minimumNights={ 0 }
                      focusedInput={ this.state.focusedInput }
                      handleChange={ this.handleDatesChange }
                      handleFocusChange={ this.handleDateRangePickerFocusChange }
