@@ -263,6 +263,7 @@
     "user_profile.date_of_birth": "Date of Birth",
 
     "user_profile_verified_info.verified_info": "Verified Information",
+    "user_profile_verified_info.business_information": "Business Information",
     "user_profile_verified_info.date_of_birth": "Date of Birth",
     "user_profile_verified_info.gender": "Gender",
     "user_profile_verified_info.gender.male": "Male",
@@ -293,6 +294,8 @@
     "user_profile_verified_info.issue_date": "Issue Date",
     "user_profile_verified_info.license_number": "License Number",
     "user_profile_verified_info.iban": "IBAN",
+    "user_profile_verified_info.business_name": "Name",
+    "user_profile_verified_info.tax_id": "Tax ID",
 
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
     "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",

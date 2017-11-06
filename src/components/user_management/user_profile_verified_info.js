@@ -5,6 +5,7 @@ import FormButtonRow from '../miscellaneous/forms/form_button_row';
 
 import moment from 'moment';
 import UserForm from './user_profile_verified_info/user_form';
+import BusinessInformationForm from './user_profile_verified_info/business_information_form';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -19,6 +20,12 @@ class UserProfileVerifiedInfo extends Component {
           country: {
           }
         },
+        business_details: {
+          address: {
+            country: {
+            }
+          }
+        }
       }
     }
 
@@ -30,7 +37,15 @@ class UserProfileVerifiedInfo extends Component {
     this.handleCityChange = this.handleCityChange.bind(this);
     this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleBusinessAddressLine1Change = this.handleBusinessAddressLine1Change.bind(this);
+    this.handleBusinessAddressLine2Change = this.handleBusinessAddressLine2Change.bind(this);
+    this.handleBusinessStateChange = this.handleBusinessStateChange.bind(this);
+    this.handleBusinessCityChange = this.handleBusinessCityChange.bind(this);
+    this.handleBusinessPostCodeChange = this.handleBusinessPostCodeChange.bind(this);
+    this.handleBusinessCountryChange = this.handleBusinessCountryChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleBusinessNameChange = this.handleBusinessNameChange.bind(this);
+    this.handleBusinessTaxIDChange = this.handleBusinessTaxIDChange.bind(this);
     this.updateUser = this.updateUser.bind(this);
   }
 
@@ -117,14 +132,6 @@ class UserProfileVerifiedInfo extends Component {
     });
   }
 
-  handleGenderChange(option) {
-    let user = this.state.user;
-
-    user.gender = option.value;
-
-    this.setState({user: user})
-  }
-
   handleCountryChange(country) {
     let user = this.state.user;
 
@@ -140,14 +147,142 @@ class UserProfileVerifiedInfo extends Component {
     });
   }
 
+  handleBusinessAddressLine1Change(event) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.line1 = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  handleBusinessAddressLine2Change(event) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.line2 = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  handleBusinessStateChange(event) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.state = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  handleBusinessCityChange(event) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.city = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  handleBusinessPostCodeChange(event) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.postal_code = event.target.value;
+
+    this.setState({ user: user });
+  }
+
+  handleBusinessCountryChange(country) {
+    let user = this.state.user;
+
+    if (!user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      };
+    }
+
+    user.business_details.address.country_code = country.value;
+
+    this.setState({ user: user });
+  }
+
+  handleGenderChange(option) {
+    let user = this.state.user;
+
+    user.gender = option.value;
+
+    this.setState({ user: user })
+  }
+
   handleEmailChange(event) {
     let user = this.state.user;
 
     if (user) {
       user.email = event.target.value;
 
-      this.setState({user: user})
+      this.setState({ user: user })
     }
+  }
+
+  handleBusinessNameChange(event) {
+    let user = this.state.user;
+
+    if (user && !user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      }
+    }
+
+    user.business_details.name = event.target.value;
+
+    this.setState({ user: user })
+  }
+
+  handleBusinessTaxIDChange(event) {
+    let user = this.state.user;
+
+    if (user && !user.business_details) {
+      user.business_details = {
+        address: {
+        }
+      }
+    }
+
+    user.business_details.tax_id = event.target.value;
+
+    this.setState({ user: user })
   }
 
   updateUser() {
@@ -155,8 +290,23 @@ class UserProfileVerifiedInfo extends Component {
     let user_params = {
       date_of_birth: user.date_of_birth,
       gender: user.gender,
-      email: user.email
+      email: user.email,
     };
+
+    if (user.account_type === 'company' && user.business_details) {
+      let business_details = user.business_details;
+
+      user_params.business = {
+        name: business_details.name,
+        tax_id: business_details.tax_id,
+        line1: business_details.address.line1,
+        line2: business_details.address.line2,
+        city: business_details.address.city,
+        state: business_details.address.state,
+        postal_code: business_details.address.postal_code,
+        country_code: business_details.address.country_code || business_details.address.country.alpha2
+      }
+    }
 
     if (this.state.addressUpdated) {
       user_params.address = {
@@ -179,9 +329,7 @@ class UserProfileVerifiedInfo extends Component {
           user.address = {};
         }
 
-        this.setState({
-          user: user
-        });
+        this.setState({ user: user });
       });
     }
   }
@@ -195,16 +343,13 @@ class UserProfileVerifiedInfo extends Component {
                     user.address = {};
                   }
 
-                  this.setState({
-                    user: user
-                  });
+                  this.setState({ user: user });
                 });
   }
 
-  render() {
+  renderUserForm() {
     return (
-
-      <div className="col-xs-12 no-side-padding">
+      <div>
         <div className="panel-form row">
           <div className='col-xs-12 form-header'>
             <FormattedMessage id="user_profile_verified_info.verified_info" />
@@ -223,7 +368,42 @@ class UserProfileVerifiedInfo extends Component {
                       placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
           </div>
         </div>
+      </div>
+    );
+  }
 
+  renderBusinessInformationForm() {
+    if (this.state.user && this.state.user.account_type === 'company') {
+      return(
+        <div className='panel-form row'>
+          <div className='col-xs-12 form-header'>
+            <FormattedMessage id="user_profile_verified_info.business_information" />
+          </div>
+          <div className='col-xs-12 form-body'>
+            <BusinessInformationForm user={ this.state.user }
+                                     handleNameChange={ this.handleBusinessNameChange }
+                                     handleTaxIDChange={ this.handleBusinessTaxIDChange }
+                                     handleCityChange={ this.handleBusinessCityChange }
+                                     handleStateChange={ this.handleBusinessStateChange }
+                                     handleAddressLine1Change={ this.handleBusinessAddressLine1Change }
+                                     handleAddressLine2Change={ this.handleBusinessAddressLine2Change }
+                                     handlePostCodeChange={ this.handleBusinessPostCodeChange }
+                                     handleCountryChange={ this.handleBusinessCountryChange } />
+
+          </div>
+        </div>
+      )
+    }
+    else {
+      return '';
+    }
+  }
+
+  render() {
+    return (
+      <div className="col-xs-12 no-side-padding">
+        { this.renderUserForm() }
+        { this.renderBusinessInformationForm() }
         <FormButtonRow>
           <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
             <FormattedMessage id="application.save" />
