@@ -14,7 +14,7 @@ export default class Modal extends Component {
       title = (<p className="title-font-weight fs-28">{ this.props.title }</p>);
     }
 
-    if (this.props.showCloseButton) {
+    if (!this.props.hideCloseButton) {
       closeBtn = (
         <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
           <img src={closeGreyIcon} alt="close-modal-icon" />
@@ -25,7 +25,7 @@ export default class Modal extends Component {
     return (
       <CloseOnEscape onEscape={ () => { this.props.toggleModal(this.props.modalName) }}>
         <Toggleable open={ this.props.open }>
-          <div id="custom_modal" className="modal" role="dialog">
+          <div className={`${this.props.modalClass || 'custom-modal'} modal`} role="dialog">
             <div className="modal-dialog">
               <div className="modal-content">
                 { closeBtn }
@@ -44,6 +44,7 @@ Modal.propTypes = {
   open: PropTypes.bool,
   title: PropTypes.string,
   modalName: PropTypes.string,
-  showCloseButton: PropTypes.bool,
+  modalClass: PropTypes.string,
+  hideCloseButton: PropTypes.bool,
   toggleModal: PropTypes.func.isRequired
 };

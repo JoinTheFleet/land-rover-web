@@ -18,3 +18,20 @@
     line-height: inherit !important;
   }
 }
+
+.modal {
+  .modal-header {
+    padding: 10px;
+  }
+
+  .modal-text {
+    display: table;
+    min-height: 100px;
+    width: 100%;
+
+    & > div {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+}

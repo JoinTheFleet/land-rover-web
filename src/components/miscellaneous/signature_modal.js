@@ -37,7 +37,7 @@ class SignatureModal extends Component {
     return (
       <div className="signature-modal">
         <Modal open={ this.props.open }
-               showCloseButton={ false }
+               hideCloseButton={ true }
                toggleModal= { this.props.toggleModal } >
           <div className="signature-modal-header secondary-color white-text text-center">
             <div className="pull-left" onClick={ this.props.toggleModal }>

@@ -13,6 +13,7 @@ import FormField from '../../miscellaneous/forms/form_field';
 import Loading from '../../miscellaneous/loading';
 import Toggleable from '../../miscellaneous/toggleable';
 import RatingInput from '../../miscellaneous/rating_input';
+import ConfirmationModal from '../../miscellaneous/confirmation_modal';
 
 import ListingQuotationService from '../../../shared/services/listings/listing_quotation_service';
 import ListingBookingsService from '../../../shared/services/listings/listing_bookings_service';
@@ -37,6 +38,11 @@ class BookingForm extends Component {
     super(props);
 
     this.state = {
+      modalsOpen: {
+        'cancelBooking': false,
+        'checkOut': false,
+        'rejectBooking': false
+      },
       booking: {
         agreed_to_rules: false,
         agreed_to_insurance_terms: false,
@@ -66,6 +72,7 @@ class BookingForm extends Component {
     this.fetchLocationFromListingPosition = this.fetchLocationFromListingPosition.bind(this);
 
     this.addError = this.addError.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.submitBookingRequest = this.submitBookingRequest.bind(this);
     this.respondToBookingRequest = this.respondToBookingRequest.bind(this);
     this.setPickUpAndDropOffLocation = this.setPickUpAndDropOffLocation.bind(this);
@@ -302,6 +309,16 @@ class BookingForm extends Component {
 
   addError(error) {
     this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
+  }
+
+  toggleModal(modalName) {
+    let modalsOpen = this.state.modalsOpen;
+
+    if (Object.keys(modalsOpen).indexOf(modalName) > -1) {
+      modalsOpen[modalName] = !modalsOpen[modalName];
+
+      this.setState({ modalsOpen: modalsOpen });
+    }
   }
 
   submitBookingRequest(){
@@ -947,23 +964,51 @@ class BookingForm extends Component {
               </div>
               <div className="col-xs-12 no-side-padding">
                 <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
-                        onClick={ () => { this.respondToBookingRequest(false) } }>
+                        onClick={ () => { this.toggleModal('rejectBooking') } }>
                   { LocalizationService.formatMessage('bookings.reject_booking') }
                 </button>
+
+                <ConfirmationModal open={ this.state.modalsOpen.rejectBooking }
+                                  toggleModal={ this.toggleModal }
+                                  modalName="rejectBooking"
+                                  title={ LocalizationService.formatMessage('bookings.confirm_reject_booking') }
+                                  confirmationAction={ () => { this.respondToBookingRequest(false) } } >
+                  <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_reject_booking_text') } </span>
+                </ConfirmationModal>
               </div>
             </div>
           )
           break;
         case 'confirmed':
-          actionButtonsDiv = <BookingFormCheckIn handleConfirmCheckIn={ this.handleConfirmCheckIn } handleCancelBooking={ this.handleCancelBooking } />;
+          actionButtonsDiv = (
+            <div>
+              <BookingFormCheckIn handleConfirmCheckIn={ this.handleConfirmCheckIn } handleCancelBooking={ () => { this.toggleModal('cancelBooking') } } />
+
+              <ConfirmationModal open={ this.state.modalsOpen.cancelBooking }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="cancelBooking"
+                                 title={ LocalizationService.formatMessage('bookings.confirm_cancel_booking') }
+                                 confirmationAction={ this.handleCancelBooking } >
+                <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_cancel_booking_text') } </span>
+              </ConfirmationModal>
+            </div>
+          );
           break;
         case 'in_progress':
           actionButtonsDiv = (
             <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
               <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
-                      onClick={ this.handleConfirmCheckOut }>
+                      onClick={ () => { this.toggleModal('checkOut') } }>
                 { LocalizationService.formatMessage('bookings.check_out_renter') }
               </button>
+
+              <ConfirmationModal open={ this.state.modalsOpen.checkOut }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="checkOut"
+                                 title={ LocalizationService.formatMessage('bookings.confirm_check_out') }
+                                 confirmationAction={ this.handleConfirmCheckOut } >
+                <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.confirm_check_out_text') } </span>
+              </ConfirmationModal>
             </div>
           )
           break;
