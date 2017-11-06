@@ -252,6 +252,7 @@
     "user_profile_menu.support": "Support",
     "user_profile_menu.t_and_cs": "T's & C's",
     "user_profile_menu.payment_methods": "Payment Methods",
+    "user_profile_menu.payout_methods": "Payout Methods",
 
     "user_profile.profile_photo": "Profile Photo",
     "user_profile.upload_profile_pic": "Upload Profile Pic",
@@ -276,7 +277,9 @@
     "user_profile_verified_info.email": "Email",
     "user_profile_verified_info.make_default": "Make Default",
     "user_profile_verified_info.payment_methods": "Payment Methods",
+    "user_profile_verified_info.payout_methods": "Payout Methods",
     "user_profile_verified_info.add_card": "Add A New Card",
+    "user_profile_verified_info.add_account": "Add A New Account",
     "user_profile_verified_info.phone_number": "Phone Number",
     "user_profile_verified_info.drivers_license": "Drivers License",
     "user_profile_verified_info.sent_verification": "We have sent a verification code to ",
@@ -289,6 +292,10 @@
     "user_profile_verified_info.back_of_license": "Back of Driving License",
     "user_profile_verified_info.issue_date": "Issue Date",
     "user_profile_verified_info.license_number": "License Number",
+    "user_profile_verified_info.iban": "IBAN",
+
+    "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
+    "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",

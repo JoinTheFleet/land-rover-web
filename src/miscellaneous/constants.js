@@ -70,6 +70,10 @@ export default class Constants {
         key: 'payment_methods',
         display: 'Payment Methods'
       },
+      payout_methods: {
+        key: 'payout_methods',
+        display: 'Payout Methods'
+      },
       support: {
         key: 'support',
         display: 'Support',
