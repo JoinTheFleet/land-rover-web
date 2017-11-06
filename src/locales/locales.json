@@ -237,7 +237,7 @@
     "bookings.check_out_renter": "Check Out Renter",
     "bookings.confirm_check_out": "Confirm Check Out",
     "bookings.confirm_check_out_text": "Are you sure you want to check out the renter?",
-    "bookings.please_provide_both_signatures": "Both you and the renter need to sign in order to check in",
+    "bookings.please_provide_both_signatures": "Both you and the renter need to provide a signature in order to check in",
     "bookings.booking_cancelled_successfully": "Booking cancelled successfully",
     "bookings.check_in_successful": "Check In Successful!",
     "bookings.check_out_successful": "Check Out Successful!",
@@ -255,7 +255,7 @@
     "bookings.statuses.timed_out": "Timed Out",
 
     "signatures.draw_signature": "Draw Signature",
-    "signatures.please_sign_above": "Please sign above as confirmation of you acceptance of Fleet’s {terms_and_conditions}.",
+    "signatures.please_sign_above": "Please sign above as confirmation of your acceptance of Fleet’s {terms_and_conditions}.",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 
