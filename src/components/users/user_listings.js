@@ -95,36 +95,42 @@ export default class UserListings extends Component {
   }
 
   render() {
-    let listings = '';
-
-    if (this.state.listings.length > 0) {
-      listings = (
-        <div className='col-xs-12 no-side-padding user-reviews'>
-          <UserListingList listings={ this.state.listings } page={ this.state.page + 1 } pages={ this.state.pages } handlePageChange={ this.handlePageChange } initialLoad={ this.state.initialLoad } count={ this.state.count }/>
-        </div>
-      )
+    if (this.state.initialLoad) {
+      return <Loading />;
     }
-    return (
-      <div className='user-profile'>
-        <div className='col-xs-12'>
-          <div className='col-xs-12 no-side-padding user-header'>
-            <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
-            <div className='col-xs-12 col-sm-8 rating-information'>
-              <div className='col-xs-12 user-name'>
-                { this.props.user.name }
-              </div>
-              <div className='col-xs-12 user-rating'>
-                <RatingInput disabled={ true } length={ 5 } rating={ this.state.reviewSummary.rating } readonly>
-                  <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews } { LocalizationService.formatMessage('reviews.reviews') }</span>
-                </RatingInput>
+    else {
+      let listings = '';
+
+      if (this.state.listings.length > 0) {
+        listings = (
+          <div className='col-xs-12 no-side-padding user-reviews'>
+            <UserListingList listings={ this.state.listings } page={ this.state.page + 1 } pages={ this.state.pages } handlePageChange={ this.handlePageChange } initialLoad={ this.state.initialLoad } count={ this.state.count }/>
+          </div>
+        )
+      }
+
+      return (
+        <div className='user-profile'>
+          <div className='col-xs-12'>
+            <div className='col-xs-12 no-side-padding user-header'>
+              <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <div className='col-xs-12 col-sm-8 rating-information'>
+                <div className='col-xs-12 user-name'>
+                  { this.props.user.name }
+                </div>
+                <div className='col-xs-12 user-rating'>
+                  <RatingInput disabled={ true } length={ 5 } rating={ this.state.reviewSummary.rating } readonly>
+                    <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews } { LocalizationService.formatMessage('reviews.reviews') }</span>
+                  </RatingInput>
+                </div>
               </div>
             </div>
-          </div>
-          { listings }
-          <div className='col-xs-12 user-listings'>
+            { listings }
+            <div className='col-xs-12 user-listings'>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }

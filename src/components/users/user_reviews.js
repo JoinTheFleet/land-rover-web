@@ -134,33 +134,39 @@ export default class UserReviews extends Component {
   }
 
   render() {
-    let reviews = '';
-
-    if (this.state.reviews.length > 0) {
-      reviews = (
-        <div className='col-xs-12 no-side-padding user-reviews'>
-          <ReviewList reviews={ this.state.reviews } page={ this.state.page + 1 } pages={ this.state.pages } handlePageChange={ this.handlePageChange } initialLoad={ this.state.initialLoad }/>
-        </div>
-      )
+    if (this.state.initialLoad) {
+      return <Loading />;
     }
-    return (
-      <div className='user-profile'>
-        <div className='col-xs-12'>
-          <div className='col-xs-12 no-side-padding user-header'>
-            <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
-            <div className='col-xs-12 col-sm-8 rating-information'>
-              <div className='col-xs-12 user-name'>
-                { this.props.user.name }
-              </div>
+    else {
+      let reviews = '';
 
-              { this.renderRatings() }
+      if (this.state.reviews.length > 0) {
+        reviews = (
+          <div className='col-xs-12 no-side-padding user-reviews'>
+            <ReviewList reviews={ this.state.reviews } page={ this.state.page + 1 } pages={ this.state.pages } handlePageChange={ this.handlePageChange } initialLoad={ this.state.initialLoad }/>
+          </div>
+        )
+      }
+
+      return (
+        <div className='user-profile'>
+          <div className='col-xs-12'>
+            <div className='col-xs-12 no-side-padding user-header'>
+              <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <div className='col-xs-12 col-sm-8 rating-information'>
+                <div className='col-xs-12 user-name'>
+                  { this.props.user.name }
+                </div>
+
+                { this.renderRatings() }
+              </div>
+            </div>
+            { reviews }
+            <div className='col-xs-12 user-listings'>
             </div>
           </div>
-          { reviews }
-          <div className='col-xs-12 user-listings'>
-          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
