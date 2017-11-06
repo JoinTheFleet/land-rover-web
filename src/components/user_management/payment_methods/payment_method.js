@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
 
 import PaymentMethodsService from '../../../shared/services/payment_methods_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
@@ -17,6 +18,12 @@ export default class PaymentMethod extends Component {
     this.makeDefault = this.makeDefault.bind(this);
     this.destroy = this.destroy.bind(this);
     this.formattedCard = this.formattedCard.bind(this);
+    this.successfullyUpdated = this.successfullyUpdated.bind(this);
+  }
+
+  successfullyUpdated() {
+    Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payment_information_updated'));
+    this.props.reloadData();
   }
 
   makeDefault() {
@@ -24,7 +31,7 @@ export default class PaymentMethod extends Component {
       loading: true
     }, () => {
       PaymentMethodsService.makeDefault(this.props.source.id)
-                           .then(this.props.reloadData)
+                           .then(this.successfullyUpdated)
     });
   }
 
@@ -33,7 +40,7 @@ export default class PaymentMethod extends Component {
       loading: true
     }, () => {
       PaymentMethodsService.destroy(this.props.source.id)
-                           .then(this.props.reloadData)
+                           .then(this.successfullyUpdated)
     });
   }
 
