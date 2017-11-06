@@ -8,41 +8,50 @@ import BookingStatus from './booking_status';
 
 import Constants from '../../miscellaneous/constants';
 
+import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
+
+const userRoles = Constants.userRoles();
+
 class BookingRow extends Component {
-  renderDetailsForRenter() {
+  renderListingDetails() {
     let booking = this.props.booking;
     let listing = booking.listing;
     let vehicleMake = listing.variant.make.name;
     let vehicleModel = listing.variant.model.name;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+    let userName = this.props.currentUserRole === userRoles.renter ? listing.user.name : booking.renter.name;
 
     let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
     let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
 
+    let backgroundImage = `url(${listing.gallery.length > 0 ? listing.gallery[0].images.medium_url : noImagesPlaceholder})`;
+
     return (
       <div className="booking-row-vehicle-and-owner col-xs-12 no-side-padding">
-        <div className="booking-row-vehicle-image pull-left" style={ { backgroundImage: `url(${listing.gallery[0].images.medium_url})` } }></div>
+        <div className="booking-row-vehicle-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
         <div className="booking-row-vehicle-and-owner-info pull-left">
           <div className="fs-18">
             <b> { vehicleTitle } </b>
             <span> { ` ${listing.variant.year.year}` } </span>
           </div>
           <div> { `${listing.address} • ${bookingStartDate} - ${bookingEndDate}` } </div>
-          <div> { listing.user.name } </div>
+          <div> { userName } </div>
         </div>
       </div>
     )
   }
 
-  renderDetailsForOwner() {
+  renderBookingDetails() {
     let booking = this.props.booking;
 
     let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
     let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
 
+    let backgroundImage = `url(${booking.renter.images.length > 0 ? booking.renter.images.medium_url: noImagesPlaceholder})`;
+
     return (
       <div className="booking-row-renter-and-dates col-xs-12 no-side-padding">
-        <div className="booking-row-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
+        <div className="booking-row-renter-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
         <div className="booking-row-renter-and-dates-info pull-left">
           <div className="fs-18">
             <b> { booking.renter.name } </b>
@@ -53,8 +62,26 @@ class BookingRow extends Component {
     );
   }
 
+  renderBookingStatus() {
+    let status = '';
+
+    if (!this.props.hideStatus) {
+      status = (
+        <div className="booking-row-status">
+          <BookingStatus booking={ this.props.booking } />
+        </div>
+      )
+    }
+
+    return status;
+  }
+
   render() {
-    let detailsView = this.props.currentUserRole === Constants.userRoles().renter ? this.renderDetailsForRenter() : this.renderDetailsForOwner();
+    let detailsView = this.renderBookingDetails();
+
+    if (this.props.currentUserRole === userRoles.renter || this.props.showListingDetails) {
+      detailsView = this.renderListingDetails();
+    }
 
     return (
 
@@ -64,9 +91,7 @@ class BookingRow extends Component {
           state: { booking: this.props.booking } }}>
           { detailsView }
 
-          <div className="booking-row-status">
-            <BookingStatus booking={ this.props.booking } />
-          </div>
+          { this.renderBookingStatus() }
         </Link>
       </div>
 
@@ -76,7 +101,9 @@ class BookingRow extends Component {
 
 BookingRow.propTypes = {
   currentUserRole: PropTypes.string.isRequired,
-  booking: PropTypes.object.isRequired
+  booking: PropTypes.object.isRequired,
+  hideStatus: PropTypes.bool,
+  showListingDetails: PropTypes.bool
 };
 
 export default BookingRow;

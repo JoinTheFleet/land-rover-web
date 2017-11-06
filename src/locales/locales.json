@@ -17,6 +17,7 @@
     "application.next": "Next",
     "application.no": "No",
     "application.none": "None",
+    "application.ok": "Ok",
     "application.other": "Other",
     "application.owner": "Owner",
     "application.previous": "Previous",
@@ -265,7 +266,10 @@
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
 
     "reviews.reviews": "Reviews",
-
+    "reviews.write_a_review": "Write a Review",
+    "reviews.enter_feedback_here": "Enter your feedback here",
+    "reviews.review_submitted_successfully": "Review Submitted Successfully!",
+    "reviews.share_your_experience": "Share your experience working with the renter",
 
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
@@ -318,7 +322,8 @@
     "filters.make": "Make",
     "filters.body": "Type",
     "filters.year": "Year",
-    "filters.engine_fuel": "Fuel"
+    "filters.engine_fuel": "Fuel",
 
+    "configurations.could_not_fetch": "Could not fetch configurations"
   }
 }
