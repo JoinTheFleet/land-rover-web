@@ -15,6 +15,10 @@ class UserProfileVerifiedInfo extends Component {
     this.state = {
       addressUpdated: false,
       user: {
+        address: {
+          country: {
+          }
+        },
       }
     }
 
@@ -41,66 +45,76 @@ class UserProfileVerifiedInfo extends Component {
   handleAddressLine1Change(event) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.line1 = event.target.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.line1 = event.target.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handleAddressLine2Change(event) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.line2 = event.target.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.line2 = event.target.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handleStateChange(event) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.state = event.target.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.state = event.target.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handleCityChange(event) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.city = event.target.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.city = event.target.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handlePostCodeChange(event) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.postal_code = event.target.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.postal_code = event.target.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handleGenderChange(option) {
@@ -114,14 +128,16 @@ class UserProfileVerifiedInfo extends Component {
   handleCountryChange(country) {
     let user = this.state.user;
 
-    if (user && user.address) {
-      user.address.country_code = country.value;
-
-      this.setState({
-        addressUpdated: true,
-        user: user
-      });
+    if (!user.address) {
+      user.address = {};
     }
+
+    user.address.country_code = country.value;
+
+    this.setState({
+      addressUpdated: true,
+      user: user
+    });
   }
 
   handleEmailChange(event) {
@@ -157,8 +173,14 @@ class UserProfileVerifiedInfo extends Component {
       UsersService.update('me', {
         user: user_params
       }).then(response => {
+        let user = response.data.data.user;
+
+        if (!user.address) {
+          user.address = {};
+        }
+
         this.setState({
-          user: response.data.data.user
+          user: user
         });
       });
     }
@@ -168,6 +190,10 @@ class UserProfileVerifiedInfo extends Component {
     UsersService.show('me')
                 .then(response => {
                   let user = response.data.data.user;
+
+                  if (!user.address) {
+                    user.address = {};
+                  }
 
                   this.setState({
                     user: user
