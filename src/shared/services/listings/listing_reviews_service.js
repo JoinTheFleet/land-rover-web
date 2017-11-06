@@ -11,10 +11,12 @@ class ListingReviewsService extends Service {
   }
 
   static create(id, booking_id, feedback, options) {
-    return client.get(this.baseURL.replace(':listing_id', id), {
-      booking_id: booking_id,
-      feedback: feedback,
-      options: options
+    return client.post(this.baseURL.replace(':listing_id', id), {
+      review: {
+        booking_id: booking_id,
+        feedback: feedback,
+        options: options
+      }
     });
   }
 }

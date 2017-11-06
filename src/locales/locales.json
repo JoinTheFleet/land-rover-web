@@ -243,6 +243,7 @@
     "bookings.check_in_successful": "Check In Successful!",
     "bookings.check_out_successful": "Check Out Successful!",
     "bookings.your_booking_is": "Your booking is",
+    "bookings.reviewed": "Reviewed",
 
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",

@@ -23,6 +23,7 @@ class BookingReview extends Component {
     super(props);
 
     let booking = this.props.booking;
+    let review = this.initializeReview(this.props.reviewOptions || []);
 
     if (this.props.location && this.props.location.state) {
       booking = this.props.location.state.booking;
@@ -30,11 +31,8 @@ class BookingReview extends Component {
 
     this.state = {
       booking: booking,
-      review: {
-        feedback: '',
-        options: [],
-        reviewCompleted: false
-      },
+      review: review,
+      reviewCompleted: false,
       loading: false,
     };
 
@@ -46,19 +44,23 @@ class BookingReview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let reviewOptions = this.props.reviewOptions;
-    let review = this.state.review;
 
     if (prevProps.reviewOptions !== reviewOptions) {
-
-      for(let i = 0; i < reviewOptions.length; i++) {
-        review.options.push({
-          slug: reviewOptions[i].slug,
-          rating: undefined
-        });
-      }
-
-      this.setState({ review: review });
+      this.setState({ review: this.initializeReview(reviewOptions) });
     }
+  }
+
+  initializeReview(reviewOptions) {
+    let review = { feedback: '', options: [] };
+
+    for(let i = 0; i < reviewOptions.length; i++) {
+      review.options.push({
+        slug: reviewOptions[i].slug,
+        rating: undefined
+      });
+    }
+
+    return review;
   }
 
   setReviewOptionValue(reviewOptionSlug, value) {
@@ -97,7 +99,7 @@ class BookingReview extends Component {
                             .catch(error => this.addError(Errors.extractErrorMessage(error)));
       }
       else {
-        ListingReviewsService.create(booking.renter.id, booking.id, review.feedback, review.options)
+        ListingReviewsService.create(booking.listing.id, booking.id, review.feedback, review.options)
                              .then(response => {
                                this.setState({ loading: false, reviewCompleted: true });
                                Alert.success(LocalizationService.formatMessage('reviews.review_submitted_successfully'));
