@@ -387,7 +387,10 @@ class BookingForm extends Component {
     let quotation = this.state.quotation;
 
     quotation.start_at = dates.startDate.unix();
-    quotation.end_at = dates.endDate.unix();
+
+    if (dates.endDate) {
+      quotation.end_at = dates.endDate.unix();
+    }
 
     this.setState({ quotation: quotation }, this.fetchQuotation);
   }
@@ -669,6 +672,7 @@ class BookingForm extends Component {
                    focusedInput={ this.state.focusedInput }
                    disabled={ disableInputs }
                    showClearDates={ false }
+                   minimumNights={ 0 }
                    handleFocusChange={ (focusedInput) => { this.setState({ focusedInput }) } }
                    handleChange={ this.handleDatesChange }
                    numberOfMonths={ this.state.numberOfMonthsToShow } />
