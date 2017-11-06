@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 
-import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
 import Avatar from 'react-avatar';
 
-import UserListingsService from '../../shared/services/users/user_listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import ReviewSummary from '../reviews/review_summary';
 import UserListingsSummary from '../user_listings/user_listings_summary';
-
-const LIMIT = 5;
 
 export default class User extends Component {
   constructor(props) {

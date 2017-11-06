@@ -252,6 +252,7 @@
     "user_profile_menu.support": "Support",
     "user_profile_menu.t_and_cs": "T's & C's",
     "user_profile_menu.payment_methods": "Payment Methods",
+    "user_profile_menu.payout_methods": "Payout Methods",
 
     "user_profile.profile_photo": "Profile Photo",
     "user_profile.upload_profile_pic": "Upload Profile Pic",
@@ -262,6 +263,7 @@
     "user_profile.date_of_birth": "Date of Birth",
 
     "user_profile_verified_info.verified_info": "Verified Information",
+    "user_profile_verified_info.business_information": "Business Information",
     "user_profile_verified_info.date_of_birth": "Date of Birth",
     "user_profile_verified_info.gender": "Gender",
     "user_profile_verified_info.gender.male": "Male",
@@ -276,7 +278,9 @@
     "user_profile_verified_info.email": "Email",
     "user_profile_verified_info.make_default": "Make Default",
     "user_profile_verified_info.payment_methods": "Payment Methods",
+    "user_profile_verified_info.payout_methods": "Payout Methods",
     "user_profile_verified_info.add_card": "Add A New Card",
+    "user_profile_verified_info.add_account": "Add A New Account",
     "user_profile_verified_info.phone_number": "Phone Number",
     "user_profile_verified_info.drivers_license": "Drivers License",
     "user_profile_verified_info.sent_verification": "We have sent a verification code to ",
@@ -289,6 +293,25 @@
     "user_profile_verified_info.back_of_license": "Back of Driving License",
     "user_profile_verified_info.issue_date": "Issue Date",
     "user_profile_verified_info.license_number": "License Number",
+    "user_profile_verified_info.iban": "IBAN",
+    "user_profile_verified_info.business_name": "Name",
+    "user_profile_verified_info.tax_id": "Tax ID",
+
+    "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
+    "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
+    "notification_settings.notifications.title": "Notifications",
+    "notification_settings.push_notifications.notification_title": "Push Notifications Settings",
+    "notification_settings.sms_notifications.notification_title": "SMS Notifications Settings",
+    "notification_settings.messages.title": "Messages",
+    "notification_settings.rental_updates.title": "Reservation Updates",
+    "notification_settings.other.title": "Other",
+    "notification_settings.updated": "Your notification prefaces have been updated",
+
+    "notification_settings.messages.label": "From owners and renters",
+    "notification_settings.rental_updates.label": "Request, confirmations, changes and more",
+    "notification_settings.other.label": "Feature updates and more",
+
+
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",

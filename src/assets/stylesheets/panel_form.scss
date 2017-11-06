@@ -70,4 +70,28 @@
   .Select {
     position: initial;
   }
+
+  .form--checkbox-row {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $smoke-grey;
+
+    input[type="checkbox"] + label {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &::before {
+        left: inherit;
+      }
+
+      &::after {
+        top: 1px;
+        position: relative;
+        left: 3px;
+      }
+    }
+  }
 }
