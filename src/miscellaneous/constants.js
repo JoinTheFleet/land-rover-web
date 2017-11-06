@@ -68,11 +68,15 @@ export default class Constants {
       },
       payment_methods: {
         key: 'payment_methods',
-        display: 'Payment Methods'
+        display: 'Payment Details'
       },
       payout_methods: {
         key: 'payout_methods',
-        display: 'Payout Methods'
+        display: 'Payout Details'
+      },
+      settings: {
+        key: 'settings',
+        display: 'Settings'
       },
       support: {
         key: 'support',

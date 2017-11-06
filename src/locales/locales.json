@@ -299,6 +299,19 @@
 
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
     "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
+    "notification_settings.notifications.title": "Notifications",
+    "notification_settings.push_notifications.notification_title": "Push Notifications Settings",
+    "notification_settings.sms_notifications.notification_title": "SMS Notifications Settings",
+    "notification_settings.messages.title": "Messages",
+    "notification_settings.rental_updates.title": "Reservation Updates",
+    "notification_settings.other.title": "Other",
+    "notification_settings.updated": "Your notification prefaces have been updated",
+
+    "notification_settings.messages.label": "From owners and renters",
+    "notification_settings.rental_updates.label": "Request, confirmations, changes and more",
+    "notification_settings.other.label": "Feature updates and more",
+
+
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",

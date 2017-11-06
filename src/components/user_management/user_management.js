@@ -9,6 +9,7 @@ import UserProfileVerifiedInfo from './user_profile_verified_info';
 import UserProfileMenu from './user_profile_menu';
 import UserPaymentMethods from './user_payment_methods';
 import UserPayoutMethods from './user_payout_methods';
+import UserNotificationSettings from './user_notification_settings';
 
 import { Elements } from 'react-stripe-elements';
 
@@ -46,6 +47,9 @@ export default class UserManagement extends Component {
             <UserPayoutMethods />
           </Elements>
         );
+        break;
+      case userManagementViews.settings.key:
+        viewToRender = <UserNotificationSettings />;
         break;
       default:
         viewToRender = (<UserProfileDetails></UserProfileDetails>);
