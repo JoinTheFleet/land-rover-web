@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 
 import UsersService from '../../shared/services/users/users_service';
-import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
 
 import User from './user';

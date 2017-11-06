@@ -4,11 +4,9 @@ import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
 import Avatar from 'react-avatar';
 
-import UserListingsService from '../../shared/services/users/user_listings_service';
 import UserReviewsService from '../../shared/services/users/user_reviews_service';
 import RenterReviewsService from '../../shared/services/renter_reviews_service';
 
-import ReviewSummary from '../reviews/review_summary';
 import ReviewList from '../reviews/review_list';
 
 const LIMIT = 10;
@@ -104,8 +102,6 @@ export default class UserReviews extends Component {
   }
 
   renderRatings() {
-    let location = this.props.location;
-
     if (this.state.metadata) {
       let metadata = this.state.metadata;
       let averageRatings = metadata.average_ratings;

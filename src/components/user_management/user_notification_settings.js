@@ -11,10 +11,6 @@ import Loading from '../miscellaneous/loading';
 import UserNotificationsSettingsService from '../../shared/services/users/user_notifications_settings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
-import FormButtonRow from '../miscellaneous/forms/form_button_row';
-
-import S3Uploader from '../../shared/external/s3_uploader';
-
 export default class UserNotificationSettings extends Component {
   constructor(props) {
     super(props);
@@ -27,8 +23,7 @@ export default class UserNotificationSettings extends Component {
         },
         sms_notifications: {
         }
-      },
-      loading: false
+      }
     };
 
     this.toggle = this.toggle.bind(this);

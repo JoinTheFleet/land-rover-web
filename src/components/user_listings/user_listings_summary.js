@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Loading from '../miscellaneous/loading';
-import RatingInput from '../miscellaneous/rating_input';
 import UserListing from './user_listing';
 import { Link } from 'react-router-dom';
 

@@ -4,8 +4,6 @@ import { injectIntl } from 'react-intl';
 import FormRow from '../../miscellaneous/forms/form_row';
 import FormGroup from '../../miscellaneous/forms/form_group';
 import FormField from '../../miscellaneous/forms/form_field';
-import VerifiedInfoModal from './verified_info_modal';
-import moment from 'moment';
 
 class BusinessInformationForm extends Component {
   constructor(props) {
