@@ -16,6 +16,7 @@ a {
   color: initial;
 }
 
+textarea,
 input {
   &::-webkit-input-placeholder {
     color: $placeholder-text-color !important;

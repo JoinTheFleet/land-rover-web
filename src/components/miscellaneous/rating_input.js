@@ -19,6 +19,10 @@ export default class RatingInput extends Component {
     if (element.checked) {
       this.setState({ currentRating: element.value });
     }
+
+    if (this.props.handleOnChange) {
+      this.props.handleOnChange(element.value);
+    }
   }
 
   render() {
@@ -44,7 +48,7 @@ export default class RatingInput extends Component {
                        name={ inputName + '_' + inputNameSufix }
                        disabled={ this.state.disabled }
                        value={ index }
-                       defaultChecked={ index <= this.state.currentRating }
+                       checked={ index <= this.state.currentRating }
                        onChange={ this.handleOnChange } />
                 <label htmlFor={inputId + index}></label>
               </div>
@@ -63,5 +67,6 @@ RatingInput.propTypes = {
   readonly: PropTypes.bool,
   inputNameSufix: PropTypes.string,
   inputName: PropTypes.string,
-  inputId: PropTypes.string
+  inputId: PropTypes.string,
+  handleOnChange: PropTypes.func
 }

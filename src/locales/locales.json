@@ -17,6 +17,7 @@
     "application.next": "Next",
     "application.no": "No",
     "application.none": "None",
+    "application.ok": "Ok",
     "application.other": "Other",
     "application.owner": "Owner",
     "application.previous": "Previous",
@@ -242,6 +243,7 @@
     "bookings.check_in_successful": "Check In Successful!",
     "bookings.check_out_successful": "Check Out Successful!",
     "bookings.your_booking_is": "Your booking is",
+    "bookings.reviewed": "Reviewed",
 
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",
@@ -265,7 +267,10 @@
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
 
     "reviews.reviews": "Reviews",
-
+    "reviews.write_a_review": "Write a Review",
+    "reviews.enter_feedback_here": "Enter your feedback here",
+    "reviews.review_submitted_successfully": "Review Submitted Successfully!",
+    "reviews.share_your_experience": "Share your experience working with the renter",
 
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
@@ -344,7 +349,8 @@
     "filters.year": "Year",
     "filters.engine_fuel": "Fuel",
 
-    "wish_lists.wish_lists": "Wishlists"
+    "wish_lists.wish_lists": "Wishlists",
 
+    "configurations.could_not_fetch": "Could not fetch configurations"
   }
 }

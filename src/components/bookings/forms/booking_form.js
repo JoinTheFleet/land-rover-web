@@ -41,7 +41,8 @@ class BookingForm extends Component {
       modalsOpen: {
         'cancelBooking': false,
         'checkOut': false,
-        'rejectBooking': false
+        'rejectBooking': false,
+        'writeReview': false
       },
       booking: {
         agreed_to_rules: false,
@@ -527,7 +528,7 @@ class BookingForm extends Component {
     }, () => {
       BookingsService.check_out(this.state.booking.id)
                      .then(response => {
-                       this.fetchBooking();
+                       this.toggleModal('writeReview');
                        Alert.success(LocalizationService.formatMessage('bookings.check_out_successful'));
                      })
                      .catch(error => this.addError(Errors.extractErrorMessage(error)));
@@ -1013,6 +1014,15 @@ class BookingForm extends Component {
                                  confirmationAction={ this.handleConfirmCheckOut } >
                 <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.confirm_check_out_text') } </span>
               </ConfirmationModal>
+
+              <ConfirmationModal open={ this.state.modalsOpen.writeReview }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="writeReview"
+                                 title={ LocalizationService.formatMessage('reviews.write_a_review') }
+                                 confirmationAction={ () => { this.setState({ redirectToWriteReview: true }) } }
+                                 cancelAction={ this.fetchBooking } >
+                <span className="tertiary-text-color"> { LocalizationService.formatMessage('reviews.share_your_experience') } </span>
+              </ConfirmationModal>
             </div>
           )
           break;
@@ -1046,6 +1056,15 @@ class BookingForm extends Component {
   render() {
     if (this.state.bookingCompleted) {
       return (<Redirect to="/bookings" />)
+    }
+
+    if (this.state.redirectToWriteReview) {
+      return (
+        <Redirect to={{
+          pathname: `/bookings/${this.state.booking.id}/renter_reviews/new`,
+          state: { booking: this.state.booking }
+        }} />
+      );
     }
 
     return (
