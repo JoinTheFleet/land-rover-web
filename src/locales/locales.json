@@ -350,6 +350,7 @@
     "filters.engine_fuel": "Fuel",
 
     "wish_lists.wish_lists": "Wishlists",
+    "wish_lists.listings": "{listings} listings",
 
     "configurations.could_not_fetch": "Could not fetch configurations"
   }
