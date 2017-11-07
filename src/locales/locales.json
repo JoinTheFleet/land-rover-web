@@ -332,7 +332,8 @@
     "notification_settings.rental_updates.label": "Request, confirmations, changes and more",
     "notification_settings.other.label": "Feature updates and more",
 
-
+    "dashboard.credits.invite": "Invite a friend to join Fleet and get €10 free credit when they sign up.",
+    "dashboard.credits.view": "View Credits",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",
@@ -341,7 +342,9 @@
     "filters.make": "Make",
     "filters.body": "Type",
     "filters.year": "Year",
-    "filters.engine_fuel": "Fuel"
+    "filters.engine_fuel": "Fuel",
+
+    "wish_lists.wish_lists": "Wishlists"
 
   }
 }
