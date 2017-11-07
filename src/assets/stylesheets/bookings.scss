@@ -181,6 +181,10 @@
     padding: 24px 15px;
   }
 
+  .booking-form-listing-details {
+    margin-bottom: 10px;
+  }
+
   .booking-form-listing-user-details {
     img {
       width: 74px;
@@ -188,11 +192,17 @@
       border-radius: 74px;
       object-fit: cover;
 
+      & + a,
       & + span {
         display: block;
         margin-top: 5px;
       }
     }
+  }
+
+  .booking-form-status {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
 
   .booking-form-renter-details {
@@ -378,6 +388,10 @@
     }
   }
 
+  .fleet-signature-box {
+    margin-top: 24px;
+  }
+
   .fleet-checkbox label {
     height: 18px;
     margin-bottom: 0;
@@ -503,5 +517,61 @@
     .booking-row-status {
       right: 10px;
     }
+  }
+}
+
+.booking-form-check-in-buttons {
+  button {
+    margin-top: 24px;
+  }
+
+  .booking-form-check-in-signatures {
+    overflow: hidden;
+  }
+}
+
+.booking-review {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .booking-review-tile {
+    margin-top: 20px;
+    border: solid 1px $smoke-grey-two;
+
+    .booking-review-header {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .booking-review-items {
+      .booking-review-item-row {
+        padding: 6px 0;
+        border-bottom: solid 1px $smoke-grey-two;
+
+        & > div:first-child {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+
+    .booking-review-feedback {
+      textarea {
+        padding-left: 0;
+        padding-top: 8px;
+        border: 0;
+        min-height: 100px;
+        resize: none;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+
+  .booking-review-action-buttons {
+    margin-top: 20px;
   }
 }

@@ -55,6 +55,7 @@ class ListingPeriodFilter extends Component {
                      handleChange={ this.props.handleDatesChange }
                      startDate={ this.props.startDate }
                      endDate={ this.props.endDate }
+                     minimumNights={ 0 }
                      focused={ this.state.focused }
                      handleFocusChange={ this.handleDateRangePickerFocusChange}/>
          </div>

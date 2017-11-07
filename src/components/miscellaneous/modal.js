@@ -8,21 +8,28 @@ import CloseOnEscape from 'react-close-on-escape';
 export default class Modal extends Component {
   render() {
     let title = '';
+    let closeBtn = '';
 
     if (this.props.title) {
-      title = <p className="title-font-weight fs-28">{ this.props.title }</p>;
+      title = (<p className="title-font-weight fs-28">{ this.props.title }</p>);
     }
+
+    if (!this.props.hideCloseButton) {
+      closeBtn = (
+        <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
+          <img src={closeGreyIcon} alt="close-modal-icon" />
+        </a>
+      );
+    }
+
     return (
       <CloseOnEscape onEscape={ () => { this.props.toggleModal(this.props.modalName) }}>
         <Toggleable open={ this.props.open }>
-          <div id="custom_modal" className="modal" role="dialog">
+          <div className={`${this.props.modalClass || 'custom-modal'} modal`} role="dialog">
             <div className="modal-dialog">
               <div className="modal-content">
-                <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
-                  <img src={closeGreyIcon} alt="close-modal-icon" />
-                </a>
+                { closeBtn }
                 { title }
-
                 { this.props.children }
               </div>
             </div>
@@ -37,5 +44,7 @@ Modal.propTypes = {
   open: PropTypes.bool,
   title: PropTypes.string,
   modalName: PropTypes.string,
+  modalClass: PropTypes.string,
+  hideCloseButton: PropTypes.bool,
   toggleModal: PropTypes.func.isRequired
 };

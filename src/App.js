@@ -28,6 +28,7 @@ import MessagingController from './components/messaging/messaging_controller';
 import UserController from './components/users/user_controller';
 import DashboardController from './components/dashboard/dashboard_controller';
 
+import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
 import LocationsService from './shared/services/locations_service';
@@ -35,6 +36,8 @@ import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
 import { Route, Redirect, Switch } from 'react-router-dom';
+
+import LocalizationService from './shared/libraries/localization_service';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -55,7 +58,9 @@ export default class App extends Component {
 
     this.state = {
       accessToken: cookies.get('accessToken'),
-      currentUserRole: userRoles.renter,
+      configurations: undefined,
+      currentUserRole: cookies.get('currentUserRole') || userRoles.renter,
+      roleChanged: false,
       listings: [],
       modalName: undefined,
       searchLocations: [],
@@ -110,6 +115,18 @@ export default class App extends Component {
                           this.setState({location: location});
                         });
     }, 1000);
+
+    ConfigurationService.show()
+                        .then(response => {
+                          this.setState({ configurations: response.data.data.configuration });
+                        })
+                        .catch(error => { Alert.error(LocalizationService.formatMessage('configurations.could_not_fetch')); });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.roleChanged && prevState.roleChanged === this.state.roleChanged) {
+      this.setState({ roleChanged: false });
+    }
   }
 
   setAccessToken(accessToken) {
@@ -143,9 +160,14 @@ export default class App extends Component {
   }
 
   changeCurrentUserRole() {
+    let newRole = (this.state.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter;
+
     this.setState((prevState) => ({
-      currentUserRole: (prevState.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter
-    }));
+      currentUserRole: newRole,
+      roleChanged: true
+    }), () => {
+      cookies.set('currentUserRole', newRole);
+    });
   }
 
   handleMenuItemSelect(menuItem) {
@@ -344,6 +366,10 @@ export default class App extends Component {
   }
 
   render() {
+    if( this.state.roleChanged ) {
+      return <Redirect to="/dashboard" />;
+    }
+
     return (
       <Route path="/" render={(props) => {
         return (
@@ -435,6 +461,7 @@ export default class App extends Component {
                     }} />
                     <Route path="/bookings" render={(props) => {
                       return (<Bookings {...props}
+                                        configurations={ this.state.configurations }
                                         currentUserRole={ this.state.currentUserRole} />)
                     }} />
                     <Route path="*" render={(props) => { return <Redirect to='/' /> }} />

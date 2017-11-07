@@ -10,7 +10,7 @@ export default class Button extends Component {
     if (this.props.spinner) {
       accessory = <FontAwesome name={ this.props.spinnerClass || 'spinner' }
                                tag='i'
-                               spin />
+                               spin />;
     }
 
     return (

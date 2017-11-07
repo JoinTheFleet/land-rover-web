@@ -93,7 +93,7 @@ export default class FormField extends Component {
           withFullScreenPortal={ false }
           initialVisibleMonth={ null }
           numberOfMonths={ this.props.numberOfMonths || 2 }
-          minimumNights={ 1 }
+          minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
           reopenPickerOnClearDate={ false }
@@ -121,7 +121,7 @@ export default class FormField extends Component {
           withPortal={false}
           initialVisibleMonth={null}
           numberOfMonths={2}
-          minimumNights={1}
+          minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           renderCalendarInfo={false}
           hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
