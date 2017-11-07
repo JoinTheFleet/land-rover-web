@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 
-import PaymentMethodsService from '../../../shared/services/payment_methods_service';
+import PayoutMethodsService from '../../../shared/services/payout_methods_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
+
 import Loading from '../../miscellaneous/loading';
 
 const TWELVE_STARS = "**** **** **** ";
 
-export default class PaymentMethod extends Component {
+export default class PayoutMethod extends Component {
   constructor(props) {
     super(props);
 
@@ -17,21 +18,16 @@ export default class PaymentMethod extends Component {
 
     this.makeDefault = this.makeDefault.bind(this);
     this.destroy = this.destroy.bind(this);
-    this.formattedCard = this.formattedCard.bind(this);
+    this.formattedAccount = this.formattedAccount.bind(this);
     this.successfullyUpdated = this.successfullyUpdated.bind(this);
-  }
-
-  successfullyUpdated() {
-    Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payment_information_updated'));
-    this.props.reloadData();
   }
 
   makeDefault() {
     this.setState({
       loading: true
     }, () => {
-      PaymentMethodsService.makeDefault(this.props.source.id)
-                           .then(this.successfullyUpdated)
+      PayoutMethodsService.makeDefault(this.props.source.id)
+                          .then(this.successfullyUpdated);
     });
   }
 
@@ -39,12 +35,17 @@ export default class PaymentMethod extends Component {
     this.setState({
       loading: true
     }, () => {
-      PaymentMethodsService.destroy(this.props.source.id)
-                           .then(this.successfullyUpdated)
+      PayoutMethodsService.destroy(this.props.source.id)
+                          .then(this.successfullyUpdated);
     });
   }
 
-  formattedCard() {
+  successfullyUpdated() {
+    Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payout_information_updated'));
+    this.props.reloadData();
+  }
+
+  formattedAccount() {
     return TWELVE_STARS + this.props.source.last_four;
   }
 
@@ -74,8 +75,7 @@ export default class PaymentMethod extends Component {
 
     return (
       <div className="col-xs-12 payment-source">
-        <div className='col-xs-12 col-sm-4 card-number'>{ this.formattedCard() }</div>
-        <div className='col-xs-12 col-sm-2 card-expiry'>{ `${this.props.source.exp_month}/${this.props.source.exp_year}` }</div>
+        <div className='col-xs-12 col-sm-6 card-number'>{ this.formattedAccount() }</div>
         <div className='col-xs-12 col-sm-6 card-options'>
           { options }
         </div>

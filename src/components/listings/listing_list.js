@@ -1,10 +1,6 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
 
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Anime from 'react-anime';
 import PropTypes from 'prop-types';
@@ -13,11 +9,6 @@ import ListingItem from './listing_item';
 
 import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
-
-import Contants from '../../miscellaneous/constants';
-
-const navigationSections = Contants.navigationSections();
-const listingsViews = Contants.listingsViews();
 
 export default class ListingList extends Component {
 

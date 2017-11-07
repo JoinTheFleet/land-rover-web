@@ -8,12 +8,10 @@ import RatingInput from '../miscellaneous/rating_input';
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
-import ListingsService from '../../shared/services/listings/listings_service';
-
 export default class SimpleListingItem extends Component {
   renderItem() {
     let item = this.props.listing;
-    let image = <img src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
+    let image = <img alt='' src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
 
     let vehicleMake = item.make;
     let vehicleModel = item.model;

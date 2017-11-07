@@ -7,10 +7,10 @@ class FormRow extends Component {
     return (
       <div className='col-xs-12'>
         <div className='row form-row'>
-          <div className='col-xs-2'>
+          <div className='col-xs-12 col-sm-2'>
             <span>{ this.props.placeholder }</span>
           </div>
-          <div className='col-xs-10'>
+          <div className='col-xs-12 col-sm-10'>
             <FormField focused={ this.props.focused }
                        handleFocusChange={ this.props.handleFocusChange }
                        handleChange={ this.props.handleChange }
