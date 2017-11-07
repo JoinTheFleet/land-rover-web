@@ -35,3 +35,37 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
+.fleet-tile {
+  .tile-header {
+    padding: 15px 20px;
+  }
+
+  .tile-content {
+    padding: 20px;
+  }
+}
+
+.fleet-file-select {
+  input {
+    height: 0;
+    width: 0;
+  }
+
+  .fleet-tile-select-input {
+    border: solid 1px $smoke-grey-two;
+    padding: 5px;
+
+    button {
+      border: solid 1px $smoke-grey-two;
+      padding: 0 12px;
+      height: 24px;
+      line-height: 24px;
+      font-size: 13px;
+
+      & + span {
+        margin-left: 5px;
+      }
+    }
+  }
+}

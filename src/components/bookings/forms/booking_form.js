@@ -7,6 +7,7 @@ import moment from 'moment';
 import Alert from 'react-s-alert';
 
 import BookingStatus from '../booking_status';
+import BookingSurvey from './booking_survey';
 import BookingFormCheckIn from './booking_form_check_in';
 import LocationMenuItem from '../../listings/filters/location_menu_item';
 import FormField from '../../miscellaneous/forms/form_field';
@@ -63,6 +64,7 @@ class BookingForm extends Component {
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
       loading: false,
       bookingCompleted: false,
+      showBookingSurvey: false,
       showMessageToOwnerTextArea: false,
       locationTimeout: null
     };
@@ -74,6 +76,7 @@ class BookingForm extends Component {
 
     this.addError = this.addError.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.showBookingSurvey = this.showBookingSurvey.bind(this);
     this.submitBookingRequest = this.submitBookingRequest.bind(this);
     this.respondToBookingRequest = this.respondToBookingRequest.bind(this);
     this.setPickUpAndDropOffLocation = this.setPickUpAndDropOffLocation.bind(this);
@@ -338,6 +341,14 @@ class BookingForm extends Component {
       .catch(error => {
         this.addError(error);
       });
+    });
+  }
+
+  showBookingSurvey(show) {
+    this.setState({ showBookingSurvey: show }, () => {
+      if (!show) {
+        this.fetchBooking();
+      }
     });
   }
 
@@ -1045,6 +1056,29 @@ class BookingForm extends Component {
     return actionButtonsDiv;
   }
 
+  renderVehicleSurveyRow() {
+    if (!this.state.booking) {
+      return;
+    }
+
+    if (this.state.booking.status === 'pending') {
+      return;
+    }
+
+    return (
+      <div className="booking-form-vehicle-survey booking-form-box fs-16 col-xs-12 no-side-padding">
+        <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.surveys.vehicle_survey') } </span>
+
+        <div className="pull-right text-right">
+          <FormField type="checkbox"
+                     id="booking_form_survey_completed"
+                     value={ this.state.booking.survey_completed }
+                     handleChange={ () => { this.showBookingSurvey(true) } } />
+        </div>
+      </div>
+    )
+  }
+
   renderLoading() {
     if (!this.state.loading ) {
       return '';
@@ -1067,6 +1101,12 @@ class BookingForm extends Component {
       );
     }
 
+    if (this.state.showBookingSurvey) {
+      return (
+        <BookingSurvey booking={ this.state.booking } handleSaveSurvey={ () => { this.showBookingSurvey(false) } }  />
+      )
+    }
+
     return (
       <div className="booking-form col-xs-12 no-side-padding">
         <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
@@ -1083,6 +1123,8 @@ class BookingForm extends Component {
           { this.renderTermsAndRules() }
 
           { this.renderGetBookingDirections() }
+
+          { this.renderVehicleSurveyRow() }
         </div>
 
         <div className="booking-actions-div">
