@@ -21,6 +21,7 @@ export default class WishListList extends Component {
       loading: false
     }
 
+    this.loadData = this.loadData.bind(this);
     this.reloadData = this.reloadData.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -31,8 +32,6 @@ export default class WishListList extends Component {
 
   loadData() {
     let location = this.props.location;
-
-    console.log(location)
 
     if (location && location.state && location.state.wish_lists) {
       let wish_lists = location.state.wish_lists;

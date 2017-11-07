@@ -102,6 +102,7 @@ export default class App extends Component {
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
+    this.handleReferral = this.handleReferral.bind(this);
   }
 
   componentWillMount() {
@@ -121,6 +122,24 @@ export default class App extends Component {
                           this.setState({ configurations: response.data.data.configuration });
                         })
                         .catch(error => { Alert.error(LocalizationService.formatMessage('configurations.could_not_fetch')); });
+  }
+
+  handleReferral(referralCode) {
+    if (!this.state.referralCode) {
+      this.setState({
+        referralCode: referralCode
+      }, () => {
+        AuthenticationService.logout()
+                             .then(() => {
+                               this.setAccessToken('');
+                               this.toggleModal('registration');
+                             })
+                             .catch(() => {
+                               this.setAccessToken('');
+                               this.toggleModal('registration');
+                             });
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -404,19 +423,37 @@ export default class App extends Component {
                   }
                   else {
                     return <Homescreen {...props}
-                                currentUserRole={ this.state.currentUserRole }
-                                handleLocationChange={ this.handleLocationChange }
-                                handleLocationFocus={ this.handleLocationFocus }
-                                handleDatesChange={ this.handleDatesChange }
-                                handleLocationSelect={ this.handleLocationSelect }
-                                handleSearch={ this.performSearch }
-                                startDate={ this.state.startDate }
-                                endDate={ this.state.endDate }
-                                locationName={ this.state.locationName }
-                                hideSearchResults={ this.hideSearchResults }
-                                searchLocations={ this.state.searchLocations }
-                                showSearchButton={ true } />
+                                       handleReferral={ this.handleReferral }
+                                       currentUserRole={ this.state.currentUserRole }
+                                       handleLocationChange={ this.handleLocationChange }
+                                       handleLocationFocus={ this.handleLocationFocus }
+                                       handleDatesChange={ this.handleDatesChange }
+                                       handleLocationSelect={ this.handleLocationSelect }
+                                       handleSearch={ this.performSearch }
+                                       startDate={ this.state.startDate }
+                                       endDate={ this.state.endDate }
+                                       locationName={ this.state.locationName }
+                                       hideSearchResults={ this.hideSearchResults }
+                                       searchLocations={ this.state.searchLocations }
+                                       showSearchButton={ true } />
                   }
+                }} />
+
+                <Route path="/referral/:referral_code" render={(props) => {
+                  return <Homescreen {...props}
+                                     handleReferral={ this.handleReferral }
+                                     currentUserRole={ this.state.currentUserRole }
+                                     handleLocationChange={ this.handleLocationChange }
+                                     handleLocationFocus={ this.handleLocationFocus }
+                                     handleDatesChange={ this.handleDatesChange }
+                                     handleLocationSelect={ this.handleLocationSelect }
+                                     handleSearch={ this.performSearch }
+                                     startDate={ this.state.startDate }
+                                     endDate={ this.state.endDate }
+                                     locationName={ this.state.locationName }
+                                     hideSearchResults={ this.hideSearchResults }
+                                     searchLocations={ this.state.searchLocations }
+                                     showSearchButton={ true } />
                 }} />
                 <Route path="/search" render={(props) => {
                   return (
@@ -473,7 +510,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
-            <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
+            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
             <Footer />
           </div>
         )
