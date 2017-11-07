@@ -5,10 +5,10 @@ export default class FormGroup extends Component {
     return (
       <div className='col-xs-12'>
         <div className='row form-row'>
-          <div className='col-xs-2'>
+          <div className='col-xs-12 col-sm-2'>
             <span>{ this.props.placeholder }</span>
           </div>
-          <div className='col-xs-10'>
+          <div className='col-xs-12 col-sm-10'>
             { this.props.children }
           </div>
         </div>

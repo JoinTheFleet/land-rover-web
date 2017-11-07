@@ -60,15 +60,28 @@ export default class Constants {
     return {
       profile_details: {
         key: 'profile_details',
+        path: '/account',
         display: 'Profile Details'
       },
       verified_info: {
         key: 'verified_info',
+        path: '/account/verified_info',
         display: 'Verified Info'
       },
       payment_methods: {
         key: 'payment_methods',
-        display: 'Payment Methods'
+        path: '/account/payment_methods',
+        display: 'Payment Details'
+      },
+      payout_methods: {
+        key: 'payout_methods',
+        path: '/account/payout_methods',
+        display: 'Payout Details'
+      },
+      settings: {
+        key: 'settings',
+        path: '/account/notification_settings',
+        display: 'Settings'
       },
       support: {
         key: 'support',

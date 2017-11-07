@@ -93,7 +93,7 @@ export default class FormField extends Component {
           withFullScreenPortal={ false }
           initialVisibleMonth={ null }
           numberOfMonths={ this.props.numberOfMonths || 2 }
-          minimumNights={ 1 }
+          minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
           reopenPickerOnClearDate={ false }
@@ -121,7 +121,7 @@ export default class FormField extends Component {
           withPortal={false}
           initialVisibleMonth={null}
           numberOfMonths={2}
-          minimumNights={1}
+          minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           renderCalendarInfo={false}
           hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
@@ -191,6 +191,38 @@ export default class FormField extends Component {
                 className={ this.props.className } />
         );
     }
+    else if (this.props.type === 'checkbox') {
+      let labels = (
+        <div className='col-xs-10'>
+          { this.props.placeholder }
+        </div>
+      )
+
+      if (this.props.label) {
+        labels = (
+          <div className='col-xs-10'>
+            { this.props.placeholder }
+            <br />
+            { this.props.label }
+          </div>
+        )
+      }
+
+      renderable = (
+        <div className='col-xs-12 no-side-padding form--checkbox-row fleet-checkbox'>
+          { labels }
+
+          <input type="checkbox"
+                 id={ this.props.id }
+                 value={ this.props.value }
+                 checked={ this.props.value }
+                 onChange={ this.props.handleChange }
+                 disabled={ this.props.disabled }
+                 className={ `pull-right ${this.props.className || ''}`} />
+          <label htmlFor={ this.props.id }>{ ' ' }</label>
+        </div>
+      )
+    }
     else {
       renderable = (
         <input type={ this.props.type }
@@ -200,7 +232,7 @@ export default class FormField extends Component {
                onChange={ this.props.handleChange }
                onFocus={ this.props.handleFocusChange }
                disabled={ this.props.disabled }
-               className={ typeof(this.props.className) === 'string' ? this.props.className : "col-xs-12" }/>
+               className={ typeof(this.props.className) === 'string' ? this.props.className : "col-xs-12" } />
       );
     }
 
