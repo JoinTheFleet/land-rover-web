@@ -245,6 +245,14 @@
     "bookings.your_booking_is": "Your booking is",
     "bookings.reviewed": "Reviewed",
 
+    "bookings.surveys.to_avoid_unfair_charges": "To avoid unfair charges please fill out survey.",
+    "bookings.surveys.vehicle_survey": "Vehicle Survey",
+    "bookings.surveys.raise_an_issue": "Raise an Issue",
+    "bookings.surveys.photo": "Photo",
+    "bookings.surveys.issue_title": "Issue Title",
+    "bookings.surveys.issue_caption": "Issue Caption",
+    "bookings.surveys.save_vehicle_survey": "Save Vehicle Survey",
+
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",
 

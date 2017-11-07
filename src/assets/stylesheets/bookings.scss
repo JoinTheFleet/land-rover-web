@@ -575,3 +575,19 @@
     margin-top: 20px;
   }
 }
+
+.booking-survey-div {
+  .booking-survey-issues-list {
+    margin-top: 24px;
+  }
+
+  .booking-survey-issue-row {
+    border: solid 1px $smoke-grey-two;
+    padding: 7px 12px 7px 22px;
+    min-height: 94px;
+
+    & + .booking-survey-issue-row {
+      margin-top: 20px;
+    }
+  }
+}
