@@ -30,4 +30,15 @@
     min-height: 200px;
     border-bottom: 1px solid $smoke-grey;
   }
+
+  .dashboard-information {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 768px) {
+    .dashboard-information {
+      padding-right: 0;
+      width: calc(100% - 200px);
+    }
+  }
 }

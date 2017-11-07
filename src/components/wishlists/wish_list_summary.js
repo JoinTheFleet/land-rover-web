@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../miscellaneous/loading';
 
 import WishListsService from '../../shared/services/wish_lists_service';
-import WishList from './wishlist';
+import WishListCard from './wish_list_card';
 
 import LocalizationService from '../../shared/libraries/localization_service';
 
@@ -69,7 +69,7 @@ export default class WishListSummary extends Component {
               <Link to={{
                       pathname: `/dashboard/wish_lists`,
                       state: {
-                        reviews: this.state.wish_lists
+                        wish_lists: this.state.wish_lists
                       }
                     }}
                     className='secondary-text-color link pull-right'>
@@ -77,12 +77,12 @@ export default class WishListSummary extends Component {
               </Link>
             </span>
           </div>
-          <div className='col-xs-12 review-summary' >
+          <div className='col-xs-12 wishlist-summary' >
             <div className='row'>
               {
                 this.state.wish_lists.map((wish_list) => {
                   return (
-                    <WishList wish_list={wish_list} />
+                    <WishListCard wish_list={wish_list} />
                   )
                 })
               }

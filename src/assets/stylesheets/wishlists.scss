@@ -1,0 +1,30 @@
+.wishlist-card {
+  border: 1px solid $smoke-grey;
+  margin-bottom: 20px;
+
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  a {
+    color: $main-text-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+      color: $main-text-color;
+    }
+  }
+
+  .wishlist-name {
+    font-size: 19px;
+    margin-right: 10px;
+    color: $main-text-color;
+  }
+
+  .wishlist-container {
+    width: calc(100% - 100px);
+  }
+}

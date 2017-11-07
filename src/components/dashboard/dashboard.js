@@ -3,7 +3,7 @@ import Avatar from 'react-avatar';
 
 import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
-import WishListSummary from '../wishlists/wishlist_summary';
+import WishListSummary from '../wishlists/wish_list_summary';
 import { Link } from 'react-router-dom';
 
 export default class Dashboard extends Component {

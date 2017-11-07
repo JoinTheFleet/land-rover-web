@@ -323,7 +323,8 @@
     "filters.year": "Year",
     "filters.engine_fuel": "Fuel",
 
-    "wish_lists.wish_lists": "Wishlists"
+    "wish_lists.wish_lists": "Wishlists",
+    "wish_lists.listings": "{listings} listings"
 
   }
 }
