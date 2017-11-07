@@ -1,0 +1,45 @@
+.credit-card {
+  .platform-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    padding: 10px;
+
+    img {
+      height: 80px;
+      width: 80px;
+    }
+  }
+
+  border: 1px solid $smoke-grey;
+  margin-bottom: 20px;
+
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  a {
+    color: $main-text-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+      color: $main-text-color;
+    }
+  }
+
+  .credit-name {
+    font-size: 19px;
+    color: $main-text-color;
+  }
+
+  .credit-container {
+    width: calc(100% - 100px);
+    padding-top: 10px;
+  }
+
+  .timestamp {
+    color: $tertiary-text-color;
+  }
+}

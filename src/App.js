@@ -355,7 +355,6 @@ export default class App extends Component {
                     });
   }
 
-
   handleLocationFocus(event) {
     this.handleLocationChange(event, true);
   }

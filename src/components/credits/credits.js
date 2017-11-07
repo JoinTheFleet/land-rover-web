@@ -27,8 +27,7 @@ export default class Credits extends Component {
                    this.setState({
                      referralURL: link
                    });
-                 })
-
+                 });
   }
 
   copyReferralURL() {
