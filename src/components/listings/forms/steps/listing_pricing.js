@@ -137,7 +137,8 @@ class ListingPricing extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }>
+                     intl={ this.props.intl }
+                     listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.pricing.prices'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.daily'}) }>
               <FormField id="listing_price"

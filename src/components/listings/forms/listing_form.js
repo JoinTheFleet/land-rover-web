@@ -3,9 +3,6 @@ import { injectIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
-import Constants from '../../../miscellaneous/constants';
-import Helpers from '../../../miscellaneous/helpers';
-
 import Stepper from '../../miscellaneous/stepper';
 import Loading from '../../miscellaneous/loading';
 
@@ -21,6 +18,10 @@ import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_loo
 import Alert from 'react-s-alert';
 
 import { Redirect } from 'react-router-dom';
+
+import Constants from '../../../miscellaneous/constants';
+import Helpers from '../../../miscellaneous/helpers';
+import ListingsHelper from '../../../miscellaneous/listings_helper';
 
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
@@ -42,7 +43,6 @@ class ListingForm extends Component {
     this.addListingProperties = this.addListingProperties.bind(this);
     this.handleCompleteListing = this.handleCompleteListing.bind(this);
     this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
-    this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
   }
 
@@ -157,7 +157,7 @@ class ListingForm extends Component {
       loading: true,
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }), () => {
-      let submissionParams = this.extractListingParamsForSubmission();
+      let submissionParams = ListingsHelper.extractListingParamsForSubmission(this.state.listing);
 
       if (this.props.edit) {
         ListingsService.update(this.state.listing.id, { listing: submissionParams })
@@ -188,26 +188,6 @@ class ListingForm extends Component {
                        });
       }
     });
-  }
-
-  extractListingParamsForSubmission() {
-    let listing = this.state.listing;
-
-    return {
-      latitude: listing.location.latitude,
-      longitude: listing.location.longitude,
-      vehicle_variant_id: listing.variant.id,
-      images: listing.images,
-      on_demand: listing.on_demand,
-      on_demand_rates: listing.on_demand_rates,
-      amenities: listing.amenities,
-      price: listing.price,
-      cleaning_fee: listing.cleaning_fee,
-      license_plate_number: listing.license_plate_number,
-      check_in_time: listing.check_in_time,
-      check_out_time: listing.check_out_time,
-      rules: listing.rules
-    };
   }
 
   renderStepper(){

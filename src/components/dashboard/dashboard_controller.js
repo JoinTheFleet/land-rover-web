@@ -7,7 +7,7 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
 
 import Dashboard from './dashboard';
-import Credits from '../credits/credits';
+// import Credits from '../credits/credits';
 
 import { Switch, Route } from 'react-router-dom';
 
@@ -62,7 +62,7 @@ export default class DashboardController extends Component {
         <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
           <Switch>
             <Route path='/dashboard/credits' render={ (props) => {
-              return <Credits user={ this.state.user } {...props} />
+              return ''
             }} />
             <Route exact path='/dashboard' render={ (props) => {
               return <Dashboard user={ this.state.user } {...props} />

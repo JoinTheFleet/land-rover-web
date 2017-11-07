@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'react-s-alert';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -11,6 +12,8 @@ import Map from '../miscellaneous/map';
 import BookNowTile from '../bookings/book_now_tile';
 
 import Constants from '../../miscellaneous/constants';
+import Errors from '../../miscellaneous/errors';
+import ListingsHelper from '../../miscellaneous/listings_helper';
 
 // Icons
 import specDoorsIcon from '../../assets/images/spec-doors.png';
@@ -18,6 +21,7 @@ import specPassengersIcon from '../../assets/images/spec-passengers.png';
 import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
 import ListingsService from '../../shared/services/listings/listings_service';
+import ListingPreviewService from '../../shared/services/listings/listing_preview_service';
 
 import { Link } from 'react-router-dom';
 
@@ -32,23 +36,42 @@ class ListingView extends Component {
       loading: false
     };
 
+    this.addError = this.addError.bind(this);
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.listing && location.state.listing.variant) {
-      this.setState({ listing: location.state.listing });
+    if (location && location.state && location.state.listing) {
+      if (this.props.preview) {
+        let listingParams = ListingsHelper.extractListingParamsForSubmission(location.state.listing);
+
+        this.setState({ loading: true }, () => {
+          ListingPreviewService.create(listingParams)
+                                .then(response => {
+                                  this.setState({ listing: response.data.data.listing, loading: false });
+                                })
+                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
+        });
+      }
+      else if (location.state.listing.variant) {
+        this.setState({ listing: location.state.listing });
+      }
     }
     else {
       this.setState({ loading: true }, () => {
         ListingsService.show(this.props.match.params.id)
-                       .then(response => {
-                         this.setState({ listing: response.data.data.listing, loading: false });
-                       });
+                        .then(response => {
+                          this.setState({ listing: response.data.data.listing, loading: false });
+                        })
+                        .catch(error => this.addError(Errors.extractErrorMessage(error)));
       });
     }
+  }
+
+  addError(error) {
+    this.setState({ loading: false }, () => { Alert.error(error) });
   }
 
   handleBookButtonClick(quotation, pricingQuote) {
@@ -78,7 +101,7 @@ class ListingView extends Component {
 
             <br/>
             <div className="listing-view-rating-reviews">
-              <RatingInput rating={ listing.rating } inputNameSufix={ listing.id.toString() } readonly={true} />
+              <RatingInput rating={ listing.rating } inputNameSufix={ listing.id ? listing.id.toString() : '' } readonly={true} />
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: listing.total_reviews} } />
             </div>
           </div>
@@ -219,10 +242,16 @@ class ListingView extends Component {
       return <Loading />;
     }
     else if (listing) {
+      let images =  listing.gallery.map(galleryImage => galleryImage.images.original_url);
+
+      if (this.props.location && this.props.location.state && this.props.location.state.listing) {
+        images = this.props.location.state.listing.images.map(image => image.url);
+      }
+
       return (
         <div className="listing-view-div col-xs-12 no-side-padding">
           <div className="listing-view-image-gallery">
-            <ImageGallery images={ listing.gallery.map(galleryImage => galleryImage.images.original_url) } />
+            <ImageGallery images={ images } />
           </div>
 
           <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
@@ -248,7 +277,8 @@ class ListingView extends Component {
 ListingView.propTypes = {
   listing: PropTypes.object,
   enableBooking: PropTypes.bool,
-  handleChangeView: PropTypes.func
+  handleChangeView: PropTypes.func,
+  preview: PropTypes.bool
 };
 
 export default injectIntl(ListingView);
