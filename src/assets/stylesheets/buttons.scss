@@ -2,3 +2,20 @@
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+.btn-inverted {
+  border-color: $secondary-color;
+  color: $secondary-color;
+  background-color: white;
+  box-shadow: none;
+  text-decoration: none;
+
+  &:active,
+  &:focus,
+  &:hover {
+    border-color: $secondary-color;
+    color: $secondary-color;
+    box-shadow: none;
+    text-decoration: none;
+  }
+}

@@ -30,7 +30,7 @@ class ListingPeriodFilter extends Component {
 
     if (this.props.showSearchButton) {
       button = (
-        <Link to='/dashboard'>
+        <Link to='/search'>
           <Button bsStyle='primary search'
                   onClick={ this.props.handleSearch }>
             Search
