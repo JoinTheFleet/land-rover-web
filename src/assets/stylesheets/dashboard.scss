@@ -1,0 +1,33 @@
+.user-dashboard {
+  .user-name {
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $smoke-grey;
+  }
+
+  .credit-information {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .credit-amount {
+    font-size: 20px;
+    color: $secondary-text-color;
+    font-weight: 100;
+  }
+
+  .credit-explanation {
+    font-size: 14px;
+    color: $tertiary-text-color;
+  }
+
+  .credit-button {
+    padding-top: 10px;
+  }
+
+  .dashboard-information-container {
+    min-height: 200px;
+    border-bottom: 1px solid $smoke-grey;
+  }
+}
