@@ -16,23 +16,21 @@ a {
   color: initial;
 }
 
-form {
-  input {
-    &::-webkit-input-placeholder {
-      color: $placeholder-text-color !important;
-    }
+input {
+  &::-webkit-input-placeholder {
+    color: $placeholder-text-color !important;
+  }
 
-    &:-moz-placeholder { /* Firefox 18- */
-      color: $placeholder-text-color !important;
-    }
+  &:-moz-placeholder { /* Firefox 18- */
+    color: $placeholder-text-color !important;
+  }
 
-    &::-moz-placeholder {  /* Firefox 19+ */
-      color: $placeholder-text-color !important;
-    }
+  &::-moz-placeholder {  /* Firefox 19+ */
+    color: $placeholder-text-color !important;
+  }
 
-    &:-ms-input-placeholder {
-      color: $placeholder-text-color !important;
-    }
+  &:-ms-input-placeholder {
+    color: $placeholder-text-color !important;
   }
 }
 

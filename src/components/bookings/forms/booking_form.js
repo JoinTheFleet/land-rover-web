@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import CloseOnEscape from 'react-close-on-escape';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 
+import BookingStatus from '../booking_status';
+import BookingFormCheckIn from './booking_form_check_in';
 import LocationMenuItem from '../../listings/filters/location_menu_item';
 import FormField from '../../miscellaneous/forms/form_field';
 import Loading from '../../miscellaneous/loading';
 import Toggleable from '../../miscellaneous/toggleable';
 import RatingInput from '../../miscellaneous/rating_input';
+import ConfirmationModal from '../../miscellaneous/confirmation_modal';
 
 import ListingQuotationService from '../../../shared/services/listings/listing_quotation_service';
 import ListingBookingsService from '../../../shared/services/listings/listing_bookings_service';
@@ -18,8 +21,9 @@ import ListingsService from '../../../shared/services/listings/listings_service'
 import BookingsService from '../../../shared/services/bookings/bookings_service';
 import PaymentMethodsService from '../../../shared/services/payment_methods_service';
 import GeolocationService from '../../../shared/services/geolocation_service';
-import LocalizationService from '../../../shared/libraries/localization_service';
 import LocationsService from '../../../shared/services/locations_service';
+import LocalizationService from '../../../shared/libraries/localization_service';
+import S3Uploader from '../../../shared/external/s3_uploader';
 
 import Helpers from '../../../miscellaneous/helpers';
 import Errors from '../../../miscellaneous/errors';
@@ -28,11 +32,17 @@ import Geolocation from '../../../miscellaneous/geolocation';
 import infoIcon from '../../../assets/images/info_icon.png';
 
 const MAP_URL = 'https://www.google.com/maps/search/?api=1&query=LATITUDE,LONGITUDE';
+
 class BookingForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      modalsOpen: {
+        'cancelBooking': false,
+        'checkOut': false,
+        'rejectBooking': false
+      },
       booking: {
         agreed_to_rules: false,
         agreed_to_insurance_terms: false,
@@ -62,14 +72,18 @@ class BookingForm extends Component {
     this.fetchLocationFromListingPosition = this.fetchLocationFromListingPosition.bind(this);
 
     this.addError = this.addError.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.submitBookingRequest = this.submitBookingRequest.bind(this);
     this.respondToBookingRequest = this.respondToBookingRequest.bind(this);
     this.setPickUpAndDropOffLocation = this.setPickUpAndDropOffLocation.bind(this);
 
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleWindowResize = this.handleWindowResize.bind(this);
+    this.handleCancelBooking = this.handleCancelBooking.bind(this);
     this.handleBookingChange = this.handleBookingChange.bind(this);
+    this.handleConfirmCheckIn = this.handleConfirmCheckIn.bind(this);
     this.handleOnDemandSelect = this.handleOnDemandSelect.bind(this);
+    this.handleConfirmCheckOut = this.handleConfirmCheckOut.bind(this);
     this.handleOnDemandLocationChange = this.handleOnDemandLocationChange.bind(this);
     this.handleOnDemandLocationSelect = this.handleOnDemandLocationSelect.bind(this);
     this.handleInsuranceCriteriaChange = this.handleInsuranceCriteriaChange.bind(this);
@@ -164,7 +178,8 @@ class BookingForm extends Component {
                        this.setState({
                          booking: response.data.data.booking,
                          listing: response.data.data.booking.listing,
-                         pricingQuote: response.data.data.booking.quotation
+                         pricingQuote: response.data.data.booking.quotation,
+                         loading: false
                        }, () => {
                          if (fetchLocations) {
                            this.fetchBookingOnDemandLocations();
@@ -294,6 +309,16 @@ class BookingForm extends Component {
 
   addError(error) {
     this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
+  }
+
+  toggleModal(modalName) {
+    let modalsOpen = this.state.modalsOpen;
+
+    if (Object.keys(modalsOpen).indexOf(modalName) > -1) {
+      modalsOpen[modalName] = !modalsOpen[modalName];
+
+      this.setState({ modalsOpen: modalsOpen });
+    }
   }
 
   submitBookingRequest(){
@@ -455,6 +480,60 @@ class BookingForm extends Component {
     this.setState(prevState => ({ booking: Helpers.extendObject(prevState.booking, paramToAdd) }));
   }
 
+  handleCancelBooking() {
+    this.setState({
+      loading: true
+    }, () => {
+      BookingsService.cancel(this.state.booking.id)
+                     .then(response => {
+                       this.fetchBooking();
+                       Alert.success(LocalizationService.formatMessage('bookings.booking_cancelled_successfully'));
+                     })
+                     .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
+  handleConfirmCheckIn(renterSignature, ownerSignature) {
+    let renterSignatureUrl = '';
+    let ownerSignatureUrl = '';
+
+    this.setState({
+      loading: true
+    }, () => {
+      S3Uploader.upload(Helpers.dataURItoBlob(renterSignature), 'booking_signatures')
+                .then(response => {
+                  renterSignatureUrl = response.Location;
+
+                  S3Uploader.upload(Helpers.dataURItoBlob(ownerSignature), 'booking_signatures')
+                            .then(response => {
+                              ownerSignatureUrl = response.Location;
+
+                              BookingsService.check_in(this.state.booking.id, { renter_signature_url: renterSignatureUrl, owner_signature_url: ownerSignatureUrl })
+                                             .then(response => {
+                                               this.fetchBooking();
+                                               Alert.success(LocalizationService.formatMessage('bookings.check_in_successful'));
+                                             })
+                                             .catch(error => this.addError(Errors.extractErrorMessage(error)));
+                            })
+                            .catch(error => this.addError(Errors.extractErrorMessage(error)));
+                })
+                .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
+  handleConfirmCheckOut() {
+    this.setState({
+      loading: true
+    }, () => {
+      BookingsService.check_out(this.state.booking.id)
+                     .then(response => {
+                       this.fetchBooking();
+                       Alert.success(LocalizationService.formatMessage('bookings.check_out_successful'));
+                     })
+                     .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
   hideLocationSearchResults(type) {
     let address = this.state.quotation.on_demand_location[type].address;
     let onDemandAddresses = this.state.onDemandAddresses;
@@ -478,7 +557,10 @@ class BookingForm extends Component {
       listingOwnerDetails = (
         <div className="booking-form-listing-user-details text-center pull-right">
           <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
-          <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+
+          <Link to={`/users/${listing.user.id}`}>
+            <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+          </Link>
         </div>
       );
     }
@@ -491,6 +573,21 @@ class BookingForm extends Component {
         { listingOwnerDetails }
       </div>
     )
+  }
+
+  renderBookingStatus() {
+    let bookingStatusDiv = '';
+
+    if (this.state.booking.id) {
+      bookingStatusDiv = (
+        <div className="booking-form-status booking-form-box col-xs-12 no-side-padding">
+          <div className="pull-left tertiary-text-color"> { LocalizationService.formatMessage('bookings.your_booking_is') } </div>
+          <div className="pull-right"> <BookingStatus booking={ this.state.booking } /> </div>
+        </div>
+      )
+    }
+
+    return bookingStatusDiv;
   }
 
   renderRenterDetails() {
@@ -508,7 +605,9 @@ class BookingForm extends Component {
           <div className="booking-form-renter-image-and-name">
             <div className="booking-form-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
             <div className="booking-form-renter-name-and-rating pull-left">
-              <div className="fs-18 secondary-text-color"> { booking.renter.name } </div>
+              <Link to={`/users/${booking.renter.id}`}>
+                <div className="fs-18 secondary-text-color"> { booking.renter.name } </div>
+              </Link>
 
               <RatingInput rating={ booking.renter.renter_review_summary.rating } />
               <span className="fs-18"> { LocalizationService.formatMessage('listings.total_reviews', { total_reviews: booking.renter.renter_review_summary.total_reviews }) } </span>
@@ -857,23 +956,67 @@ class BookingForm extends Component {
     let actionButtonsDiv = '';
 
     if (role === 'owner') {
-      if (status === 'pending') {
-        actionButtonsDiv = (
-          <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
-            <div className="col-xs-12 no-side-padding">
-              <button className="booking-form-action-button btn secondary-color white-text fs-18 col-xs-12"
-                      onClick={ () => { this.respondToBookingRequest(true) } }>
-                { LocalizationService.formatMessage('bookings.accept_booking') }
-              </button>
+      switch(status) {
+        case 'pending':
+          actionButtonsDiv = (
+            <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
+              <div className="col-xs-12 no-side-padding">
+                <button className="booking-form-action-button btn secondary-color white-text fs-18 col-xs-12"
+                        onClick={ () => { this.respondToBookingRequest(true) } }>
+                  { LocalizationService.formatMessage('bookings.accept_booking') }
+                </button>
+              </div>
+              <div className="col-xs-12 no-side-padding">
+                <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
+                        onClick={ () => { this.toggleModal('rejectBooking') } }>
+                  { LocalizationService.formatMessage('bookings.reject_booking') }
+                </button>
+
+                <ConfirmationModal open={ this.state.modalsOpen.rejectBooking }
+                                  toggleModal={ this.toggleModal }
+                                  modalName="rejectBooking"
+                                  title={ LocalizationService.formatMessage('bookings.confirm_reject_booking') }
+                                  confirmationAction={ () => { this.respondToBookingRequest(false) } } >
+                  <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_reject_booking_text') } </span>
+                </ConfirmationModal>
+              </div>
             </div>
-            <div className="col-xs-12 no-side-padding">
+          )
+          break;
+        case 'confirmed':
+          actionButtonsDiv = (
+            <div>
+              <BookingFormCheckIn handleConfirmCheckIn={ this.handleConfirmCheckIn } handleCancelBooking={ () => { this.toggleModal('cancelBooking') } } />
+
+              <ConfirmationModal open={ this.state.modalsOpen.cancelBooking }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="cancelBooking"
+                                 title={ LocalizationService.formatMessage('bookings.confirm_cancel_booking') }
+                                 confirmationAction={ this.handleCancelBooking } >
+                <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_cancel_booking_text') } </span>
+              </ConfirmationModal>
+            </div>
+          );
+          break;
+        case 'in_progress':
+          actionButtonsDiv = (
+            <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
               <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
-                      onClick={ () => { this.respondToBookingRequest(false) } }>
-                { LocalizationService.formatMessage('bookings.reject_booking') }
+                      onClick={ () => { this.toggleModal('checkOut') } }>
+                { LocalizationService.formatMessage('bookings.check_out_renter') }
               </button>
+
+              <ConfirmationModal open={ this.state.modalsOpen.checkOut }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="checkOut"
+                                 title={ LocalizationService.formatMessage('bookings.confirm_check_out') }
+                                 confirmationAction={ this.handleConfirmCheckOut } >
+                <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.confirm_check_out_text') } </span>
+              </ConfirmationModal>
             </div>
-          </div>
-        )
+          )
+          break;
+        default:
       }
     }
     else {
@@ -909,6 +1052,8 @@ class BookingForm extends Component {
       <div className="booking-form col-xs-12 no-side-padding">
         <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           { this.renderListingDetails() }
+
+          { this.renderBookingStatus() }
 
           { this.renderRenterDetails() }
 

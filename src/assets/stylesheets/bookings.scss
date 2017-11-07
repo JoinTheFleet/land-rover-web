@@ -181,6 +181,10 @@
     padding: 24px 15px;
   }
 
+  .booking-form-listing-details {
+    margin-bottom: 10px;
+  }
+
   .booking-form-listing-user-details {
     img {
       width: 74px;
@@ -188,11 +192,17 @@
       border-radius: 74px;
       object-fit: cover;
 
+      & + a,
       & + span {
         display: block;
         margin-top: 5px;
       }
     }
+  }
+
+  .booking-form-status {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
 
   .booking-form-renter-details {
@@ -378,6 +388,10 @@
     }
   }
 
+  .fleet-signature-box {
+    margin-top: 24px;
+  }
+
   .fleet-checkbox label {
     height: 18px;
     margin-bottom: 0;
@@ -503,5 +517,15 @@
     .booking-row-status {
       right: 10px;
     }
+  }
+}
+
+.booking-form-check-in-buttons {
+  button {
+    margin-top: 24px;
+  }
+
+  .booking-form-check-in-signatures {
+    overflow: hidden;
   }
 }

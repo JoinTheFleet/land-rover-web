@@ -56,6 +56,7 @@ export default class App extends Component {
     this.state = {
       accessToken: cookies.get('accessToken'),
       currentUserRole: userRoles.renter,
+      roleChanged: false,
       listings: [],
       modalName: undefined,
       searchLocations: [],
@@ -112,6 +113,12 @@ export default class App extends Component {
     }, 1000);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.roleChanged && prevState.roleChanged === this.state.roleChanged) {
+      this.setState({ roleChanged: false });
+    }
+  }
+
   setAccessToken(accessToken) {
     cookies.remove('accessToken');
     if (accessToken.length > 0) {
@@ -144,7 +151,8 @@ export default class App extends Component {
 
   changeCurrentUserRole() {
     this.setState((prevState) => ({
-      currentUserRole: (prevState.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter
+      currentUserRole: (prevState.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter,
+      roleChanged: true
     }));
   }
 
@@ -344,6 +352,10 @@ export default class App extends Component {
   }
 
   render() {
+    if( this.state.roleChanged ) {
+      return <Redirect to="/dashboard" />;
+    }
+
     return (
       <Route path="/" render={(props) => {
         return (

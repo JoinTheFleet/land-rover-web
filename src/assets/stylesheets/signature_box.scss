@@ -1,0 +1,91 @@
+.fleet-signature-box {
+  height: 82px;
+
+  & > div {
+    margin: auto;
+    position: relative;
+    max-width: 364px;
+    height: 100%;
+
+    & > img,
+    & > input {
+      border: solid 1px $smoke-grey-two;
+    }
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .fleet-signature-box-open-modal-btn {
+    position: absolute;
+    right: 7px;
+    top: 5px;
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .signature-modal {
+    .modal {
+      .modal-content {
+        padding: 0 !important;
+      }
+    }
+
+    .signature-modal-header {
+      padding: 0 7px;
+      height: 46px;
+      line-height: 46px;
+
+      div:first-child,
+      div:last-child {
+        cursor: pointer;
+      }
+    }
+
+    .signature-modal-content {
+      padding: 0 7px;
+
+      .signature-modal-canvas-container {
+        position: relative;
+
+        .signature-modal-clear-btn {
+          position: absolute;
+          left: 0;
+          bottom: 11px;
+          cursor: pointer;
+        }
+      }
+
+      .signature-modal-footer {
+        border-top: dashed 1px $warm-grey;
+        height: 44px;
+        padding: 12px 0;
+      }
+    }
+  }
+
+  .m-signature-pad {
+    .m-signature-pad--body {
+      height: 324px;
+
+      canvas {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.02) inset;
+      }
+    }
+  }
+}
