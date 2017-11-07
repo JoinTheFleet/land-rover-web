@@ -26,6 +26,7 @@ import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
 import UserController from './components/users/user_controller';
+import DashboardController from './components/dashboard/dashboard_controller';
 
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
@@ -391,7 +392,7 @@ export default class App extends Component {
                                 showSearchButton={ true } />
                   }
                 }} />
-                <Route path="/dashboard" render={(props) => {
+                <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
                               currentUserRole={ this.state.currentUserRole }
@@ -411,6 +412,7 @@ export default class App extends Component {
                               page={ this.state.page + 1 } />
                   )
                 }} />
+                <Route path='/dashboard' component={ DashboardController } />
                 <Route path='/users/:id' component={ UserController } />
 
                 if (this.state.accessToken && this.state.accessToken.length > 0) {
