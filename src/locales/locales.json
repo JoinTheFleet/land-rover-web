@@ -339,6 +339,10 @@
 
     "dashboard.credits.invite": "Invite a friend to join Fleet and get €10 free credit when they sign up.",
     "dashboard.credits.view": "View Credits",
+    "dashboard.credits.copy_url": "Copy Referral Link to Clipboard",
+    "dashboard.credits.copied": "Copied!",
+
+    "credits.credits": "Credits",
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",
