@@ -24,9 +24,11 @@ class BookingSurveyIssuesService extends Service {
 
   static create(booking_id, survey_id, title, caption, image_url) {
     return client.post(this.surveyURL(booking_id, survey_id), {
-      title: title,
-      caption: caption,
-      image_url: image_url
+      issue: {
+        title: title,
+        caption: caption,
+        image_url: image_url
+      }
     });
   }
 

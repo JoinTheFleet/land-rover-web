@@ -3,6 +3,7 @@
     "application.add": "Add",
     "application.blog": "Blog",
     "application.cancel": "Cancel",
+    "application.choose_file": "Choose file",
     "application.clear": "Clear",
     "application.country": "Country",
     "application.dates": "Dates",
@@ -252,6 +253,8 @@
     "bookings.surveys.issue_title": "Issue Title",
     "bookings.surveys.issue_caption": "Issue Caption",
     "bookings.surveys.save_vehicle_survey": "Save Vehicle Survey",
+    "bookings.surveys.invalid_image": "Please provide a valid image",
+    "bookings.surveys.could_not_upload_image": "Error while uploading image",
 
     "payment_methods.payment_method": "Payment method",
     "payment_methods.payment_method_card": "{brand} **** {last_four}",
@@ -344,8 +347,6 @@
     "notification_settings.messages.label": "From owners and renters",
     "notification_settings.rental_updates.label": "Request, confirmations, changes and more",
     "notification_settings.other.label": "Feature updates and more",
-
-
 
     "filters.door_count": "Doors",
     "filters.seat_count": "Passengers",

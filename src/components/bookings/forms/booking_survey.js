@@ -12,6 +12,7 @@ import Loading from '../../miscellaneous/loading';
 import BookingSurveysService from '../../../shared/services/bookings/booking_surveys_service';
 import BookingSurveyIssuesService from '../../../shared/services/bookings/booking_survey_issues_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
+import S3Uploader from '../../../shared/external/s3_uploader';
 
 import Errors from '../../../miscellaneous/errors';
 
@@ -26,7 +27,9 @@ class BookingSurvey extends Component {
     };
 
     this.addError = this.addError.bind(this);
+    this.deleteIssue = this.deleteIssue.bind(this);
     this.fetchSurvey = this.fetchSurvey.bind(this);
+    this.saveCurrentIssue = this.saveCurrentIssue.bind(this);
     this.setCurrentIssueParamValue = this.setCurrentIssueParamValue.bind(this);
   }
 
@@ -46,6 +49,22 @@ class BookingSurvey extends Component {
     });
   }
 
+  deleteIssue(issue) {
+    this.setState({
+      loading: true
+    }, () => {
+      BookingSurveyIssuesService.destroy(this.props.booking.id, this.state.survey.id, issue.id)
+                                .then(response => {
+                                  let survey = this.state.survey;
+
+                                  survey.issues.splice(survey.issues.indexOf(issue), 1);
+
+                                  this.setState({ survey: survey, loading: false });
+                                })
+                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
   saveCurrentIssue() {
     if (Object.keys(this.state.survey).length === 0) {
       return;
@@ -54,20 +73,28 @@ class BookingSurvey extends Component {
     this.setState({
       loading: true
     }, () => {
-      BookingSurveyIssuesService.create(this.props.booking.id, this.state.survey.id, this.state.survey.title, this.state.survey.caption, this.state.survey.image_url)
-                                .then(response => {
-                                  let survey = this.state.survey;
-                                  survey.issues.push(response.data.data.issue);
-                                  console.log(response);
+      let survey = this.state.survey;
 
-                                  this.setState({ survey: survey, loading: false });
-                                })
-                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
+      S3Uploader.upload(this.state.currentIssue.image, 'booking_survey_images')
+                .then(response => {
+                  let imageUrl = response.Location;
+
+                  BookingSurveyIssuesService.create(this.props.booking.id, this.state.survey.id, this.state.currentIssue.title, this.state.currentIssue.caption, imageUrl)
+                                            .then(response => {
+                                              survey.issues.push(response.data.data.issue);
+
+                                              this.setState({ survey: survey, currentIssue: {}, loading: false });
+                                            })
+                                            .catch(error => this.addError(Errors.extractErrorMessage(error)));
+                })
+                .catch(error => {
+                  Alert.error(LocalizationService.formatMessage('bookings.surveys.could_not_upload_image'))
+                });
     });
   }
 
   addError(error) {
-    this.setState({ loading: false }, Alert.error(error));
+    this.setState({ loading: false }, () => { Alert.error(error); });
   }
 
   setCurrentIssueParamValue(param, value) {
@@ -98,14 +125,16 @@ class BookingSurvey extends Component {
   renderRaiseIssueTile() {
     return (
       <div className="booking-survey-raise-issue-tile fleet-tile col-xs-12 no-side-padding">
-        <div className="booking-survey-raise-issue-tile-header tile-header secondary-color white-text">
+        <div className="booking-survey-raise-issue-tile-header tile-header fs-16 secondary-color white-text col-xs-12">
           { LocalizationService.formatMessage('bookings.surveys.raise_an_issue') }
         </div>
 
-        <div className="booking-survey-raise-issue-tile-content tile-content">
+        <div className="booking-survey-raise-issue-tile-content tile-content col-xs-12">
           <FormGroup placeholder={ LocalizationService.formatMessage('bookings.surveys.photo') }>
             <FormField type="file"
-                       value={ this.state.currentIssue.image_url } />
+                       id="booking_survey_issue_photo_input"
+                       value={ this.state.currentIssue.image ? this.state.currentIssue.image.name : '' }
+                       handleChange={ (event) => { this.setCurrentIssueParamValue('image', event.target.files[0]); } } />
           </FormGroup>
 
           <FormGroup placeholder={ LocalizationService.formatMessage('bookings.surveys.issue_title') }>
@@ -120,7 +149,9 @@ class BookingSurvey extends Component {
                        handleChange={ (event) => { this.setCurrentIssueParamValue('caption', event.target.value) } } />
           </FormGroup>
 
-          <Button className="secondary-color white-text" onClick={ this.saveCurrentIssue }>
+          <Button className="pull-right secondary-color white-text"
+                  disabled={ !this.state.currentIssue.title || !this.state.currentIssue.caption || !this.state.currentIssue.image }
+                  onClick={ this.saveCurrentIssue }>
             { LocalizationService.formatMessage('application.save') }
           </Button>
         </div>
@@ -137,7 +168,7 @@ class BookingSurvey extends Component {
       <div className="booking-survey-issues-list col-xs-12 no-side-padding">
         {
           this.state.survey.issues.map(issue => {
-            return (<BookingSurveyIssue issue={ issue } />)
+            return (<BookingSurveyIssue issue={ issue } handleDeleteIssue={ this.deleteIssue } />)
           })
         }
       </div>
@@ -161,6 +192,13 @@ class BookingSurvey extends Component {
           { this.renderRaiseIssueTile() }
 
           { this.renderIssuesList() }
+        </div>
+
+        <div className="booking-survey-action-buttons text-center col-xs-12">
+          <Button className="tomato white-text text-center fs-16"
+                  onClick={ this.props.handleSaveSurvey }>
+            { LocalizationService.formatMessage('bookings.surveys.save_vehicle_survey') }
+          </Button>
         </div>
 
         { this.renderLoading() }
