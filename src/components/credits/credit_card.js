@@ -8,8 +8,6 @@ export default class CreditCard extends Component {
   render() {
     let credit = this.props.credit;
 
-    console.log(credit);
-
     let imageSRC = `${process.env.REACT_APP_PLATFORM_IMAGE_URL}`;
 
     if (credit.creditor) {

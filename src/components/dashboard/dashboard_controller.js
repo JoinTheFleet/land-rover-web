@@ -36,7 +36,7 @@ export default class DashboardController extends Component {
                     this.setState({
                       user: response.data.data.user,
                       loading: false,
-                    }, () => { console.log(this.state) });
+                    });
                   })
                   .catch(error => {
                     this.setState({
