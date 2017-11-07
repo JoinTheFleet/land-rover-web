@@ -124,7 +124,12 @@ class Login extends Component {
     if (event) {
       event.preventDefault();
     }
+
     let user = this.state.user;
+
+    if (this.props.referralCode) {
+      user.referral_code = this.props.referralCode;
+    }
 
     if (user && user.first_name && user.last_name && user.email && user.password) {
       this.setState({
@@ -186,6 +191,21 @@ class Login extends Component {
     }
   }
 
+  renderRegistrationReferralCode() {
+    let referralCode = '';
+
+    if (this.props.referralCode) {
+      referralCode = (
+        <FormField disabled
+                   value={ this.props.referralCode }
+                   className='form-control text-secondary-font-weight fs-18'
+                   type='text' />
+      )
+    }
+
+    return referralCode;
+  }
+
   renderRegistrationModalBody() {
     let user = this.state.user;
 
@@ -224,6 +244,7 @@ class Login extends Component {
                          placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
                          className='form-control text-secondary-font-weight fs-18'
                          type='password' />
+              { this.renderRegistrationReferralCode() }
           </div>
           <Button className='white-text secondary-color text-secondary-font-weight fs-18'
                   onClick={ this.registerUser }

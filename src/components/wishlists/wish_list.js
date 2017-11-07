@@ -79,7 +79,7 @@ export default class WishListList extends Component {
           this.setState({
             loading: false
           }, () => {
-            Alert.error(error.resposne.data.message);
+            Alert.error(error.response.data.message);
           });
         });
       });
