@@ -98,10 +98,9 @@ export default class FormField extends Component {
           minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
-          reopenPickerOnClearDate={ false }
           showClearDates={ showClearDates }
           reopenPickerOnClearDates={ false }
-          renderCalendarInfo={ false }
+          renderCalendarInfo={ () => { return false } }
           hideKeyboardShortcutsPanel={ true }
           displayFormat={ 'DD/MM/YYYY' }
           disabled={this.props.disabled}
@@ -124,7 +123,7 @@ export default class FormField extends Component {
           initialVisibleMonth={null}
           numberOfMonths={2}
           minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
-          renderCalendarInfo={false}
+          renderCalendarInfo={ () => { return false } }
           hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
         />

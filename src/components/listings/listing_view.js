@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
+import { Redirect } from 'react-router-dom';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import ImageGallery from '../miscellaneous/image_gallery';
-import RatingInput from '../miscellaneous/rating_input';
-import Loading from '../miscellaneous/loading';
 import Map from '../miscellaneous/map';
+import Button from '../miscellaneous/button';
+import Loading from '../miscellaneous/loading';
+import RatingInput from '../miscellaneous/rating_input';
+import ImageGallery from '../miscellaneous/image_gallery';
+import ConfirmationModal from '../miscellaneous/confirmation_modal';
 
 import BookNowTile from '../bookings/book_now_tile';
 
@@ -23,6 +26,8 @@ import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingPreviewService from '../../shared/services/listings/listing_preview_service';
 
+import LocalizationService from '../../shared/libraries/localization_service';
+
 import { Link } from 'react-router-dom';
 
 const listingsViews = Constants.listingsViews();
@@ -33,11 +38,18 @@ class ListingView extends Component {
 
     this.state = {
       listing: undefined,
-      loading: false
+      loading: false,
+      redirectTo: undefined,
+      openModals: {
+        deleteListing: false
+      }
     };
 
     this.addError = this.addError.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleDeleteListing = this.handleDeleteListing.bind(this);
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +84,44 @@ class ListingView extends Component {
 
   addError(error) {
     this.setState({ loading: false }, () => { Alert.error(error) });
+  }
+
+  toggleModal(modalName) {
+    let openModals = this.state.openModals;
+    openModals[modalName] = !openModals[modalName];
+
+    this.setState({ openModals: openModals });
+  }
+
+  handleDeleteListing() {
+    if (!this.state.listing) {
+      return;
+    }
+
+    this.setState({
+      loading: true
+    }, () => {
+      ListingsService.destroy(this.state.listing.id)
+                     .then(response => {
+                       this.setState({ 
+                         loading: false,
+                         redirectTo: {
+                           pathname: '/listings',
+                           state: { listingDeleted: true } 
+                         }
+                       });
+                     })
+                     .catch((error) => {
+                       this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
+                     });
+    });
+  }
+
+  handleDeleteButtonClick(listing) {
+    let openModals = this.state.openModals;
+    openModals.deleteListing = true;
+
+    this.setState({ selectedListing: listing, openModals: openModals });
   }
 
   handleBookButtonClick(quotation, pricingQuote) {
@@ -235,8 +285,50 @@ class ListingView extends Component {
     return bookingDiv;
   }
 
+  renderButtons() {
+    return (
+      <div className="listing-card-buttons text-center col-xs-12 no-side-padding">
+        { this.renderGoBackButton() }
+
+        { this.renderDeleteButton() }
+      </div>
+    )
+  }
+
+  renderGoBackButton() {
+    if (this.props.location && this.props.location.state && this.props.location.state.previousPage) {
+      return (
+        <Link to={ this.props.location.state.previousPage }>
+          <Button className="tomato white-text">
+            { LocalizationService.formatMessage('application.go_back') }
+          </Button>
+        </Link>
+      )
+    }
+    else {
+      return '';
+    }
+  }
+
+  renderDeleteButton() {
+    if (!this.state.listing.id) {
+      return '';
+    }
+
+    return (
+      <Button className="listing-card-delete-button tomato white-text"
+              onClick={ () => { this.handleDeleteButtonClick(this.props.listing) } }>
+        { LocalizationService.formatMessage('listings.delete_listing') }
+      </Button>
+    )
+  }
+
   render() {
     let listing = this.state.listing;
+
+    if (this.state.redirectTo) {
+      return (<Redirect to={ this.state.redirectTo } />)
+    }
 
     if (this.state.loading) {
       return <Loading />;
@@ -244,7 +336,7 @@ class ListingView extends Component {
     else if (listing) {
       let images =  listing.gallery.map(galleryImage => galleryImage.images.original_url);
 
-      if (this.props.location && this.props.location.state && this.props.location.state.listing) {
+      if (this.props.preview && this.props.location && this.props.location.state && this.props.location.state.listing) {
         images = this.props.location.state.listing.images.map(image => image.url);
       }
 
@@ -264,6 +356,18 @@ class ListingView extends Component {
             { this.renderBookingTile() }
 
             { this.renderMap() }
+
+            { this.renderButtons() }
+
+            <ConfirmationModal open={ this.state.openModals.deleteListing }
+                              toggleModal={ this.toggleModal }
+                              modalName="deleteListing"
+                              confirmationAction={ this.handleDeleteListing }
+                              title={ LocalizationService.formatMessage('listings.confirm_delete') }>
+              <span className="tertiary-text-color text-secondary-font-weight fs-18">
+                { LocalizationService.formatMessage('listings.confirm_delete_text') }
+              </span>
+            </ConfirmationModal>
           </div>
         </div>
       );

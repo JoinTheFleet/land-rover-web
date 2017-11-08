@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import Alert from 'react-s-alert';
 
 import UsersService from '../../shared/services/users/users_service';
 import FormButtonRow from '../miscellaneous/forms/form_button_row';
@@ -7,7 +9,8 @@ import moment from 'moment';
 import UserForm from './user_profile_verified_info/user_form';
 import BusinessInformationForm from './user_profile_verified_info/business_information_form';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import LocalizationService from '../../shared/libraries/localization_service';
+import Errors from '../../miscellaneous/errors';
 
 class UserProfileVerifiedInfo extends Component {
   constructor(props) {
@@ -47,6 +50,17 @@ class UserProfileVerifiedInfo extends Component {
     this.handleBusinessNameChange = this.handleBusinessNameChange.bind(this);
     this.handleBusinessTaxIDChange = this.handleBusinessTaxIDChange.bind(this);
     this.updateUser = this.updateUser.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location && this.props.location.state) {
+      let verificationsNeeded = this.props.location.state.verificationsNeeded;
+
+      if (verificationsNeeded && verificationsNeeded.length > 0) {
+        Alert.error(LocalizationService.formatMessage('listings.need_to_complete_verifications',
+                                                      { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ') }));
+      }
+    }
   }
 
   handleDateChange(date) {
@@ -330,7 +344,8 @@ class UserProfileVerifiedInfo extends Component {
         }
 
         this.setState({ user: user });
-      });
+      })
+      .catch(error => Alert.error(Errors.extractErrorMessage(error)));
     }
   }
 

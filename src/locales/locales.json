@@ -12,6 +12,7 @@
     "application.edit": "Edit",
     "application.filter": "Filter",
     "application.image_failed": "There was an error processing your image, please try again.",
+    "application.go_back": "Go Back",
     "application.loading": "Loading",
     "application.location": "Location",
     "application.manage": "Manage",
@@ -155,6 +156,10 @@
     "listings.price_per_day": "{currency_symbol}{price} per day",
     "listings.per_day": "per day",
     "listings.listings": "Listings",
+    "listings.delete_listing": "Delete Listing",
+    "listings.confirm_delete": "Confirm Listing Deletion",
+    "listings.confirm_delete_text": "Deleting this vehicle will cancel any attached bookings. Are you sure you want to delete this vehicle?",
+    "listings.listing_deleted_successfully": "Listing Deleted Successfully",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",
@@ -192,6 +197,8 @@
     "listings.rules.rules": "Rules",
     "listings.rules.rules_eg": "Rules eg. No Dogs",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
+
+    "listings.need_to_complete_verifications": "You need to fill in the following info in order to be able to add a listing: {info_to_verify}",
 
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",

@@ -253,10 +253,6 @@
     padding: 20px 0;
     height: 100%;
   }
-
-  .listing-card {
-    cursor: pointer;
-  }
 }
 
 .listing-card-link {
@@ -269,16 +265,18 @@
     color: inherit;
     text-decoration: none;
   }
-
-  & + .listing-card-link {
-    margin-top: 20px;
-  }
 }
 
 .listing-card {
   position: relative;
   height: 94px;
   border: solid 1px $smoke-grey-two;
+  cursor: pointer;
+
+  & > a:first-child {
+    width: 100%;
+    height: 100%;
+  }
 
   .listing-card-photo {
     float: left;
@@ -315,6 +313,10 @@
     right: 15px;
     bottom: 10px;
   }
+
+  & + .listing-card {
+    margin-top: 20px;
+  }
 }
 
 /* Listing Form */
@@ -322,14 +324,6 @@
   .listing-form-current-step {
     padding-top: 20px;
     padding-bottom: 20px;
-  }
-
-  .proceed-to-step-btn {
-    margin-top: 20px;
-    padding-top: 0;
-    height: 32px;
-    line-height: 32px;
-    letter-spacing: 0.2px;
   }
 }
 
@@ -490,6 +484,21 @@
   }
 }
 
+.listing-step-buttons {
+  margin-top: 20px;
+
+  .proceed-to-step-btn {
+    padding-top: 0;
+    height: 32px;
+    line-height: 32px;
+    letter-spacing: 0.2px;
+  }
+
+  & > a + .proceed-to-step-btn {
+    margin-left: 10px;
+  }
+}
+
 /* Listing View */
 .listing-view-div {
   .fleet-image-gallery {
@@ -588,5 +597,15 @@
 
   .listing-view-booking-div + .listing-view-map {
     margin-top: 24px;
+  }
+
+  .listing-view-map + div {
+    margin-top: 24px;
+  }
+
+  .listing-view-buttons {
+    button {
+      width: 200px;
+    }
   }
 }

@@ -47,7 +47,7 @@ class ListingStep extends Component {
 
   render() {
     let nextButtonText = (<FormattedMessage id="application.next" />);
-    let previewButton = <div></div>;
+    let previewButton = '';
 
     if (this.props.finalStep)  {
       nextButtonText = (<FormattedMessage id="listings.complete_listing" />);
@@ -59,14 +59,15 @@ class ListingStep extends Component {
             listing: this.props.listing,
             previousPage: {
               pathname: this.props.listing.id ? `/listings/${this.props.listing.id}/edit` : '/listings/new',
-              props: {
+              state: {
+                listing: this.props.listing,
                 finalStep: true
               }
             }
           }
         } }>
-          <Button className="tomato white-text" onClick={ () => {} }>
-            <FormattedMessage id="listings.preview" />
+          <Button className="tomato white-text fs-12" onClick={ () => {} }>
+            <FormattedMessage id="application.preview" />
           </Button>
         </Link>
       )
@@ -77,13 +78,15 @@ class ListingStep extends Component {
         <div className="col-xs-12 no-side-padding">
           { this.props.children }
 
-          { previewButton }
+          <div className="listing-step-buttons col-xs-12 text-right">
+            { previewButton }
 
-          <button className="proceed-to-step-btn btn secondary-color white-text fs-12 pull-right"
-                  onClick={ this.handleNextEvent }
-                  disabled={ !this.props.validateFields() }>
-            { nextButtonText }
-          </button>
+            <Button className="proceed-to-step-btn secondary-color white-text fs-12"
+                    onClick={ this.handleNextEvent }
+                    disabled={ !this.props.validateFields() }>
+              { nextButtonText }
+            </Button>
+          </div>
         </div>
       </form>
     )

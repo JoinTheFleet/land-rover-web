@@ -12,10 +12,16 @@ export default class Dashboard extends Component {
       return <Loading />;
     }
     else {
+      let image;
+
+      if (this.props.user.images && this.props.user.images.length > 0) {
+        image = this.props.user.images.large_url;
+      }
+
       return (
         <div className='col-xs-12 user-dashboard'>
           <div className='col-xs-12 no-side-padding user-header'>
-            <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
+            <Avatar src={ image } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
             <div className='col-xs-12 col-sm-8 dashboard-information'>
               <div className='dashboard-information-container no-side-padding col-xs-12'>
                 <div className='col-xs-12 no-side-padding user-name'>
@@ -23,7 +29,7 @@ export default class Dashboard extends Component {
                 </div>
                 <div className='col-xs-12 no-side-padding credit-information'>
                   <div className='col-xs-12 credit-amount no-side-padding '>
-                    { this.props.user.credit_balance.message }
+                    { this.props.user.credit_balance ? this.props.user.credit_balance.message : '' }
                   </div>
                   <div className='col-xs-12 credit-explanation no-side-padding'>
                     { LocalizationService.formatMessage('dashboard.credits.invite') }

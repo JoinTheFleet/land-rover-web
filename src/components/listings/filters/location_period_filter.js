@@ -13,7 +13,7 @@ class ListingPeriodFilter extends Component {
     super(props);
 
     this.state = {
-      focused: false
+      focused: undefined
     };
 
     this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
@@ -48,6 +48,7 @@ class ListingPeriodFilter extends Component {
                      handleChange={ this.props.handleLocationChange }
                      handleFocusChange={ this.props.handleLocationFocus }
                      value={ this.props.locationName }/>
+
           <FormField type='daterange'
                      className=''
                      id='period'
@@ -62,7 +63,7 @@ class ListingPeriodFilter extends Component {
         { button }
         <div className='location-search-results'>
           <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
-            <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 }>
+            <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 } onToggle={ () => {} }>
                 <Dropdown.Menu>
                   {
                     this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
