@@ -76,17 +76,30 @@ export default class ListingList extends Component {
     let rightScroller = '';
 
     if (this.props.scrollable) {
-      leftScroller = (
-        <div className="previous-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('prev') } }>
-          <img src={ chevronLeft } alt="chevron_left" />
-        </div>
-      )
+      let showLeftScroller = true;
+      let showRightScroller = true;
 
-      rightScroller = (
-        <div className="next-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('next') } }>
-          <img src={ chevronRight } alt="chevron_right" />
-        </div>
-      )
+      if (this.refs.itemList) {
+        let target = this.refs.itemList.targets[0];
+        showLeftScroller = this.state.currentPosition > 0;
+        showRightScroller = this.state.currentPosition < target.scrollLeftMax;
+      }
+
+      if (showLeftScroller) {
+        leftScroller = (
+          <div className="previous-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('prev') } }>
+            <img src={ chevronLeft } alt="chevron_left" />
+          </div>
+        )
+      }
+
+      if (showRightScroller) {
+        rightScroller = (
+          <div className="next-listing-btn listing-nav-button" onClick={ () => { this.handleNavigationClick('next') } }>
+            <img src={ chevronRight } alt="chevron_right" />
+          </div>
+        )
+      }
     }
     return (
       <div>
@@ -94,7 +107,8 @@ export default class ListingList extends Component {
           { leftScroller }
           <Anime easing="easeInOutQuart"
                  duration={500}
-                 scrollLeft={ this.state.currentPosition }>
+                 scrollLeft={ this.state.currentPosition }
+                 ref={ 'itemList' } >
             <div className={ listClass }>
               { this.renderListingList() }
             </div>
