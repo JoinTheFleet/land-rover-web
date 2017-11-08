@@ -416,13 +416,22 @@
       height: 32px;
     }
 
-    .proceed-to-step-btn {
+    .listing-step-buttons {
       display: inline-block;
+      position: relative;
+      margin-left: -10px;
+      margin-top: 0;
+      padding: 0;
+      top: -1px;
+      width: 61px;
+      height: 32px;
       float: none !important;
-      margin-top: -2px;
-      border-left: none;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+
+      .proceed-to-step-btn {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 }

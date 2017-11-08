@@ -20,4 +20,8 @@ export default class ListingsHelper {
       rules: listing.rules
     };
   }
+
+  static getOnDemandDistances() {
+    return Array.apply(null, Array(20)).map(function (_, i) {return (i + 1) * 5;});
+  }
 }

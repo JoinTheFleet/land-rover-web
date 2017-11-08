@@ -60,11 +60,11 @@ class ListingView extends Component {
         let listingParams = ListingsHelper.extractListingParamsForSubmission(location.state.listing);
 
         this.setState({ loading: true }, () => {
-          ListingPreviewService.create(listingParams)
-                                .then(response => {
-                                  this.setState({ listing: response.data.data.listing, loading: false });
-                                })
-                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
+          ListingPreviewService.create({ listing: listingParams })
+                               .then(response => {
+                                 this.setState({ listing: response.data.data.listing, loading: false });
+                               })
+                               .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
       }
       else if (location.state.listing.variant) {

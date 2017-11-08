@@ -192,6 +192,8 @@
     "listings.pricing.on_demand_collection": "On Demand Collection (Optional)",
     "listings.pricing.earn_more_by_offering": "Earn more by offering renters the option to select their own On Demand Collection and Drop off Locations.",
     "listings.pricing.distance": "Distance",
+    "listings.pricing.select_distance": "Select Distance",
+    "listings.pricing.distance_km": "{distance} Km",
     "listings.pricing.price": "Price",
 
     "listings.rules.rules": "Rules",
