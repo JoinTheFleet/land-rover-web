@@ -36,6 +36,7 @@ class WishListsService extends Service {
 
   static get actions() {
     return {
+      show: true,
       index: true,
       create: true,
       destroy: true

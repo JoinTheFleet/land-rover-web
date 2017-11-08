@@ -26,6 +26,14 @@ import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import momentPropTypes from 'react-moment-proptypes';
 
 class Homescreen extends Component {
+  componentWillMount() {
+    let referralCode = this.props.match.params.referral_code;
+
+    if (referralCode) {
+      this.props.handleReferral(referralCode);
+    }
+  }
+
   render() {
     return (
       <div>

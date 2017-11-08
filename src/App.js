@@ -10,6 +10,8 @@ import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
 import 'react-chat-elements/dist/main.css';
 
+import branch from 'branch-sdk';
+
 import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
@@ -38,6 +40,7 @@ import Cookies from 'universal-cookie';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import LocalizationService from './shared/libraries/localization_service';
+import BranchService from './shared/external/branch_service';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -58,7 +61,7 @@ export default class App extends Component {
 
     this.state = {
       accessToken: cookies.get('accessToken'),
-      configurations: undefined,
+      configuration: undefined,
       currentUserRole: cookies.get('currentUserRole') || userRoles.renter,
       roleChanged: false,
       listings: [],
@@ -102,6 +105,7 @@ export default class App extends Component {
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
+    this.handleReferral = this.handleReferral.bind(this);
   }
 
   componentWillMount() {
@@ -116,11 +120,31 @@ export default class App extends Component {
                         });
     }, 1000);
 
+    branch.init(process.env.REACT_APP_BRANCH_KEY);
+
     ConfigurationService.show()
                         .then(response => {
-                          this.setState({ configurations: response.data.data.configuration });
+                          this.setState({ configuration: response.data.data.configuration });
                         })
                         .catch(error => { Alert.error(LocalizationService.formatMessage('configurations.could_not_fetch')); });
+  }
+
+  handleReferral(referralCode) {
+    if (!this.state.referralCode) {
+      this.setState({
+        referralCode: referralCode
+      }, () => {
+        AuthenticationService.logout()
+                             .then(() => {
+                               this.setAccessToken('');
+                               this.toggleModal('registration');
+                             })
+                             .catch(() => {
+                               this.setAccessToken('');
+                               this.toggleModal('registration');
+                             });
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -331,7 +355,6 @@ export default class App extends Component {
                     });
   }
 
-
   handleLocationFocus(event) {
     this.handleLocationChange(event, true);
   }
@@ -404,18 +427,42 @@ export default class App extends Component {
                   }
                   else {
                     return <Homescreen {...props}
-                                currentUserRole={ this.state.currentUserRole }
-                                handleLocationChange={ this.handleLocationChange }
-                                handleLocationFocus={ this.handleLocationFocus }
-                                handleDatesChange={ this.handleDatesChange }
-                                handleLocationSelect={ this.handleLocationSelect }
-                                handleSearch={ this.performSearch }
-                                startDate={ this.state.startDate }
-                                endDate={ this.state.endDate }
-                                locationName={ this.state.locationName }
-                                hideSearchResults={ this.hideSearchResults }
-                                searchLocations={ this.state.searchLocations }
-                                showSearchButton={ true } />
+                                       handleReferral={ this.handleReferral }
+                                       currentUserRole={ this.state.currentUserRole }
+                                       handleLocationChange={ this.handleLocationChange }
+                                       handleLocationFocus={ this.handleLocationFocus }
+                                       handleDatesChange={ this.handleDatesChange }
+                                       handleLocationSelect={ this.handleLocationSelect }
+                                       handleSearch={ this.performSearch }
+                                       startDate={ this.state.startDate }
+                                       endDate={ this.state.endDate }
+                                       locationName={ this.state.locationName }
+                                       hideSearchResults={ this.hideSearchResults }
+                                       searchLocations={ this.state.searchLocations }
+                                       showSearchButton={ true } />
+                  }
+                }} />
+
+                <Route path="/referral/:referral_code" render={(props) => {
+                  if (this.state.accessToken && !this.state.visitedDashboard) {
+                    this.setState({ visitedDashboard: true });
+                    return <Redirect to='/dashboard' />
+                  }
+                  else {
+                    return <Homescreen {...props}
+                                       handleReferral={ this.handleReferral }
+                                       currentUserRole={ this.state.currentUserRole }
+                                       handleLocationChange={ this.handleLocationChange }
+                                       handleLocationFocus={ this.handleLocationFocus }
+                                       handleDatesChange={ this.handleDatesChange }
+                                       handleLocationSelect={ this.handleLocationSelect }
+                                       handleSearch={ this.performSearch }
+                                       startDate={ this.state.startDate }
+                                       endDate={ this.state.endDate }
+                                       locationName={ this.state.locationName }
+                                       hideSearchResults={ this.hideSearchResults }
+                                       searchLocations={ this.state.searchLocations }
+                                       showSearchButton={ true } />
                   }
                 }} />
                 <Route path="/search" render={(props) => {
@@ -438,7 +485,9 @@ export default class App extends Component {
                               page={ this.state.page + 1 } />
                   )
                 }} />
-                <Route path='/dashboard' component={ DashboardController } />
+                <Route path='/dashboard' render={ (props) => {
+                  return <DashboardController {...props} configuration={ this.state.configuration } />
+                }} />
                 <Route path='/users/:id' component={ UserController } />
 
                 if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -461,7 +510,7 @@ export default class App extends Component {
                     }} />
                     <Route path="/bookings" render={(props) => {
                       return (<Bookings {...props}
-                                        configurations={ this.state.configurations }
+                                        configurations={ this.state.configuration }
                                         currentUserRole={ this.state.currentUserRole} />)
                     }} />
                     <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
@@ -473,7 +522,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
-            <Login setAccessToken={ this.setAccessToken } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
+            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
             <Footer />
           </div>
         )
