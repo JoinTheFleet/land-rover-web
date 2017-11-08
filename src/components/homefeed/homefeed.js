@@ -66,7 +66,6 @@ class Homefeed extends Component {
   }
 
   addedWishListToListing(options, error) {
-    console.log(options)
     if (options && options.listingID && options.wishListID) {
       this.addWishListToNearbyListing(options);
       this.addWishListToCollectionListing(options);
