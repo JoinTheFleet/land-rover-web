@@ -56,7 +56,7 @@ class ListingMap extends Component {
                listing_id={listing.id}
                id={`listing_${listing.id}_map_pin`}
                className="listings-map-listing-details-div">
-                <ListingItem additionalClasses={additionalClasses} listing={listing} />
+                <ListingItem toggleWishListModal={ this.props.toggleWishListModal } additionalClasses={additionalClasses} listing={listing} />
           </div>
         )
       }

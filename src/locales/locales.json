@@ -366,6 +366,9 @@
 
     "wish_lists.wish_lists": "Wishlists",
     "wish_lists.listings": "{listings} listings",
+    "wish_lists.save_to_wishlist": "Save to Wishlist",
+    "wish_lists.create_new_wishlist": "Create new Wishlist",
+    "wish_lists.name_new_wishlist": "Name your Wishlist",
 
     "configurations.could_not_fetch": "Could not fetch configurations"
   }

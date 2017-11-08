@@ -9,6 +9,20 @@ import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
 export default class SimpleListingItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleWishListModal = this.toggleWishListModal.bind(this);
+  }
+  
+  toggleWishListModal(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    this.props.toggleWishListModal(this.props.listing);
+  }
+
   renderItem() {
     let item = this.props.listing;
     let image = <img alt='' src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
@@ -38,7 +52,7 @@ export default class SimpleListingItem extends Component {
               <span className="subtitle-font-weight">{ vehicleTitle }</span>
               <span className="listing-item-year">{ item.year }</span>
             </div>
-            <div className="listing-item-liked">
+            <div onClick={ this.toggleWishListModal } className="listing-item-liked">
               <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
             </div>
             <div className="listing-item-info">

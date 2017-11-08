@@ -11,7 +11,6 @@ import chevronLeft from '../../assets/images/chevron_left.png';
 import chevronRight from '../../assets/images/chevron_right.png';
 
 export default class ListingList extends Component {
-
   constructor(props) {
     super(props);
 
@@ -52,12 +51,12 @@ export default class ListingList extends Component {
       if (this.props.simpleListing) {
         listingItems = this.props.listings.map((listing) => {
           return (
-            <SimpleListingItem key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing } />
+            <SimpleListingItem toggleWishListModal={ this.props.toggleWishListModal } key={ 'listing_' + listing.id } additionalClasses="col-sm-6 col-lg-4" listing={ listing } />
           )
         });
       }
       else {
-        listingItems = this.props.listings.map((listing) => (<ListingItem key={ 'listing_' + listing.id } listing={ listing } />));
+        listingItems = this.props.listings.map((listing) => (<ListingItem toggleWishListModal={ this.props.toggleWishListModal } key={ 'listing_' + listing.id } listing={ listing } />));
       }
 
       return listingItems;
