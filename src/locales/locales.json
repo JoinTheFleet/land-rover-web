@@ -160,6 +160,9 @@
     "listings.confirm_delete": "Confirm Listing Deletion",
     "listings.confirm_delete_text": "Deleting this vehicle will cancel any attached bookings. Are you sure you want to delete this vehicle?",
     "listings.listing_deleted_successfully": "Listing Deleted Successfully",
+    "listings.promote_listing": "Promote Listing",
+    "listings.listing_bumped_until": "Your Listing is Bumped until:",
+    "listings.listing_spotlighted_until": "Your Listing is Spotlighted until:",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",
