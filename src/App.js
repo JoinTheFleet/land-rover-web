@@ -42,6 +42,8 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import LocalizationService from './shared/libraries/localization_service';
 import BranchService from './shared/external/branch_service';
 
+import WishListModal from './components/wishlists/wish_list_modal';
+
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
@@ -80,6 +82,7 @@ export default class App extends Component {
       sort: 'distance',
       viewsProps: {},
       visitedDashboard: false,
+      wishListModalOpen: false,
       limit: 20,
       page: 0,
       pages: 1
@@ -90,6 +93,7 @@ export default class App extends Component {
     }
 
     this.toggleModal = this.toggleModal.bind(this);
+    this.toggleWishListModal = this.toggleWishListModal.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.performSearch = this.performSearch.bind(this);
@@ -209,6 +213,21 @@ export default class App extends Component {
     }
     else {
       this.setState({ modalName: modal });
+    }
+  }
+
+  toggleWishListModal(listing) {
+    if (listing) {
+      this.setState({
+        wishListModalOpen: true,
+        wishListListing: listing
+      })      
+    }
+    else {
+      this.setState({ 
+        wishListModalOpen: false,
+        wishListListing: undefined
+      })
     }
   }
 
@@ -500,6 +519,7 @@ export default class App extends Component {
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
+                              toggleWishListModal={ this.toggleWishListModal }
                               currentUserRole={ this.state.currentUserRole }
                               accessToken={ this.state.accessToken }
                               handleFilterToggle={ this.handleFilterToggle }
@@ -528,6 +548,7 @@ export default class App extends Component {
               </Switch>
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
+            <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing } toggleModal={ this.toggleWishListModal } />
             <Footer />
           </div>
         )

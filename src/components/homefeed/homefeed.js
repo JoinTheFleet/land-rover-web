@@ -74,7 +74,7 @@ class Homefeed extends Component {
             <Pageable totalPages={ this.props.pages }
                       currentPage={ this.props.page }
                       handlePageChange={ this.props.handlePageChange }>
-              <ListingList scrollable={ false } listings={ this.props.listings } />
+              <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={ false } listings={ this.props.listings } />
             </Pageable>
           </div>
         </div>
@@ -88,7 +88,7 @@ class Homefeed extends Component {
               <FormattedMessage id="listings.nearby" />
             </p>
 
-            <ListingList scrollable={true} simpleListing={true} listings={nearbyListings} />
+            <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
           </div>
 
           {
@@ -99,7 +99,7 @@ class Homefeed extends Component {
                     <span>{collection.name}</span>
                   </p>
 
-                  <ListingList scrollable={true} simpleListing={true} listings={collection.objects} />
+                  <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />
                 </div>
               );
             })
@@ -125,7 +125,8 @@ class Homefeed extends Component {
                   onPositionChange={ this.props.handlePositionChange }
                   listings={ this.props.listings }
                   location={ this.props.location }
-                  boundingBox={ this.props.boundingBox } />
+                  boundingBox={ this.props.boundingBox }
+                  toggleWishListModal={ this.props.toggleWishListModal } />
     )
   }
 
