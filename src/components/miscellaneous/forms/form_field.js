@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
-import Select from 'react-select';
+import Select, { AsyncCreatable, Creatable } from 'react-select';
 import Button from '../button';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import { ReactDatez } from 'react-datez';
@@ -163,8 +163,33 @@ export default class FormField extends Component {
                 options={ this.props.options }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
-                className={ this.props.className } />
+                className={ this.props.className }
+                clearable={ this.props.clearable } />
         );
+    }
+    else if (this.props.type === 'select-create') {
+      renderable = (
+        <Creatable value={ this.props.value }
+                   options={ this.props.options }
+                   disabled={ this.props.disabled }
+                   onChange={ this.props.handleChange }
+                   className={ this.props.className } 
+                   clearable={ this.props.clearable }
+                   onNewOptionClick={ this.props.handleNewOption}
+                   promptTextCreator={ this.props.promptTextCreator } />
+      );
+    }
+    else if (this.props.type === 'select-create-async') {
+      renderable = (
+        <AsyncCreatable value={ this.props.value }
+                        disabled={ this.props.disabled }
+                        onChange={ this.props.handleChange }
+                        loadOptions={ this.props.loadOptions }
+                        isLoading={ this.props.loading }
+                        className={ this.props.className } 
+                        clearable={ this.props.clearable } 
+                        promptTextCreator={ this.props.promptTextCreator } />
+      );
     }
     else if (this.props.type === 'country') {
       renderable = (
@@ -172,7 +197,8 @@ export default class FormField extends Component {
                 options={ COUNTRIES }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
-                className={ this.props.className } />
+                className={ this.props.className }
+                clearable={ this.props.clearable } />
         );
     }
     else if (this.props.type === 'eu-country') {
@@ -181,7 +207,8 @@ export default class FormField extends Component {
                 options={ EU_COUNTRIES }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
-                className={ this.props.className } />
+                className={ this.props.className }
+                clearable={ this.props.clearable } />
         );
     }
     else if (this.props.type === 'country-code') {
@@ -190,7 +217,8 @@ export default class FormField extends Component {
                 options={ COUNTRY_CODES }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
-                className={ this.props.className } />
+                className={ this.props.className }
+                clearable={ this.props.clearable } />
         );
     }
     else if (this.props.type === 'file') {

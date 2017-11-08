@@ -38,17 +38,12 @@ class ListingView extends Component {
   componentWillMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.listing && location.state.listing.variant) {
-      this.setState({ listing: location.state.listing });
-    }
-    else {
-      this.setState({ loading: true }, () => {
-        ListingsService.show(this.props.match.params.id)
-                       .then(response => {
-                         this.setState({ listing: response.data.data.listing, loading: false });
-                       });
-      });
-    }
+    this.setState({ loading: true }, () => {
+      ListingsService.show(this.props.match.params.id)
+                      .then(response => {
+                        this.setState({ listing: response.data.data.listing, loading: false });
+                      });
+    });
   }
 
   handleBookButtonClick(quotation, pricingQuote) {

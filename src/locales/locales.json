@@ -369,6 +369,9 @@
     "wish_lists.save_to_wishlist": "Save to Wishlist",
     "wish_lists.create_new_wishlist": "Create new Wishlist",
     "wish_lists.name_new_wishlist": "Name your Wishlist",
+    "wish_lists.create": "Create {label}",
+    "wish_lists.successfully_removed": "That listing was removed from your wishlist",
+    "wish_lists.successfully_added": "That listing was added to your wishlist",
 
     "configurations.could_not_fetch": "Could not fetch configurations"
   }
