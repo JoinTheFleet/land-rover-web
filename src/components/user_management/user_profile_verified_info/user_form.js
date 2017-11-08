@@ -52,7 +52,7 @@ class UserForm extends Component {
     return (
       <div>
         <FormRow type='singleyeardate' id='user-dateofbirth' handleChange={ this.props.handleDateChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth) : moment() } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
-        <FormRow type='select' id='user-gender' handleChange={ this.props.handleGenderChange } value={ this.props.user.gender } options={ this.genderOptions } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.gender'}) } />
+        <FormRow type='select' id='user-gender' clearable={ false } handleChange={ this.props.handleGenderChange } value={ this.props.user.gender } options={ this.genderOptions } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.gender'}) } />
 
         <FormGroup placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address'}) }>
           <FormField id='user-address-line1' handleChange={ this.props.handleAddressLine1Change } type='text' value={ this.props.user.address.line1 } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.address_line_1'})}/>
