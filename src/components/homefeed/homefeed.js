@@ -3,6 +3,8 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
+import Advertisement from '../advertisements/advertisement';
+
 // Fleet Components
 import ListingList from '../listings/listing_list';
 import ListingMap from '../listings/listing_map';
@@ -190,15 +192,22 @@ class Homefeed extends Component {
 
           {
             collections.map((collection) => {
+              let body = '';
+              if (collection.object_type === 'Listing') {
+                body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
+              }
+              else if (collection.object_type === 'Advertisement') {
+                body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
+              }
+
               return (
                 <div key={collection.id + '_' + collection.name + '_listing'}>
                   <p className="top-seller-title strong-font-weight title-font-size">
                     <span>{collection.name}</span>
                   </p>
-
-                  <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />
+                  { body }
                 </div>
-              );
+)
             })
           }
         </div>

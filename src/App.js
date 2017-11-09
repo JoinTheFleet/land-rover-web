@@ -14,6 +14,7 @@ import branch from 'branch-sdk';
 import EventEmitter from 'eventemitter3';
 
 import Alert from 'react-s-alert';
+import MediumService from './shared/services/medium_service';
 
 import Constants from './miscellaneous/constants';
 
