@@ -25,13 +25,47 @@ import irishtimesLogo from '../../assets/images/irish-times-grey.png';
 import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import momentPropTypes from 'react-moment-proptypes';
 
+import MediumService from '../../shared/services/medium_service';
+
+import Errors from '../../miscellaneous/errors';
+
 class Homescreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      blog: {
+        posts: [],
+        authors: {}
+      },
+      loadingPosts: false
+    };
+  }
+
   componentWillMount() {
     let referralCode = this.props.match.params.referral_code;
 
     if (referralCode) {
       this.props.handleReferral(referralCode);
     }
+  }
+
+  componentDidMount() {
+    this.setState({ loadingPosts: true }, () => {
+      MediumService.show()
+                   .then(response => {
+                     console.log(response);
+
+                     this.setState({
+                       blog: {
+                         posts: response.data.data.posts.payload.posts,
+                         authors: response.data.data.posts.payload.references.User
+                       },
+                       loadingPosts: false
+                     });
+                   })
+                   .catch(error => Errors.extractErrorMessage(error));
+    });
   }
 
   render() {
@@ -69,7 +103,7 @@ class Homescreen extends Component {
 
         <Testimonials />
 
-        <BlogList />
+        <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
         <div id="featured_in_div" className="col-xs-12 text-center">
           <span className="tertiary-text-color">
