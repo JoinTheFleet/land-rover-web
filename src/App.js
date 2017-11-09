@@ -308,7 +308,7 @@ export default class App extends Component {
   renderHeaderTopMenu() {
     return (
       <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
-                     loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } />
+                     loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />
     )
   }
 
@@ -482,8 +482,40 @@ export default class App extends Component {
   }
 
   render() {
-    if( this.state.roleChanged ) {
+    if( this.state.accessToken && this.state.roleChanged ) {
       return <Redirect to="/dashboard" />;
+    }
+
+    let mainRouter = (<Redirect to="/" />);
+
+
+    if (this.state.accessToken && this.state.accessToken.length > 0) {
+      mainRouter = (
+        <Switch>
+          <Route exact path="/home" render={() => <Redirect to="/" /> } />
+          <Route path="/messages" render={(props) => {
+            return (<MessagingController {...props}
+                                        role={ this.state.currentUserRole } />)
+          }} />
+          <Route path="/listings" render={(props) => {
+            return (<Listings {...props}
+                              currentUserRole={ this.state.currentUserRole } />)
+          }} />
+          <Route path="/account" render={(props) => {
+            return (<UserManagement {...props}
+                                    currentUserRole={ this.state.currentUserRole} />)
+          }} />
+          <Route path="/calendar" render={(props) => {
+            return ( <BookingsCalendar /> )
+          }} />
+          <Route path="/bookings" render={(props) => {
+            return (<Bookings {...props}
+                              configurations={ this.state.configuration }
+                              currentUserRole={ this.state.currentUserRole} />)
+          }} />
+          <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
+        </Switch>
+      );
     }
 
     return (
@@ -585,35 +617,8 @@ export default class App extends Component {
                 }} />
                 <Route path='/users/:id' component={ UserController } />
 
-                if (this.state.accessToken && this.state.accessToken.length > 0) {
-                  <Switch>
-                    <Route exact path="/home" render={() => <Redirect to="/" /> } />
-                    <Route path="/messages" render={(props) => {
-                      return (<MessagingController {...props}
-                                                   role={ this.state.currentUserRole } />)
-                    }} />
-                    <Route path="/listings" render={(props) => {
-                      return (<Listings {...props}
-                                        currentUserRole={ this.state.currentUserRole } />)
-                    }} />
-                    <Route path="/account" render={(props) => {
-                      return (<UserManagement {...props}
-                                              currentUserRole={ this.state.currentUserRole} />)
-                    }} />
-                    <Route path="/calendar" render={(props) => {
-                      return ( <BookingsCalendar /> )
-                    }} />
-                    <Route path="/bookings" render={(props) => {
-                      return (<Bookings {...props}
-                                        configurations={ this.state.configuration }
-                                        currentUserRole={ this.state.currentUserRole} />)
-                    }} />
-                    <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
-                  </Switch>
-                }
-                else {
-                  <Redirect to='/' />
-                }
+                { mainRouter }
+
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>

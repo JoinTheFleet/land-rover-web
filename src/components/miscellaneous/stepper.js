@@ -13,6 +13,11 @@ const stepIconWidth = 20; // This assumes both icons have same size
 const stepIconHeight = 20; // This assumes both icons have same size
 
 export default class Stepper extends Component {
+  componentDidMount () {
+    let steps = Object.keys(this.props.steps);
+    this.stepWidth = this.refs.stepperBar.clientWidth / (steps.length - 1);
+  }
+
   render() {
     let steps = Object.keys(this.props.steps);
     let currentStepIndex = steps.indexOf(this.props.currentStep);
@@ -23,19 +28,24 @@ export default class Stepper extends Component {
       width: 'calc(100% / ' + totalDividers + ' * ' + (totalDividers - 2) + ')'
     };
 
+    let stepWidth = this.stepWidth || 0;
+
     return (
       <div className="fleet-stepper smoke-grey col-xs-12 no-side-padding">
         <div className="fleet-stepper-steps"
              style={ stepperContainerStyle }>
-          <div className="fleet-stepper-bar white">
+          <div className="fleet-stepper-bar white" ref="stepperBar">
             <Anime easing="linear"
                     duration={ 500 }
-                    width={ (100 / (steps.length - 1) * currentStepIndex) + '%' }
+                    width={ (stepWidth * currentStepIndex) + 'px' }
                     begin={ (anime) => {
                       if (this.props.previousStep) {
-                        anime.animatables[0].target.style.width = (100 / (steps.length - 1) * previousStepIndex) + '%';
+                        anime.animatables[0].target.style.width = (stepWidth * previousStepIndex) + 'px';
                       }
-                    } }>
+                    } }
+                    complete={ (anime) => {
+                      anime.animatables[0].target.style.width = (100 / (steps.length - 1) * currentStepIndex) + '%';
+                    }}>
               <div className="fleet-stepper-bar-progress secondary-color"></div>
             </Anime>
           </div>

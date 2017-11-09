@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
-
 import PropTypes from 'prop-types';
-
-import Constants from '../../miscellaneous/constants';
 
 import ListingCard from './listing_card';
 import Pageable from '../miscellaneous/pageable';
 
-import ListingsService from '../../shared/services/listings/listings_service';
-import { Link } from 'react-router-dom';
+import Errors from '../../miscellaneous/errors';
 
-const listingsViews = Constants.listingsViews();
+import ListingsService from '../../shared/services/listings/listings_service';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 export default class ListingsOverview extends Component {
   constructor(props) {
@@ -20,6 +18,7 @@ export default class ListingsOverview extends Component {
 
     this.state = {
       listings: [],
+      selectedListing: undefined,
       currentPage: 1,
       totalPages: 1,
       loading: false
@@ -27,11 +26,16 @@ export default class ListingsOverview extends Component {
 
     this.fetchListings = this.fetchListings.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
   }
 
   componentWillMount() {
     this.fetchListings();
+  }
+
+  componentDidMount() {
+    if (this.props.location && this.props.location.state && this.props.location.state.listingDeleted) {
+      Alert.success(LocalizationService.formatMessage('listings.listing_deleted_successfully'));
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,7 +53,7 @@ export default class ListingsOverview extends Component {
         this.setState({ listings: response.data.data.listings, loading: false });
       })
       .catch((error) => {
-        this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
+        this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
       });
     });
   }
@@ -61,10 +65,6 @@ export default class ListingsOverview extends Component {
     });
   }
 
-  handleEditButtonClick(listing) {
-    this.props.handleChangeView(listingsViews.edit, { currentListing: listing });
-  }
-
   renderMainContent() {
     return (
       <div>
@@ -73,8 +73,9 @@ export default class ListingsOverview extends Component {
             return (
               <ListingCard key={'listing_' + listing.id}
                            listing={ listing }
-                           enableEdit={ true }
-                           handleEditButtonClick={ this.handleEditButtonClick } />
+                           showEditButton={ true }
+                           showDeleteButton={ true }
+                           handleDeleteButtonClick={ this.handleDeleteButtonClick } />
             )
           })
         }

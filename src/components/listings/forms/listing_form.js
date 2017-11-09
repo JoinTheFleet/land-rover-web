@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
+import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
-
-import Constants from '../../../miscellaneous/constants';
-import Helpers from '../../../miscellaneous/helpers';
 
 import Stepper from '../../miscellaneous/stepper';
 import Loading from '../../miscellaneous/loading';
@@ -18,9 +16,14 @@ import ListingRules from './steps/listing_rules';
 
 import ListingsService from '../../../shared/services/listings/listings_service';
 import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_lookups_service';
-import Alert from 'react-s-alert';
+import UsersService from '../../../shared/services/users/users_service';
 
 import { Redirect } from 'react-router-dom';
+
+import Constants from '../../../miscellaneous/constants';
+import Helpers from '../../../miscellaneous/helpers';
+import Errors from '../../../miscellaneous/errors';
+import ListingsHelper from '../../../miscellaneous/listings_helper';
 
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
@@ -30,25 +33,37 @@ class ListingForm extends Component {
   constructor(props) {
     super(props);
 
+    let steps = Object.keys(listingSteps);
+    let currentStep = listingSteps[steps[0]];
+    let previousStep = '';
+    let listing = {};
+
+    if (this.props.location && this.props.location.state) {
+      if (this.props.location.state.finalStep) {
+        currentStep = previousStep = listingSteps[steps[steps.length - 2]];
+        listing = this.props.location.state.listing;
+      }
+    }
+
     this.state = {
       loading: false,
-      listing: {},
-      currentStep: listingSteps[Object.keys(listingSteps)[0]],
-      previousStep: '',
+      listing: listing,
+      currentStep: currentStep,
+      previousStep: previousStep,
+      verificationsNeeded: [],
     };
 
+    this.addError = this.addError.bind(this);
     this.allowForEdit = this.allowForEdit.bind(this);
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.addListingProperties = this.addListingProperties.bind(this);
     this.handleCompleteListing = this.handleCompleteListing.bind(this);
     this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
-    this.extractListingParamsForSubmission = this.extractListingParamsForSubmission.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
   }
 
   componentWillMount() {
     let location = this.props.location;
-
 
     if (location && location.state && location.state.listing) {
       this.setState({ listing: location.state.listing }, this.allowForEdit);
@@ -64,6 +79,32 @@ class ListingForm extends Component {
                        });
       });
     }
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true }, () => {
+      UsersService.show('me')
+                  .then(response => {
+                    let meInfo = response.data.data.user;
+                    let verificationsNeeded = this.state.verificationsNeeded;
+
+                    verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
+                                                             .filter(key => meInfo.verifications_required[key]));
+
+                    verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
+                                                             .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+
+                    this.setState({
+                      verificationsNeeded: verificationsNeeded,
+                      loading: false
+                    });
+                  })
+                  .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
+    });
+  }
+
+  addError(error) {
+    this.setState({ loading: false }, () => { Alert.error(error); } );
   }
 
   allowForEdit() {
@@ -157,7 +198,7 @@ class ListingForm extends Component {
       loading: true,
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }), () => {
-      let submissionParams = this.extractListingParamsForSubmission();
+      let submissionParams = ListingsHelper.extractListingParamsForSubmission(this.state.listing);
 
       if (this.props.edit) {
         ListingsService.update(this.state.listing.id, { listing: submissionParams })
@@ -190,26 +231,6 @@ class ListingForm extends Component {
     });
   }
 
-  extractListingParamsForSubmission() {
-    let listing = this.state.listing;
-
-    return {
-      latitude: listing.location.latitude,
-      longitude: listing.location.longitude,
-      vehicle_variant_id: listing.variant.id,
-      images: listing.images,
-      on_demand: listing.on_demand,
-      on_demand_rates: listing.on_demand_rates,
-      amenities: listing.amenities,
-      price: listing.price,
-      cleaning_fee: listing.cleaning_fee,
-      license_plate_number: listing.license_plate_number,
-      check_in_time: listing.check_in_time,
-      check_out_time: listing.check_out_time,
-      rules: listing.rules
-    };
-  }
-
   renderStepper(){
     let step;
     let steps = {};
@@ -231,6 +252,10 @@ class ListingForm extends Component {
 
   renderStep(step) {
     let renderedStep;
+
+    if ( this.state.verificationsNeeded.length > 0 ) {
+      return (<Redirect to={ { pathname: "/account/verified_info", state: { verificationsNeeded: this.state.verificationsNeeded } }} />)
+    }
 
     if ( this.state.loading ) {
       renderedStep = (<Loading />)
@@ -274,7 +299,12 @@ class ListingForm extends Component {
 
   render() {
     if (this.state.currentStep === listingSteps.finished) {
-      return <Redirect push to={ `/listings/${this.state.listing.id}`} />;
+      return <Redirect to={{
+        pathname: `/listings/${this.state.listing.id}`,
+        state: {
+          listing: this.state.listing
+        }
+      }} />;
     }
     else {
       let currentRenderedStep = this.renderStep(this.state.currentStep);

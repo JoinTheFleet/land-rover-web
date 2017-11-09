@@ -286,7 +286,7 @@ export default class ListingsFilters extends Component {
       )
     }
     else {
-      return <div className="listings-filters white"/>;
+      return <div className="listings-filters white"></div>;
     }
 
   }

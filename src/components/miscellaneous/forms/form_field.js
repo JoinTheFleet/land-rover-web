@@ -10,6 +10,8 @@ import { TimePicker } from 'antd';
 import { countries } from '../countries';
 import countryCodes from 'country-calling-codes';
 
+import LocalizationService from '../../../shared/libraries/localization_service';
+
 const COUNTRIES = countries.map(function(country) {
   return {
     value: country['alpha-2'],
@@ -96,10 +98,9 @@ export default class FormField extends Component {
           minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           keepOpenOnDateSelect={ false }
           showDefaultInputIcon={ false }
-          reopenPickerOnClearDate={ false }
           showClearDates={ showClearDates }
           reopenPickerOnClearDates={ false }
-          renderCalendarInfo={ false }
+          renderCalendarInfo={ () => { return false } }
           hideKeyboardShortcutsPanel={ true }
           displayFormat={ 'DD/MM/YYYY' }
           disabled={this.props.disabled}
@@ -122,7 +123,7 @@ export default class FormField extends Component {
           initialVisibleMonth={null}
           numberOfMonths={2}
           minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
-          renderCalendarInfo={false}
+          renderCalendarInfo={ () => { return false } }
           hideKeyboardShortcutsPanel={true}
           ref={this.props.fieldRef}
         />
@@ -218,6 +219,26 @@ export default class FormField extends Component {
                 className={ this.props.className }
                 clearable={ this.props.clearable } />
         );
+    }
+    else if (this.props.type === 'file') {
+      renderable = (
+        <div className="fleet-file-select col-xs-12 no-side-padding">
+          <input type="file"
+                 className="hide"
+                 id={ this.props.id }
+                 disabled={ this.props.disabled }
+                 onChange={ this.props.handleChange } />
+
+          <div className="fleet-tile-select-input text-left col-xs-12 no-side-padding">
+            <Button className="white black-text"
+                    onClick={ () => { document.getElementById(this.props.id).click(); } }>
+              { LocalizationService.formatMessage('application.choose_file') }
+            </Button>
+
+            <span> { this.props.value } </span>
+          </div>
+        </div>
+      )
     }
     else if (this.props.type === 'checkbox') {
       let labels = (
