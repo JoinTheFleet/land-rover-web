@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Redirect, Link } from 'react-router-dom';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
-import { Redirect } from 'react-router-dom';
-
-import { FormattedMessage, injectIntl } from 'react-intl';
+import Avatar from 'react-avatar';
+import moment from 'moment';
 
 import Map from '../miscellaneous/map';
 import Button from '../miscellaneous/button';
@@ -14,8 +15,9 @@ import ConfirmationModal from '../miscellaneous/confirmation_modal';
 
 import BookNowTile from '../bookings/book_now_tile';
 
-import Constants from '../../miscellaneous/constants';
 import Errors from '../../miscellaneous/errors';
+import Constants from '../../miscellaneous/constants';
+import Geolocation from '../../miscellaneous/geolocation';
 import ListingsHelper from '../../miscellaneous/listings_helper';
 
 // Icons
@@ -25,12 +27,12 @@ import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingPreviewService from '../../shared/services/listings/listing_preview_service';
-
 import LocalizationService from '../../shared/libraries/localization_service';
 
-import { Link } from 'react-router-dom';
+import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 const listingsViews = Constants.listingsViews();
+const userRoles = Constants.userRoles();
 
 class ListingView extends Component {
   constructor(props) {
@@ -47,6 +49,7 @@ class ListingView extends Component {
 
     this.addError = this.addError.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.fetchListing = this.fetchListing.bind(this);
     this.handleDeleteListing = this.handleDeleteListing.bind(this);
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
@@ -67,19 +70,26 @@ class ListingView extends Component {
                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
       }
+      else if (!location.state.listing.variant) {
+        this.fetchListing(location.state.listing.id);
+      }
       else {
         this.setState({ listing: location.state.listing });
       }
     }
     else {
-      this.setState({ loading: true }, () => {
-        ListingsService.show(this.props.match.params.id)
-                        .then(response => {
-                          this.setState({ listing: response.data.data.listing, loading: false });
-                        })
-                        .catch(error => this.addError(Errors.extractErrorMessage(error)));
-      });
+      this.fetchListing(this.props.match.params.id);
     }
+  }
+
+  fetchListing(id) {
+    this.setState({ loading: true }, () => {
+      ListingsService.show(id)
+                      .then(response => {
+                        this.setState({ listing: response.data.data.listing, loading: false });
+                      })
+                      .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
   }
 
   addError(error) {
@@ -175,6 +185,10 @@ class ListingView extends Component {
   renderSpecs() {
     let listing = this.state.listing;
 
+    if (!listing.variant) {
+      return '';
+    }
+
     return (
       <div className="listing-view-listing-specs col-xs-12 no-side-padding">
         <div className="listing-view-listing-spec">
@@ -210,6 +224,10 @@ class ListingView extends Component {
   renderAmenities() {
     let listing = this.state.listing;
 
+    if (!listing.amenities) {
+      return '';
+    }
+
     return (
       <div className="listing-view-listing-amenities col-xs-12 no-side-padding">
         <div className="listing-view-listing-amenities-title fs-18 subtitle-font-weight pull-left">
@@ -235,17 +253,18 @@ class ListingView extends Component {
 
   renderMap() {
     let listing = this.state.listing;
+    let location = Geolocation.getLocationFromListing(listing);
 
-    if (!listing.location) {
+    if (!location) {
       return <div className="listing-view-map col-xs-12 no-side-padding"></div>;
     }
 
     let listingCircle = {
       position: {
-        lat: listing.location.latitude,
-        lng: listing.location.longitude
+        lat: location.latitude,
+        lng: location.longitude
       },
-      radius: listing.location.radius,
+      radius: location.radius,
       options: {
         strokeColor: '#23a9f6',
         strokeOpacity: 1,
@@ -263,7 +282,7 @@ class ListingView extends Component {
              containerElement={ (<div style={{ height: '275px' }}></div>) }
              mapElement={ <div style={{ height: '100%' }}></div> }
              options={ { disableDefaultUI: true, draggable: false, disableDoubleClickZoom: true } }
-             center={ { lat: listing.location.latitude, lng: listing.location.longitude } }
+             center={ { lat: location.latitude, lng: location.longitude } }
              zoom={ 13 }
              disableClick={ true }
              circles={ [ listingCircle ] } />
@@ -274,9 +293,9 @@ class ListingView extends Component {
   renderBookingTile() {
     let bookingDiv = '';
 
-    if (this.props.enableBooking) {
+    if (this.props.currentUserRole === userRoles.renter) {
       bookingDiv = (
-        <div className="listing-view-booking-div">
+        <div className="listing-view-booking-div col-xs-12 no-side-padding">
           <BookNowTile listing={ this.state.listing } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
@@ -285,9 +304,77 @@ class ListingView extends Component {
     return bookingDiv;
   }
 
-  renderButtons() {
+  renderReviewsTile() {
+    let reviewDiv = (
+      <span className="tertiary-text-color text-secondary-font-weight fs-16">
+        { LocalizationService.formatMessage('reviews.no_reviews') }
+      </span>
+    );
+
+    if (this.state.listing && this.state.listing.total_reviews > 0) {
+      let review = this.state.listing.review;
+
+      reviewDiv = (
+        <div className="col-xs-12 no-side-padding">
+          <div className="listing-view-review-reviewer-image pull-left">
+            <Avatar src={ review.reviewer.images ? review.reviewer.images.medium_url : noImagesPlaceholder }
+                    size={ 65 }
+                    round />
+          </div>
+          <div className="listing-view-review-details pull-left">
+            <p>
+              <span className="subtitle-font-weight fs-16"> { review.reviewer.name } </span>
+              <br/>
+              <span className="tertiary-text-color"> { moment.utc(moment.unix(review.created_at)).format('DD MMM YYYY') } </span>
+            </p>
+            <p> { review.feedback } </p>
+            <div className="pull-right">
+              <Link to={{
+                pathname: `/listings/${this.state.listing.id}/reviews`,
+                state: {
+                  previousPage: `/listings/${this.state.listing.id}`
+                }
+              }}>
+                <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read_more') } </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <div className="listing-card-buttons text-center col-xs-12 no-side-padding">
+      <div className="listing-view-reviews col-xs-12 no-side-padding">
+        <div className="listing-view-reviews-title fs-18 subtitle-font-weight col-xs-12 no-side-padding">
+          <FormattedMessage id="reviews.reviews" />
+
+          <div className="pull-right">
+            <Link to={{
+              pathname: `/listings/${this.state.listing.id}/reviews`,
+              state: {
+                previousPage: `/listings/${this.state.listing.id}`
+              }
+            }}>
+              <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read') } </span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="listing-view-review-list col-xs-12 no-side-padding">
+          { reviewDiv }
+        </div>
+
+      </div>
+    )
+  }
+
+  renderButtons() {
+    if (this.props.currentUserRole === userRoles.renter) {
+      return '';
+    }
+
+    return (
+      <div className="listing-view-buttons text-center col-xs-12 no-side-padding">
         { this.renderGoBackButton() }
 
         { this.renderDeleteButton() }
@@ -311,7 +398,7 @@ class ListingView extends Component {
   }
 
   renderDeleteButton() {
-    if (!this.state.listing.id) {
+    if (!this.state.listing.id || this.props.currentUserRole === userRoles.renter) {
       return '';
     }
 
@@ -357,6 +444,8 @@ class ListingView extends Component {
 
             { this.renderMap() }
 
+            { this.renderReviewsTile() }
+
             { this.renderButtons() }
 
             <ConfirmationModal open={ this.state.openModals.deleteListing }
@@ -380,7 +469,7 @@ class ListingView extends Component {
 
 ListingView.propTypes = {
   listing: PropTypes.object,
-  enableBooking: PropTypes.bool,
+  currentUserRole: PropTypes.string.isRequired,
   handleChangeView: PropTypes.func,
   preview: PropTypes.bool
 };

@@ -7,6 +7,7 @@ import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
+import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 export default class SimpleListingItem extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class SimpleListingItem extends Component {
 
     this.toggleWishListModal = this.toggleWishListModal.bind(this);
   }
-  
+
   toggleWishListModal(event) {
     if (event) {
       event.preventDefault();
@@ -35,7 +36,10 @@ export default class SimpleListingItem extends Component {
     let hasImages = item.gallery ? (item.gallery.length > 0) : false;
 
     if (hasImages) {
-      image = (<img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>);
+      image = (<img src={ item.gallery[0].images.original_url }
+                    alt={ vehicleTitle }
+                    ref={img => this.img = img}
+                    onError={() => this.img.src = noImagesPlaceholder} />);
     }
 
     return (

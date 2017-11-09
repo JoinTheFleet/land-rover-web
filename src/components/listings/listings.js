@@ -18,7 +18,7 @@ export default class Listings extends Component {
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
                                 preview={ true }
-                                enableBooking={ false } />
+                                currentUserRole={ this.props.currentUserRole } />
           } } />
 
           <Route path="/listings/:listing_id/bookings/new" render={(props) => {
@@ -30,9 +30,14 @@ export default class Listings extends Component {
                                  edit={ true } />)
           }} />
 
+          <Route path="/listings/:id/reviews" render={(props) => {
+            return <ListingReviews {...props}
+                                currentUserRole={ this.props.currentUserRole } />
+          }} />
+
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
-                                enableBooking={ this.props.currentUserRole === 'renter' } />
+                                currentUserRole={ this.props.currentUserRole } />
           }} />
 
           <Route path="/listings" component={ ListingsOverview } />

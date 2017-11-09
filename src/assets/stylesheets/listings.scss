@@ -527,7 +527,6 @@
 
   .listing-view-main-content {
     margin-top: 24px;
-    margin-bottom: 24px;
 
     .listing-view-user-details {
       position: absolute;
@@ -577,7 +576,7 @@
       }
 
       & + .listing-view-listing-spec {
-        margin-left: calc((100% - 385px) / 2);
+        margin-left: calc((100% - 361px) / 2);
       }
     }
   }
@@ -604,15 +603,44 @@
     }
   }
 
-  .listing-view-booking-div + .listing-view-map {
-    margin-top: 24px;
+  .listing-view-reviews {
+
+    .listing-view-review-list {
+      padding-top: 10px;
+
+      .listing-view-review-details {
+        margin-left: 10px;
+        width: calc(100% - 75px);
+
+        p:first-child {
+          line-height: 20px;
+        }
+
+        p + p {
+          margin-top: 10px;
+        }
+
+        & > .pull-right {
+          position: absolute;
+          bottom: 5px;
+          right: 0;
+        }
+      }
+    }
   }
 
-  .listing-view-map + div {
-    margin-top: 24px;
+  .listing-view-listing-amenities,
+  .listing-view-booking-div,
+  .listing-view-reviews,
+  .listing-view-map {
+    & + div {
+      margin-top: 24px;
+    }
   }
 
-  .listing-view-buttons {
+  .listing-card-buttons {
+    padding-bottom: 24px;
+
     button {
       width: 200px;
     }

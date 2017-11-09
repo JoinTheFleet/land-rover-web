@@ -25,6 +25,8 @@
     "application.preview": "Preview",
     "application.previous": "Previous",
     "application.registration": "Registration",
+    "application.read": "Read",
+    "application.read_more": "Read more",
     "application.renter": "Renter",
     "application.save": "Save",
     "application.search": "Search",
@@ -291,6 +293,7 @@
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
 
     "reviews.reviews": "Reviews",
+    "reviews.no_reviews": "No reviews have been published yet",
     "reviews.write_a_review": "Write a Review",
     "reviews.enter_feedback_here": "Enter your feedback here",
     "reviews.review_submitted_successfully": "Review Submitted Successfully!",
