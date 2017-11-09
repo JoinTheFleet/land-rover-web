@@ -590,6 +590,10 @@ export default class App extends Component {
                                        showSearchButton={ true } />
                   }
                 }} />
+                <Route path="/listings/:id" render={(props) => {
+                  return (<Listings {...props}
+                                    currentUserRole={ this.state.currentUserRole } />)
+                }} />
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
