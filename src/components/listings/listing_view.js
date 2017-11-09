@@ -67,7 +67,7 @@ class ListingView extends Component {
                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
       }
-      else if (location.state.listing.variant) {
+      else {
         this.setState({ listing: location.state.listing });
       }
     }
@@ -131,8 +131,8 @@ class ListingView extends Component {
   renderListingOverview() {
     let listing = this.state.listing;
 
-    let vehicleMake = listing.variant.make.name;
-    let vehicleModel = listing.variant.model.name;
+    let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
+    let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
     return (
@@ -140,12 +140,12 @@ class ListingView extends Component {
         <div className="listing-view-listing-title">
           <p className="fs-36">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
-            <span className="listing-view-listing-year">{ listing.variant.year.year }</span>
+            <span className="listing-view-listing-year">{ listing.variant ? listing.variant.year.year : listing.year }</span>
           </p>
           <div className="fs-18">
             <FormattedMessage id="listings.price_per_day"
                               values={ {
-                                currency_symbol: listing.country_configuration.country.currency_symbol,
+                                currency_symbol: listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol,
                                 price: listing.price / 100
                               } } />
 
