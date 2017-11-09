@@ -18,6 +18,8 @@ a {
 
 textarea,
 input {
+  border: solid 1px $smoke-grey-two;
+
   &::-webkit-input-placeholder {
     color: $placeholder-text-color !important;
   }
@@ -34,6 +36,7 @@ input {
     color: $placeholder-text-color !important;
   }
 }
+
 
 #main_container {
   min-height: calc(100vh - 364px);

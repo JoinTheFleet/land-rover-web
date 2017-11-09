@@ -15,6 +15,12 @@ export default class Listings extends Component {
         <Switch>
           <Route path="/listings/new" component={ ListingForm } />
 
+          <Route path="/listings/preview" render={(props) => {
+            return <ListingView {...props}
+                                preview={ true }
+                                enableBooking={ false } />
+          } } />
+
           <Route path="/listings/:listing_id/bookings/new" render={(props) => {
             return (<BookingForm {...props} />)
           }} />

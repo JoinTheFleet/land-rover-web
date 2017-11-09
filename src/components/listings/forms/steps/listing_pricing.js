@@ -1,10 +1,7 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 
-import {
-  injectIntl
-} from 'react-intl';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
 
@@ -14,6 +11,10 @@ import ListingFormField from '../listing_form_field';
 import FormField from '../../../miscellaneous/forms/form_field';
 
 import Helpers from '../../../../miscellaneous/helpers';
+import ListingsHelper from '../../../../miscellaneous/listings_helper';
+
+import LocalizationService from '../../../../shared/libraries/localization_service';
+
 class ListingPricing extends Component {
   constructor(props) {
     super(props);
@@ -98,6 +99,7 @@ class ListingPricing extends Component {
   render() {
     let listing = this.state.listing;
     let odcFields = '';
+    let odcDistancePlaceholder = LocalizationService.formatMessage('listings.pricing.select_distance');
 
     if ( listing.on_demand ) {
       odcFields = (
@@ -105,13 +107,35 @@ class ListingPricing extends Component {
                                fieldsDescription={ this.props.intl.formatMessage({ id: 'listings.pricing.earn_more_by_offering' }) } >
           {
             listing.on_demand_rates.map((od_rate, index) => {
+              if (od_rate.distance > 0) {
+                odcDistancePlaceholder = LocalizationService.formatMessage('listings.pricing.distance_km', { distance: od_rate.distance / 100.0 });
+              }
+
               return (
                 <div key={ 'listing_on_demand_rate_' + index } className="listing-on-demand-rate-row col-xs-12 no-side-padding">
                   <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.distance'}) }>
-                    <FormField id={ 'listing_od_rate_distance_' + index }
-                              type="text"
-                              value={ listing.on_demand_rates[index].distance / 100.0 }
-                              handleChange={ (event) => { this.handleRateInsertion(index, 'distance', event.target.value * 100) } } />
+                    <Dropdown key={ `listing_odc_distance_selector_${index}` }
+                              id={ `listing_odc_distance_selector_${index}` }>
+
+                      <Dropdown.Toggle className='white black-text fs-14'>
+                        { odcDistancePlaceholder }
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        {
+                          ListingsHelper.getOnDemandDistances().map(distance => {
+                            return (
+                              <MenuItem key={`listing_odc_distance_selector_${index}_${distance}`}
+                                        eventKey={`${index}_${distance}`}
+                                        active={ od_rate.distance === distance }
+                                        onClick={ () => { this.handleRateInsertion(index, 'distance', distance * 100) } }>
+                                { LocalizationService.formatMessage('listings.pricing.distance_km', { distance: distance }) }
+                              </MenuItem>
+                            )
+                          })
+                        }
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </ListingFormField>
 
                   <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.price'}) }>
@@ -137,7 +161,8 @@ class ListingPricing extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }>
+                     intl={ this.props.intl }
+                     listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.pricing.prices'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.daily'}) }>
               <FormField id="listing_price"

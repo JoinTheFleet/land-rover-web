@@ -1,4 +1,3 @@
-import client from '../../libraries/client';
 import Service from '../service';
 
 class ListingPreviewService extends Service {
@@ -10,7 +9,7 @@ class ListingPreviewService extends Service {
     return {
       // NOTE: Provide full listing hash for this
       create: true
-    }
+    };
   }
 }
 

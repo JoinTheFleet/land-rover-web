@@ -59,7 +59,8 @@ class ListingRules extends Component {
                      getListingProperties={ this.getListingProperties }
                      handleCompleteListing={ this.props.handleCompleteListing }
                      finalStep={ true }
-                     intl={ this.props.intl }>
+                     intl={ this.props.intl }
+                     listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.rules'}) }>
             <FormField id="listing_rules"
                        type="textarea"

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Avatar from 'react-avatar';
 
 import Button from '../../miscellaneous/button';
 

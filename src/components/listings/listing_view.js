@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'react-s-alert';
+import { Redirect } from 'react-router-dom';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import ImageGallery from '../miscellaneous/image_gallery';
-import RatingInput from '../miscellaneous/rating_input';
-import Loading from '../miscellaneous/loading';
 import Map from '../miscellaneous/map';
+import Button from '../miscellaneous/button';
+import Loading from '../miscellaneous/loading';
+import RatingInput from '../miscellaneous/rating_input';
+import ImageGallery from '../miscellaneous/image_gallery';
+import ConfirmationModal from '../miscellaneous/confirmation_modal';
 
 import BookNowTile from '../bookings/book_now_tile';
 
 import Constants from '../../miscellaneous/constants';
+import Errors from '../../miscellaneous/errors';
+import ListingsHelper from '../../miscellaneous/listings_helper';
 
 // Icons
 import specDoorsIcon from '../../assets/images/spec-doors.png';
@@ -18,6 +24,9 @@ import specPassengersIcon from '../../assets/images/spec-passengers.png';
 import specTransmissionIcon from '../../assets/images/spec-transmission.png';
 
 import ListingsService from '../../shared/services/listings/listings_service';
+import ListingPreviewService from '../../shared/services/listings/listing_preview_service';
+
+import LocalizationService from '../../shared/libraries/localization_service';
 
 import { Link } from 'react-router-dom';
 
@@ -29,21 +38,90 @@ class ListingView extends Component {
 
     this.state = {
       listing: undefined,
-      loading: false
+      loading: false,
+      redirectTo: undefined,
+      openModals: {
+        deleteListing: false
+      }
     };
 
+    this.addError = this.addError.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleDeleteListing = this.handleDeleteListing.bind(this);
     this.handleBookButtonClick = this.handleBookButtonClick.bind(this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let location = this.props.location;
 
-    this.setState({ loading: true }, () => {
-      ListingsService.show(this.props.match.params.id)
-                      .then(response => {
-                        this.setState({ listing: response.data.data.listing, loading: false });
-                      });
+    if (location && location.state && location.state.listing) {
+      if (this.props.preview) {
+        let listingParams = ListingsHelper.extractListingParamsForSubmission(location.state.listing);
+
+        this.setState({ loading: true }, () => {
+          ListingPreviewService.create({ listing: listingParams })
+                               .then(response => {
+                                 this.setState({ listing: response.data.data.listing, loading: false });
+                               })
+                               .catch(error => this.addError(Errors.extractErrorMessage(error)));
+        });
+      }
+      else {
+        this.setState({ listing: location.state.listing });
+      }
+    }
+    else {
+      this.setState({ loading: true }, () => {
+        ListingsService.show(this.props.match.params.id)
+                        .then(response => {
+                          this.setState({ listing: response.data.data.listing, loading: false });
+                        })
+                        .catch(error => this.addError(Errors.extractErrorMessage(error)));
+      });
+    }
+  }
+
+  addError(error) {
+    this.setState({ loading: false }, () => { Alert.error(error) });
+  }
+
+  toggleModal(modalName) {
+    let openModals = this.state.openModals;
+    openModals[modalName] = !openModals[modalName];
+
+    this.setState({ openModals: openModals });
+  }
+
+  handleDeleteListing() {
+    if (!this.state.listing) {
+      return;
+    }
+
+    this.setState({
+      loading: true
+    }, () => {
+      ListingsService.destroy(this.state.listing.id)
+                     .then(response => {
+                       this.setState({ 
+                         loading: false,
+                         redirectTo: {
+                           pathname: '/listings',
+                           state: { listingDeleted: true } 
+                         }
+                       });
+                     })
+                     .catch((error) => {
+                       this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
+                     });
     });
+  }
+
+  handleDeleteButtonClick(listing) {
+    let openModals = this.state.openModals;
+    openModals.deleteListing = true;
+
+    this.setState({ selectedListing: listing, openModals: openModals });
   }
 
   handleBookButtonClick(quotation, pricingQuote) {
@@ -53,8 +131,8 @@ class ListingView extends Component {
   renderListingOverview() {
     let listing = this.state.listing;
 
-    let vehicleMake = listing.variant.make.name;
-    let vehicleModel = listing.variant.model.name;
+    let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
+    let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
     return (
@@ -62,18 +140,18 @@ class ListingView extends Component {
         <div className="listing-view-listing-title">
           <p className="fs-36">
             <span className="subtitle-font-weight">{ vehicleTitle }</span>
-            <span className="listing-view-listing-year">{ listing.variant.year.year }</span>
+            <span className="listing-view-listing-year">{ listing.variant ? listing.variant.year.year : listing.year }</span>
           </p>
           <div className="fs-18">
             <FormattedMessage id="listings.price_per_day"
                               values={ {
-                                currency_symbol: listing.country_configuration.country.currency_symbol,
+                                currency_symbol: listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol,
                                 price: listing.price / 100
                               } } />
 
             <br/>
             <div className="listing-view-rating-reviews">
-              <RatingInput rating={ listing.rating } inputNameSufix={ listing.id.toString() } readonly={true} />
+              <RatingInput rating={ listing.rating } inputNameSufix={ listing.id ? listing.id.toString() : '' } readonly={true} />
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: listing.total_reviews} } />
             </div>
           </div>
@@ -207,17 +285,65 @@ class ListingView extends Component {
     return bookingDiv;
   }
 
+  renderButtons() {
+    return (
+      <div className="listing-card-buttons text-center col-xs-12 no-side-padding">
+        { this.renderGoBackButton() }
+
+        { this.renderDeleteButton() }
+      </div>
+    )
+  }
+
+  renderGoBackButton() {
+    if (this.props.location && this.props.location.state && this.props.location.state.previousPage) {
+      return (
+        <Link to={ this.props.location.state.previousPage }>
+          <Button className="tomato white-text">
+            { LocalizationService.formatMessage('application.go_back') }
+          </Button>
+        </Link>
+      )
+    }
+    else {
+      return '';
+    }
+  }
+
+  renderDeleteButton() {
+    if (!this.state.listing.id) {
+      return '';
+    }
+
+    return (
+      <Button className="listing-card-delete-button tomato white-text"
+              onClick={ () => { this.handleDeleteButtonClick(this.props.listing) } }>
+        { LocalizationService.formatMessage('listings.delete_listing') }
+      </Button>
+    )
+  }
+
   render() {
     let listing = this.state.listing;
+
+    if (this.state.redirectTo) {
+      return (<Redirect to={ this.state.redirectTo } />)
+    }
 
     if (this.state.loading) {
       return <Loading />;
     }
     else if (listing) {
+      let images =  listing.gallery.map(galleryImage => galleryImage.images.original_url);
+
+      if (this.props.preview && this.props.location && this.props.location.state && this.props.location.state.listing) {
+        images = this.props.location.state.listing.images.map(image => image.url);
+      }
+
       return (
         <div className="listing-view-div col-xs-12 no-side-padding">
           <div className="listing-view-image-gallery">
-            <ImageGallery images={ listing.gallery.map(galleryImage => galleryImage.images.original_url) } />
+            <ImageGallery images={ images } />
           </div>
 
           <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
@@ -230,6 +356,18 @@ class ListingView extends Component {
             { this.renderBookingTile() }
 
             { this.renderMap() }
+
+            { this.renderButtons() }
+
+            <ConfirmationModal open={ this.state.openModals.deleteListing }
+                              toggleModal={ this.toggleModal }
+                              modalName="deleteListing"
+                              confirmationAction={ this.handleDeleteListing }
+                              title={ LocalizationService.formatMessage('listings.confirm_delete') }>
+              <span className="tertiary-text-color text-secondary-font-weight fs-18">
+                { LocalizationService.formatMessage('listings.confirm_delete_text') }
+              </span>
+            </ConfirmationModal>
           </div>
         </div>
       );
@@ -243,7 +381,8 @@ class ListingView extends Component {
 ListingView.propTypes = {
   listing: PropTypes.object,
   enableBooking: PropTypes.bool,
-  handleChangeView: PropTypes.func
+  handleChangeView: PropTypes.func,
+  preview: PropTypes.bool
 };
 
 export default injectIntl(ListingView);

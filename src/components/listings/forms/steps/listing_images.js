@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import noImagesIcon from '../../../../assets/images/placeholder-no-images.png';
 
 import S3Uploader from '../../../../shared/external/s3_uploader';
+import Helpers from '../../../../miscellaneous/helpers';
 
 import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
@@ -170,7 +171,8 @@ class ListingImages extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }>
+                     intl={ this.props.intl }
+                     listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.images.vehicle_images'}) + this.requiredImagesText() }>
             { this.renderImagesCarousel() }
             <button className="listing-form-images-upload-btn btn secondary-color white-text fs-12 ls-dot-five col-xs-12"

@@ -10,6 +10,7 @@ import Map from '../../../miscellaneous/map';
 import Loading from '../../../miscellaneous/loading';
 import GeolocationService from '../../../../shared/services/geolocation_service';
 
+import Helpers from '../../../../miscellaneous/helpers';
 
 class ListingLocation extends Component {
   constructor(props) {
@@ -148,7 +149,8 @@ class ListingLocation extends Component {
           <ListingStep validateFields={ this.validateFields }
                        getListingProperties={ this.getListingProperties }
                        handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                       intl={ this.props.intl }>
+                       intl={ this.props.intl }
+                       listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
             <input type="text"
                    readOnly={ true }
                    id="listing_form_location_selected_address"

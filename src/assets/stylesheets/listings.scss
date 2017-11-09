@@ -253,10 +253,6 @@
     padding: 20px 0;
     height: 100%;
   }
-
-  .listing-card {
-    cursor: pointer;
-  }
 }
 
 .listing-card-link {
@@ -269,16 +265,18 @@
     color: inherit;
     text-decoration: none;
   }
-
-  & + .listing-card-link {
-    margin-top: 20px;
-  }
 }
 
 .listing-card {
   position: relative;
   height: 94px;
   border: solid 1px $smoke-grey-two;
+  cursor: pointer;
+
+  & > a:first-child {
+    width: 100%;
+    height: 100%;
+  }
 
   .listing-card-photo {
     float: left;
@@ -315,6 +313,10 @@
     right: 15px;
     bottom: 10px;
   }
+
+  & + .listing-card {
+    margin-top: 20px;
+  }
 }
 
 /* Listing Form */
@@ -322,14 +324,6 @@
   .listing-form-current-step {
     padding-top: 20px;
     padding-bottom: 20px;
-  }
-
-  .proceed-to-step-btn {
-    margin-top: 20px;
-    padding-top: 0;
-    height: 32px;
-    line-height: 32px;
-    letter-spacing: 0.2px;
   }
 }
 
@@ -422,13 +416,22 @@
       height: 32px;
     }
 
-    .proceed-to-step-btn {
+    .listing-step-buttons {
       display: inline-block;
+      position: relative;
+      margin-left: -10px;
+      margin-top: 0;
+      padding: 0;
+      top: -1px;
+      width: 61px;
+      height: 32px;
       float: none !important;
-      margin-top: -2px;
-      border-left: none;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+
+      .proceed-to-step-btn {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 }
@@ -487,6 +490,21 @@
   #listing_rules {
     resize: none;
     min-height: 200px;
+  }
+}
+
+.listing-step-buttons {
+  margin-top: 20px;
+
+  .proceed-to-step-btn {
+    padding-top: 0;
+    height: 32px;
+    line-height: 32px;
+    letter-spacing: 0.2px;
+  }
+
+  & > a + .proceed-to-step-btn {
+    margin-left: 10px;
   }
 }
 
@@ -588,5 +606,15 @@
 
   .listing-view-booking-div + .listing-view-map {
     margin-top: 24px;
+  }
+
+  .listing-view-map + div {
+    margin-top: 24px;
+  }
+
+  .listing-view-buttons {
+    button {
+      width: 200px;
+    }
   }
 }
