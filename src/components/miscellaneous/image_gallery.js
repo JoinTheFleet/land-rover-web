@@ -21,6 +21,14 @@ export default class ImageGallery extends Component {
     this.state = {
       images: props.images || []
     };
+
+    this.handleErrorSRC = this.handleErrorSRC.bind(this);
+  }
+
+  handleErrorSRC(event) {
+    if (this.props.errorSRC && event) {
+      event.target.setAttribute('src', this.props.errorSRC);
+    }
   }
 
   render() {
@@ -49,12 +57,7 @@ export default class ImageGallery extends Component {
 
               return (
                 <div key={ 'gallery_image_' + index } >
-                  <img src={ image } alt="gallery_image" onError={() => {
-                    const images = this.state.images;
-                    images[index] = noImagesPlaceholder;
-
-                    this.setState({ images: images });
-                  } } />
+                  <img src={ image } alt="gallery_image" onError={ this.handleErrorSRC } />
                   { closeButton }
                 </div>
               )
@@ -69,5 +72,6 @@ export default class ImageGallery extends Component {
 ImageGallery.propTypes = {
   images: PropTypes.array.isRequired,
   showRemoveButton: PropTypes.bool,
-  handleRemoveImage: PropTypes.func
+  handleRemoveImage: PropTypes.func,
+  errorSRC: PropTypes.string
 };
