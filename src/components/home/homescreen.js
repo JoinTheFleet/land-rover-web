@@ -12,6 +12,7 @@ import ListingList from '../listings/listing_list';
 import FeaturesList from './features_list';
 import Testimonials from './testimonials';
 import BlogList from './blog_list';
+import Loading from '../miscellaneous/loading'
 
 // Images
 import topBanner from '../../assets/images/beach-cars-bmw.jpg';
@@ -21,6 +22,8 @@ import newstalkLogo from '../../assets/images/newstalk-grey.png';
 import foraLogo from '../../assets/images/fora-grey.png';
 import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
 import irishtimesLogo from '../../assets/images/irish-times-grey.png';
+
+import TopSellersService from '../../shared/services/listings/top_sellers_service';
 
 import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import momentPropTypes from 'react-moment-proptypes';
@@ -36,13 +39,29 @@ class Homescreen extends Component {
     this.state = {
       blog: {
         posts: [],
-        authors: {}
+        authors: {},
+        topSellers: [],
+        topSellersLoading: false
       },
       loadingPosts: false
     };
   }
 
   componentWillMount() {
+    this.setState({
+      topSellersLoading: true
+    }, () => {
+      TopSellersService.index()
+                        .then(response => {
+                          console.log(response)
+
+                          this.setState({
+                            topSellers: response.data.data.listings,
+                            topSellersLoading: false
+                          })
+                        })
+    });
+
     let referralCode = this.props.match.params.referral_code;
 
     if (referralCode) {
@@ -95,7 +114,7 @@ class Homescreen extends Component {
         <p className="top-seller-title strong-font-weight title-font-size">
           <FormattedMessage id="listings.top_seller" />
         </p>
-        <ListingList />
+        <ListingList listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
 
         <FeaturesList />
 
