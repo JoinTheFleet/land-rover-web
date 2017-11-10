@@ -171,6 +171,7 @@
     "listings.listing_deleted_successfully": "Listing Deleted Successfully",
     "listings.promote_listing": "Promote Listing",
     "listings.listing_promoted_until": "Your Listing is {promotionType}ed until:",
+    "listings.spotlighted": "Spotlighted",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",
