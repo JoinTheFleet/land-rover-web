@@ -2,26 +2,28 @@ import React, { Component } from 'react';
 import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 
+import moment from 'moment';
+
 export default class Review extends Component {
   render() {
     let review = this.props.review;
 
     return (
       <div className='col-xs-12 no-side-padding review'>
-        <div className='row'>
-          <div className='col-xs-12 col-sm-2 no-side-padding'>
+        <div className='review-reviewer-image col-xs-12 no-side-padding'>
+          <Link to={ `/users/${review.reviewer.id}` } >
+            <Avatar src={ review.reviewer.images.large_url } round />
+          </Link>
+        </div>
+        <div className='review-feedback col-xs-12'>
+          <p>
             <Link to={ `/users/${review.reviewer.id}` } >
-              <div className='col-xs-12 col-sm-6 text-left'>
-                <Avatar src={ review.reviewer.images.large_url } round />
-                <span className='strong-font-weight reviewer-name col-xs-12 text-center'>
-                  { review.reviewer.first_name }
-                </span>
-              </div>
+              <span className="subtitle-font-weight fs-20"> { review.reviewer.name } </span>
             </Link>
-          </div>
-          <div className='col-xs-12 col-sm-10 review-feedback'>
-            { review.feedback }
-          </div>
+            <br/>
+            <span className="tertiary-text-color"> { moment.utc(moment.unix(review.created_at)).format('DD MMM YYYY') } </span>
+          </p>
+          <p> { review.feedback } </p>
         </div>
       </div>
     )

@@ -21,7 +21,7 @@ export default class ReviewList extends Component {
               {
                 this.props.reviews.map((review) => {
                   return (
-                    <Review review={review} />
+                    <Review key={ review.id } review={review} />
                   )
                 })
               }

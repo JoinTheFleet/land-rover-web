@@ -82,7 +82,7 @@ export default class WishListSummary extends Component {
               {
                 this.state.wish_lists.map((wish_list) => {
                   return (
-                    <WishListCard wish_list={wish_list} />
+                    <WishListCard key={wish_list.id} wish_list={wish_list} />
                   )
                 })
               }

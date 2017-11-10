@@ -15,8 +15,7 @@ export default class DashboardController extends Component {
     super(props);
 
     this.state = {
-      user: {
-      },
+      user: {},
       loading: false,
     };
 
@@ -45,7 +44,7 @@ export default class DashboardController extends Component {
                       if (error.response) {
                         Alert.error(error.response.data.message);
                       }
-                    })
+                    });
                   });
     });
   }
