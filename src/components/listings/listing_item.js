@@ -7,7 +7,8 @@ import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
-import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
+
+import LocalizationService from '../../shared/libraries/localization_service';
 
 export default class ListingItem extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class ListingItem extends Component {
   renderItem() {
     let item = this.props.listing;
     let image = <img alt='' src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />;
+    let spotlightDiv = '';
 
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
@@ -39,6 +41,14 @@ export default class ListingItem extends Component {
                     alt={ vehicleTitle }
                     ref={img => this.img = img}
                     onError={() => this.img.src =  process.env.REACT_APP_MISSING_LISTING_IMAGE} />);
+    }
+
+    if (item.current_spotlight && item.current_spotlight.spotlighted) {
+      spotlightDiv = (
+        <div className="listing-item-spotlighted text-secondary-font-weight ls-dot-two white-text">
+          { LocalizationService.formatMessage('listings.spotlighted') }
+        </div>
+      )
     }
 
     return (
@@ -66,6 +76,8 @@ export default class ListingItem extends Component {
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
             </div>
           </Link>
+
+          { spotlightDiv }
         </div>
       </div>
     )
