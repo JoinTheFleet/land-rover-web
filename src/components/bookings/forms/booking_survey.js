@@ -132,6 +132,7 @@ class BookingSurvey extends Component {
         <div className="booking-survey-raise-issue-tile-content tile-content col-xs-12">
           <FormGroup placeholder={ LocalizationService.formatMessage('bookings.surveys.photo') }>
             <FormField type="file"
+                       hiddenInput
                        id="booking_survey_issue_photo_input"
                        value={ this.state.currentIssue.image ? this.state.currentIssue.image.name : '' }
                        handleChange={ (event) => { this.setCurrentIssueParamValue('image', event.target.files[0]); } } />

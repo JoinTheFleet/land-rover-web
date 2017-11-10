@@ -220,7 +220,7 @@ export default class FormField extends Component {
                 clearable={ this.props.clearable } />
         );
     }
-    else if (this.props.type === 'file') {
+    else if (this.props.type === 'file' && this.props.hiddenInput) {
       renderable = (
         <div className="fleet-file-select col-xs-12 no-side-padding">
           <input type="file"
@@ -310,5 +310,6 @@ FormField.propTypes = {
   startDate: momentPropTypes.momentObj,
   endDate: momentPropTypes.momentObj,
   options: PropTypes.array,
-  className: PropTypes.string
+  className: PropTypes.string,
+  hiddenInput: PropTypes.bool
 }
