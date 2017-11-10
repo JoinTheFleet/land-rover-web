@@ -143,6 +143,17 @@
     margin-left: 10px;
   }
 
+  .listing-item-spotlighted {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(35, 169, 246, 0.75);
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+
   @media screen and (min-width: $screen-lg-min) {
     width: calc(100% / 3);
   }
