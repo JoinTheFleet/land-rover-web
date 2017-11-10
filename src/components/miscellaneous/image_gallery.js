@@ -14,6 +14,18 @@ const DEFAULT_NUMBER_SLIDES_TO_SHOW = 1;
 const DEFAULT_NUMBER_SLIDES_TO_SCROLL = 1;
 
 export default class ImageGallery extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleErrorSRC = this.handleErrorSRC.bind(this);
+  }
+  
+  handleErrorSRC(event) {
+    if (this.props.errorSRC && event) {
+      event.target.setAttribute('src', this.props.errorSRC);
+    }
+  }
+
   render() {
 
     // Thanks to the extendObject method, all properties defined in this.props will take precendence over the default ones.
@@ -40,7 +52,7 @@ export default class ImageGallery extends Component {
 
               return (
                 <div key={ 'gallery_image_' + index } >
-                  <img src={ image } alt="gallery_image" />
+                  <img src={ image } alt="gallery_image" onError={ this.handleErrorSRC } />
                   { closeButton }
                 </div>
               )
@@ -55,5 +67,6 @@ export default class ImageGallery extends Component {
 ImageGallery.propTypes = {
   images: PropTypes.array.isRequired,
   showRemoveButton: PropTypes.bool,
-  handleRemoveImage: PropTypes.func
+  handleRemoveImage: PropTypes.func,
+  errorSRC: PropTypes.string
 };
