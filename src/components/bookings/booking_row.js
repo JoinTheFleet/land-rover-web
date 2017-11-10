@@ -90,9 +90,9 @@ class BookingRow extends Component {
           pathname: `bookings/${this.props.booking.id}`,
           state: { booking: this.props.booking } }}>
           { detailsView }
-
-          { this.renderBookingStatus() }
         </Link>
+
+        { this.renderBookingStatus() }
       </div>
 
     );

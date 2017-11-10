@@ -26,7 +26,7 @@ export default class WishListCard extends Component {
         }} >
           <div className='row'>
             <div className='col-xs-12'>
-              <Avatar src={ imageSRC } size={ '100px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
+              <Avatar src={ imageSRC } size={ 100 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
               <div className='col-xs-12 wishlist-container' >
                 <span className='strong-font-weight wishlist-name no-side-padding col-xs-12 text-left'>
                   { wish_list.name }

@@ -119,6 +119,7 @@ export default class Reviews extends Component {
     if (this.state.metadata) {
       let metadata = this.state.metadata;
       let averageRatings = metadata.average_ratings;
+
       return (
         <div>
           <div className='col-xs-12 text-center visible-xs'>

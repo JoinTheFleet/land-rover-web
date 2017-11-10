@@ -14,7 +14,6 @@ import branch from 'branch-sdk';
 import EventEmitter from 'eventemitter3';
 
 import Alert from 'react-s-alert';
-import MediumService from './shared/services/medium_service';
 
 import Constants from './miscellaneous/constants';
 
@@ -623,7 +622,7 @@ export default class App extends Component {
               </Switch>
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
-            <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
+            <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer />
           </div>
         )

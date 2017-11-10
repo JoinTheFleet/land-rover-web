@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
@@ -14,10 +13,7 @@ export default class Advertisement extends Component {
           <div className={ 'listing-item col-xs-12 ' + (this.props.additionalClasses || '') }>
             <div>
               <div className="listing-item-photo-and-title">
-                <Link to={{
-                        pathname: `${advertisement.url}?token=${this.props.accessToken}`,
-                        
-                      }}
+                <Link to={ `${advertisement.url}?token=${this.props.accessToken}` }
                       target='_blank'>
                   <img alt='' src={ advertisement.images.original_url } />
                 </Link>

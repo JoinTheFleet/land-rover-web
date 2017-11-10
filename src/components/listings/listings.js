@@ -5,6 +5,7 @@ import ListingsOverview from './listings_overview';
 import ListingView from './listing_view';
 import ListingForm from './forms/listing_form';
 import BookingForm from '../bookings/forms/booking_form';
+import Reviews from '../reviews/reviews';
 
 import { Switch, Route } from "react-router-dom";
 
@@ -31,8 +32,8 @@ export default class Listings extends Component {
           }} />
 
           <Route path="/listings/:id/reviews" render={(props) => {
-            return <ListingReviews {...props}
-                                currentUserRole={ this.props.currentUserRole } />
+            return <Reviews {...props}
+                            currentUserRole={ this.props.currentUserRole } />
           }} />
 
           <Route path="/listings/:id" render={(props) => {
