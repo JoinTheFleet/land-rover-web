@@ -22,6 +22,7 @@ export default class Constants {
       bookings: 'bookings',
       messages: 'messages',
       account: 'account',
+      notifications: 'notifications',
       logout: 'logout',
       login: 'login',
       signup: 'signup',

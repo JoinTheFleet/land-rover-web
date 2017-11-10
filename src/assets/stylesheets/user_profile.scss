@@ -54,3 +54,10 @@
     }
   }
 }
+
+.platform-avatar div,
+.sb-avatar div,
+.user-avatar div {
+  background-color: #23a9f6 !important;
+  background-image: linear-gradient(140deg, #1de9b6, #23a9f6) !important;
+}

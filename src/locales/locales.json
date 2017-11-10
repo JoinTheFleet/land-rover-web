@@ -40,6 +40,8 @@
     "application.verify": "Verify",
     "application.view_all": "View All",
     "application.yes": "Yes",
+    "application.first": "First",
+    "application.last": "Last",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -68,6 +70,7 @@
     "menu.signup": "Sign Up",
     "menu.login": "Log In",
     "menu.logout": "Log Out",
+    "menu.notifications": "Notifications",
 
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
