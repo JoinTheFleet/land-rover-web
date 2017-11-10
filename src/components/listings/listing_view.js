@@ -332,7 +332,7 @@ class ListingView extends Component {
               <Link to={{
                 pathname: `/listings/${this.state.listing.id}/reviews`,
                 state: {
-                  previousPage: `/listings/${this.state.listing.id}`
+                  listing: this.state.listing
                 }
               }}>
                 <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read_more') } </span>
@@ -352,7 +352,7 @@ class ListingView extends Component {
             <Link to={{
               pathname: `/listings/${this.state.listing.id}/reviews`,
               state: {
-                previousPage: `/listings/${this.state.listing.id}`
+                listing: this.state.listing
               }
             }}>
               <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read') } </span>
@@ -440,11 +440,11 @@ class ListingView extends Component {
 
             { this.renderAmenities() }
 
+            { this.renderReviewsTile() }
+
             { this.renderBookingTile() }
 
             { this.renderMap() }
-
-            { this.renderReviewsTile() }
 
             { this.renderButtons() }
 
