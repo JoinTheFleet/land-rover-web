@@ -29,7 +29,7 @@ export default class BookingStatus extends Component {
         else {
           statusMessage = (
             <Link to={{
-              pathname: `/bookings/${this.props.booking.id}/renter_reviews/new`,
+              pathname: `/bookings/${this.props.booking.id}/reviews/new`,
               state: { booking: booking }
             }}>
               <span className="secondary-text-color"> { LocalizationService.formatMessage('reviews.write_a_review') } </span>

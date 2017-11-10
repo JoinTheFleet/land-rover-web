@@ -37,6 +37,8 @@
     "application.verify": "Verify",
     "application.view_all": "View All",
     "application.yes": "Yes",
+    "application.first": "First",
+    "application.last": "Last",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",

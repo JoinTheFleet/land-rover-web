@@ -37,25 +37,32 @@ class Bookings extends Component {
   }
 
   render() {
+    let role = this.props.currentUserRole;
+    let location = this.props.location;
+
+    if (location && location.state && location.state.targetMode) {
+      role = location.state.targetMode;
+    }
+
     return (
       <Switch>
         <Route path="/listings/:listing_id/bookings/new" render={(props) => {
           return (<BookingForm {...props} />)
         }} />
 
-        <Route path="/bookings/:id/renter_reviews/new" render={(props) => {
-          return (<BookingReview {...props} currentUserRole={ this.props.currentUserRole } reviewOptions={ this.getReviewOptionsForRole() } />)
+        <Route path="/bookings/:id/reviews/new" render={(props) => {
+          return (<BookingReview {...props} currentUserRole={ role } reviewOptions={ this.getReviewOptionsForRole() } />)
         }} />
 
         <Route path="/bookings/:id" render={(props) => {
-          return (<BookingForm {...props} currentUserRole={ this.props.currentUserRole } />)
+          return (<BookingForm {...props} currentUserRole={ role } />)
         }} />
 
         <Route path="/bookings" render={(props) => {
-          let overviewDiv = (<OwnerBookingsOverview {...props} currentUserRole={ this.props.currentUserRole }  />);
+          let overviewDiv = (<OwnerBookingsOverview {...props} currentUserRole={ role }  />);
 
           if (this.props.currentUserRole === userRoles.renter) {
-            overviewDiv = (<RenterBookingsOverview {...props} currentUserRole={ this.props.currentUserRole }  />);
+            overviewDiv = (<RenterBookingsOverview {...props} currentUserRole={ role }  />);
           }
 
           return overviewDiv;

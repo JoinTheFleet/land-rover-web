@@ -606,11 +606,13 @@ class BookingForm extends Component {
     let renterDetailsDiv = '';
     let booking = this.state.booking;
 
-    if (!booking) {
+    // TODO: Fix issue with multiple render.
+
+    if (!booking || Object.keys(booking).length === 0) {
       return '';
     }
 
-    if (this.props.currentUserRole === 'owner') {
+    if (this.props.currentUserRole === 'owner' && booking.renter) {
 
       renterDetailsDiv = (
         <div className="booking-form-renter-details booking-form-box col-xs-12 no-side-padding">
@@ -1095,7 +1097,7 @@ class BookingForm extends Component {
     if (this.state.redirectToWriteReview) {
       return (
         <Redirect to={{
-          pathname: `/bookings/${this.state.booking.id}/renter_reviews/new`,
+          pathname: `/bookings/${this.state.booking.id}/review/new`,
           state: { booking: this.state.booking }
         }} />
       );
