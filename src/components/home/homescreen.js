@@ -53,8 +53,6 @@ class Homescreen extends Component {
     }, () => {
       TopSellersService.index()
                         .then(response => {
-                          console.log(response)
-
                           this.setState({
                             topSellers: response.data.data.listings,
                             topSellersLoading: false
