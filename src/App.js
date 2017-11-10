@@ -229,17 +229,19 @@ export default class App extends Component {
         modalName: undefined
       };
 
-      this.setState(newState, () => {
-        if (accessToken.length > 0) {
+
           cookies.set('accessToken', accessToken, {
             path: '/'
           });
+
+      if (accessToken.length > 0) {
           client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
         }
         else {
           delete client.defaults.headers.common['Authorization'];
         }
-      });
+
+      this.setState(newState);
     }
     else {
       this.setState({
@@ -488,7 +490,6 @@ export default class App extends Component {
 
     let mainRouter = (<Redirect to="/" />);
 
-
     if (this.state.accessToken && this.state.accessToken.length > 0) {
       mainRouter = (
         <Switch>
@@ -512,6 +513,9 @@ export default class App extends Component {
             return (<Bookings {...props}
                               configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole} />)
+          }} />
+          <Route path='/dashboard' render={ (props) => {
+            return <DashboardController {...props} configuration={ this.state.configuration } />
           }} />
           <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
         </Switch>
@@ -615,9 +619,6 @@ export default class App extends Component {
                               page={ this.state.page + 1 }
                               eventEmitter={ this.eventEmitter } />
                   )
-                }} />
-                <Route path='/dashboard' render={ (props) => {
-                  return <DashboardController {...props} configuration={ this.state.configuration } />
                 }} />
                 <Route path='/users/:id' component={ UserController } />
 
