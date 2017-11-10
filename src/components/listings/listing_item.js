@@ -43,7 +43,6 @@ export default class ListingItem extends Component {
                     onError={() => this.img.src =  process.env.REACT_APP_MISSING_LISTING_IMAGE} />);
     }
 
-    console.log(item.current_spotlight);
     if (item.current_spotlight && item.current_spotlight.spotlighted) {
       spotlightDiv = (
         <div className="listing-item-spotlighted text-secondary-font-weight ls-dot-two white-text">
