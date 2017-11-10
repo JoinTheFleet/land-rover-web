@@ -13,8 +13,6 @@ class BlogListPost extends Component {
     let image = noImagesPlaceholder;
     let post = this.props.post;
 
-    console.log(post);
-
     if (post.virtuals && post.virtuals.previewImage) {
       image = MediumService.getImageUrl(post.virtuals.previewImage.imageId);
     }
