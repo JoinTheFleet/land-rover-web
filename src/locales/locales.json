@@ -25,6 +25,8 @@
     "application.preview": "Preview",
     "application.previous": "Previous",
     "application.registration": "Registration",
+    "application.read": "Read",
+    "application.read_more": "Read more",
     "application.renter": "Renter",
     "application.save": "Save",
     "application.search": "Search",
@@ -126,6 +128,9 @@
     "homescreen.meet_the_driver_text": "Meet the driver and exchange keys. Complete sign off once both parties are happy.",
     "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
     "homescreen.featured_in": "Featured In",
+
+    "bloglist.no_posts": "No posts to show yet. Check back later!",
+    "bloglist.by_author": "By {author}",
 
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
@@ -291,6 +296,7 @@
     "aws.s3.invalid_bucket_folder_name": "Invalid Bucket Folder Name",
 
     "reviews.reviews": "Reviews",
+    "reviews.no_reviews": "No reviews have been published yet",
     "reviews.write_a_review": "Write a Review",
     "reviews.enter_feedback_here": "Enter your feedback here",
     "reviews.review_submitted_successfully": "Review Submitted Successfully!",

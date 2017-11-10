@@ -81,8 +81,9 @@ export default class ListingList extends Component {
 
       if (this.refs.itemList) {
         let target = this.refs.itemList.targets[0];
+
         showLeftScroller = this.state.currentPosition > 0;
-        showRightScroller = this.state.currentPosition < target.scrollLeftMax;
+        showRightScroller = (this.state.currentPosition + target.clientWidth) < target.scrollWidth;
       }
 
       if (showLeftScroller) {

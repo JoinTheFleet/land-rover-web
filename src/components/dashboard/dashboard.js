@@ -21,7 +21,7 @@ export default class Dashboard extends Component {
       return (
         <div className='col-xs-12 user-dashboard'>
           <div className='col-xs-12 no-side-padding user-header'>
-            <Avatar src={ image } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
+            <Avatar src={ image } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
             <div className='col-xs-12 col-sm-8 dashboard-information'>
               <div className='dashboard-information-container no-side-padding col-xs-12'>
                 <div className='col-xs-12 no-side-padding user-name'>

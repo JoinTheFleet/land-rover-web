@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import Alert from 'react-s-alert';
-
-import UsersService from '../../shared/services/users/users_service';
-import Loading from '../miscellaneous/loading';
 
 import WishList from './wish_list';
 import WishListsList from './wish_lists_list';

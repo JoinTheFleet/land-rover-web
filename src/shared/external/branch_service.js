@@ -1,5 +1,3 @@
-import LocalizationService from '../libraries/localization_service';
-import UsersService from '../services/users/users_service';
 import ConfigurationService from '../services/configuration_service';
 import branch from 'branch-sdk';
 import moment from 'moment';

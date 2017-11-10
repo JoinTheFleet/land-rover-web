@@ -148,7 +148,7 @@ class BookingReview extends Component {
               }
 
               return (
-                <div className="booking-review-item-row col-xs-12 no-side-padding">
+                <div key={ `booking_review_item_row_${reviewOption.slug}` } className="booking-review-item-row col-xs-12 no-side-padding">
                   <div className="pull-left fs-16"> { reviewOption.description } </div>
 
                   <div className="pull-right">
@@ -167,6 +167,7 @@ class BookingReview extends Component {
 
         <div className="booking-review-feedback text-secondary-font-weight col-xs-12 fs-16">
           <FormField type="textarea"
+                     id="booking_review_feedback"
                      value={ this.state.review.feedback }
                      placeholder={ LocalizationService.formatMessage('reviews.enter_feedback_here') }
                      handleChange={ (event) => { this.setReviewFeedback(event.target.value) } } />

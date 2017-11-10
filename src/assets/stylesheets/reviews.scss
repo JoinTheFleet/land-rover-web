@@ -20,26 +20,6 @@
   }
 }
 
-@media screen and (max-width: 767px) {
-  .reviews-rating,
-  .rating-input
-   {
-    margin-top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    position: relative;
-  }
-  .review .sb-avatar {
-    width: 100% !important;
-
-    img {
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-}
-
 .review-title {
   padding-top: 15px;
   font-size: 30px;
@@ -67,7 +47,47 @@
   }
 }
 
+.review-reviewer-image {
+  max-width: 100px;
+}
+
 .review-feedback {
-  color: $warm-grey;
-  font-size: 14px;
+  margin-left: 20px;
+  max-width: calc(100% - 120px);
+
+  p + p {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: $screen-xs-max){
+  .reviews-rating,
+  .rating-input
+   {
+    margin-top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+  }
+
+  .review .sb-avatar {
+    width: 100% !important;
+
+    img {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px !important;
+      height: 60px !important;
+      border-radius: 60px !important;
+    }
+  }
+
+  .review-reviewer-image {
+    max-width: 60px;
+  }
+
+  .review-feedback {
+    max-width: calc(100% - 80px);
+  }
 }

@@ -3,7 +3,6 @@ import Alert from 'react-s-alert';
 
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
-import LocalizationService from '../../shared/libraries/localization_service';
 import WishListsService from '../../shared/services/wish_lists_service';
 import UserListing from '../user_listings/user_listing';
 

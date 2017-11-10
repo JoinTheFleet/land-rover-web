@@ -537,7 +537,6 @@
 
   .listing-view-main-content {
     margin-top: 24px;
-    margin-bottom: 24px;
 
     .listing-view-user-details {
       position: absolute;
@@ -587,7 +586,7 @@
       }
 
       & + .listing-view-listing-spec {
-        margin-left: calc((100% - 385px) / 2);
+        margin-left: calc((100% - 361px) / 2);
       }
     }
   }
@@ -614,17 +613,106 @@
     }
   }
 
-  .listing-view-booking-div + .listing-view-map {
-    margin-top: 24px;
+  .listing-view-reviews {
+
+    .listing-view-review-list {
+      padding-top: 10px;
+
+      .listing-view-review-details {
+        margin-left: 10px;
+        width: calc(100% - 75px);
+
+        p:first-child {
+          line-height: 20px;
+        }
+
+        p + p {
+          margin-top: 10px;
+        }
+
+        & > .pull-right {
+          position: absolute;
+          bottom: 5px;
+          right: 0;
+        }
+      }
+    }
   }
 
-  .listing-view-map + div {
-    margin-top: 24px;
+  .listing-view-listing-amenities,
+  .listing-view-booking-div,
+  .listing-view-reviews,
+  .listing-view-map {
+    & + div {
+      margin-top: 24px;
+    }
   }
 
-  .listing-view-buttons {
+  .listing-card-buttons {
+    padding-bottom: 24px;
+
     button {
       width: 200px;
+    }
+  }
+}
+
+.listing-reviews-div {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .listing-reviews-header {
+
+    .listing-reviews-header-avatar {
+      img {
+        object-fit: cover;
+      }
+    }
+
+    .rating-input label {
+      font-size: 15px;
+    }
+  }
+
+  .listing-reviews-list {
+    margin-top: 20px;
+  }
+
+  .option-rating {
+    & > div,
+    & > span {
+      float: left;
+    }
+    .rating-text {
+      font-size: 18px;
+      padding-left: 10px;
+    }
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    .listing-reviews-header-avatar {
+      width: 100px !important;
+      height: 100px !important;
+
+      img {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+
+    .rating-information {
+      padding-right: 0;
+      max-width: calc(100% - 100px);
+
+      & > div:first-child {
+        font-size: 22px;
+      }
+    }
+  }
+
+  @media screen and (min-width: $screen-sm-min) {
+    .rating-information {
+      padding-left: 24px;
     }
   }
 }

@@ -7,6 +7,7 @@ import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
+import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 export default class ListingItem extends Component {
   constructor(props) {
@@ -30,13 +31,14 @@ export default class ListingItem extends Component {
     let vehicleMake = item.variant.make.name;
     let vehicleModel = item.variant.model.name;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
-
+    let hasImages = item.gallery ? (item.gallery.length > 0) : false;
     let wishListed = item.wish_lists.length > 0;
 
-    if (item.gallery.length > 0) {
-      image = (
-        <img src={ item.gallery[0].images.original_url } alt={ vehicleTitle }></img>
-      );
+    if (hasImages) {
+      image = (<img src={ item.gallery[0].images.original_url }
+                    alt={ vehicleTitle }
+                    ref={img => this.img = img}
+                    onError={() => this.img.src = noImagesPlaceholder} />);
     }
 
     return (

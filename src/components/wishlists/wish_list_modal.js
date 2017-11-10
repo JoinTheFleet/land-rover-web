@@ -33,12 +33,12 @@ export default class WishListModal extends Component {
           label: wishList.name
         };
       })
-    }
+    };
   }
 
   loadOptions(input) {
     if (!input) {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       return WishListsService.index()
                              .then(response => {
                                this.setState({ loading: false });
@@ -52,7 +52,7 @@ export default class WishListModal extends Component {
       return WishListsService.search(input)
                              .then(response => {
                                this.setState({ loading: false });
-                              
+
                                return this.convertResponseToOptions(response);
                              });
     }
@@ -69,9 +69,9 @@ export default class WishListModal extends Component {
           WishListsService.create(wishList.value)
                           .then(response => {
                             let wishList = response.data.data.wish_list;
-                            
+
                             this.addListingToWishList(wishList.id);
-                          })
+                          });
         }
         else {
           this.addListingToWishList(wishList.value);
@@ -84,7 +84,8 @@ export default class WishListModal extends Component {
     let options = {
       listingID: this.props.listing.id,
       wishListID: wishListID
-    }
+    };
+
     WishListsService.addListing(wishListID, this.props.listing.id)
                     .then(response => {
                       this.setState({
