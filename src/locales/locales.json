@@ -124,6 +124,9 @@
     "homescreen.keep_up_to_date": "Keep up to date with Fleet's latest news.",
     "homescreen.featured_in": "Featured In",
 
+    "bloglist.no_posts": "No posts to show yet. Check back later!",
+    "bloglist.by_author": "By {author}",
+
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
     "listings.engine_fuels": "Fuel",
