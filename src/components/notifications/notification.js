@@ -29,19 +29,20 @@ export default class Notification extends Component {
 
   notification() {
     let notification = this.props.notification;
+    let className = notification.status === 'read' ? '' : 'unread';
 
     return (
       <div className='row'>
         <div className='col-xs-12'>
           <Avatar src={ this.imageURL() } size={ '80px' } name={ this.sender() } round className='col-xs-12 col-sm-4 platform-avatar no-side-padding' />
           <div className='col-xs-12 credit-container' >
-            <span className='strong-font-weight pull-left credit-name no-side-padding col-xs-10 text-left'>
+            <span className={ `strong-font-weight pull-left credit-name no-side-padding col-xs-10 text-left ${className}` }>
               { this.sender() }
             </span>
-            <span className='col-xs-2 pull-right text-right timestamp'>
+            <span className={ `col-xs-2 pull-right text-right timestamp ${className}` } >
               { moment.unix(notification.created_at).fromNow() }
             </span>
-            <span className='col-xs-10 pull-left no-side-padding'>
+            <span className={ `col-xs-10 pull-left no-side-padding ${className}` }>
               { notification.message }
             </span>
           </div>
