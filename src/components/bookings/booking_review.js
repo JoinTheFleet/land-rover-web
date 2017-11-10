@@ -102,6 +102,11 @@ class BookingReview extends Component {
 
   handleSaveReview() {
     let role = this.props.currentUserRole;
+
+    if (location && location.state && location.state.targetMode) {
+      role = location.state.targetMode;
+    }
+
     let booking = this.state.booking;
     let review = this.state.review;
 
