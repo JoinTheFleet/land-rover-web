@@ -38,7 +38,7 @@ export default class ListingItem extends Component {
       image = (<img src={ item.gallery[0].images.original_url }
                     alt={ vehicleTitle }
                     ref={img => this.img = img}
-                    onError={() => this.img.src = noImagesPlaceholder} />);
+                    onError={() => this.img.src =  process.env.REACT_APP_MISSING_LISTING_IMAGE} />);
     }
 
     return (
