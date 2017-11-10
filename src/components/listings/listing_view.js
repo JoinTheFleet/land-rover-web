@@ -288,7 +288,7 @@ class ListingView extends Component {
               listing: this.state.listing
             }
           }}>
-            <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read') } </span>
+            <span className="secondary-text-color text-capitalize"> { LocalizationService.formatMessage('application.see_all') } </span>
           </Link>
         </div>
       );
@@ -307,16 +307,6 @@ class ListingView extends Component {
               <span className="tertiary-text-color"> { moment.utc(moment.unix(review.created_at)).format('DD MMM YYYY') } </span>
             </p>
             <p> { review.feedback } </p>
-            <div className="pull-right">
-              <Link to={{
-                pathname: `/listings/${this.state.listing.id}/reviews`,
-                state: {
-                  listing: this.state.listing
-                }
-              }}>
-                <span className="secondary-text-color"> { LocalizationService.formatMessage('application.read_more') } </span>
-              </Link>
-            </div>
           </div>
         </div>
       );

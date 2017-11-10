@@ -13,6 +13,7 @@ import Constants from '../../miscellaneous/constants';
 import Errors from '../../miscellaneous/errors';
 import LocalizationService from '../../shared/libraries/localization_service';
 
+import BookingsService from '../../shared/services/bookings/bookings_service';
 import RenterReviewsService from '../../shared/services/renter_reviews_service';
 import ListingReviewsService from '../../shared/services/listings/listing_reviews_service';
 
@@ -40,6 +41,23 @@ class BookingReview extends Component {
     this.handleSaveReview = this.handleSaveReview.bind(this);
     this.setReviewFeedback = this.setReviewFeedback.bind(this);
     this.setReviewOptionValue = this.setReviewOptionValue.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.state.booking) {
+      this.setState({
+        loading: true
+      }, () => {
+        BookingsService.show(this.props.match.params.id)
+        .then(response => {
+          this.setState({
+            booking: response.data.data.booking,
+            loading: false
+          });
+        })
+        .catch(error => this.addError(Errors.extractErrorMessage(error)));
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -90,6 +108,7 @@ class BookingReview extends Component {
     this.setState({
       loading: true
     }, () => {
+      console.log(role);
       if (role === userRoles.owner) {
         RenterReviewsService.create(booking.renter.id, booking.id, review.feedback, review.options)
                             .then(response => {

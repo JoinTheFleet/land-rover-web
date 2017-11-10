@@ -139,7 +139,7 @@ class ListingPromotion extends Component {
       <ListingFormFieldGroup key={ `listing_promotion_${promotionType}` }
                              title={ promotionDetails.title }
                              fieldsDescription={ promotionDetails.description }>
-        <div className="listing-promotion-details col-xs-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-lg-offset-2">
+        <div className="listing-promotion-details col-xs-12 no-side-padding">
           { listingPromotionContent }
         </div>
       </ListingFormFieldGroup>

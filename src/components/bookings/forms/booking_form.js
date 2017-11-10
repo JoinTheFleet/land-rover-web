@@ -1097,7 +1097,7 @@ class BookingForm extends Component {
     if (this.state.redirectToWriteReview) {
       return (
         <Redirect to={{
-          pathname: `/bookings/${this.state.booking.id}/review/new`,
+          pathname: `/bookings/${this.state.booking.id}/reviews/new`,
           state: { booking: this.state.booking }
         }} />
       );

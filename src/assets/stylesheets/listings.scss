@@ -736,7 +736,15 @@
     padding: 24px;
   }
 
-  .listing-form-field-group:first-child {
-    margin-top: 24px;
+  .listing-form-field-group {
+    &:first-child {
+      margin-top: 24px;
+    }
+
+    .listing-form-field-group-description {
+      margin-left: 0;
+      padding: 0;
+      width: 100%;
+    }
   }
 }
