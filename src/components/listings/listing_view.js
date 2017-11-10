@@ -427,11 +427,19 @@ class ListingView extends Component {
         images = this.props.location.state.listing.images.map(image => image.url);
       }
 
+      let carousel = '';
+
+      if (listing.gallery.length > 0) {
+        carousel = (
+          <div className="listing-view-image-gallery">
+            <ImageGallery images={ images } errorSRC={ process.env.REACT_APP_MISSING_LISTING_IMAGE } />
+          </div>
+        );
+      }
+
       return (
         <div className="listing-view-div col-xs-12 no-side-padding">
-          <div className="listing-view-image-gallery">
-            <ImageGallery images={ images } />
-          </div>
+          { carousel }
 
           <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             { this.renderListingOverview() }

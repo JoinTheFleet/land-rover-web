@@ -46,7 +46,7 @@ export default class ListingCard extends Component {
               }}
               className='listing-card-link'>
             <div className="listing-card-photo">
-              { <img src={ image } alt={vehicleTitle}></img> }
+              { <img src={ image } alt={vehicleTitle} onError={ (event) => { event.target.setAttribute('src', process.env.REACT_APP_MISSING_LISTING_IMAGE) } } /> }
             </div>
 
             <div className="listing-card-details">
