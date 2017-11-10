@@ -135,12 +135,16 @@ export default class ListingReviews extends Component {
 
       listingInfo = (
         <div className='listing-reviews-header col-xs-12 no-side-padding'>
-          <Avatar src={ image } size={ 200 } className='listing-reviews-header-avatar col-xs-12 col-sm-4 no-side-padding' />
+          <Link to={ `/listings/${this.props.match.params.id}` }>
+            <Avatar src={ image } size={ 200 } className='listing-reviews-header-avatar col-xs-12 col-sm-4 no-side-padding' />
+          </Link>
           <div className='col-xs-12 col-sm-8 rating-information'>
-            <div className="fs-36">
-              <b>{ `${listing.variant.make.name} ${listing.variant.model.name}` }</b>
-              <span> { ` ${listing.variant.year.year}` } </span>
-            </div>
+            <Link to={ `/listings/${this.props.match.params.id}` }>
+              <div className="fs-36">
+                <b>{ `${listing.variant.make.name} ${listing.variant.model.name}` }</b>
+                <span> { ` ${listing.variant.year.year}` } </span>
+              </div>
+            </Link>
 
             { this.renderRatings() }
           </div>
@@ -212,14 +216,6 @@ export default class ListingReviews extends Component {
             { this.renderReviewsHeader() }
 
             { this.renderReviews() }
-
-            <div className="text-center col-xs-12">
-              <Link to={ `/listings/${this.props.match.params.id}` }>
-                <Button className="tomato white-text">
-                  { LocalizationService.formatMessage('application.go_back') }
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       );
