@@ -18,10 +18,6 @@ export default class ImageGallery extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      images: props.images || []
-    };
-
     this.handleErrorSRC = this.handleErrorSRC.bind(this);
   }
 
@@ -35,7 +31,7 @@ export default class ImageGallery extends Component {
 
     // Thanks to the extendObject method, all properties defined in this.props will take precendence over the default ones.
     let sliderSettings = Helpers.extendObject({
-      dots: this.state.images.length > 0,
+      dots: this.props.images.length > 0,
       infinite: false,
       speed: 500,
       slidesToShow: DEFAULT_NUMBER_SLIDES_TO_SHOW,
@@ -48,7 +44,7 @@ export default class ImageGallery extends Component {
       <div className="fleet-image-gallery">
         <Slider {...sliderSettings}>
           {
-            this.state.images.map((image, index) => {
+            this.props.images.map((image, index) => {
               closeButton = '';
 
               if (this.props.showRemoveButton) {
