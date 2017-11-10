@@ -296,7 +296,7 @@ export default class VerifyDriversLicenseForm extends Component {
                 { LocalizationService.formatMessage('user_profile_verified_info.back_of_license') }
               </div>
               <div className='col-xs-12 col-sm-6'>
-                <FormField id='license-front' type={ 'file' } handleChange={ this.handleBackImageChange } value={ this.state.backImage } />
+                <FormField id='license-back' type={ 'file' } handleChange={ this.handleBackImageChange } value={ this.state.backImage } />
               </div>
             </div>
             <div className='col-xs-12 modal-row'>
