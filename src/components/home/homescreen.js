@@ -54,8 +54,6 @@ class Homescreen extends Component {
     this.setState({ loadingPosts: true }, () => {
       MediumService.show()
                    .then(response => {
-                     console.log(response);
-
                      this.setState({
                        blog: {
                          posts: response.data.data.posts.payload.posts,
