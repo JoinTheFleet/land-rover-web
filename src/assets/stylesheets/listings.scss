@@ -318,14 +318,22 @@
     }
   }
 
-  .listing-card-edit-button {
-    position: absolute;
-    right: 15px;
-    bottom: 10px;
-  }
-
   & + .listing-card {
     margin-top: 20px;
+  }
+
+  .listing-card-buttons {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+
+    button,
+    a {
+      & + button,
+      & + a {
+        margin-left: 15px;
+      }
+    }
   }
 }
 
@@ -639,20 +647,13 @@
     }
   }
 
+  .listing-view-listing-specs,
   .listing-view-listing-amenities,
   .listing-view-booking-div,
   .listing-view-reviews,
   .listing-view-map {
     & + div {
       margin-top: 24px;
-    }
-  }
-
-  .listing-card-buttons {
-    padding-bottom: 24px;
-
-    button {
-      width: 200px;
     }
   }
 }
@@ -714,5 +715,17 @@
     .rating-information {
       padding-left: 24px;
     }
+  }
+}
+
+.listing-promote-modal {
+  .modal-content {
+    float: left;
+    width: 100%;
+    padding: 24px;
+  }
+
+  .listing-form-field-group:first-child {
+    margin-top: 24px;
   }
 }

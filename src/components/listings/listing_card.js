@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
+
+import Button from '../miscellaneous/button';
 
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 export default class ListingCard extends Component {
+  renderPromoteButton() {
+    if (!this.props.showPromoteButton) {
+      return '';
+    }
+
+    return (
+      <Button className="secondary-color white-text"
+              onClick={ this.props.handlePromoteButtonClick }>
+        <FormattedMessage id="listings.promote_listing" />
+      </Button>
+    )
+  }
+
   renderEditButton() {
     if (!this.props.showEditButton) {
       return '';
@@ -22,6 +36,19 @@ export default class ListingCard extends Component {
             className="listing-card-edit-button btn secondary-color white-text">
         <FormattedMessage id="application.edit" />
       </Link>
+    )
+  }
+
+  renderDeleteButton() {
+    if (!this.props.showDeleteButton) {
+      return '';
+    }
+
+    return (
+      <Button className="listing-card-delete-button tomato white-text"
+              onClick={ this.props.handleDeleteButtonClick }>
+        <FormattedMessage id="listings.delete_listing" />
+      </Button>
     )
   }
 
@@ -58,7 +85,11 @@ export default class ListingCard extends Component {
 
         </Link>
 
-        { this.renderEditButton() }
+        <div className="listing-card-buttons pull-right">
+          { this.renderPromoteButton() }
+          { this.renderEditButton() }
+          { this.renderDeleteButton() }
+        </div>
       </div>
     )
   }
@@ -67,5 +98,8 @@ export default class ListingCard extends Component {
 ListingCard.propTypes = {
   listing: PropTypes.object.isRequired,
   showEditButton: PropTypes.bool,
+  showDeleteButton: PropTypes.bool,
+  showPromoteButton: PropTypes.bool,
+  handlePromoteButtonClick: PropTypes.func,
   handleDeleteButtonClick: PropTypes.func
 }

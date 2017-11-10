@@ -5,9 +5,12 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 
 import ListingCard from './listing_card';
+import ListingPromotion from './listing_promotion';
 import Pageable from '../miscellaneous/pageable';
+import ConfirmationModal from '../miscellaneous/confirmation_modal';
 
 import Errors from '../../miscellaneous/errors';
+import Helpers from '../../miscellaneous/helpers';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
@@ -21,11 +24,18 @@ export default class ListingsOverview extends Component {
       selectedListing: undefined,
       currentPage: 1,
       totalPages: 1,
+      modalsOpen: {
+        promoteListing: false,
+        deleteListing: false
+      },
       loading: false
     };
 
+    this.toggleModal = this.toggleModal.bind(this);
     this.fetchListings = this.fetchListings.bind(this);
+    this.handlePromote = this.handlePromote.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleDeleteListing = this.handleDeleteListing.bind(this);
   }
 
   componentWillMount() {
@@ -58,6 +68,53 @@ export default class ListingsOverview extends Component {
     });
   }
 
+  toggleModal(modalName, additionalParams = {}) {
+    let modalsOpen = this.state.modalsOpen;
+
+    modalsOpen[modalName] = !modalsOpen[modalName];
+
+    if (!modalsOpen[modalName] && modalName !== 'deleteListing') {
+      additionalParams = Helpers.extendObject(additionalParams, { selectedListing: undefined });
+    }
+
+    this.setState(Helpers.extendObject({ modalsOpen: modalsOpen }, additionalParams));
+  }
+
+  handlePromote(updatedListing) {
+    let listings = this.state.listings;
+    const index = listings.findIndex(listing => listing.id === updatedListing.id);
+
+    listings[index] = updatedListing;
+
+    this.setState({
+      selectedListing: updatedListing,
+      listings: listings
+    });
+  }
+
+  handleDeleteListing() {
+    if(!this.state.selectedListing) {
+      return '';
+    }
+
+    this.setState({
+      loading: true
+    }, () => {
+      ListingsService.destroy(this.state.selectedListing.id)
+                     .then(response => {
+                       this.setState({
+                         selectedListing: undefined
+                       }, () => {
+                         Alert.success(LocalizationService.formatMessage('listings.listing_deleted_successfully'));
+                         this.fetchListings();
+                       });
+                     })
+                     .catch((error) => {
+                       this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
+                     });
+    });
+  }
+
   handlePageChange(page) {
     this.setState({
       currentPage: page,
@@ -75,12 +132,45 @@ export default class ListingsOverview extends Component {
                            listing={ listing }
                            showEditButton={ true }
                            showDeleteButton={ true }
-                           handleDeleteButtonClick={ this.handleDeleteButtonClick } />
+                           showPromoteButton={ true }
+                           handlePromoteButtonClick={ () => { this.toggleModal('promoteListing', { selectedListing: listing }) } }
+                           handleDeleteButtonClick={ () => { this.toggleModal('deleteListing', { selectedListing: listing }) } } />
             )
           })
         }
       </div>
     );
+  }
+
+  renderListingPromotion() {
+    if (!this.state.selectedListing) {
+      return '';
+    }
+
+    return (
+      <ListingPromotion open={ this.state.modalsOpen.promoteListing }
+                        listing={ this.state.selectedListing }
+                        toggleModal={ this.toggleModal }
+                        handlePromote={ this.handlePromote } />
+    );
+  }
+
+  renderDeleteListingModal() {
+    if (!this.state.selectedListing) {
+      return '';
+    }
+
+    return (
+      <ConfirmationModal open={ this.state.modalsOpen.deleteListing }
+                         title={ LocalizationService.formatMessage('listings.confirm_delete') }
+                         modalName="deleteListing"
+                         toggleModal={ this.toggleModal }
+                         confirmationAction={ this.handleDeleteListing }>
+        <span className="tertiary-text-color text-secondary-font-weight fs-18">
+          { LocalizationService.formatMessage('listings.confirm_delete_text') }
+        </span>
+      </ConfirmationModal>
+    )
   }
 
   render() {
@@ -104,6 +194,9 @@ export default class ListingsOverview extends Component {
             { this.renderMainContent() }
           </div>
         </Pageable>
+
+        { this.renderListingPromotion() }
+        { this.renderDeleteListingModal() }
       </div>
     )
   }

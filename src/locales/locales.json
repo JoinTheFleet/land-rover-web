@@ -24,6 +24,7 @@
     "application.owner": "Owner",
     "application.preview": "Preview",
     "application.previous": "Previous",
+    "application.purchase": "Purchase",
     "application.registration": "Registration",
     "application.read": "Read",
     "application.read_more": "Read more",
@@ -168,6 +169,8 @@
     "listings.confirm_delete": "Confirm Listing Deletion",
     "listings.confirm_delete_text": "Deleting this vehicle will cancel any attached bookings. Are you sure you want to delete this vehicle?",
     "listings.listing_deleted_successfully": "Listing Deleted Successfully",
+    "listings.promote_listing": "Promote Listing",
+    "listings.listing_promoted_until": "Your Listing is {promotionType}ed until:",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",

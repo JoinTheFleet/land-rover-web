@@ -16,7 +16,9 @@ export default class Modal extends Component {
 
     if (!this.props.hideCloseButton) {
       closeBtn = (
-        <a className="close-login-modal-btn" data-dismiss="modal" onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
+        <a className={`close-login-modal-btn ${this.props.closeButtonPosition === 'right' ? 'pull-right' : ''}`}
+           data-dismiss="modal"
+           onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
           <img src={closeGreyIcon} alt="close-modal-icon" />
         </a>
       );
@@ -46,5 +48,6 @@ Modal.propTypes = {
   modalName: PropTypes.string,
   modalClass: PropTypes.string,
   hideCloseButton: PropTypes.bool,
+  closeButtonPosition: PropTypes.string,
   toggleModal: PropTypes.func.isRequired
 };
