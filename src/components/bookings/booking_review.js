@@ -108,7 +108,6 @@ class BookingReview extends Component {
     this.setState({
       loading: true
     }, () => {
-      console.log(role);
       if (role === userRoles.owner) {
         RenterReviewsService.create(booking.renter.id, booking.id, review.feedback, review.options)
                             .then(response => {
