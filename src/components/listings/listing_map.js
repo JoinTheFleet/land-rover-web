@@ -45,18 +45,15 @@ class ListingMap extends Component {
     else {
       let marker = '';
       let className = 'listing_map_price';
-      let selectedClassName = '';
-      let additionalClasses= "no-side-padding";
 
       if (selected) {
         marker = (
           <div lat={coordinates.latitude}
                lng={coordinates.longitude}
                key={`listing_${listing.id}`}
-               listing_id={listing.id}
                id={`listing_${listing.id}_map_pin`}
-               className="listings-map-listing-details-div">
-                <ListingItem toggleWishListModal={ this.props.toggleWishListModal } additionalClasses={additionalClasses} listing={listing} />
+               className={`${className} expanded`}>
+                <ListingItem toggleWishListModal={ this.props.toggleWishListModal } additionalClasses='no-side-padding' listing={listing} />
           </div>
         )
       }
@@ -65,12 +62,11 @@ class ListingMap extends Component {
           <div lat={coordinates.latitude}
                lng={coordinates.longitude}
                key={`listing_${listing.id}`}
-               listing_id={listing.id}
                id={`listing_${listing.id}_map_pin`}
                onClick={(event) => {this.selectMarker(listing.id)}}
                className={className}>
-                <span className={selectedClassName}>
-                  {`${listing.country_configuration.country.currency_symbol}${Math.round(listing.price / 100)}`}
+                <span>
+                  {listing.country_configuration.country.currency_symbol}{Math.round(listing.price / 100)}
                 </span>
           </div>
         );
@@ -81,7 +77,7 @@ class ListingMap extends Component {
   }
 
   onClick(event) {
-    if (this.state.markerSelected && closest(event.event.target, '.listings-map-listing-details-div')) {
+    if (this.state.markerSelected && closest(event.event.target, '.expanded')) {
       return;
     }
 

@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import Button from '../miscellaneous/button';
-import LocalizationService from '../../shared/libraries/localization_service';
-
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 export default class ListingCard extends Component {

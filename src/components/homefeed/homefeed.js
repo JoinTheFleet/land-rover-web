@@ -1,13 +1,9 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
+
+import Advertisement from '../advertisements/advertisement';
 
 // Fleet Components
 import ListingList from '../listings/listing_list';
@@ -45,6 +41,11 @@ class Homefeed extends Component {
         component.setState({ toggledComponent: '' });
       }
     });
+
+    this.addedWishListToListing = this.addedWishListToListing.bind(this);
+    this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
+    this.removeWishListFromNearbyListing = this.removeWishListFromNearbyListing.bind(this);
+    this.removeWishListFromCollectionListing = this.removeWishListFromCollectionListing.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +58,104 @@ class Homefeed extends Component {
                        });
                      });
     }
+
+    this.setupEvents();
+  }
+
+  setupEvents() {
+    this.props.eventEmitter.on('REMOVED_LISTING_WISHLIST', this.removedWishListFromListing);
+    this.props.eventEmitter.on('ADDED_LISTING_WISHLIST', this.addedWishListToListing);
+  }
+
+  addedWishListToListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      this.addWishListToNearbyListing(options);
+      this.addWishListToCollectionListing(options);
+    }
+  }
+
+  addWishListToNearbyListing(options) {
+    let nearby = this.state.nearby;
+
+    this.addWishListIDToListingArray(nearby.objects, options.listingID, options.wishListID);
+
+    this.setState({ nearby: nearby });
+  }
+
+  addWishListToCollectionListing(options) {
+    let collections = this.state.collections;
+    
+    collections.map(collection => {
+      if (collection.objects && collection.objects.length > 0) {
+        return this.addWishListIDToListingArray(collection.objects, options.listingID, options.wishListID);
+      }
+      else {
+        return undefined;
+      }
+    });
+
+    this.setState({ collections: collections });
+  }
+
+  addWishListIDToListingArray(objects, listingID, wishListID) {
+    let listing = objects.find((listing) => {
+      return listing.id === listingID;
+    });
+
+    if (listing) {
+      listing.wish_lists.push(wishListID);
+    }
+  }
+
+  removedWishListFromListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      this.removeWishListFromNearbyListing(options);
+      this.removeWishListFromCollectionListing(options);
+    }
+  }
+
+  removeWishListFromNearbyListing(options) {
+    let nearby = this.state.nearby;
+    let objects = nearby.objects;
+
+    this.removeWishListIDFromListingArray(objects, options.listingID, options.wishListID);
+
+    this.setState({ nearby: nearby });
+  }
+
+  removeWishListFromCollectionListing(options) {
+    let collections = this.state.collections;
+
+    collections.map(collection => {
+      if (collection.objects && collection.objects.length > 0) {
+        return this.removeWishListIDFromListingArray(collection.objects, options.listingID, options.wishListID);
+      }
+      else {
+        return undefined;
+      }
+    });
+
+    this.setState({ collections: collections });
+  }
+
+  removeWishListIDFromListingArray(objects, listingID, wishListID) {
+    let listing = objects.find((listing) => {
+      return listing.id === listingID;
+    });
+
+    if (listing) {
+      this.removeWishListIDFromListing(listing, wishListID)
+    }
+  }
+
+  removeWishListIDFromListing(listing, wishListID) {
+    let wishListIndex = listing.wish_lists.findIndex((listingWishListID) => {
+      return listingWishListID === wishListID;
+    });
+
+    if (wishListIndex >= 0) {
+      listing.wish_lists.splice(wishListIndex, 1);
+    }
   }
 
   toggleComponent(component) {
@@ -64,10 +163,10 @@ class Homefeed extends Component {
   }
 
   renderListingLists() {
-    let nearbyListings = this.state.nearby;
+    let nearbyListings = this.state.nearby.objects;
     let collections = this.state.collections;
 
-    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings && this.props.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && (this.state.nearby && this.state.nearby.objects && this.state.nearby.objects.length === 0))) && this.props.listings && this.props.listings.length > 0) {
       return (
         <div>
           <div>
@@ -93,15 +192,22 @@ class Homefeed extends Component {
 
           {
             collections.map((collection) => {
+              let body = '';
+              if (collection.object_type === 'Listing') {
+                body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
+              }
+              else if (collection.object_type === 'Advertisement') {
+                body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
+              }
+
               return (
                 <div key={collection.id + '_' + collection.name + '_listing'}>
                   <p className="top-seller-title strong-font-weight title-font-size">
                     <span>{collection.name}</span>
                   </p>
-
-                  <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />
+                  { body }
                 </div>
-              );
+)
             })
           }
         </div>

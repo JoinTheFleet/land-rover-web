@@ -10,6 +10,10 @@ class WishListsService extends Service {
     return this.baseURL + ':id/listings/'
   }
 
+  static get searchURL() {
+    return this.baseURL + '/search';
+  }
+
   static create(name) {
     return client.post(this.baseURL, {
       wish_list: {
@@ -32,6 +36,12 @@ class WishListsService extends Service {
 
   static destroyListing(id, listing_id) {
     return client.delete(this.wishListURL.replace(':id', id) + listing_id);
+  }
+
+  static search(term) {
+    return client.post(this.searchURL, {
+      term: term
+    });
   }
 
   static get actions() {

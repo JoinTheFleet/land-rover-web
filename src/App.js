@@ -11,6 +11,7 @@ import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
 import 'react-chat-elements/dist/main.css';
 
 import branch from 'branch-sdk';
+import EventEmitter from 'eventemitter3';
 
 import Alert from 'react-s-alert';
 
@@ -40,9 +41,9 @@ import Cookies from 'universal-cookie';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import LocalizationService from './shared/libraries/localization_service';
-import BranchService from './shared/external/branch_service';
 
 import WishListModal from './components/wishlists/wish_list_modal';
+import WishListsService from './shared/services/wish_lists_service';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -60,6 +61,8 @@ const ALERT_OPTIONS = {
 export default class App extends Component {
   constructor(props) {
     super(props);
+
+    this.eventEmitter = new EventEmitter();
 
     this.state = {
       accessToken: cookies.get('accessToken'),
@@ -110,6 +113,10 @@ export default class App extends Component {
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.handleReferral = this.handleReferral.bind(this);
+    this.setupEvents = this.setupEvents.bind(this);
+    this.addedWishListToListing = this.addedWishListToListing.bind(this);
+    this.removeWishListFromListing = this.removeWishListFromListing.bind(this);
+    this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
   }
 
   componentWillMount() {
@@ -125,12 +132,67 @@ export default class App extends Component {
     }, 1000);
 
     branch.init(process.env.REACT_APP_BRANCH_KEY);
+    this.setupEvents();
 
     ConfigurationService.show()
                         .then(response => {
                           this.setState({ configuration: response.data.data.configuration });
                         })
                         .catch(error => { Alert.error(LocalizationService.formatMessage('configurations.could_not_fetch')); });
+  }
+
+  setupEvents() {
+    this.eventEmitter.on('REMOVED_LISTING_WISHLIST', this.removedWishListFromListing);
+    this.eventEmitter.on('ADDED_LISTING_WISHLIST', this.addedWishListToListing);
+  }
+
+  addedWishListToListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      let listings = this.state.listings;
+      let listing = this.state.listings.find((listing) => {
+        return listing.id === options.listingID;
+      });
+
+      if (listing) {
+        listing.wish_lists.push(options.wishListID);
+        
+        this.setState({ listings: listings });
+      }
+    }
+  }
+
+  removeWishListFromListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      WishListsService.destroyListing(options.wishListID, options.listingID)
+                      .then(response => {
+                        this.eventEmitter.emit('REMOVED_LISTING_WISHLIST', options);
+                        Alert.success(LocalizationService.formatMessage('wish_lists.successfully_removed'));
+                      })
+                      .catch(error => {
+                        Alert.error(error.response.data.message);
+                      });
+    }
+  }
+
+  removedWishListFromListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      let listings = this.state.listings;
+      let listing = this.state.listings.find((listing) => {
+        return listing.id === options.listingID;
+      });
+
+      if (listing) {
+        let wishListIndex = listing.wish_lists.findIndex((wishListID) => {
+          return wishListID === options.wishListID;
+        });
+
+        if (wishListIndex >= 0) {
+          listing.wish_lists.splice(wishListIndex, 1);
+          
+          this.setState({ listings: listings });
+        }
+      }
+    }
   }
 
   handleReferral(referralCode) {
@@ -168,7 +230,9 @@ export default class App extends Component {
 
       this.setState(newState, () => {
         if (accessToken.length > 0) {
-          cookies.set('accessToken', accessToken);
+          cookies.set('accessToken', accessToken, {
+            path: '/'
+          });
           client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
         }
         else {
@@ -218,10 +282,19 @@ export default class App extends Component {
 
   toggleWishListModal(listing) {
     if (listing) {
-      this.setState({
-        wishListModalOpen: true,
-        wishListListing: listing
-      })      
+      let wishLists = listing.wish_lists;
+      if (wishLists && wishLists.length > 0) {
+        this.removeWishListFromListing({
+          listingID: listing.id,
+          wishListID: listing.wish_lists[0]
+        });
+      }
+      else {
+        this.setState({
+          wishListModalOpen: true,
+          wishListListing: listing
+        });
+      }  
     }
     else {
       this.setState({ 
@@ -516,6 +589,10 @@ export default class App extends Component {
                                        showSearchButton={ true } />
                   }
                 }} />
+                <Route path="/listings/:id" render={(props) => {
+                  return (<Listings {...props}
+                                    currentUserRole={ this.state.currentUserRole } />)
+                }} />
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
@@ -534,7 +611,8 @@ export default class App extends Component {
                               currentSearch={ this.state.currentSearch }
                               handlePageChange={ this.handlePageChange }
                               pages={ this.state.pages }
-                              page={ this.state.page + 1 } />
+                              page={ this.state.page + 1 }
+                              eventEmitter={ this.eventEmitter } />
                   )
                 }} />
                 <Route path='/dashboard' render={ (props) => {
@@ -548,7 +626,7 @@ export default class App extends Component {
               </Switch>
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
-            <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing } toggleModal={ this.toggleWishListModal } />
+            <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer />
           </div>
         )

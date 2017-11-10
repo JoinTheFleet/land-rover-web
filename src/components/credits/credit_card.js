@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Avatar from 'react-avatar';
-import { Link } from 'react-router-dom';
-import LocalizationService from '../../shared/libraries/localization_service';
 import moment from 'moment';
 
 export default class CreditCard extends Component {
