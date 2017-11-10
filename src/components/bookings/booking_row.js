@@ -15,51 +15,59 @@ const userRoles = Constants.userRoles();
 class BookingRow extends Component {
   renderListingDetails() {
     let booking = this.props.booking;
-    let listing = booking.listing;
-    let vehicleMake = listing.variant.make.name;
-    let vehicleModel = listing.variant.model.name;
-    let vehicleTitle = vehicleMake + ', ' + vehicleModel;
-    let userName = this.props.currentUserRole === userRoles.renter ? listing.user.name : booking.renter.name;
 
-    let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
-    let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
-
-    let backgroundImage = `url(${listing.gallery.length > 0 ? listing.gallery[0].images.medium_url : noImagesPlaceholder})`;
-
-    return (
-      <div className="booking-row-vehicle-and-owner col-xs-12 no-side-padding">
-        <div className="booking-row-vehicle-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
-        <div className="booking-row-vehicle-and-owner-info pull-left">
-          <div className="fs-18">
-            <b> { vehicleTitle } </b>
-            <span> { ` ${listing.variant.year.year}` } </span>
+    if (booking) {
+      let listing = booking.listing;
+      let vehicleMake = listing.variant.make.name;
+      let vehicleModel = listing.variant.model.name;
+      let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+      let userName = this.props.currentUserRole === userRoles.renter ? listing.user.name : booking.renter.name;
+  
+      let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
+      let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
+  
+      let backgroundImage = `url(${listing.gallery.length > 0 ? listing.gallery[0].images.medium_url : noImagesPlaceholder})`;
+  
+      return (
+        <div className="booking-row-vehicle-and-owner col-xs-12 no-side-padding">
+          <div className="booking-row-vehicle-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
+          <div className="booking-row-vehicle-and-owner-info pull-left">
+            <div className="fs-18">
+              <b> { vehicleTitle } </b>
+              <span> { ` ${listing.variant.year.year}` } </span>
+            </div>
+            <div> { `${listing.address} • ${bookingStartDate} - ${bookingEndDate}` } </div>
+            <div> { userName } </div>
           </div>
-          <div> { `${listing.address} • ${bookingStartDate} - ${bookingEndDate}` } </div>
-          <div> { userName } </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 
   renderBookingDetails() {
     let booking = this.props.booking;
 
-    let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
-    let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
-
-    let backgroundImage = `url(${booking.renter.images.length > 0 ? booking.renter.images.medium_url: noImagesPlaceholder})`;
-
-    return (
-      <div className="booking-row-renter-and-dates col-xs-12 no-side-padding">
-        <div className="booking-row-renter-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
-        <div className="booking-row-renter-and-dates-info pull-left">
-          <div className="fs-18">
-            <b> { booking.renter.name } </b>
+    if (booking) {
+      let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
+      let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
+  
+      let backgroundImage = `url(${booking.renter.images.length > 0 ? booking.renter.images.medium_url: noImagesPlaceholder})`;
+  
+      return (
+        <div className="booking-row-renter-and-dates col-xs-12 no-side-padding">
+          <div className="booking-row-renter-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
+          <div className="booking-row-renter-and-dates-info pull-left">
+            <div className="fs-18">
+              <b> { booking.renter.name } </b>
+            </div>
+            <div> { `${bookingStartDate} - ${bookingEndDate}` } </div>
           </div>
-          <div> { `${bookingStartDate} - ${bookingEndDate}` } </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else {
+      return '';
+    }
   }
 
   renderBookingStatus() {
@@ -83,19 +91,22 @@ class BookingRow extends Component {
       detailsView = this.renderListingDetails();
     }
 
-    return (
-
-      <div className="booking-row col-xs-12 no-side-padding">
-        <Link to={{
-          pathname: `bookings/${this.props.booking.id}`,
-          state: { booking: this.props.booking } }}>
-          { detailsView }
-        </Link>
-
-        { this.renderBookingStatus() }
-      </div>
-
-    );
+    if (this.props.booking) {
+      return (
+        <div className="booking-row col-xs-12 no-side-padding">
+          <Link to={{
+            pathname: `bookings/${this.props.booking.id}`,
+            state: { booking: this.props.booking } }}>
+            { detailsView }
+  
+            { this.renderBookingStatus() }
+          </Link>
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 

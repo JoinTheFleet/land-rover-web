@@ -30,6 +30,7 @@ import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
 import UserController from './components/users/user_controller';
 import DashboardController from './components/dashboard/dashboard_controller';
+import NotificationsController from './components/notifications/notifications_controller';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
@@ -228,17 +229,19 @@ export default class App extends Component {
         modalName: undefined
       };
 
-      this.setState(newState, () => {
-        if (accessToken.length > 0) {
-          cookies.set('accessToken', accessToken, {
-            path: '/'
-          });
-          client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-        }
-        else {
-          delete client.defaults.headers.common['Authorization'];
-        }
+
+      cookies.set('accessToken', accessToken, {
+        path: '/'
       });
+
+      if (accessToken.length > 0) {
+        client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+      }
+      else {
+        delete client.defaults.headers.common['Authorization'];
+      }
+
+      this.setState(newState);
     }
     else {
       this.setState({
@@ -487,7 +490,6 @@ export default class App extends Component {
 
     let mainRouter = (<Redirect to="/" />);
 
-
     if (this.state.accessToken && this.state.accessToken.length > 0) {
       mainRouter = (
         <Switch>
@@ -512,6 +514,10 @@ export default class App extends Component {
                               configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole} />)
           }} />
+          <Route path='/dashboard' render={ (props) => {
+            return <DashboardController {...props} configuration={ this.state.configuration } />
+          }} />
+          <Route path='/notifications' component={ NotificationsController } />
           <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
         </Switch>
       );
@@ -614,9 +620,6 @@ export default class App extends Component {
                               page={ this.state.page + 1 }
                               eventEmitter={ this.eventEmitter } />
                   )
-                }} />
-                <Route path='/dashboard' render={ (props) => {
-                  return <DashboardController {...props} configuration={ this.state.configuration } />
                 }} />
                 <Route path='/users/:id' component={ UserController } />
 

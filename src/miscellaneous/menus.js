@@ -8,6 +8,7 @@ export default class Menus {
       navigationSections.dashboard,
       navigationSections.bookings,
       navigationSections.messages,
+      navigationSections.notifications,
       navigationSections.account
     ];
 

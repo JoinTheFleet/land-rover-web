@@ -8,15 +8,18 @@ import {
 
 import PropTypes from 'prop-types';
 
+const OFFSET = 2;
 
 export default class Pagination extends Component {
   render() {
     let paginationLinks = [];
     let previousPageLink = '';
+    let firstPageLink = '';
     let nextPageLink = '';
+    let lastPageLink = '';
     let paginationLink;
 
-    for(let i = 1; i <= this.props.totalPages; i++) {
+    for(let i = Math.max(1, this.props.currentPage - OFFSET); i <= Math.min(this.props.totalPages, this.props.currentPage + OFFSET); i++) {
       if (i === this.props.currentPage) {
         paginationLink = (<span className="secondary-text-color">{ i }</span>);
       }
@@ -41,6 +44,16 @@ export default class Pagination extends Component {
       );
     }
 
+    if (this.props.currentPage > (1 + OFFSET)) {
+      firstPageLink = (
+        <div className="pagination-nav-link first-page-link">
+          <a className="static-link" onClick={ () => { this.props.handlePageChange(1) } }>
+            <FormattedMessage id="application.first" />
+          </a>
+        </div>
+      );
+    }    
+
     if (this.props.currentPage < this.props.totalPages ) {
       nextPageLink = (
         <div className="pagination-nav-link next-page-link">
@@ -51,8 +64,19 @@ export default class Pagination extends Component {
       );
     }
 
+    if (this.props.currentPage < (this.props.totalPages - OFFSET)) {
+      lastPageLink = (
+        <div className="pagination-nav-link last-page-link">
+          <a className="static-link" onClick={ () => { this.props.handlePageChange(this.props.totalPages) } }>
+            <FormattedMessage id="application.last" />
+          </a>
+        </div>
+      );
+    }
+
     return (
       <div className="pagination col-xs-12 text-center">
+        { firstPageLink }
         { previousPageLink }
 
         <div className="pagination-pages">
@@ -60,6 +84,7 @@ export default class Pagination extends Component {
         </div>
 
         { nextPageLink }
+        { lastPageLink }
       </div>
     )
   }
