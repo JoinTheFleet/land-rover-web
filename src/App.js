@@ -31,6 +31,7 @@ import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
 import UserController from './components/users/user_controller';
 import DashboardController from './components/dashboard/dashboard_controller';
+import NotificationsController from './components/notifications/notifications_controller';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
@@ -230,16 +231,16 @@ export default class App extends Component {
       };
 
 
-          cookies.set('accessToken', accessToken, {
-            path: '/'
-          });
+      cookies.set('accessToken', accessToken, {
+        path: '/'
+      });
 
       if (accessToken.length > 0) {
-          client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-        }
-        else {
-          delete client.defaults.headers.common['Authorization'];
-        }
+        client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+      }
+      else {
+        delete client.defaults.headers.common['Authorization'];
+      }
 
       this.setState(newState);
     }
@@ -517,6 +518,7 @@ export default class App extends Component {
           <Route path='/dashboard' render={ (props) => {
             return <DashboardController {...props} configuration={ this.state.configuration } />
           }} />
+          <Route path='/notifications' component={ NotificationsController } />
           <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
         </Switch>
       );

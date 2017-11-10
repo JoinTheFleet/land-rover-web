@@ -32,16 +32,29 @@ export default class HeaderMenu extends Component {
 
   renderMenu() {
     let menuItems = [];
-    let items = [navigationSections.home, navigationSections.signup, navigationSections.login];
+    let items = [
+      navigationSections.home, 
+      navigationSections.signup, 
+      navigationSections.login
+    ];
     let itemsWithDivider = ['home'];
     let itemsWithModal = ['login', 'signup'];
 
     if (this.props.loggedIn) {
-      items = [navigationSections.home, navigationSections.profile,
-               navigationSections.bookings, navigationSections.messages,
-               navigationSections.listings, navigationSections.account,
-               navigationSections.logout];
-      itemsWithDivider = [navigationSections.home, navigationSections.listings];
+      items = [
+        navigationSections.home, 
+        navigationSections.profile,
+        navigationSections.bookings, 
+        navigationSections.messages,
+        navigationSections.notifications,
+        navigationSections.listings, 
+        navigationSections.account,
+        navigationSections.logout
+      ];
+      itemsWithDivider = [
+        navigationSections.home, 
+        navigationSections.listings
+      ];
     }
 
     for(var i = 0; i < items.length; i++) {
