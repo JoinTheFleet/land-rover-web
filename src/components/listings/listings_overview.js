@@ -124,7 +124,7 @@ export default class ListingsOverview extends Component {
 
   renderMainContent() {
     return (
-      <div>
+      <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
         {
           this.state.listings.map((listing) => {
             return (
@@ -190,9 +190,7 @@ export default class ListingsOverview extends Component {
                   totalPages={ this.state.totalPages }
                   handlePageChange={ this.handlePageChange }
                   loading={ this.state.loading }>
-          <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             { this.renderMainContent() }
-          </div>
         </Pageable>
 
         { this.renderListingPromotion() }

@@ -144,7 +144,7 @@ class ListingDetails extends Component {
           </ListingFormFieldGroup>
 
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }>
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) }>
+            <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) } hideLabelOnMobile={ true }>
               <FormField id="listing_on_demand"
                          type="select"
                          value={ this.state.selectedParams.on_demand }

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 
 import BookingRow from './booking_row';
+import ListingsSelector from '../listings/listings_selector';
+
 import Pageable from '../miscellaneous/pageable';
+import Errors from '../../miscellaneous/errors';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingsBookingsService from '../../shared/services/listings/listing_bookings_service';
-
-import Errors from '../../miscellaneous/errors';
-
-import ListingsSelector from '../listings/listings_selector';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 const BOOKINGS_PER_PAGE = 10;
 
@@ -104,18 +104,29 @@ class OwnerBookingsOverview extends Component {
   }
 
   render() {
+    let bookingsList = (
+      <div className="col-xs-12 text-center tertiary-text-color text-secondary-font-weight fs-20">
+        { LocalizationService.formatMessage('bookings.no_bookings') }
+      </div>
+    );
+
+    if (this.state.bookings.length > 0) {
+      bookingsList = (
+        <div className="owner-bookings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+          { this.state.bookings.map((booking, index) => (<BookingRow key={ `owner_bookings_${index}` } booking={ booking } currentUserRole={ this.props.currentUserRole } />)) }
+        </div>
+      )
+    }
+
     return (
       <div className="bookings-overview col-xs-12 no-side-padding">
         { this.renderTopBar() }
-
 
         <Pageable currentPage={ this.state.currentPage }
                   totalPages={ this.state.totalPages }
                   loading={ this.state.loading }
                   handlePageChange={ this.handlePageChange }>
-          <div className="owner-bookings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-            { this.state.bookings.map((booking, index) => (<BookingRow key={ `owner_bookings_${index}` } booking={ booking } currentUserRole={ this.props.currentUserRole } />)) }
-          </div>
+          { bookingsList }
         </Pageable>
       </div>
     );

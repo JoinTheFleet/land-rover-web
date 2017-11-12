@@ -20,8 +20,8 @@ export default class MessagingController extends Component {
     this.refreshData = this.refreshData.bind(this);
   }
 
-  componentWillMount() {
-    this.refreshData();
+  componentDidMount() {
+    this.refreshData(this.props);
   }
 
   componentWillReceiveProps(props) {
@@ -30,7 +30,7 @@ export default class MessagingController extends Component {
 
   refreshData(newProps) {
     if (!newProps || newProps.role === 'renter') {
-      this.setState({ listings: [] })
+      this.setState({ listings: [] });
     }
     else {
       this.setState({

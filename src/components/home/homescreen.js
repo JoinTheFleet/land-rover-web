@@ -10,9 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
 import FeaturesList from './features_list';
-import Testimonials from './testimonials';
 import BlogList from './blog_list';
-import Loading from '../miscellaneous/loading'
 
 // Images
 import topBanner from '../../assets/images/beach-cars-bmw.jpg';

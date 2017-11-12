@@ -42,7 +42,7 @@ export default class ListingPeriodFilter extends Component {
       );
     }
     return (
-      <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
+      <div id="header_search_form" className={ 'hidden-xs global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
         <div className='search_inputs'>
           <FormField type='text'
                      className=''

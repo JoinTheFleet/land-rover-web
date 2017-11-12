@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Notification from '../notification';
 
 export default class CreditAwardedNotification extends Notification {
@@ -30,5 +29,3 @@ export default class CreditAwardedNotification extends Notification {
     };
   }
 }
-
-

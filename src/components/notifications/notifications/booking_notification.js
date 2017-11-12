@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Notification from '../notification';
 
 export default class BookingNotification extends Notification {
@@ -18,7 +17,7 @@ export default class BookingNotification extends Notification {
       booking: booking,
       sender: sender,
       targetMode: targetMode
-    }
+    };
   }
 
   imageURL() {
@@ -40,5 +39,3 @@ export default class BookingNotification extends Notification {
     };
   }
 }
-
-

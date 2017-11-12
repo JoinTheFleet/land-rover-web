@@ -4,8 +4,6 @@ import Avatar from 'react-avatar';
 
 import moment from 'moment';
 
-import LocalizationService from '../../shared/libraries/localization_service';
-
 export default class Notification extends Component {
   sender() {
     return '';

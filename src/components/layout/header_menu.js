@@ -33,8 +33,8 @@ export default class HeaderMenu extends Component {
   renderMenu() {
     let menuItems = [];
     let items = [
-      navigationSections.home, 
-      navigationSections.signup, 
+      navigationSections.home,
+      navigationSections.signup,
       navigationSections.login
     ];
     let itemsWithDivider = ['home'];
@@ -42,17 +42,17 @@ export default class HeaderMenu extends Component {
 
     if (this.props.loggedIn) {
       items = [
-        navigationSections.home, 
-        navigationSections.profile,
-        navigationSections.bookings, 
+        navigationSections.home,
+        navigationSections.dashboard,
+        navigationSections.bookings,
         navigationSections.messages,
         navigationSections.notifications,
-        navigationSections.listings, 
+        navigationSections.listings,
         navigationSections.account,
         navigationSections.logout
       ];
       itemsWithDivider = [
-        navigationSections.home, 
+        navigationSections.home,
         navigationSections.listings
       ];
     }

@@ -1,3 +1,8 @@
+.conversation-list {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
 .conversation-detail {
   font-size: 15px;
   border: 1px solid $smoke-grey-two;
@@ -13,6 +18,9 @@
     color: black;
     text-decoration: none;
   }
+  .row {
+    margin: 0;
+  }
 
   img {
     padding: 0;
@@ -21,6 +29,11 @@
 
   img.renter {
     border-radius: 50px;
+  }
+
+  .renter-message-text,
+  .owner-message-text {
+    margin-top: 15px;
   }
 }
 
@@ -49,12 +62,12 @@
 }
 
 .conversation-thread {
+  padding: 15px;
+
   .panel-form {
     .form-body {
-      padding-top: 0;
+      padding: 0;
       padding-bottom: 5px;
-      padding-left: 0;
-      padding-right: 0;
     }
 
     #message-input-row {
@@ -86,9 +99,16 @@
 }
 
 .message-list {
+  padding: 10px 0;
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 500px;
+}
+
+.rce-container-mbox {
+  & + .rce-container-mbox {
+    margin-top: 10px;
+  }
 }
 
 .rce-mbox-right {
@@ -113,4 +133,35 @@
 
 .rce-mbox-right-notch {
   fill: $secondary-color;
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  .conversation-detail {
+    .sb-avatar {
+      height: auto !important;
+
+      img {
+        height: 70px !important;
+        width: 70px !important;
+        object-fit: cover;
+      }
+    }
+
+    .renter-message-text,
+    .owner-message-text {
+      position: initial !important;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 135%;
+    }
+
+    .renter-message-information {
+      padding-left: 0;
+
+      & > div {
+        padding-left: 0;
+      }
+    }
+  }
 }

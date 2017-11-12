@@ -36,3 +36,16 @@
     }
   }
 }
+
+@media screen and (max-width: $screen-xs-max) {
+  .fleet-stepper-steps {
+    .fleet-stepper-step {
+      .fleet-stepper-step-text {
+        width: 40px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+}

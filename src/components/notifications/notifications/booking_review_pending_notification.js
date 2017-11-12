@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import BookingNotification from './booking_notification';
 
 export default class BookingReviewPendingNotification extends BookingNotification {
@@ -11,5 +10,3 @@ export default class BookingReviewPendingNotification extends BookingNotificatio
     };
   }
 }
-
-

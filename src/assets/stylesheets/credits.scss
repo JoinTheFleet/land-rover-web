@@ -1,4 +1,10 @@
+.credit {
+  padding-top: 20px;
+}
+
 .credit-card {
+  border: 1px solid $smoke-grey;
+
   .platform-avatar {
     width: 100px !important;
     height: 100px !important;
@@ -9,9 +15,6 @@
       width: 80px;
     }
   }
-
-  border: 1px solid $smoke-grey;
-  margin-bottom: 20px;
 
   .title {
     font-size: 30px;
@@ -41,5 +44,40 @@
 
   .timestamp {
     color: $tertiary-text-color;
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    .platform-avatar {
+      width: 60px !important;
+      height: 60px !important;
+      padding: 0;
+      margin: 10px;
+      margin-right: 0;
+
+      img {
+        width: 60px !important;
+        height: 60px !important;
+      }
+    }
+
+    .credit-container {
+      width: calc(100% - 70px);
+      padding-bottom: 10px;
+
+      & > span {
+        display: block !important;
+        float: none;
+        width: 100%;
+
+        &.timestamp {
+          text-align: left;
+          padding: 0;
+        }
+
+        &:last-child {
+          margin-top: 15px;
+        }
+      }
+    }
   }
 }

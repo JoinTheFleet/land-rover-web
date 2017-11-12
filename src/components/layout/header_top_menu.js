@@ -18,7 +18,7 @@ export default class HeaderTopMenu extends Component {
       let className = '';
 
       menu = (
-        <div id="header_top_menu" className="white tertiary-text-color">
+        <div id="header_top_menu" className="white tertiary-text-color hidden-xs">
           <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             {
               menuItems.map((menuItem) => {

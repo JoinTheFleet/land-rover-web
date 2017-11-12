@@ -164,7 +164,7 @@ class ListingForm extends Component {
                                  .catch(error => {
                                    this.setState({
                                      loading: false
-                                   }, () => { Alert.error(error.response.data.message); });
+                                   }, () => { Alert.error(Errors.extractErrorMessage(error)); });
                                  });
           });
         }
@@ -181,7 +181,7 @@ class ListingForm extends Component {
 
   handleStepChange(index) {
     let newStep = listingSteps[Object.keys(listingSteps)[index]];
-    let newPreviousStep = undefined;
+    let newPreviousStep;
 
     if (index > 0) {
       newPreviousStep = listingSteps[Object.keys(listingSteps)[index - 1]];
@@ -190,7 +190,7 @@ class ListingForm extends Component {
     this.setState({
       currentStep: newStep,
       previousStep: newPreviousStep
-    })
+    });
   }
 
   handleCompleteListing(propertiesToAdd) {
@@ -203,14 +203,16 @@ class ListingForm extends Component {
       if (this.props.edit) {
         ListingsService.update(this.state.listing.id, { listing: submissionParams })
                        .then(response => {
-                         this.setState({ currentStep: 'finished', previousStep: this.state.currentStep })
+                         this.setState({
+                           listing: response.data.data.listing,
+                           currentStep: 'finished',
+                           previousStep: this.state.currentStep
+                         });
                        })
-                       .catch(error => {
-                         Alert.error(error.response.data.message);
-                       });
+                       .catch(error => { Alert.error(Errors.extractErrorMessage(error)); });
       }
       else {
-        ListingsService.create({ listing: submissionParams})
+        ListingsService.create({ listing: submissionParams })
                        .then(response => {
                          this.setState({
                            listing: response.data.data.listing,
@@ -223,9 +225,7 @@ class ListingForm extends Component {
                            loading: false,
                            currentStep: listingSteps.details,
                            previousStep: undefined
-                         }, () => {
-                           Alert.error(error.response.data.message);
-                         });
+                         }, () => { Alert.error(Errors.extractErrorMessage(error)); });
                        });
       }
     });

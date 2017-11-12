@@ -1,40 +1,48 @@
+// External CSS files
 @import "~slick-carousel/slick/slick";
 @import "~slick-carousel/slick/slick-theme";
 @import "~antd/dist/antd.css";
 @import "~react-dates/lib/css/_datepicker.css";
 
+// Variables
 @import 'variables';
 @import 'colors';
 @import 'text';
+
+// Miscellaneous Elements
+@import 'blog_lists';
 @import 'buttons';
 @import 'checkbox';
 @import 'dropdown';
 @import 'image_galleries';
 @import 'loading';
-@import 'pagination';
-@import 'rating_input';
-@import 'steppers';
-@import 'search';
-@import 'payment_sources';
 @import 'modals';
-@import 'forms';
-@import 'drivers_license';
-@import 'user_profile';
-@import 'reviews';
-@import 'user_listings';
+@import 'pagination';
+@import 'panel_form';
+@import 'rating_input';
+@import 'rdatez-custom';
+@import 'steppers';
 @import 'signature_box';
-@import 'dashboard';
-@import 'wishlists';
-@import 'credits';
+
+// Main Components / Elements
+@import 'bookings';
 @import 'conversations';
-@import 'main';
-@import 'menus';
-@import 'login';
-@import 'header';
+@import 'credits';
+@import 'dashboard';
+@import 'drivers_license';
 @import 'footer';
+@import 'forms';
+@import 'header';
 @import 'home';
 @import 'listings';
-@import 'bookings';
-@import 'panel_form';
-@import 'rdatez-custom';
-@import 'blog_lists';
+@import 'login';
+@import 'menus';
+@import 'notifications';
+@import 'payment_sources';
+@import 'reviews';
+@import 'search';
+@import 'user_profile';
+@import 'user_listings';
+@import 'wishlists';
+
+@import 'main';

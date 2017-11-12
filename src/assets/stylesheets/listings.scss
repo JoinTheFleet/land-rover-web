@@ -27,6 +27,25 @@
       margin-top: -2px;
     }
   }
+
+  @media screen and (max-width: $screen-xs-max) {
+    text-align: left;
+    padding: 0px 10px;
+
+    & > span {
+      display: none;
+    }
+
+    .dropdown,
+    .dropdown ul,
+    #listings_selector {
+      width: 100%;
+    }
+
+    #listings_selector {
+      font-size: 16px;
+    }
+  }
 }
 
 .listing-list {
@@ -271,8 +290,22 @@
   }
 
   .listings-overview-list {
-    padding: 20px 0;
+    padding: 15px;
     height: 100%;
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    .listings-overview-top-bar {
+      padding: 0 10px;
+
+      & > .pull-right {
+        float: none !important;
+
+        a {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 
@@ -344,6 +377,19 @@
       & + a {
         margin-left: 15px;
       }
+    }
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    height: initial;
+
+    .listing-card-photo {
+      width: 90px;
+      height: 90px;
+    }
+
+    .listing-card-details {
+      width: calc(100% - 90px);
     }
   }
 }
@@ -461,6 +507,19 @@
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
       }
+    }
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    .listing-form-location-disclaimer {
+      padding: 5px;
+      height: auto;
+      line-height: initial;
+    }
+
+    .listing-form-location-selected-address {
+      padding: 10px;
+      padding-right: 0;
     }
   }
 }
