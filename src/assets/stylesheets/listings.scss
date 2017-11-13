@@ -173,6 +173,14 @@
     text-align: center;
   }
 
+  @media screen and (max-width: $screen-xs-max) {
+    .rating-input {
+      margin-top: 2px;
+      left: 0;
+      transform: none;
+    }
+  }
+
   @media screen and (min-width: $screen-lg-min) {
     width: calc(100% / 3);
   }
@@ -390,6 +398,22 @@
 
     .listing-card-details {
       width: calc(100% - 90px);
+
+      & > p > span{
+        font-size: 14px;
+      }
+    }
+
+    .listing-card-buttons {
+      a,
+      button {
+        padding: 3px;
+
+        img {
+          width: 32px;
+          height: 32px;
+        }
+      }
     }
   }
 }

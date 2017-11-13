@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import Button from '../miscellaneous/button';
 
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
+import editIcon from '../../assets/images/edit_icon.png';
+import deleteIcon from '../../assets/images/delete_icon.png';
+import promoteIcon from '../../assets/images/promote_icon.png';
 
 import LocalizationService from '../../shared/libraries/localization_service';
 
@@ -19,7 +22,7 @@ export default class ListingCard extends Component {
       <Button className="secondary-color white-text"
               onClick={ this.props.handlePromoteButtonClick }>
         <span className="hidden-xs"> { LocalizationService.formatMessage('listings.promote_listing') } </span>
-        <span className="visible-xs"> { LocalizationService.formatMessage('application.promote') } </span>
+        <img className="visible-xs" src={ promoteIcon } alt="promote_listing_icon" />
       </Button>
     )
   }
@@ -37,7 +40,8 @@ export default class ListingCard extends Component {
               }
             }}
             className="listing-card-edit-button btn secondary-color white-text">
-        <FormattedMessage id="application.edit" />
+        <span className="hidden-xs"><FormattedMessage id="application.edit" /></span>
+        <img className="visible-xs" src={ editIcon } alt="edit_listing_icon" />
       </Link>
     )
   }
@@ -51,7 +55,7 @@ export default class ListingCard extends Component {
       <Button className="listing-card-delete-button tomato white-text"
               onClick={ this.props.handleDeleteButtonClick }>
         <span className="hidden-xs"> { LocalizationService.formatMessage('listings.delete_listing') } </span>
-        <span className="visible-xs"> { LocalizationService.formatMessage('application.delete') } </span>
+        <img className="visible-xs" src={ deleteIcon } alt="delete_listing_icon" />
       </Button>
     )
   }

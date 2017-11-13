@@ -24,19 +24,21 @@ export default class UserProfileMenu extends Component {
         }
         else {
           link = (
-            <MenuItem key={`user_management_view_${key}`}
-                      eventKey={key}
-                      active={ false }
-                      onClick={ () => { } }>
               <NavLink exact to={ menuItem.path } activeClassName='secondary-text-color'>
                 <FormattedMessage id={'user_profile_menu.' + menuItem.key} />
               </NavLink>
-            </MenuItem>
           )
         }
 
         if (dropdown) {
-          return link;
+          return (
+            <MenuItem key={`user_management_view_${key}`}
+                      eventKey={key}
+                      active={ false }
+                      onClick={ () => { } }>
+              { link }
+            </MenuItem>
+          );
         }
 
         return (
