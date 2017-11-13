@@ -148,7 +148,7 @@ export default class UserReviews extends Component {
         <div className='user-profile'>
           <div className='col-xs-12'>
             <div className='col-xs-12 no-side-padding user-header'>
-              <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
               <div className='col-xs-12 col-sm-8 rating-information'>
                 <div className='col-xs-12 user-name'>
                   { this.props.user.name }

@@ -22,21 +22,26 @@ class BookingRow extends Component {
       let vehicleModel = listing.variant.model.name;
       let vehicleTitle = vehicleMake + ', ' + vehicleModel;
       let userName = this.props.currentUserRole === userRoles.renter ? listing.user.name : booking.renter.name;
-  
+
       let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
       let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
-  
+
       let backgroundImage = `url(${listing.gallery.length > 0 ? listing.gallery[0].images.medium_url : noImagesPlaceholder})`;
-  
+
       return (
         <div className="booking-row-vehicle-and-owner col-xs-12 no-side-padding">
-          <div className="booking-row-vehicle-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
-          <div className="booking-row-vehicle-and-owner-info pull-left">
+          <div className="booking-row-vehicle-image" style={ { backgroundImage: backgroundImage } }></div>
+          <div className="booking-row-vehicle-and-owner-info">
             <div className="fs-18">
               <b> { vehicleTitle } </b>
               <span> { ` ${listing.variant.year.year}` } </span>
             </div>
-            <div> { `${listing.address} • ${bookingStartDate} - ${bookingEndDate}` } </div>
+
+            <span> { listing.address } </span>
+            <span className="hidden-xs">&nbsp; &bull; &nbsp;</span>
+            <br className="visible-xs" />
+            <span> { `${bookingStartDate} - ${bookingEndDate}` } </span>
+
             <div> { userName } </div>
           </div>
         </div>
@@ -50,9 +55,9 @@ class BookingRow extends Component {
     if (booking) {
       let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
       let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
-  
+
       let backgroundImage = `url(${booking.renter.images.length > 0 ? booking.renter.images.medium_url: noImagesPlaceholder})`;
-  
+
       return (
         <div className="booking-row-renter-and-dates col-xs-12 no-side-padding">
           <div className="booking-row-renter-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
@@ -75,7 +80,7 @@ class BookingRow extends Component {
 
     if (!this.props.hideStatus) {
       status = (
-        <div className="booking-row-status">
+        <div className="booking-row-status text-right">
           <BookingStatus booking={ this.props.booking } />
         </div>
       )
@@ -98,7 +103,7 @@ class BookingRow extends Component {
             pathname: `bookings/${this.props.booking.id}`,
             state: { booking: this.props.booking } }}>
             { detailsView }
-  
+
             { this.renderBookingStatus() }
           </Link>
         </div>

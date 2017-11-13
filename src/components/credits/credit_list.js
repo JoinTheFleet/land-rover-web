@@ -18,7 +18,7 @@ export default class CreditList extends Component {
       page: 0,
       pages: 1,
       loading: false
-    }
+    };
 
     this.reloadData = this.reloadData.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -48,7 +48,7 @@ export default class CreditList extends Component {
           loading: false,
           credits: data.histories,
           pages: Math.ceil(data.count / LIMIT)
-        })
+        });
       }).catch(error => {
         this.setState({
           loading: false
@@ -73,7 +73,7 @@ export default class CreditList extends Component {
               {
                 this.state.credits.map((credit) => {
                   return (
-                    <CreditCard credit={credit} />
+                    <CreditCard key={ credit.id } credit={credit} />
                   )
                 })
               }

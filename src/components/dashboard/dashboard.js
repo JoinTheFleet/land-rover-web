@@ -14,7 +14,8 @@ export default class Dashboard extends Component {
     else {
       let image;
 
-      if (this.props.user.images && this.props.user.images.length > 0) {
+
+      if (this.props.user.images && Object.keys(this.props.user.images).length > 0) {
         image = this.props.user.images.large_url;
       }
 

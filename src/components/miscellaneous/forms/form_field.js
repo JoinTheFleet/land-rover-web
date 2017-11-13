@@ -12,6 +12,7 @@ import countryCodes from 'country-calling-codes';
 
 import LocalizationService from '../../../shared/libraries/localization_service';
 
+const DATEPICKER_DEFAULT_DAY_SIZE = 40;
 const COUNTRIES = countries.map(function(country) {
   return {
     value: country['alpha-2'],
@@ -88,6 +89,7 @@ export default class FormField extends Component {
         <DateRangePicker
           startDate={ this.props.startDate }
           endDate={ this.props.endDate }
+          daySize={ this.props.daySize || DATEPICKER_DEFAULT_DAY_SIZE }
           onDatesChange={ this.props.handleChange }
           focusedInput={ this.props.focusedInput || this.props.focused }
           onFocusChange={ this.props.handleFocusChange }

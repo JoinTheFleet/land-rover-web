@@ -47,7 +47,8 @@ export default class RenterConversationDetails extends Component {
               </div>
               <div className='col-xs-12'>
                 <span>{ listing.address }</span>
-                &nbsp; &bull; &nbsp;
+                <span className="hidden-xs">&nbsp; &bull; &nbsp;</span>
+                <br className="visible-xs" />
                 <DateRange start={ start } end={ end } />
               </div>
               <div className='col-xs-12'>
@@ -57,7 +58,7 @@ export default class RenterConversationDetails extends Component {
                 { message.text }
               </div>
             </div>
-            <div className='col-xs-2 col-lg-2 no-side-padding'>
+            <div className='text-right col-xs-2 col-lg-2 no-side-padding'>
               <BookingStatus booking={ booking } />
             </div>
           </div>
