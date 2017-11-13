@@ -69,14 +69,20 @@ export default class MessagingController extends Component {
     else {
       return (
         <div>
-          { listingsSelector }
-          <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
+          <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2'>
             <Switch>
               <Route path="/messages/:id" render={(props) => {
-                return <Conversation {...this.props} {...props} />;
+                return <Conversation {...this.props} {...props} />
               }} />
               <Route path="/messages" render={(props) => {
-                return <ConversationList listing={ this.state.listing } {...this.props} />;
+                return (
+                  <div className="col-xs-12 no-side-padding">
+                    <div className="row">
+                      { listingsSelector }
+                    </div>
+                    <ConversationList listing={ this.state.listing } {...this.props} />
+                  </div>
+                )
               }} />
             </Switch>
           </div>
