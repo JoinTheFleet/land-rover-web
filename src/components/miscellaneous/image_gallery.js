@@ -9,7 +9,6 @@ import Slider from 'react-slick';
 import Helpers from '../../miscellaneous/helpers';
 
 import closeIcon from '../../assets/images/close_cancel.png';
-import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 const DEFAULT_NUMBER_SLIDES_TO_SHOW = 1;
 const DEFAULT_NUMBER_SLIDES_TO_SCROLL = 1;

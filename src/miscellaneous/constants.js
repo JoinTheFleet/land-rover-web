@@ -18,7 +18,7 @@ export default class Constants {
     return {
       home: 'home',
       listings: 'listings',
-      profile: 'profile',
+      dashboard: 'dashboard',
       bookings: 'bookings',
       messages: 'messages',
       account: 'account',
@@ -26,8 +26,7 @@ export default class Constants {
       logout: 'logout',
       login: 'login',
       signup: 'signup',
-      calendar: 'calendar',
-      dashboard: 'dashboard'
+      calendar: 'calendar'
     };
   }
 

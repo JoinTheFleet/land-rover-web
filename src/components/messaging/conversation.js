@@ -24,7 +24,7 @@ export default class Conversation extends Component {
       refreshInterval: undefined,
       mostRecentMessageID: undefined,
       conversation: undefined
-    }
+    };
 
     this.refreshData = this.refreshData.bind(this);
     this.reloadData = this.reloadData.bind(this);
@@ -67,7 +67,7 @@ export default class Conversation extends Component {
                              if (mostRecentMessageID !== messageID) {
                                this.reloadData();
                              }
-                           })
+                           });
       }
     }, REFRESH_PERIOD);
     this.setState({ refreshInterval: interval })

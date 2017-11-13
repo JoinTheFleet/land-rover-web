@@ -1,4 +1,7 @@
 .user-dashboard {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
   .user-name {
     font-size: 30px;
     font-weight: bold;
@@ -35,7 +38,27 @@
     width: 100%;
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (max-width: $screen-xs-max) {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    .user-header {
+      .user-avatar {
+        display: block !important;
+        margin: auto;
+        float: none;
+      }
+    }
+
+    .dashboard-information-container {
+      .user-name {
+        text-align: center;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  @media screen and (min-width: $screen-sm-min) {
     .dashboard-information {
       padding-right: 0;
       width: calc(100% - 200px);

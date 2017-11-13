@@ -10,9 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
 import FeaturesList from './features_list';
-import Testimonials from './testimonials';
 import BlogList from './blog_list';
-import Loading from '../miscellaneous/loading'
 
 // Images
 import topBanner from '../../assets/images/beach-cars-bmw.jpg';
@@ -56,8 +54,8 @@ class Homescreen extends Component {
                           this.setState({
                             topSellers: response.data.data.listings,
                             topSellersLoading: false
-                          })
-                        })
+                          });
+                        });
     });
 
     let referralCode = this.props.match.params.referral_code;
@@ -115,8 +113,6 @@ class Homescreen extends Component {
         <ListingList listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
 
         <FeaturesList />
-
-        <Testimonials />
 
         <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 

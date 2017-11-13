@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Button, Dropdown } from 'react-bootstrap';
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
@@ -8,7 +8,10 @@ import momentPropTypes from 'react-moment-proptypes';
 import CloseOnEscape from 'react-close-on-escape';
 import { Link } from 'react-router-dom';
 
-class ListingPeriodFilter extends Component {
+import Helpers from '../../../miscellaneous/helpers';
+
+
+export default class ListingPeriodFilter extends Component {
   constructor(props) {
     super(props);
 
@@ -33,13 +36,13 @@ class ListingPeriodFilter extends Component {
         <Link to='/search'>
           <Button bsStyle='primary search'
                   onClick={ this.props.handleSearch }>
-            Search
+            <FormattedMessage id="application.search" />
           </Button>
         </Link>
       );
     }
     return (
-      <div id="header_search_form" className={ 'global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
+      <div id="header_search_form" className={ 'hidden-xs global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
         <div className='search_inputs'>
           <FormField type='text'
                      className=''
@@ -57,11 +60,24 @@ class ListingPeriodFilter extends Component {
                      startDate={ this.props.startDate }
                      endDate={ this.props.endDate }
                      minimumNights={ 0 }
+                     numberOfMonths={ Helpers.pageWidth() > 767 ? 2 : 1 }
                      focused={ this.state.focused }
                      handleFocusChange={ this.handleDateRangePickerFocusChange}/>
+
+          <div className='location-search-results visible-xs'>
+            <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
+              <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 } onToggle={ () => {} }>
+                  <Dropdown.Menu>
+                    {
+                      this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                    }
+                  </Dropdown.Menu>
+              </Dropdown>
+            </CloseOnEscape>
+          </div>
          </div>
         { button }
-        <div className='location-search-results'>
+        <div className='location-search-results hidden-xs'>
           <CloseOnEscape onEscape={ () => { this.props.hideSearchResults() }}>
             <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 } onToggle={ () => {} }>
                 <Dropdown.Menu>
@@ -76,8 +92,6 @@ class ListingPeriodFilter extends Component {
     )
   }
 }
-
-export default injectIntl(ListingPeriodFilter);
 
 ListingPeriodFilter.propTypes = {
   hideSearchResults: PropTypes.func.isRequired,

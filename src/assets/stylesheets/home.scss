@@ -87,6 +87,46 @@
   }
 }
 
+@media screen and (max-width: $screen-xs-max) {
+  #main_container {
+    .blog-list {
+      margin-top: 40px;
+    }
+  }
+
+  #homescreen_top_banner {
+    #homescreen_top_banner_content {
+      top: 10%;
+    }
+
+    #header_search_form {
+      display: block !important;
+    }
+  }
+
+  #renting_a_car_div,
+  #making_car_work_for_you_div {
+    div + div {
+      margin-top: 20px;
+    }
+  }
+
+  #making_car_work_for_you_div {
+    margin-top: 40px;
+  }
+
+  #featured_in_div {
+    & > span,
+    & > img {
+      & + img {
+        display: block;
+        margin: auto;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: $screen-md-max) {
   .homefeed-listings-list {
     height: auto !important;

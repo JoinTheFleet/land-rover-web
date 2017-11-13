@@ -7,6 +7,8 @@ import Button from '../miscellaneous/button';
 
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
+import LocalizationService from '../../shared/libraries/localization_service';
+
 export default class ListingCard extends Component {
   renderPromoteButton() {
     if (!this.props.showPromoteButton) {
@@ -16,7 +18,8 @@ export default class ListingCard extends Component {
     return (
       <Button className="secondary-color white-text"
               onClick={ this.props.handlePromoteButtonClick }>
-        <FormattedMessage id="listings.promote_listing" />
+        <span className="hidden-xs"> { LocalizationService.formatMessage('listings.promote_listing') } </span>
+        <span className="visible-xs"> { LocalizationService.formatMessage('application.promote') } </span>
       </Button>
     )
   }
@@ -47,7 +50,8 @@ export default class ListingCard extends Component {
     return (
       <Button className="listing-card-delete-button tomato white-text"
               onClick={ this.props.handleDeleteButtonClick }>
-        <FormattedMessage id="listings.delete_listing" />
+        <span className="hidden-xs"> { LocalizationService.formatMessage('listings.delete_listing') } </span>
+        <span className="visible-xs"> { LocalizationService.formatMessage('application.delete') } </span>
       </Button>
     )
   }
@@ -64,7 +68,7 @@ export default class ListingCard extends Component {
     }
 
     return (
-      <div className="listing-card">
+      <div className="listing-card col-xs-12 no-side-padding">
         <Link to={{
                 pathname: `/listings/${this.props.listing.id}`,
                 state: {

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Notification from '../notification';
 
 export default class MessageSentNotification extends Notification {

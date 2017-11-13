@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
-
-import LocalizationService from '../../shared/libraries/localization_service';
-import NotificationsService from '../../shared/services/notifications_service';
-
-import Pageable from '../miscellaneous/pageable';
 
 import NotificationBuilder from './notification_builder';
+import Pageable from '../miscellaneous/pageable';
+
+import NotificationsService from '../../shared/services/notifications_service';
 
 const LIMIT = 10;
 
@@ -19,7 +16,7 @@ export default class NotificationsList extends Component {
       page: 0,
       pages: 1,
       notifications: [],
-    }
+    };
 
     this.handlePageChange = this.handlePageChange.bind(this);
     this.reloadData = this.reloadData.bind(this);
@@ -32,7 +29,7 @@ export default class NotificationsList extends Component {
   handlePageChange(page) {
     this.setState({
       page: page - 1
-    }, this.reloadData)
+    }, this.reloadData);
   }
 
   reloadData() {
@@ -45,7 +42,7 @@ export default class NotificationsList extends Component {
       })
       .then(response => {
         let data = response.data.data;
-  
+
         this.setState({
           loading: false,
           notifications: data.notifications,
@@ -58,11 +55,13 @@ export default class NotificationsList extends Component {
   render() {
     return (
       <Pageable loading={ this.state.loading } currentPage={ this.state.page + 1 } totalPages={ this.state.pages } handlePageChange={ this.handlePageChange }>
-        {
-          this.state.notifications.map((notification) => {
-            return <NotificationBuilder key={ `notification_builder_${notification.id}` } notification={ notification } />;
-          })
-        }
+        <div className="notifications-list col-xs-12 no-side-padding">
+          {
+            this.state.notifications.map((notification) => {
+              return <NotificationBuilder key={ `notification_builder_${notification.id}` } notification={ notification } />;
+            })
+          }
+        </div>
       </Pageable>
     )
   }

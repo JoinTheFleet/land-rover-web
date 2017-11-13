@@ -146,3 +146,43 @@ input#location {
     }
   }
 }
+
+@media screen and (max-width: $screen-xs-max) {
+  #header_search_form {
+    display: block;
+    margin-top: 30px;
+
+    .search_inputs {
+      display: block;
+      margin: 10px;
+    }
+
+    #location {
+      width: calc(100% - 2px);
+      display: block;
+      border-top-right-radius: 5px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-left: 1px;
+    }
+
+    .DateRangePicker {
+      width: 100%;
+    }
+
+    .location-search-results {
+      .dropdown-menu {
+        max-width: 100%;
+      }
+    }
+
+    & > a {
+      width: 100%;
+
+      button {
+        width: calc(100% - 20px);
+        margin-left: 0;
+      }
+    }
+  }
+}

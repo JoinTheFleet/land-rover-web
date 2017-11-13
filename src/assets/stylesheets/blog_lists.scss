@@ -46,3 +46,17 @@
     }
   }
 }
+
+@media screen and (max-width: $screen-xs-max) {
+  .blog-list {
+    .blog-list-post {
+      float: none;
+      width: 100%;
+
+      & + .blog-list-post {
+        margin-top: 40px;
+        margin-left: 0;
+      }
+    }
+  }
+}

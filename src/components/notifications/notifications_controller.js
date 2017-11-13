@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import LocalizationService from '../../shared/libraries/localization_service';
-
 import NotificationsList from './notifications_list';
 
 export default class NotificationsController extends Component {

@@ -86,3 +86,9 @@ input {
 .DateInput_input__disabled {
   background: white !important;
 }
+
+@media screen and (max-width: $screen-xs-max) {
+  #main_container {
+    min-height: calc(100vh - 127px);
+  }
+}

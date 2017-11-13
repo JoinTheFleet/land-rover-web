@@ -1,9 +1,4 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
-
-import moment from 'moment';
-
-import LocalizationService from '../../shared/libraries/localization_service';
 
 import Notification from './notification';
 import MessageSentNotification from './notifications/message_sent_notification';
@@ -14,24 +9,19 @@ export default class NotificationBuilder extends Component {
   render() {
     switch(this.props.notification.notification_type) {
       case 'message_sent':
-        return <MessageSentNotification {...this.props} />
-        break;
+        return <MessageSentNotification {...this.props} />;
       case 'credit_awarded':
-        return <CreditAwardedNotification {...this.props} />
-        break;
+        return <CreditAwardedNotification {...this.props} />;
       case 'booking_request':
       case 'booking_check_in':
       case 'booking_confirmation':
       case 'booking_upcoming':
-        return <BookingNotification {...this.props} />
-      break;
+        return <BookingNotification {...this.props} />;
       case 'booking_owner_review_pending':
       case 'booking_renter_review_pending':
-        return <BookingReviewPendingNotification {...this.props} />
-        break;
+        return <BookingReviewPendingNotification {...this.props} />;
       default:
         return <Notification {...this.props} />;
     }
-    return null;
   }
 }

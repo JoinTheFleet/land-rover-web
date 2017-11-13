@@ -7,9 +7,6 @@ import ReactStars from 'react-stars';
 import ReviewList from '../reviews/review_list';
 import Loading from '../miscellaneous/loading';
 
-import Button from '../miscellaneous/button';
-
-import LocalizationService from '../../shared/libraries/localization_service';
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingReviewsService from '../../shared/services/listings/listing_reviews_service';
 import Errors from '../../miscellaneous/errors';

@@ -1,6 +1,5 @@
 .wishlist-card {
   border: 1px solid $smoke-grey;
-  margin-bottom: 20px;
 
   .title {
     font-size: 30px;
@@ -27,6 +26,14 @@
   .wishlist-container {
     width: calc(100% - 100px);
   }
+
+  & + .wishlist-card {
+    margin-top: 20px;
+  }
+}
+
+.wishlist-summary {
+  padding-top: 20px;
 }
 
 .wishlist-selector {

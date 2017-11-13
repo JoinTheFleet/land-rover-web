@@ -33,10 +33,10 @@ export default class RenterConversationDetails extends Component {
             }}>
         <div className='col-xs-12 conversation-detail' onClick={ this.props.onClick }>
           <div className='row'>
-            <div className='col-xs-2 col-lg-1'>
+            <div className='col-xs-3 col-sm-2 col-lg-1 no-side-padding'>
               <Avatar src={ imageURL } round />
             </div>
-            <div className='col-xs-8 col-lg-9'>
+            <div className='col-xs-7 col-sm-8 col-lg-9 renter-message-information'>
               <div className='col-xs-12'>
                 <span className='strong-font-weight conversation-header'>
                   { variant.make.display }, { variant.model.name }
@@ -53,11 +53,11 @@ export default class RenterConversationDetails extends Component {
               <div className='col-xs-12'>
                 { owner.name }
               </div>
-              <div className={ `col-xs-12 ${messageClassName}` }>
+              <div className={ `col-xs-12 renter-message-text ${messageClassName}` }>
                 { message.text }
               </div>
             </div>
-            <div className='col-xs-2 col-lg-2'>
+            <div className='col-xs-2 col-lg-2 no-side-padding'>
               <BookingStatus booking={ booking } />
             </div>
           </div>

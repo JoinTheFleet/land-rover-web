@@ -108,6 +108,20 @@ class Footer extends Component {
               </a>
             </div>
           </div>
+
+          <div className="visible-xs text-center">
+            <div id="footer_social_links_mobile">
+              <a href={ this.props.intl.formatMessage({id: 'company_info.facebook'}) } target="_blank">
+                <img src={facebookIcon} alt="fleet_facebook" />
+              </a>
+              <a href={ this.props.intl.formatMessage({id: 'company_info.twitter'}) } target="_blank">
+                <img src={twitterIcon} alt="fleet_twitter" />
+              </a>
+              <a href={ this.props.intl.formatMessage({id: 'company_info.instagram'}) } target="_blank">
+                <img src={instagramIcon} alt="fleet_instagram" />
+              </a>
+            </div>
+          </div>
         </div>
 
         <div id="footer_bottom_part">
