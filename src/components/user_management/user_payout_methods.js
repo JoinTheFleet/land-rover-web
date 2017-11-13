@@ -115,7 +115,7 @@ class UserPayoutMethods extends Component {
             <PayoutMethodForm iban={ this.state.iban } country={ this.state.country } handleIBANChange={ this.handleIBANChange } handleCountryChange={ this.handleCountryChange }/>
           </FormPanel>
 
-          <div className='col-xs-12'>
+          <div className='col-xs-12 no-side-padding'>
             <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.accountLoading }
                     disabled={ this.state.accountLoading }

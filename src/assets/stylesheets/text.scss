@@ -91,3 +91,18 @@
 .unread {
   font-weight: bold;
 }
+
+// Text aligns
+@media screen and (min-width: $screen-sm-min) {
+  .text-sm-left {
+    text-align: left;
+  }
+
+  .text-sm-center {
+    text-align: center;
+  }
+
+  .text-sm-right {
+    text-align: right;
+  }
+}

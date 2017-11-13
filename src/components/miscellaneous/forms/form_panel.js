@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 export default class FormPanel extends Component {
   render() {
     return (
-      <div className={ `${this.props.className} col-xs-12` }>
-        <div className='col-xs-12'>
+      <div className={ `${this.props.className} col-xs-12 no-side-padding` }>
+        <div className='col-xs-12 no-side-padding'>
           <div className="panel-form row">
             <div className='col-xs-12 form-header'>
               { this.props.title }

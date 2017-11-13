@@ -302,8 +302,8 @@ export default class FormField extends Component {
 }
 
 FormField.propTypes = {
-  id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  id: PropTypes.string,
   placeholder: PropTypes.string,
   focused: PropTypes.bool,
   focusedInput: PropTypes.string,

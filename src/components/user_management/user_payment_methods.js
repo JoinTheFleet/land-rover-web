@@ -87,7 +87,7 @@ class UserPaymentMethods extends Component {
             <PaymentMethodForm addPaymentSource={ this.addPaymentSource }/>
           </FormPanel>
 
-          <div className='col-xs-12'>
+          <div className='col-xs-12 no-side-padding'>
             <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.cardLoading }
                     disabled={ this.state.cardLoading }
