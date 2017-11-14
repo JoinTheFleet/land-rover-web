@@ -13,6 +13,8 @@ import Modal from '../miscellaneous/modal';
 import FormField from '../miscellaneous/forms/form_field';
 import Button from '../miscellaneous/button';
 
+import LocalizationService from '../../shared/libraries/localization_service';
+
 const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
 class Login extends Component {
 
@@ -153,6 +155,9 @@ class Login extends Component {
         }).catch(this.handleModalError);
       });
     }
+    else {
+      this.addError(LocalizationService.formatMessage('authentication.fill_in_all_fields'));
+    }
   }
 
   handleModalError(error) {
@@ -283,6 +288,7 @@ class Login extends Component {
 
            <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
              <FormattedMessage id="authentication.dont_have_account" />
+             <br className="visible-xs" />
              <FormattedMessage id="menu.signup" >
                { (message) => (
                  <span className="secondary-text-color subtitle-font-weight"
@@ -377,6 +383,7 @@ class Login extends Component {
 
         <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
           <FormattedMessage id="authentication.dont_have_account" />
+          <br className="visible-xs" />
           <FormattedMessage id="menu.signup" >
             { (message) => (
               <span className="secondary-text-color subtitle-font-weight"

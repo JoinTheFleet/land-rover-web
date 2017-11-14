@@ -101,6 +101,46 @@ class ListingView extends Component {
     this.props.handleChangeView(listingsViews.requestBooking, { currentQuotation: quotation, currentPricingQuote: pricingQuote });
   }
 
+  renderListingOwnerDetailsMobile() {
+    let listing = this.state.listing;
+
+    if (!listing) {
+      return '';
+    }
+
+    return (
+      <div className="listing-view-user-details-mobile visible-xs col-xs-12 no-side-padding">
+        <div className="pull-left"> 
+          <div> { LocalizationService.formatMessage('application.owner') } </div>
+
+          <div className="col-xs-12 no-side-padding">
+            <div>
+              <Link to={{
+                  pathname: `/users/${listing.user.id}`,
+                  state: {
+                    user: listing.user
+                  }
+                }} >
+                <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="listing-view-user-details-mobile-image pull-right">
+          <Link to={{
+                pathname: `/users/${listing.user.id}`,
+                state: {
+                  user: listing.user
+                }
+              }} >
+            <Avatar size={ 50 } src={ listing.user.images.original_url } alt="listing_user_avatar" round />
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   renderListingOverview() {
     let listing = this.state.listing;
 
@@ -130,7 +170,7 @@ class ListingView extends Component {
           </div>
         </div>
 
-        <div className="listing-view-user-details text-center pull-right">
+        <div className="listing-view-user-details hidden-xs text-center pull-right">
           <Link to={{
             pathname: `/users/${listing.user.id}`,
             state: {
@@ -390,6 +430,8 @@ class ListingView extends Component {
             { this.renderListingOverview() }
 
             { this.renderSpecs() }
+
+            { this.renderListingOwnerDetailsMobile() }
 
             { this.renderAmenities() }
 

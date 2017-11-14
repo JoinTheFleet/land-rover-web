@@ -43,7 +43,7 @@ export default class OwnerConversationDetails extends Component {
                 { message.text }
               </div>
             </div>
-            <div className='col-xs-2 col-lg-2 no-side-padding'>
+            <div className='text-right col-xs-2 col-lg-2 no-side-padding'>
               <BookingStatus booking={ booking } />
             </div>
           </div>

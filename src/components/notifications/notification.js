@@ -32,7 +32,7 @@ export default class Notification extends Component {
     return (
       <div className='row'>
         <div className='col-xs-12'>
-          <Avatar src={ this.imageURL() } size={ '80px' } name={ this.sender() } round className='col-xs-12 col-sm-4 platform-avatar no-side-padding' />
+          <Avatar src={ this.imageURL() } size={ 80 } name={ this.sender() } round className='col-xs-12 col-sm-4 platform-avatar no-side-padding' />
           <div className='col-xs-12 credit-container' >
             <span className={ `strong-font-weight pull-left credit-name no-side-padding col-xs-10 text-left ${className}` }>
               { this.sender() }

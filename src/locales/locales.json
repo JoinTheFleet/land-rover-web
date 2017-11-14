@@ -103,6 +103,7 @@
     "authentication.forgot_password": "Forgot password?",
     "authentication.register": "Register",
     "authentication.password_reset": "Send a Password Reset Email",
+    "authentication.fill_in_all_fields": "Please fill in all required fields",
 
     "authentication.sign_up_with_facebook": "Sign up with Facebook",
     "authentication.sign_up_with_email": "Sign up with Email",

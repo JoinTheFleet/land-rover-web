@@ -21,7 +21,7 @@ export default class UserManagement extends Component {
 
   render() {
     return (
-      <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
+      <div className='user-management col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 no-side-padding'>
         <div className='col-xs-12 col-sm-3'>
           <UserProfileMenu {...this.props} />
         </div>

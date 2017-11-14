@@ -478,7 +478,9 @@
   height: 94px;
 
   .booking-row-vehicle-and-owner {
+    display: table;
     height: 100%;
+    width: calc(100% - 80px);
 
     .booking-row-vehicle-image {
       width: 140px;
@@ -488,9 +490,13 @@
     }
 
     .booking-row-vehicle-and-owner-info {
-      width: calc(100% - 140px);
       height: 100%;
       padding: 7px 10px;
+    }
+
+    .booking-row-vehicle-image,
+    .booking-row-vehicle-and-owner-info {
+      display: table-cell;
     }
   }
 
@@ -523,7 +529,7 @@
   }
 
   @media screen and (max-width: $screen-xs-max) {
-    height: 80px;
+    height: initial;
 
     .booking-row-vehicle-and-owner {
       .booking-row-vehicle-image {
@@ -543,6 +549,7 @@
 
     .booking-row-status {
       right: 10px;
+      max-width: 80px;
     }
   }
 }

@@ -209,7 +209,7 @@ export default class ListingReviews extends Component {
     else {
       return (
         <div className='listing-reviews-div col-xs-12 no-side-padding'>
-          <div className='col-xs-12'>
+          <div className='col-xs-12 no-side-padding'>
             { this.renderReviewsHeader() }
 
             { this.renderReviews() }

@@ -87,6 +87,14 @@ input {
   background: white !important;
 }
 
+.s-alert-wrapper {
+  z-index: 9999;
+
+  & > div {
+    z-index: 9999;
+  }
+}
+
 @media screen and (max-width: $screen-xs-max) {
   #main_container {
     min-height: calc(100vh - 127px);

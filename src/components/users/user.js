@@ -51,11 +51,13 @@ export default class User extends Component {
       <div className='user-profile'>
         <div className='col-xs-12'>
           <div className='col-xs-12 no-side-padding user-header'>
-            <Avatar src={ this.props.user.images.large_url } size={ '200px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+            <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+
             <div className='col-xs-12 col-sm-8 rating-information'>
               <div className='col-xs-12 user-name'>
                 { this.props.user.name }
               </div>
+
               <div className='col-xs-12 user-rating'>
                 <RatingInput disabled={ true } length={ 5 } rating={ this.state.reviewSummary.rating } readonly>
                   <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews } { LocalizationService.formatMessage('reviews.reviews') }</span>
@@ -63,6 +65,7 @@ export default class User extends Component {
               </div>
             </div>
           </div>
+
           { reviews }
           { listings }
         </div>

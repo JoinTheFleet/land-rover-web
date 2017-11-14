@@ -16,7 +16,8 @@ export default class ListingPeriodFilter extends Component {
     super(props);
 
     this.state = {
-      focused: undefined
+      focused: undefined,
+      mobile: false
     };
 
     this.handleDateRangePickerFocusChange = this.handleDateRangePickerFocusChange.bind(this);
@@ -41,6 +42,7 @@ export default class ListingPeriodFilter extends Component {
         </Link>
       );
     }
+
     return (
       <div id="header_search_form" className={ 'hidden-xs global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
         <div className='search_inputs'>
@@ -56,6 +58,7 @@ export default class ListingPeriodFilter extends Component {
                      className=''
                      id='period'
                      placeholder='Dates'
+                     daySize={ Helpers.pageWidth() > 767 ? 40 : Math.round(((Helpers.pageWidth() - 66) / 7)) }
                      handleChange={ this.props.handleDatesChange }
                      startDate={ this.props.startDate }
                      endDate={ this.props.endDate }

@@ -19,10 +19,8 @@ export default class UserNotificationSettings extends Component {
       loading: false,
       initialLoad: true,
       notification_settings: {
-        push_notifications: {
-        },
-        sms_notifications: {
-        }
+        push_notifications: {},
+        sms_notifications: {}
       }
     };
 
@@ -59,8 +57,8 @@ export default class UserNotificationSettings extends Component {
       .then(response => {
         Alert.success(LocalizationService.formatMessage('notification_settings.updated'));
         this.setState({ loading: false });
-      })
-    })
+      });
+    });
   }
 
   componentWillMount() {

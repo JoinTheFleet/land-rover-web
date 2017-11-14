@@ -64,7 +64,10 @@ export default class ListingList extends Component {
       return listingItems;
     }
     else {
-      return (<div className="no-listings-to-display-div title-font-size tertiary-text-color"><FormattedMessage id="listings.no_listings_to_display" /></div>);
+      return (
+        <div className="no-listings-to-display-div title-font-size tertiary-text-color">
+          <FormattedMessage id="listings.no_listings_to_display" />
+        </div>);
     }
   }
 
@@ -79,7 +82,12 @@ export default class ListingList extends Component {
       )
     }
     else {
-      let listClass = 'items-list';
+      let listClass = '';
+
+      if (this.props.listings && this.props.listings.length > 0) {
+        listClass += 'items-list';
+      }
+
       if (!this.props.scrollable) {
         listClass += ' full-screen-list';
       }
@@ -88,8 +96,8 @@ export default class ListingList extends Component {
       let rightScroller = '';
 
       if (this.props.scrollable) {
-        let showLeftScroller = true;
-        let showRightScroller = true;
+        let showLeftScroller, showRightScroller;
+        showLeftScroller = showRightScroller = this.props.listings && this.props.listings.length > 0;
 
         if (this.refs.itemList) {
           let target = this.refs.itemList.targets[0];

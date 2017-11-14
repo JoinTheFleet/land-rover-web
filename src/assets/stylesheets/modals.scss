@@ -36,3 +36,11 @@
     }
   }
 }
+
+.confirmation-modal {
+  .modal-footer {
+    & > div + div {
+      margin-top: 10px;
+    }
+  }
+}

@@ -36,7 +36,7 @@ export default class UserListing extends Component {
         }} >
           <div className='row'>
             <div className='col-xs-12'>
-              <Avatar src={ imageSrc } size={ '100px' } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
+              <Avatar src={ imageSrc } size={ 100 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
               <div className='col-xs-12 listing-container'>
                 <div className='col-xs-12 col-sm-10 no-side-padding'>
                   <div className='col-xs-12 no-side-padding'>
