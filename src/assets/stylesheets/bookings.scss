@@ -356,6 +356,17 @@
       margin-bottom: 10px;
     }
 
+    @media screen and (max-width: $screen-xs-max) {
+      .booking-form-quotation-on-demand-details {
+        .booking-form-quotation-on-demand-times,
+        .booking-form-quotation-on-demand-locations {
+          div + div {
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+
     @media screen and (min-width: $screen-sm-min) {
       .booking-form-quotation-on-demand-details {
         .booking-form-quotation-on-demand-locations {

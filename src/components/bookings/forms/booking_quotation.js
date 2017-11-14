@@ -41,8 +41,6 @@ export default class BookingQuotation extends Component {
       return;
     }
 
-    console.log(location);
-
     this.props.handleOnDemandLocationChange(this.state.focusedLocationInput, location);
   }
 
@@ -194,7 +192,8 @@ export default class BookingQuotation extends Component {
                                     <FormField type="text"
                                                id={ `booking_form_quotation_${type}_location` }
                                                value={ this.props.onDemandAddresses[type] }
-                                               className={ `col-xs-12 ${this.state.focusedLocationInput === type ? 'focused' : '' }`}
+                                               disabled={ disableInputs }
+                                               className={ `col-xs-12 ${!disableInputs && this.state.focusedLocationInput === type ? 'focused' : '' }`}
                                                handleFocusChange={ () => this.setState({ focusedLocationInput: type }) } />
 
                                   </div>
