@@ -398,6 +398,8 @@
     "wish_lists.successfully_removed": "That listing was removed from your wishlist",
     "wish_lists.successfully_added": "That listing was added to your wishlist",
 
+    "alerts.alerts": "Alerts",
+
     "configurations.could_not_fetch": "Could not fetch configurations"
   }
 }
