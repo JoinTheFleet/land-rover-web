@@ -35,6 +35,10 @@ input {
   &:-ms-input-placeholder {
     color: $placeholder-text-color !important;
   }
+
+  &.focused {
+    border: solid 1px $secondary-color !important;
+  }
 }
 
 

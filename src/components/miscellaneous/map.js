@@ -137,10 +137,10 @@ class Map extends Component {
     }
 
     return (
-      <GoogleMap defaultZoom={ this.props.zoom || 10 }
+      <GoogleMap className="fleet-map"
+                 defaultZoom={ this.props.zoom || 10 }
                  center={ this.state.center }
                  options={ this.props.options }
-                 className="fleet-map"
                  onClick={ this.handleMapClick }
                  ref={ (map) => { this.map = map } }>
         { searchBox }
@@ -150,7 +150,8 @@ class Map extends Component {
             return (
               <Marker key={ 'map_marker_' + (index + 1) }
                       position={ marker.position }
-                      draggable={ this.props.draggableMarkers } />
+                      draggable={ this.props.draggableMarkers }
+                      onDragEnd={ this.props.handleMarkerDragEnd } />
             )
           })
         }
@@ -174,8 +175,11 @@ export default withScriptjs(withGoogleMap(injectIntl(Map)))
 
 Map.propTypes = {
   includeSearchBox: PropTypes.bool,
-  onPlacesChanged: PropTypes.func,
-  bounds: PropTypes.object,
   draggableMarkers: PropTypes.bool,
-  markers: PropTypes.array
+  onPlacesChanged: PropTypes.func,
+  handleMapClick: PropTypes.func,
+  handleMarkerDragEnd: PropTypes.func,
+  bounds: PropTypes.object,
+  markers: PropTypes.array,
+  circles: PropTypes.array
 }

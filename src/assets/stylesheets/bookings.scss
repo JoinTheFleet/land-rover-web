@@ -348,10 +348,21 @@
           padding-left: 12px;
           height: 46px;
         }
+      }
+    }
 
-        div + div {
-          input {
-            border-left: none;
+    .booking-form-quotation-map {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media screen and (min-width: $screen-sm-min) {
+      .booking-form-quotation-on-demand-details {
+        .booking-form-quotation-on-demand-locations {
+          div + div {
+            input {
+              border-left: none;
+            }
           }
         }
       }
@@ -694,10 +705,11 @@
   .booking-survey-action-buttons {
     border-top: solid 1px $smoke-grey-two;
     margin-top: 24px;
-    padding: 17px 0;
+    padding: 17px 15px;
 
     button {
       width: 364px;
+      max-width: 100%;
     }
   }
 }
