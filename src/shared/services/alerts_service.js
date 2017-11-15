@@ -6,23 +6,23 @@ class AlertsService extends Service {
   }
 
   static pending() {
-    return this.index({status: 'pending'})
+    return this.index({status: 'pending'});
   }
 
   static sending() {
-    return this.index({status: 'sending'})
+    return this.index({status: 'sending'});
   }
 
   static sent() {
-    return this.index({status: 'sent'})
+    return this.index({status: 'sent'});
   }
 
   static failed() {
-    return this.index({status: 'failed'})
+    return this.index({status: 'failed'});
   }
 
   static delivered() {
-    return this.index({status: 'delivered'})
+    return this.index({status: 'delivered'});
   }
 
   static get actions() {

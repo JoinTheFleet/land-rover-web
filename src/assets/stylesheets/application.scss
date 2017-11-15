@@ -1,8 +1,14 @@
 // External CSS files
+@import "~antd/dist/antd.css";
 @import "~slick-carousel/slick/slick";
 @import "~slick-carousel/slick/slick-theme";
-@import "~antd/dist/antd.css";
+@import "~react-chat-elements/dist/main.css";
 @import "~react-dates/lib/css/_datepicker.css";
+@import "~react-datez/dist/css/react-datez.css";
+@import "~react-select/dist/react-select.css";
+@import "~font-awesome/css/font-awesome.min.css";
+@import "~react-s-alert/dist/s-alert-default.css";
+@import "~react-s-alert/dist/s-alert-css-effects/stackslide.css";
 
 // Variables
 @import 'variables';
@@ -10,6 +16,7 @@
 @import 'text';
 
 // Miscellaneous Elements
+@import 'alerts';
 @import 'blog_lists';
 @import 'buttons';
 @import 'checkbox';

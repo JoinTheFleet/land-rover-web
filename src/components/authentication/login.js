@@ -27,16 +27,16 @@ class Login extends Component {
     };
 
     this.addError = this.addError.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setPassword = this.setPassword.bind(this);
+    this.setLastName = this.setLastName.bind(this);
+    this.setFirstName = this.setFirstName.bind(this);
+    this.registerUser = this.registerUser.bind(this);
     this.handleModalError = this.handleModalError.bind(this);
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
     this.handleForgottenPasswordSubmit = this.handleForgottenPasswordSubmit.bind(this);
-    this.setEmail = this.setEmail.bind(this);
-    this.setPassword = this.setPassword.bind(this);
-    this.setFirstName = this.setFirstName.bind(this);
-    this.setLastName = this.setLastName.bind(this);
-    this.registerUser = this.registerUser.bind(this);
   }
 
   componentDidMount() {
