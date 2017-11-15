@@ -169,7 +169,7 @@ class BookingSurvey extends Component {
       <div className="booking-survey-issues-list col-xs-12 no-side-padding">
         {
           this.state.survey.issues.map(issue => {
-            return (<BookingSurveyIssue issue={ issue } handleDeleteIssue={ this.deleteIssue } />)
+            return (<BookingSurveyIssue key={ issue.id } issue={ issue } handleDeleteIssue={ this.deleteIssue } />)
           })
         }
       </div>

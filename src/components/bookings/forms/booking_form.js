@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Dropdown } from 'react-bootstrap';
-import CloseOnEscape from 'react-close-on-escape';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Alert from 'react-s-alert';
 
+import BookingQuotation from './booking_quotation';
 import BookingStatus from '../booking_status';
 import BookingSurvey from './booking_survey';
 import BookingFormCheckIn from './booking_form_check_in';
-import LocationMenuItem from '../../listings/filters/location_menu_item';
 import FormField from '../../miscellaneous/forms/form_field';
 import Loading from '../../miscellaneous/loading';
 import Toggleable from '../../miscellaneous/toggleable';
@@ -22,7 +20,6 @@ import ListingsService from '../../../shared/services/listings/listings_service'
 import BookingsService from '../../../shared/services/bookings/bookings_service';
 import PaymentMethodsService from '../../../shared/services/payment_methods_service';
 import GeolocationService from '../../../shared/services/geolocation_service';
-import LocationsService from '../../../shared/services/locations_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
 import S3Uploader from '../../../shared/external/s3_uploader';
 
@@ -57,11 +54,9 @@ class BookingForm extends Component {
       quotation: {},
       pricingQuote: {},
       paymentMethod: {},
-      focusedInput: '',
       focusedLocationInput: '',
       searchLocations: [],
       errors: [],
-      numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
       loading: false,
       bookingCompleted: false,
       showBookingSurvey: false,
@@ -72,6 +67,7 @@ class BookingForm extends Component {
     this.fetchBooking = this.fetchBooking.bind(this);
     this.fetchQuotation = this.fetchQuotation.bind(this);
     this.fetchPaymentMethods = this.fetchPaymentMethods.bind(this);
+    this.fetchBookingOnDemandLocations = this.fetchBookingOnDemandLocations.bind(this);
     this.fetchLocationFromListingPosition = this.fetchLocationFromListingPosition.bind(this);
 
     this.addError = this.addError.bind(this);
@@ -82,21 +78,17 @@ class BookingForm extends Component {
     this.setPickUpAndDropOffLocation = this.setPickUpAndDropOffLocation.bind(this);
 
     this.handleDatesChange = this.handleDatesChange.bind(this);
-    this.handleWindowResize = this.handleWindowResize.bind(this);
     this.handleCancelBooking = this.handleCancelBooking.bind(this);
     this.handleBookingChange = this.handleBookingChange.bind(this);
     this.handleConfirmCheckIn = this.handleConfirmCheckIn.bind(this);
     this.handleOnDemandSelect = this.handleOnDemandSelect.bind(this);
     this.handleConfirmCheckOut = this.handleConfirmCheckOut.bind(this);
     this.handleOnDemandLocationChange = this.handleOnDemandLocationChange.bind(this);
-    this.handleOnDemandLocationSelect = this.handleOnDemandLocationSelect.bind(this);
     this.handleInsuranceCriteriaChange = this.handleInsuranceCriteriaChange.bind(this);
     this.handlePickUpDropOffTimeSelect = this.handlePickUpDropOffTimeSelect.bind(this);
-
-    document.addEventListener('resize', this.handleWindowResize);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let location = this.props.location;
 
     if (location && location.state && location.state.booking) {
@@ -104,11 +96,15 @@ class BookingForm extends Component {
         booking: location.state.booking,
         listing: location.state.booking.listing,
         pricingQuote: location.state.booking.quotation
-      }, this.fetchBookingOnDemandLocations);
+      }, () => {
+        this.fetchPaymentMethods(this.fetchBookingOnDemandLocations);
+      });
     }
     else {
       if (this.props.match.params.id) {
-        this.fetchBooking(true);
+        this.fetchPaymentMethods(() => {
+          this.fetchBooking(true);
+        });
       }
       else if (this.props.match.params.listing_id) {
         this.setState({ loading: true }, () => {
@@ -153,20 +149,19 @@ class BookingForm extends Component {
                              }
 
                              this.setState({
-                               loading: false,
                                booking: booking,
                                quotation: quotation,
                                pricingQuote: pricingQuote
+                             }, () => {
+                                this.fetchPaymentMethods(this.fetchLocationFromListingPosition, this.fetchLocationFromListingPosition);
                              });
                            });
-                         });
+                         })
+                         .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
         });
       }
     }
-  }
 
-  componentDidMount() {
-    this.fetchPaymentMethods(this.fetchLocationFromListingPosition, this.fetchLocationFromListingPosition);
   }
 
   fetchBooking(fetchLocations) {
@@ -383,17 +378,6 @@ class BookingForm extends Component {
     });
   }
 
-  handleWindowResize() {
-    let width = Helpers.pageWidth();
-
-    if (width < 768 && this.state.numberOfMonthsToShow === 2) {
-      this.setState({ numberOfMonthsToShow: 1 });
-    }
-    else if(width >= 768 && this.state.numberOfMonthsToShow === 1 ) {
-      this.setState({ numberOfMonthsToShow: 2 });
-    }
-  }
-
   handleDatesChange(dates) {
     let quotation = this.state.quotation;
 
@@ -423,51 +407,50 @@ class BookingForm extends Component {
     this.setState({ quotation: quotation }, this.fetchQuotation);
   }
 
-  handleOnDemandLocationChange(type, value) {
-    let onDemandAddresses = this.state.onDemandAddresses;
-    onDemandAddresses[type] = value;
-
-    this.setState({
-      onDemandAddresses: onDemandAddresses
-    }, () => {
-      let locationTimeout = this.state.locationTimeout;
-
-      if (locationTimeout) {
-        clearTimeout(locationTimeout);
-      }
-
-      if (value.length > 0) {
-        locationTimeout = setTimeout(() => {
-          LocationsService.create(null, null, value)
-                          .then(response => {
-                            this.setState({
-                              searchLocations: response.data.data.locations
-                            });
-                          })
-                          .catch(error => {
-                            this.addError(Errors.extractErrorMessage(error));
-                          });
-        }, 1000);
-      }
-
-      this.setState({ locationTimeout: locationTimeout });
-    });
-  }
-
-  handleOnDemandLocationSelect(type, location) {
+  handleOnDemandLocationChange(type, location) {
     let onDemandAddresses = this.state.onDemandAddresses;
     let quotation = this.state.quotation;
-    let address = location.address;
 
-    onDemandAddresses[type] = address;
+    if (Array.isArray(location)) {
+      const address = location[0].formatted_address;
 
-    quotation.on_demand_location[type] = {
-      latitude: location.latitude,
-      longitude: location.longitude,
-      address: address
-    };
+      onDemandAddresses[type] = address;
 
-    this.setState({ quotation: quotation, onDemandAddresses: onDemandAddresses, focusedLocationInput: '', searchLocations: [] }, this.fetchQuotation);
+      quotation.on_demand_location[type] = {
+        latitude: location[0].geometry.location.lat(),
+        longitude: location[0].geometry.location.lng(),
+        address: address
+      };
+
+      this.setState({
+        onDemandAddresses: onDemandAddresses,
+        quotation: quotation
+      });
+    }
+    else {
+      this.setState({
+        loading: true
+      }, () => {
+        let latLng = location.latLng || location;
+        const position = { latitude: latLng.lat(), longitude: latLng.lng() };
+
+        GeolocationService.getLocationFromPosition(position)
+                          .then(results => {
+                            const address = results[0].formatted_address;
+
+                            onDemandAddresses[type] = address;
+
+                            quotation.on_demand_location[type] = {
+                              latitude: latLng.lat(),
+                              longitude: latLng.lng(),
+                              address: address
+                            };
+
+                            this.setState({ loading: false, quotation: quotation, onDemandAddresses: onDemandAddresses });
+                          })
+                          .catch(error => this.addError(error));
+                        });
+    }
   }
 
   handleInsuranceCriteriaChange(criteriaId, value) {
@@ -651,168 +634,6 @@ class BookingForm extends Component {
     }
 
     return renterDetailsDiv;
-  }
-
-  renderQuotationDetails() {
-    let pricingQuote = this.state.pricingQuote;
-    let disableInputs = this.state.booking.id;
-
-    if (Object.keys(pricingQuote).length === 0) {
-      return '';
-    }
-
-    let priceItems = pricingQuote.price_items;
-    let onDemandFeeIndex = priceItems.findIndex(priceItem => priceItem.type === 'ON_DEMAND');
-
-    if (onDemandFeeIndex > -1 && onDemandFeeIndex < priceItems.length - 2) {
-      let onDemandFee = JSON.parse(JSON.stringify(priceItems[onDemandFeeIndex]));
-
-      priceItems.splice(onDemandFeeIndex, 1);
-      priceItems.splice(priceItems.length - 1, 0, onDemandFee);
-    }
-
-    return (
-      <div className="booking-form-quotation-details booking-form-box col-xs-12 no-side-padding">
-        <div className="booking-form-quotation-datepicker-title col-xs-12 no-side-padding">
-          <div className="tertiary-text-color col-xs-6 subtitle-font-weight no-side-padding"> { LocalizationService.formatMessage('bookings.check_in_date') } </div>
-          <div className="tertiary-text-color col-xs-6 subtitle-font-weight no-side-padding"> { LocalizationService.formatMessage('bookings.check_out_date') } </div>
-        </div>
-
-        <FormField type="daterange"
-                   id="bookings_form_quotation_dates"
-                   startDate={ moment.unix(pricingQuote.check_in) }
-                   endDate={ moment.unix(pricingQuote.check_out) }
-                   focusedInput={ this.state.focusedInput }
-                   disabled={ disableInputs }
-                   showClearDates={ false }
-                   minimumNights={ 0 }
-                   handleFocusChange={ (focusedInput) => { this.setState({ focusedInput }) } }
-                   handleChange={ this.handleDatesChange }
-                   numberOfMonths={ this.state.numberOfMonthsToShow } />
-
-        <div className="col-xs-12 no-side-padding">
-            {
-              priceItems.map((priceItem, index) => {
-                let className = 'booking-form-quotation-details-rate col-xs-12 no-side-padding text-capitalize tertiary-text-color fs-16';
-                className += priceItem.type === 'TOTAL' ? ' subtitle-font-weight' : ' text-secondary-font-weight';
-
-                let onDemandDiv = '';
-                let onDemandDetailsDiv = '';
-                let isOnDemand = this.state.quotation.on_demand || this.state.booking.on_demand;
-
-                if (this.state.listing.on_demand) {
-                  if ((isOnDemand && priceItem.type === 'ON_DEMAND') || (!isOnDemand && priceItem.type === 'TOTAL')) {
-                    let checkboxId = 'booking_form_quotation_on_demand_checkbox';
-
-                    onDemandDiv = (
-                      <div className="booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding">
-                        <div className="pull-left"> { LocalizationService.formatMessage('listings.on_demand_collection') } </div>
-                        <div className="pull-right">
-                          <div className="booking-form-quotation-on-demand-checkbox fleet-checkbox">
-                            <input type="checkbox"
-                                   id={ checkboxId }
-                                   checked={ isOnDemand }
-                                   disabled={ disableInputs }
-                                   onChange={ event => this.handleOnDemandSelect(event.target.checked) } />
-                            <label htmlFor={ checkboxId }> { ' ' } </label>
-                          </div>
-                        </div>
-                      </div>
-                    )
-
-                    if (isOnDemand) {
-                      let on_demand_location = this.state.quotation.on_demand_location || this.state.booking.on_demand_details;
-                      let onDemandDetailsValues = {
-                        pick_up_time: moment().startOf('day'),
-                        drop_off_time: moment().startOf('day'),
-                        pick_up_location: { latitude: 0, longitude: 0, address: '' },
-                        drop_off_location: { latitude: 0, longitude: 0, address: '' }
-                      }
-
-                      if (on_demand_location.pick_up_time && on_demand_location.drop_off_time) {
-                        onDemandDetailsValues.pick_up_time.add(on_demand_location.pick_up_time, 'seconds');
-                        onDemandDetailsValues.drop_off_time.add(on_demand_location.drop_off_time, 'seconds');
-                      }
-
-                      if (on_demand_location.pick_up_location && on_demand_location.drop_off_location) {
-                        onDemandDetailsValues.pick_up_location = on_demand_location.pick_up_location;
-                        onDemandDetailsValues.drop_off_location = on_demand_location.drop_off_location;
-                      }
-
-                      onDemandDetailsDiv = (
-                        <div className="booking-form-quotation-on-demand-details fs-14 text-secondary-font-weight col-xs-12 no-side-padding">
-                          <div className="booking-form-quotation-on-demand-times col-xs-12 no-side-padding">
-                            {
-                              ['pick_up_time', 'drop_off_time'].map(type => {
-                                return (
-                                  <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
-                                    <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
-                                    <FormField type="timepicker"
-                                               id={ `booking_form_quotation_${type}` }
-                                               value={ onDemandDetailsValues[type] }
-                                               disabled={ disableInputs }
-                                               handleChange={ (time, timeString) => this.handlePickUpDropOffTimeSelect(type, time) } />
-                                  </div>
-                                )
-                              })
-                            }
-                          </div>
-
-                          <div className="booking-form-quotation-on-demand-locations col-xs-12 no-side-padding">
-                            {
-                              ['pick_up_location', 'drop_off_location'].map(type => {
-                                return (
-                                  <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
-                                    <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
-
-                                    <input type="hidden" id={`booking_form_quotation_${type}_latitude`} value={ onDemandDetailsValues[type].latitude } />
-                                    <input type="hidden" id={`booking_form_quotation_${type}_longitude`} value={ onDemandDetailsValues[type].longitude } />
-
-                                    <FormField type="text"
-                                               id={ `booking_form_quotation_${type}_location` }
-                                               value={ this.state.onDemandAddresses[type] }
-                                               disabled={ disableInputs }
-                                               handleChange={ (event) => { this.handleOnDemandLocationChange(type, event.target.value) } }
-                                               handleFocusChange={ () => this.setState({ focusedLocationInput: type, searchLocations: [] }) } />
-
-                                    <div className='location-search-results col-xs-12 no-side-padding'>
-                                      <CloseOnEscape onEscape={ () => { this.hideLocationSearchResults(type) }}>
-                                        <Dropdown id={ `location_search_results_dropdown_${type}` } open={ this.state.focusedLocationInput === type && this.state.searchLocations.length > 0 }>
-                                            <Dropdown.Menu>
-                                              {
-                                                this.state.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ (location) => this.handleOnDemandLocationSelect(type, location) }/> })
-                                              }
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                      </CloseOnEscape>
-                                    </div>
-                                  </div>
-                                )
-                              })
-                            }
-                          </div>
-                        </div>
-                      )
-                    }
-                  }
-                }
-
-                return (
-                  <div key={ 'booking_details_rate_' + index } className={ className }>
-                    { onDemandDiv }
-                    { onDemandDetailsDiv }
-
-                    <div className="col-xs-12 no-side-padding">
-                      <div className="pull-left"> { priceItem.title } </div>
-                      <div className="pull-right"> { priceItem.total.currency_symbol + priceItem.total.amount.toFixed(2) } </div>
-                    </div>
-                  </div>
-                )
-              })
-            }
-        </div>
-      </div>
-    )
   }
 
   renderInsuranceCriteria() {
@@ -1118,7 +939,15 @@ class BookingForm extends Component {
 
           { this.renderRenterDetails() }
 
-          { this.renderQuotationDetails() }
+          <BookingQuotation booking={ this.state.booking }
+                            pricingQuote={ this.state.pricingQuote }
+                            quotation={ this.state.quotation }
+                            listing={ this.state.listing }
+                            onDemandAddresses={ this.state.onDemandAddresses }
+                            handleDatesChange={ this.handleDatesChange }
+                            handleOnDemandSelect={ this.handleOnDemandSelect }
+                            handlePickUpDropOffTimeSelect={ this.handlePickUpDropOffTimeSelect }
+                            handleOnDemandLocationChange={ this.handleOnDemandLocationChange } />
 
           { this.renderInsuranceCriteria() }
 
@@ -1140,7 +969,7 @@ class BookingForm extends Component {
 }
 
 BookingForm.propTypes = {
-  listing: PropTypes.object.isRequired,
+  listing: PropTypes.object,
   pricingQuote: PropTypes.object,
   currentUserRole: PropTypes.string
 };
