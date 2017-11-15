@@ -152,9 +152,6 @@ class Homescreen extends Component {
                 <FormattedMessage id="homescreen.top_banner_title" />
               </span>
               <br/>
-              <span className="light-font-weight fs-20 ls-dot-five">
-                <FormattedMessage id="homescreen.top_banner_slogan" />
-              </span>
             </p>
             <LocationPeriodFilter {...this.props} />
           </div>
