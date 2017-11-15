@@ -4,14 +4,15 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
 import 'react-dates/initialize';
 
-import branch from 'branch-sdk';
-import EventEmitter from 'eventemitter3';
-
 import Alert from 'react-s-alert';
+import branch from 'branch-sdk';
+import Cookies from 'universal-cookie';
+import EventEmitter from 'eventemitter3';
 
 import Constants from './miscellaneous/constants';
 import Helpers from './miscellaneous/helpers';
 
+import Alerts from './components/alerts/alerts';
 import Header from './components/layout/header';
 import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
@@ -26,19 +27,18 @@ import MessagingController from './components/messaging/messaging_controller';
 import UserController from './components/users/user_controller';
 import DashboardController from './components/dashboard/dashboard_controller';
 import NotificationsController from './components/notifications/notifications_controller';
+import WishListModal from './components/wishlists/wish_list_modal';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
 import AuthenticationService from './shared/services/authentication_service';
 import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
-import client from './shared/libraries/client';
-import Cookies from 'universal-cookie';
+import WishListsService from './shared/services/wish_lists_service';
 
+import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
 
-import WishListModal from './components/wishlists/wish_list_modal';
-import WishListsService from './shared/services/wish_lists_service';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -64,12 +64,13 @@ export default class App extends Component {
       configuration: undefined,
       currentUserRole: cookies.get('currentUserRole') || userRoles.renter,
       roleChanged: false,
+      showAlerts: false,
       listings: [],
-      modalName: undefined,
       searchLocations: [],
       locationName: '',
       currentSearch: false,
       customSearch: false,
+      modalName: undefined,
       startDate: undefined,
       endDate: undefined,
       location: {
@@ -93,25 +94,25 @@ export default class App extends Component {
       client.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
     }
 
+    this.setupEvents = this.setupEvents.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.toggleWishListModal = this.toggleWishListModal.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
     this.performSearch = this.performSearch.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
+    this.handleReferral = this.handleReferral.bind(this);
     this.locationSearch = this.locationSearch.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.handleSortToggle = this.handleSortToggle.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.hideSearchResults = this.hideSearchResults.bind(this);
     this.handleFilterToggle = this.handleFilterToggle.bind(this);
+    this.toggleWishListModal = this.toggleWishListModal.bind(this);
     this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
-    this.handleReferral = this.handleReferral.bind(this);
-    this.setupEvents = this.setupEvents.bind(this);
     this.addedWishListToListing = this.addedWishListToListing.bind(this);
     this.removeWishListFromListing = this.removeWishListFromListing.bind(this);
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
@@ -166,9 +167,7 @@ export default class App extends Component {
                         this.eventEmitter.emit('REMOVED_LISTING_WISHLIST', options);
                         Alert.success(LocalizationService.formatMessage('wish_lists.successfully_removed'));
                       })
-                      .catch(error => {
-                        Alert.error(error.response.data.message);
-                      });
+                      .catch(error => { Alert.error(error.response.data.message); });
     }
   }
 
@@ -219,13 +218,14 @@ export default class App extends Component {
 
   setAccessToken(accessToken) {
     cookies.remove('accessToken');
+
     if (accessToken.length > 0) {
       let newState = {
         visitedDashboard: this.state.accessToken,
         accessToken: accessToken,
+        showAlerts: true,
         modalName: undefined
       };
-
 
       cookies.set('accessToken', accessToken, {
         path: '/'
@@ -283,24 +283,16 @@ export default class App extends Component {
   toggleWishListModal(listing) {
     if (listing) {
       let wishLists = listing.wish_lists;
+
       if (wishLists && wishLists.length > 0) {
-        this.removeWishListFromListing({
-          listingID: listing.id,
-          wishListID: listing.wish_lists[0]
-        });
+        this.removeWishListFromListing({ listingID: listing.id, wishListID: listing.wish_lists[0] });
       }
       else {
-        this.setState({
-          wishListModalOpen: true,
-          wishListListing: listing
-        });
+        this.setState({ wishListModalOpen: true, wishListListing: listing });
       }
     }
     else {
-      this.setState({
-        wishListModalOpen: false,
-        wishListListing: undefined
-      });
+      this.setState({ wishListModalOpen: false, wishListListing: undefined });
     }
   }
 
@@ -499,6 +491,7 @@ export default class App extends Component {
       return <Redirect to="/dashboard" />;
     }
 
+    const alerts = this.state.showAlerts ? (<Alerts />) : '';
     let mainRouter = (<Redirect to="/" />);
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -641,6 +634,8 @@ export default class App extends Component {
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer />
+
+            { alerts }
           </div>
         )
       }} />
