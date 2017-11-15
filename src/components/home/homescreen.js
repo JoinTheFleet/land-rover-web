@@ -9,7 +9,6 @@ import {
 
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
-import FeaturesList from './features_list';
 import BlogList from './blog_list';
 
 // Images
@@ -22,6 +21,9 @@ import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
 import irishtimesLogo from '../../assets/images/irish-times-grey.png';
 
 import TopSellersService from '../../shared/services/listings/top_sellers_service';
+import NearbyListingsService from '../../shared/services/listings/nearby_listings_service';
+
+import GeolocationService from '../../shared/services/geolocation_service';
 
 import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import momentPropTypes from 'react-moment-proptypes';
@@ -37,17 +39,19 @@ class Homescreen extends Component {
     this.state = {
       blog: {
         posts: [],
-        authors: {},
-        topSellers: [],
-        topSellersLoading: false
+        authors: {}
       },
+      topSellers: [],
+      nearbyListings: [],
+      topSellersLoading: false,
+      nearbyListingsLoading: false,
       loadingPosts: false
     };
   }
 
   componentWillMount() {
     this.setState({
-      topSellersLoading: true
+      topSellersLoading: true,
     }, () => {
       TopSellersService.index()
                         .then(response => {
@@ -56,6 +60,36 @@ class Homescreen extends Component {
                             topSellersLoading: false
                           });
                         });
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+
+                          this.setState({
+                            nearbyListingsLoading: true
+                            }, () => {
+                            NearbyListingsService.index({
+                              latitude: position.coords.latitude,
+                              longitude: position.coords.longitude
+                            }).then(response => {
+                              this.setState({
+                                nearbyListings: response.data.data.listings,
+                                nearbyListingsLoading: false
+                              })
+                            })
+                          })
+                        })
+                        .catch((error) => {
+                          this.setState({
+                            nearbyListingsLoading: true
+                          }, () => {
+                            NearbyListingsService.index()
+                                                 .then(response => {
+                                                   this.setState({
+                                                     nearbyListings: response.data.data.listings,
+                                                     nearbyListingsLoading: false
+                                                   })
+                                                 })
+                          })
+                        })
     });
 
     let referralCode = this.props.match.params.referral_code;
@@ -82,6 +116,32 @@ class Homescreen extends Component {
   }
 
   render() {
+    let topSellers = (
+      <div>
+        <p className="top-seller-title strong-font-weight title-font-size">
+          <FormattedMessage id="listings.top_seller" />
+        </p>
+        <ListingList listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
+      </div>
+    );
+
+    let nearbyListings = (
+      <div>
+        <p className="top-seller-title strong-font-weight title-font-size">
+          <FormattedMessage id="listings.top_seller" />
+        </p>
+        <ListingList listings={ this.state.nearbyListings } scrollable={ true } loading={ this.state.nearbyListingsLoading } />
+      </div>
+    );
+
+    if (!this.state.topSellersLoading && this.state.topSellers.length === 0) {
+      topSellers = '';
+    }
+
+    if (!this.state.nearbyListingsLoading && this.state.nearbyListings.length === 0) {
+      nearbyListings = '';
+    }
+
     return (
       <div>
         <div id="homescreen_top_banner">
@@ -107,12 +167,8 @@ class Homescreen extends Component {
           <img src={axaLogo} alt="homescreen_axa_banner" />
         </div>
 
-        <p className="top-seller-title strong-font-weight title-font-size">
-          <FormattedMessage id="listings.top_seller" />
-        </p>
-        <ListingList listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
-
-        <FeaturesList />
+        { topSellers }
+        { nearbyListings }
 
         <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
