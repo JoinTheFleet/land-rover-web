@@ -82,9 +82,37 @@ input {
   }
 }
 
-.DateRangePickerInput__disabled,
-.DateInput_input__disabled {
-  background: white !important;
+.DateRangePicker {
+  line-height: 20px;
+
+  .DateRangePickerInput {
+    width: 100%;
+    padding-right: 3px;
+  }
+
+  .DateRangePickerInput_clearDates {
+    &:active,
+    &:hover {
+      background-color: white;
+    }
+
+    &.DateRangePickerInput_clearDates__hide {
+      display: none;
+    }
+  }
+
+  .DateRangePickerInput_clearDates_svg {
+    fill: $secondary-color;
+  }
+
+  .DateInput_input {
+    font-size: 15px;
+  }
+
+  .DateRangePickerInput__disabled,
+  .DateInput_input__disabled {
+    background: white !important;
+  }
 }
 
 .s-alert-wrapper {
@@ -98,5 +126,19 @@ input {
 @media screen and (max-width: $screen-xs-max) {
   #main_container {
     min-height: calc(100vh - 127px);
+  }
+
+  .DateRangePicker {
+    .DateRangePickerInput {
+      border-bottom-left-radius: 5px;
+
+      .DateInput {
+        width: calc((100% - 24px) / 2);
+      }
+    }
+
+    .DateRangePickerInput_clearDates {
+      display: none;
+    }
   }
 }

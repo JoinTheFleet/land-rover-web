@@ -90,7 +90,7 @@ export default class ConversationList extends Component {
   render() {
     return (
       <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage + 1 } handlePageChange={ this.handlePageChange } loading={ this.state.loading }>
-        <div className='conversation-list col-xs-12'>
+        <div className='conversation-list col-xs-12 no-side-padding'>
           {
             this.state.conversations.map((conversation) => {
               if (this.props.role === 'renter') {

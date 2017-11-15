@@ -288,8 +288,6 @@ export default class ListingsFilters extends Component {
   }
 
   render() {
-    console.log('calling filters render');
-
     return (
       <Toggleable open={ this.state.open } >
         { this.renderListingsFilters() }

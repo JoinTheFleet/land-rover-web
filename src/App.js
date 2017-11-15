@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import './App.css';
 import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-import 'react-datez/dist/css/react-datez.css';
-import 'react-select/dist/react-select.css';
-import 'font-awesome/css/font-awesome.min.css';
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/stackslide.css';
-import 'react-chat-elements/dist/main.css';
 
 import branch from 'branch-sdk';
 import EventEmitter from 'eventemitter3';
@@ -16,6 +10,7 @@ import EventEmitter from 'eventemitter3';
 import Alert from 'react-s-alert';
 
 import Constants from './miscellaneous/constants';
+import Helpers from './miscellaneous/helpers';
 
 import Header from './components/layout/header';
 import HeaderTopMenu from './components/layout/header_top_menu';
@@ -39,7 +34,6 @@ import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import client from './shared/libraries/client';
 import Cookies from 'universal-cookie';
-import { Route, Redirect, Switch } from 'react-router-dom';
 
 import LocalizationService from './shared/libraries/localization_service';
 
@@ -57,7 +51,7 @@ const ALERT_OPTIONS = {
   stack: {
     limit: 1
   }
-}
+};
 
 export default class App extends Component {
   constructor(props) {
@@ -81,6 +75,9 @@ export default class App extends Component {
       location: {
         latitude: 0,
         longitude: 0
+      },
+      loadings: {
+        homefeed: false
       },
       boundingBox: undefined,
       sort: 'distance',
@@ -120,7 +117,7 @@ export default class App extends Component {
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     setTimeout(() => {
       GeolocationService.getCurrentPosition()
                         .then(position => {
@@ -156,7 +153,7 @@ export default class App extends Component {
 
       if (listing) {
         listing.wish_lists.push(options.wishListID);
-        
+
         this.setState({ listings: listings });
       }
     }
@@ -189,7 +186,7 @@ export default class App extends Component {
 
         if (wishListIndex >= 0) {
           listing.wish_lists.splice(wishListIndex, 1);
-          
+
           this.setState({ listings: listings });
         }
       }
@@ -297,13 +294,13 @@ export default class App extends Component {
           wishListModalOpen: true,
           wishListListing: listing
         });
-      }  
+      }
     }
     else {
-      this.setState({ 
+      this.setState({
         wishListModalOpen: false,
         wishListListing: undefined
-      })
+      });
     }
   }
 
@@ -349,14 +346,15 @@ export default class App extends Component {
   }
 
   performSearch() {
-    let searchParams = {
-      sort: this.state.sort
-    };
+    let loadings = this.state.loadings;
     let location = this.state.location;
     let boundingBox = this.state.boundingBox;
     let filters = this.state.filters;
     let startDate = this.state.startDate;
     let endDate = this.state.endDate;
+    let searchParams = { sort: this.state.sort };
+
+    loadings.homefeed = true;
 
     if (location) {
       searchParams.location = location;
@@ -380,15 +378,20 @@ export default class App extends Component {
       });
     }
 
-    SearchService.create({
-      search: searchParams,
-      limit: this.state.limit,
-      offset: this.state.page * this.state.limit
-    }).then((response) => {
-      this.setState({
-        listings: response.data.data.listings,
-        pages: Math.ceil(response.data.data.total_count / this.state.limit)
-      });
+    this.setState({ loadings: loadings }, () => {
+      SearchService.create({
+        search: searchParams,
+        limit: this.state.limit,
+        offset: this.state.page * this.state.limit
+      }).then((response) => {
+        loadings.homefeed = false;
+
+        this.setState({
+          loadings: loadings,
+          listings: response.data.data.listings,
+          pages: Math.ceil(response.data.data.total_count / this.state.limit)
+        });
+      })
     })
   }
 
@@ -466,21 +469,29 @@ export default class App extends Component {
       locationTimeout = undefined;
     }
 
-    if (!immediate) {
-      locationTimeout = setTimeout(() => {
-        this.locationSearch(latitude, longitude, term);
-      }, 1000);
+    if (Helpers.pageWidth() < 768 && (!term || term === '')) {
+      this.setState({
+        locationName: term,
+        searchLocations: []
+      })
     }
     else {
-      locationTimeout = setTimeout(() => {
-        this.locationSearch(latitude, longitude, term);
-      }, 10);
-    }
+      if (!immediate) {
+        locationTimeout = setTimeout(() => {
+          this.locationSearch(latitude, longitude, term);
+        }, 1000);
+      }
+      else {
+        locationTimeout = setTimeout(() => {
+          this.locationSearch(latitude, longitude, term);
+        }, 10);
+      }
 
-    this.setState({
-      locationName: term,
-      locationTimeout: locationTimeout
-    });
+      this.setState({
+        locationName: term,
+        locationTimeout: locationTimeout
+      });
+    }
   }
 
   render() {
@@ -500,6 +511,7 @@ export default class App extends Component {
           }} />
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
+                              configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole } />)
           }} />
           <Route path="/account" render={(props) => {
@@ -595,10 +607,7 @@ export default class App extends Component {
                                        showSearchButton={ true } />
                   }
                 }} />
-                <Route path="/listings/:id" render={(props) => {
-                  return (<Listings {...props}
-                                    currentUserRole={ this.state.currentUserRole } />)
-                }} />
+
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
@@ -618,7 +627,8 @@ export default class App extends Component {
                               handlePageChange={ this.handlePageChange }
                               pages={ this.state.pages }
                               page={ this.state.page + 1 }
-                              eventEmitter={ this.eventEmitter } />
+                              eventEmitter={ this.eventEmitter }
+                              loading={ this.state.loadings.homefeed } />
                   )
                 }} />
                 <Route path='/users/:id' component={ UserController } />

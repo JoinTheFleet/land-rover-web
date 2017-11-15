@@ -293,7 +293,7 @@ class Login extends Component {
                { (message) => (
                  <span className="secondary-text-color subtitle-font-weight"
                        onClick={ () =>  {this.props.toggleModal('registration') }}>
-                   {message}
+                   {` ${message}`}
                  </span>
                ) }
              </FormattedMessage>
@@ -388,7 +388,7 @@ class Login extends Component {
             { (message) => (
               <span className="secondary-text-color subtitle-font-weight"
                     onClick={ () =>  {this.props.toggleModal('registration') }}>
-                {message}
+                {` ${message}`}
               </span>
             ) }
           </FormattedMessage>

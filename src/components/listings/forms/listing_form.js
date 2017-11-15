@@ -62,25 +62,6 @@ class ListingForm extends Component {
     this.handleStepChange = this.handleStepChange.bind(this);
   }
 
-  componentWillMount() {
-    let location = this.props.location;
-
-    if (location && location.state && location.state.listing) {
-      this.setState({ listing: location.state.listing }, this.allowForEdit);
-    }
-    else if (this.props.match.params.id) {
-      this.setState({ loading: true }, () => {
-        ListingsService.show(this.props.match.params.id)
-                       .then(response => {
-                         this.setState({
-                           listing: response.data.data.listing,
-                           loading: false
-                         }, this.allowForEdit);
-                       });
-      });
-    }
-  }
-
   componentDidMount() {
     this.setState({ loading: true }, () => {
       UsersService.show('me')
@@ -97,6 +78,25 @@ class ListingForm extends Component {
                     this.setState({
                       verificationsNeeded: verificationsNeeded,
                       loading: false
+                    }, () => {
+                      if (!verificationsNeeded) {
+                        let location = this.props.location;
+
+                        if (location && location.state && location.state.listing) {
+                          this.setState({ listing: location.state.listing }, this.allowForEdit);
+                        }
+                        else if (this.props.match.params.id) {
+                          this.setState({ loading: true }, () => {
+                            ListingsService.show(this.props.match.params.id)
+                                          .then(response => {
+                                            this.setState({
+                                              listing: response.data.data.listing,
+                                              loading: false
+                                            }, this.allowForEdit);
+                                          });
+                          });
+                        }
+                      }
                     });
                   })
                   .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
@@ -286,7 +286,8 @@ class ListingForm extends Component {
         default:
           renderedStep = (<ListingRegistration listing={ this.state.listing }
                                                firstStep={ true }
-                                               handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />);
+                                               handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties }
+                                               configurations={ this.props.configurations } />);
       }
     }
 

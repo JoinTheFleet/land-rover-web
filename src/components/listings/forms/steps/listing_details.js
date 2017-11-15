@@ -147,6 +147,7 @@ class ListingDetails extends Component {
             <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) } hideLabelOnMobile={ true }>
               <FormField id="listing_on_demand"
                          type="select"
+                         clearable={ false }
                          value={ this.state.selectedParams.on_demand }
                          options={ [ { value: false, label: this.props.intl.formatMessage({ id: 'application.no' }) },
                                      { value: true, label: this.props.intl.formatMessage({ id: 'application.yes' }) } ] }

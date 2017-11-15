@@ -30,7 +30,7 @@ export default class BookingStatus extends Component {
           statusMessage = (
             <Link to={{
               pathname: `/bookings/${this.props.booking.id}/reviews/new`,
-              state: { booking: booking }
+              state: { booking: booking, targetMode: this.props.targetMode }
             }}>
               <span className="secondary-text-color"> { LocalizationService.formatMessage('reviews.write_a_review') } </span>
             </Link>

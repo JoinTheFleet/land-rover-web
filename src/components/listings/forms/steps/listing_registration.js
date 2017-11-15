@@ -82,6 +82,15 @@ class ListingRegistration extends Component {
   render() {
     let listing = this.state.listing;
 
+    let countries = [];
+
+    if (this.props.configurations && this.props.configurations.countries) {
+      countries = this.props.configurations.countries.map(country => ({
+        value: country.alpha2,
+        label: country.name
+      }));
+    }
+
     return (
       <div className="listing-form-registration col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
         <ListingStep validateFields={ this.validateFields }
@@ -93,7 +102,9 @@ class ListingRegistration extends Component {
                                 fieldsDescription={ this.props.intl.formatMessage({id: 'listings.registration.please_enter_car_country'}) }>
             <ListingFormField label={ this.props.intl.formatMessage({id: 'application.country'}) }>
               <FormField id="listing_country"
-                         type="country"
+                         type="select"
+                         clearable={ false }
+                         options={ countries }
                          value={ listing.country }
                          placeholder={ this.props.intl.formatMessage({id: 'application.country'}) }
                          handleChange={ this.handleCountrySelect } />

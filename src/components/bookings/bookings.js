@@ -23,9 +23,15 @@ class Bookings extends Component {
 
   getReviewOptionsForRole() {
     let reviewOptions = [];
+    let role = this.props.currentUserRole;
+    let location = this.props.location;
 
-    if (this.props.configurations && this.props.currentUserRole) {
-      if (this.props.currentUserRole === userRoles.renter) {
+    if (location && location.state && location.state.targetMode) {
+      role = location.state.targetMode;
+    }
+
+    if (this.props.configurations && role) {
+      if (role === userRoles.renter) {
         reviewOptions = this.props.configurations.review_options;
       }
       else {

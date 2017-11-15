@@ -6,6 +6,12 @@
 
   .header-logo {
     cursor: pointer;
+
+    & + #header_search_form {
+      margin-left: 20px;
+      position: relative;
+      top: 3px;
+    }
   }
 
   #header_list_car_link {
@@ -70,12 +76,11 @@
 
 input#location {
   position: relative;
-  height: inherit;
+  height: 36px;
   max-height: 37px;
-  font-size: 17px;
-  padding-top: 6px;
-  padding-bottom: 7px;
-  height: inherit;
+  font-size: 15px;
+  padding-top: 7px;
+  padding-bottom: 6px;
 
   color: #565a5c;
   font-weight: 200;
@@ -88,27 +93,12 @@ input#location {
   border-bottom-left-radius: 5px;
 }
 
-.DateInput_input {
-  font-size: 15px;
-}
-
 #header_search_form {
   display: inline-block;
-}
 
-.DateRangePicker {
-  line-height: 20px;
-}
-
-.DateRangePickerInput_clearDates {
-  &:active,
-  &:hover {
-    background-color: white;
+  button {
+    margin-top: -2px;
   }
-}
-
-.DateRangePickerInput_clearDates_svg {
-  fill: $secondary-color;
 }
 
 #header_top_menu {
@@ -186,6 +176,7 @@ input#location {
       button {
         width: calc(100% - 20px);
         margin-left: 0;
+        margin-top: 0 !important;
       }
     }
   }

@@ -129,7 +129,7 @@ class RenterBookingsOverview extends Component {
       return '';
     }
 
-    let expandMessageId = this.state.expandedList === 'current' ? 'application.see_less' : 'application.see_all';
+    let expandMessageId = this.state.expandedList === 'previous' ? 'application.see_less' : 'application.see_all';
 
     return (
       <div className="renter-bookings-overview-previous-list col-xs-12 no-side-padding">

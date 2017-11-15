@@ -15,9 +15,9 @@ class Footer extends Component {
   render() {
     return (
       <footer id="footer" className="col-xs-12 secondary-color white-text text-secondary-font-weight ls-dot-five">
-        <div id="footer_top_part">
+        <div id="footer_top_part" className="col-xs-12">
 
-          <div className="hidden-xs col-sm-6 col-md-3">
+          <div className="hidden-xs col-sm-3">
             <span className="fs-20">
               <FormattedMessage id="footer.get_started" />
             </span>
@@ -40,7 +40,7 @@ class Footer extends Component {
             </p>
           </div>
 
-          <div className="hidden-xs col-sm-6 col-md-3">
+          <div className="hidden-xs col-sm-3">
             <span className="fs-20">
               <FormattedMessage id="footer.learn_more" />
             </span>
@@ -59,7 +59,7 @@ class Footer extends Component {
             </p>
           </div>
 
-          <div className="hidden-xs col-sm-6 col-md-3">
+          <div className="hidden-xs col-sm-3">
             <span className="fs-20">
               <FormattedMessage id="footer.top_destinations" />
             </span>
@@ -82,7 +82,7 @@ class Footer extends Component {
             </p>
           </div>
 
-          <div className="hidden-xs col-sm-6 col-md-3">
+          <div className="hidden-xs col-sm-3">
             <span className="fs-20">
               <FormattedMessage id="footer.get_in_touch" />
             </span>
@@ -124,7 +124,7 @@ class Footer extends Component {
           </div>
         </div>
 
-        <div id="footer_bottom_part">
+        <div id="footer_bottom_part" className="col-xs-12">
           <span className="white-text">
             <FormattedMessage id="footer.copyrights" values={ { year: new Date().getFullYear() } } />
           </span>

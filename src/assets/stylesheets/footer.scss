@@ -3,13 +3,8 @@
   padding: 25px;
 }
 
-#footer_top_part {
-  height: 180px;
-}
-
 #footer_bottom_part {
   border-top: solid 1px rgba(255, 255, 255, 0.5);
-  height: 70px;
 }
 
 #footer_social_links {
@@ -53,5 +48,19 @@
         margin-left: 20px;
       }
     }
+  }
+}
+
+@media screen and (max-width: $screen-md-max) {
+  #footer_top_part {
+    padding: 25px 0;
+
+    & > div > span {
+      font-size: 18px;
+    }
+  }
+
+  #footer_bottom_part {
+    padding: 25px 15px;
   }
 }

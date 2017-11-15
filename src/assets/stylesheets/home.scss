@@ -15,6 +15,14 @@
     left: 0;
     width: 100%;
     text-align: center;
+
+    #header_search_form {
+      margin-top: 20px;
+
+      button {
+        margin-top: -5px;
+      }
+    }
   }
 
   #homescreen_top_banner_insurance_div {
@@ -80,6 +88,12 @@
 }
 
 /* Homefeed */
+.homefeed-listings-list {
+  &.loading-listings {
+    overflow: hidden;
+  }
+}
+
 .toggle-map-div {
   position: fixed;
   right: 20px;
@@ -97,6 +111,14 @@
   #homescreen_top_banner {
     #homescreen_top_banner_content {
       top: 10%;
+
+      .title-font-size {
+        font-size: 30px;
+      }
+
+      .fs-20 {
+        font-size: 18px;
+      }
     }
 
     #header_search_form {
