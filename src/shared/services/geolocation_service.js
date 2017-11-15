@@ -7,9 +7,7 @@ var googleMapsClient = require('@google/maps').createClient({
 class GeolocationService {
   static getCurrentPosition() {
     return new Promise(function(resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
-        timeout: 1000000
-      });
+      navigator.geolocation.getCurrentPosition(resolve, reject);
     });
   }
 
