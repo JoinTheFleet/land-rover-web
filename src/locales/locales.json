@@ -211,7 +211,7 @@
     "listings.pricing.price": "Price",
 
     "listings.rules.rules": "Rules",
-    "listings.rules.rules_eg": "Rules eg. No Dogs",
+    "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
 
     "listings.need_to_complete_verifications": "You need to fill in the following info in order to be able to add a listing: {info_to_verify}",
