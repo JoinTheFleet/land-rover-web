@@ -553,7 +553,8 @@ export default class App extends Component {
                                        locationName={ this.state.locationName }
                                        hideSearchResults={ this.hideSearchResults }
                                        searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true } />
+                                       showSearchButton={ true }
+                                       toggleWishListModal={ this.toggleWishListModal } />
                   }
                 }} />
 
@@ -576,7 +577,8 @@ export default class App extends Component {
                                        locationName={ this.state.locationName }
                                        hideSearchResults={ this.hideSearchResults }
                                        searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true } />
+                                       showSearchButton={ true }
+                                       toggleWishListModal={ this.toggleWishListModal } />
                   }
                 }} />
                 <Route path="/listings/:id" render={(props) => {

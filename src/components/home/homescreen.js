@@ -121,16 +121,16 @@ class Homescreen extends Component {
         <p className="top-seller-title strong-font-weight title-font-size">
           <FormattedMessage id="listings.top_seller" />
         </p>
-        <ListingList listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
+        <ListingList toggleWishListModal={ this.props.toggleWishListModal } listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
       </div>
     );
 
     let nearbyListings = (
       <div>
         <p className="top-seller-title strong-font-weight title-font-size">
-          <FormattedMessage id="listings.top_seller" />
+          <FormattedMessage id="listings.nearby" />
         </p>
-        <ListingList listings={ this.state.nearbyListings } scrollable={ true } loading={ this.state.nearbyListingsLoading } />
+        <ListingList toggleWishListModal={ this.props.toggleWishListModal } listings={ this.state.nearbyListings } scrollable={ true } loading={ this.state.nearbyListingsLoading } />
       </div>
     );
 

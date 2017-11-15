@@ -9,6 +9,9 @@ import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
 import LocalizationService from '../../shared/libraries/localization_service';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class ListingItem extends Component {
   constructor(props) {
@@ -36,6 +39,9 @@ export default class ListingItem extends Component {
     let hasImages = item.gallery ? (item.gallery.length > 0) : false;
     let wishListed = item.wish_lists.length > 0;
 
+    let token = cookies.get('accessToken');
+    let wishList = '';
+
     if (hasImages) {
       image = (<img src={ item.gallery[0].images.original_url }
                     alt={ vehicleTitle }
@@ -49,6 +55,14 @@ export default class ListingItem extends Component {
           { LocalizationService.formatMessage('listings.spotlighted') }
         </div>
       )
+    }
+
+    if (token && token.length > 0) {
+      wishList = (
+        <div onClick={ this.toggleWishListModal } className="listing-item-liked">
+          <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+        </div>
+      );
     }
 
     return (
@@ -65,9 +79,7 @@ export default class ListingItem extends Component {
               <span className="subtitle-font-weight">{ vehicleTitle }</span>
               <span className="listing-item-year">{ item.variant.year.year }</span>
             </div>
-            <div onClick={ this.toggleWishListModal } className="listing-item-liked">
-              <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
-            </div>
+            { wishList }
             <div className="listing-item-info">
               <div>
                 { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' }

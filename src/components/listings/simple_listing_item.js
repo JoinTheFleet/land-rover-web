@@ -9,6 +9,9 @@ import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
 
 import LocalizationService from '../../shared/libraries/localization_service';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class SimpleListingItem extends Component {
   constructor(props) {
@@ -29,10 +32,13 @@ export default class SimpleListingItem extends Component {
     let item = this.props.listing;
     let image = (<img alt='' src={ `${process.env.REACT_APP_MISSING_LISTING_IMAGE}` } />);
     let spotlightDiv = '';
+    let token = cookies.get('accessToken');
 
     let vehicleMake = item.make;
     let vehicleModel = item.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+
+    let wishList = '';
 
     let wishListed = item.wish_lists ? (item.wish_lists.length > 0) : false;
     let hasImages = item.gallery ? (item.gallery.length > 0) : false;
@@ -52,6 +58,14 @@ export default class SimpleListingItem extends Component {
       )
     }
 
+    if (token && token.length > 0) {
+      wishList = (
+        <div onClick={ this.toggleWishListModal } className="listing-item-liked">
+          <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+        </div>
+      );
+    }
+
     return (
       <div>
         <div className="listing-item-photo-and-title">
@@ -66,9 +80,7 @@ export default class SimpleListingItem extends Component {
               <span className="subtitle-font-weight">{ vehicleTitle }</span>
               <span className="listing-item-year">{ item.year }</span>
             </div>
-            <div onClick={ this.toggleWishListModal } className="listing-item-liked">
-              <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
-            </div>
+            { wishList }
             <div className="listing-item-info">
               <div>
                 { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
