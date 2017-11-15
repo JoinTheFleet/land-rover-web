@@ -18,7 +18,7 @@ export default class UserProfileDetails extends Component {
       user: {
         images: {}
       }
-    }
+    };
 
     this.handleImageFile = this.handleImageFile.bind(this);
     this.handleFirstNameUpdate = this.handleFirstNameUpdate.bind(this);
@@ -117,9 +117,9 @@ export default class UserProfileDetails extends Component {
                   handleDescriptionUpdate={this.handleDescriptionUpdate} />
 
         <FormButtonRow>
-          <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
+          <button className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
             <FormattedMessage id="application.save" />
-          </btn>
+          </button>
         </FormButtonRow>
       </div>
     )

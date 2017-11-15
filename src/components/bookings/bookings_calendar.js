@@ -15,6 +15,8 @@ import ListingBookingsService from '../../shared/services/listings/listing_booki
 
 import ListingsSelector from '../listings/listings_selector';
 
+import Helpers from '../../miscellaneous/helpers';
+
 class BookingsCalendar extends Component {
   constructor(props) {
     super(props);
@@ -28,13 +30,16 @@ class BookingsCalendar extends Component {
       changedDays: [],
       nonAvailableDays: [],
       currentDailyRate: '',
-      currentAvailableSetting: null
+      currentAvailableSetting: null,
+      numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
+      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null
     };
 
     this.renderDay = this.renderDay.bind(this);
     this.isDayBlocked = this.isDayBlocked.bind(this);
     this.fetchListings = this.fetchListings.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
+    this.handleWindowResize = this.handleWindowResize.bind(this);
     this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
     this.handleDailyRateChange = this.handleDailyRateChange.bind(this);
     this.handleAvailabilityCheckboxChange = this.handleAvailabilityCheckboxChange.bind(this);
@@ -42,10 +47,31 @@ class BookingsCalendar extends Component {
     this.handleResetRateToDefault = this.handleResetRateToDefault.bind(this);
     this.handleCancelRateChanges = this.handleCancelRateChanges.bind(this);
     this.handleSaveRateChanges = this.handleSaveRateChanges.bind(this);
+
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchListings();
+  }
+
+  handleWindowResize() {
+    let width = Helpers.pageWidth();
+
+    if (width < 400) {
+      this.setState({ daySize: Math.round((Helpers.pageWidth() - 90) / 7) });
+    }
+
+    if (width > 400 && this.state.daySize) {
+      this.setState({ daySize: null });
+    }
+
+    if (width < 768 && this.state.numberOfMonthsToShow === 2) {
+      this.setState({ numberOfMonthsToShow: 1 });
+    }
+    else if(width >= 768 && this.state.numberOfMonthsToShow === 1 ) {
+      this.setState({ numberOfMonthsToShow: 2 });
+    }
   }
 
   fetchListings(){
@@ -349,7 +375,6 @@ class BookingsCalendar extends Component {
   }
 
   render() {
-
     return (
       <div className="bookings-calendar">
 
@@ -362,7 +387,9 @@ class BookingsCalendar extends Component {
                      placeholder='Dates'
                      startDate={ this.state.startDate }
                      endDate={ this.state.endDate }
+                     daySize={ this.state.daySize }
                      minimumNights={ 0 }
+                     numberOfMonths={ this.state.numberOfMonthsToShow }
                      focusedInput={ this.state.focusedInput }
                      handleChange={ this.handleDatesChange }
                      handleFocusChange={ this.handleDateRangePickerFocusChange }

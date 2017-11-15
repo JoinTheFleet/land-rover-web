@@ -68,7 +68,7 @@ export default class Dropdown extends Component {
         }
 
         if (item[this.props.valueProperty] === this.props.selectedValue) {
-          currentItemText = displayText;
+          currentItemText = `${this.props.placeholder}: ${displayText}`;
         }
 
         return (<li className="dropdown-item" key={ this.props.name + '_item_' + index } onClick={ () => { this.handleItemClick(valueText, displayText) } } >{ displayText }</li>);

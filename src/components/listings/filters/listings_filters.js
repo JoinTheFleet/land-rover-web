@@ -18,7 +18,6 @@ import LocalizationService from '../../../shared/libraries/localization_service'
 
 import Toggleable from '../../miscellaneous/toggleable';
 
-import Helpers from '../../../miscellaneous/helpers';
 import Dropdown from '../../miscellaneous/dropdown';
 
 export default class ListingsFilters extends Component {
@@ -79,7 +78,7 @@ export default class ListingsFilters extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let filterOptions = this.state.filterOptions;
 
     VehicleBodiesService.index().then(response => {
@@ -210,7 +209,7 @@ export default class ListingsFilters extends Component {
 
     if (this.state.open) {
       return (
-        <div className="listings-filters white" style={ { height: (Helpers.pageHeight() - 130) + 'px' } }>
+        <div className="listings-filters white">
           {
             filterGroups.map((filtersGroup, index) => {
               let filters = this.state.filterOptions[filtersGroup];
@@ -223,19 +222,16 @@ export default class ListingsFilters extends Component {
 
                   {
                     filters
-                      .sort(function(a, b) {
-                        return a.position - b.position;
-                      })
+                      .sort((a, b) => a.position - b.position)
                       .map(filter => {
-                        return <Dropdown
-                                  key={ 'filters_group_' + filter.param }
-                                  name={ filter.param }
-                                  placeholder={ filter.name }
-                                  items={ filter.data }
-                                  selectedValue={ selectedFilters[filter.param] }
-                                  valueProperty="id"
-                                  displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
-                                  itemClickHandler={ this.handleFilterSelected } />
+                        return <Dropdown key={ 'filters_group_' + filter.param }
+                                         name={ filter.param }
+                                         placeholder={ filter.name }
+                                         items={ filter.data }
+                                         selectedValue={ selectedFilters[filter.param] }
+                                         valueProperty="id"
+                                         displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                                         itemClickHandler={ this.handleFilterSelected } />
                       })
                   }
                   <div className='listings-filters-divider smoke-grey-two'></div>

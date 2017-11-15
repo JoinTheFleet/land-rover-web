@@ -14,7 +14,10 @@ export default class Listings extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <Switch>
-          <Route path="/listings/new" component={ ListingForm } />
+          <Route path="/listings/new" render={(props) => {
+            return (<ListingForm {...props}
+                                 configurations={ this.props.configurations } />)
+          }} />
 
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
@@ -28,6 +31,7 @@ export default class Listings extends Component {
 
           <Route path="/listings/:id/edit" render={(props) => {
             return (<ListingForm {...props}
+                                 configurations={ this.props.configurations }
                                  edit={ true } />)
           }} />
 
@@ -35,7 +39,7 @@ export default class Listings extends Component {
             return (
               <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
                 <ListingReviews {...props}
-                         currentUserRole={ this.props.currentUserRole } />
+                                currentUserRole={ this.props.currentUserRole } />
               </div>
             )
           }} />

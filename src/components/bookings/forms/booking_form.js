@@ -86,6 +86,8 @@ class BookingForm extends Component {
     this.handleOnDemandLocationChange = this.handleOnDemandLocationChange.bind(this);
     this.handleInsuranceCriteriaChange = this.handleInsuranceCriteriaChange.bind(this);
     this.handlePickUpDropOffTimeSelect = this.handlePickUpDropOffTimeSelect.bind(this);
+
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   componentDidMount() {
@@ -577,7 +579,7 @@ class BookingForm extends Component {
       bookingStatusDiv = (
         <div className="booking-form-status booking-form-box col-xs-12 no-side-padding">
           <div className="pull-left tertiary-text-color"> { LocalizationService.formatMessage('bookings.your_booking_is') } </div>
-          <div className="pull-right text-right"> <BookingStatus booking={ this.state.booking } /> </div>
+          <div className="pull-right text-right"> <BookingStatus booking={ this.state.booking } targetMode={ this.props.currentUserRole } /> </div>
         </div>
       )
     }

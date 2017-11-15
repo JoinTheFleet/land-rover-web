@@ -11,14 +11,14 @@ import ListingMap from '../listings/listing_map';
 import ListingsFiltersTopBar from '../listings/filters/listings_filters_top_bar';
 
 // Services / Miscellaneous
+import Pageable from '../miscellaneous/pageable';
+import Loading from '../miscellaneous/loading';
 import HomeFeedService from '../../shared/services/home_feed_service';
 import Helpers from '../../miscellaneous/helpers';
 
 // Icons
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
-
-import Pageable from '../miscellaneous/pageable';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
@@ -29,7 +29,8 @@ class Homefeed extends Component {
     this.state = {
       toggledComponent: '',
       nearby: [],
-      collections: []
+      collections: [],
+      loading: false
     };
 
     this.toggleComponent = this.toggleComponent.bind(this);
@@ -48,15 +49,21 @@ class Homefeed extends Component {
     this.removeWishListFromCollectionListing = this.removeWishListFromCollectionListing.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.accessToken) {
-      HomeFeedService.show()
-                     .then((response) => {
-                       this.setState({
-                         nearby: response.data.data.home_feed.nearby,
-                         collections: response.data.data.home_feed.collections
+
+      this.setState({
+        loading: true
+      }, () => {
+        HomeFeedService.show()
+                       .then((response) => {
+                         this.setState({
+                           nearby: response.data.data.home_feed.nearby,
+                           collections: response.data.data.home_feed.collections,
+                           loading: false
+                         });
                        });
-                     });
+      });
     }
 
     this.setupEvents();
@@ -84,7 +91,7 @@ class Homefeed extends Component {
 
   addWishListToCollectionListing(options) {
     let collections = this.state.collections;
-    
+
     collections.map(collection => {
       if (collection.objects && collection.objects.length > 0) {
         return this.addWishListIDToListingArray(collection.objects, options.listingID, options.wishListID);
@@ -239,10 +246,18 @@ class Homefeed extends Component {
   renderListingsToDisplay() {
     let listingsDivsToDisplay = [];
     let largeWidth = Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL;
+    let loadingDiv = '';
+    const isLoading = this.state.loading || this.props.loading;
+
+    if ( isLoading ) {
+      loadingDiv = (<Loading fullWidthLoading={ true } />)
+    }
 
     let listingsListDiv = (
-      <div key="listings_list_div" className="homefeed-listings-list col-lg-7 no-side-padding" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
+      <div key="listings_list_div" className={ `homefeed-listings-list col-lg-7 no-side-padding ${ isLoading ? 'loading-listings' : ''}` } style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
         { this.renderListingLists() }
+
+        { loadingDiv }
       </div>
     );
 

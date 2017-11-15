@@ -11,7 +11,7 @@ export default class ListingFormFieldGroup extends Component {
 
     if (this.props.fieldsDescription) {
       fieldsDescriptionDiv = (
-        <div className="listing-form-field-group-description text-secondary-font-weight tertiary-text-color col-xs-12 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-lg-offset-2">
+        <div className="listing-form-field-group-description text-secondary-font-weight tertiary-text-color col-xs-12 col-sm-10 col-sm-offset-2">
           { this.props.fieldsDescription }
         </div>
       )

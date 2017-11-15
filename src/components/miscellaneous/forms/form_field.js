@@ -16,18 +16,18 @@ const DATEPICKER_DEFAULT_DAY_SIZE = 40;
 const COUNTRIES = countries.map(function(country) {
   return {
     value: country['alpha-2'],
-    label: country['name']
+    label: country.name
   };
 });
 
 const EU_COUNTRIES = countries
   .filter(function(country) {
-    return country['region'] && country['region'].toLowerCase().includes('europe');
+    return country.region && country.region.toLowerCase().includes('europe');
   })
   .map(function(country) {
     return {
       value: country['alpha-2'],
-      label: country['name']
+      label: country.name
     };
   });
 
@@ -114,6 +114,7 @@ export default class FormField extends Component {
         <DayPickerRangeController
           startDate={this.props.startDate}
           endDate={this.props.endDate}
+          daySize={ this.props.daySize || 40 }
           focusedInput={this.props.focusedInput}
           onDatesChange={({ startDate, endDate }) =>  this.props.handleChange(startDate, endDate)}
           onFocusChange={this.props.handleFocusChange}
@@ -123,7 +124,7 @@ export default class FormField extends Component {
           isDayBlocked={this.props.isDayBlocked}
           withPortal={false}
           initialVisibleMonth={null}
-          numberOfMonths={2}
+          numberOfMonths={ this.props.numberOfMonths || 2 }
           minimumNights={ typeof this.props.minimumNights !== undefined ? this.props.minimumNights : 1 }
           renderCalendarInfo={ () => { return false } }
           hideKeyboardShortcutsPanel={true}
@@ -174,7 +175,7 @@ export default class FormField extends Component {
                    options={ this.props.options }
                    disabled={ this.props.disabled }
                    onChange={ this.props.handleChange }
-                   className={ this.props.className } 
+                   className={ this.props.className }
                    clearable={ this.props.clearable }
                    onNewOptionClick={ this.props.handleNewOption}
                    promptTextCreator={ this.props.promptTextCreator } />

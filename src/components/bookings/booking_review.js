@@ -49,13 +49,13 @@ class BookingReview extends Component {
         loading: true
       }, () => {
         BookingsService.show(this.props.match.params.id)
-        .then(response => {
-          this.setState({
-            booking: response.data.data.booking,
-            loading: false
-          });
-        })
-        .catch(error => this.addError(Errors.extractErrorMessage(error)));
+                       .then(response => {
+                         this.setState({
+                           booking: response.data.data.booking,
+                           loading: false
+                         });
+                       })
+                       .catch(error => this.addError(Errors.extractErrorMessage(error)));
       });
     }
   }

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
+
+import './App.css';
+import 'react-dates/initialize';
+
 import Alert from 'react-s-alert';
 import branch from 'branch-sdk';
 import Cookies from 'universal-cookie';
 import EventEmitter from 'eventemitter3';
 
-import './App.css';
-import 'react-dates/initialize';
+import Constants from './miscellaneous/constants';
+import Helpers from './miscellaneous/helpers';
 
 import Alerts from './components/alerts/alerts';
 import Header from './components/layout/header';
@@ -35,7 +39,6 @@ import WishListsService from './shared/services/wish_lists_service';
 import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
 
-import Constants from './miscellaneous/constants';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -73,6 +76,9 @@ export default class App extends Component {
       location: {
         latitude: 0,
         longitude: 0
+      },
+      loadings: {
+        homefeed: false
       },
       boundingBox: undefined,
       sort: 'distance',
@@ -332,14 +338,15 @@ export default class App extends Component {
   }
 
   performSearch() {
+    let loadings = this.state.loadings;
     let location = this.state.location;
     let boundingBox = this.state.boundingBox;
     let filters = this.state.filters;
     let startDate = this.state.startDate;
     let endDate = this.state.endDate;
-    let searchParams = {
-      sort: this.state.sort
-    };
+    let searchParams = { sort: this.state.sort };
+
+    loadings.homefeed = true;
 
     if (location) {
       searchParams.location = location;
@@ -363,15 +370,20 @@ export default class App extends Component {
       });
     }
 
-    SearchService.create({
-      search: searchParams,
-      limit: this.state.limit,
-      offset: this.state.page * this.state.limit
-    }).then((response) => {
-      this.setState({
-        listings: response.data.data.listings,
-        pages: Math.ceil(response.data.data.total_count / this.state.limit)
-      });
+    this.setState({ loadings: loadings }, () => {
+      SearchService.create({
+        search: searchParams,
+        limit: this.state.limit,
+        offset: this.state.page * this.state.limit
+      }).then((response) => {
+        loadings.homefeed = false;
+
+        this.setState({
+          loadings: loadings,
+          listings: response.data.data.listings,
+          pages: Math.ceil(response.data.data.total_count / this.state.limit)
+        });
+      })
     })
   }
 
@@ -449,21 +461,29 @@ export default class App extends Component {
       locationTimeout = undefined;
     }
 
-    if (!immediate) {
-      locationTimeout = setTimeout(() => {
-        this.locationSearch(latitude, longitude, term);
-      }, 1000);
+    if (Helpers.pageWidth() < 768 && (!term || term === '')) {
+      this.setState({
+        locationName: term,
+        searchLocations: []
+      })
     }
     else {
-      locationTimeout = setTimeout(() => {
-        this.locationSearch(latitude, longitude, term);
-      }, 10);
-    }
+      if (!immediate) {
+        locationTimeout = setTimeout(() => {
+          this.locationSearch(latitude, longitude, term);
+        }, 1000);
+      }
+      else {
+        locationTimeout = setTimeout(() => {
+          this.locationSearch(latitude, longitude, term);
+        }, 10);
+      }
 
-    this.setState({
-      locationName: term,
-      locationTimeout: locationTimeout
-    });
+      this.setState({
+        locationName: term,
+        locationTimeout: locationTimeout
+      });
+    }
   }
 
   render() {
@@ -484,6 +504,7 @@ export default class App extends Component {
           }} />
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
+                              configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole } />)
           }} />
           <Route path="/account" render={(props) => {
@@ -579,10 +600,7 @@ export default class App extends Component {
                                        showSearchButton={ true } />
                   }
                 }} />
-                <Route path="/listings/:id" render={(props) => {
-                  return (<Listings {...props}
-                                    currentUserRole={ this.state.currentUserRole } />)
-                }} />
+
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
@@ -602,7 +620,8 @@ export default class App extends Component {
                               handlePageChange={ this.handlePageChange }
                               pages={ this.state.pages }
                               page={ this.state.page + 1 }
-                              eventEmitter={ this.eventEmitter } />
+                              eventEmitter={ this.eventEmitter }
+                              loading={ this.state.loadings.homefeed } />
                   )
                 }} />
                 <Route path='/users/:id' component={ UserController } />

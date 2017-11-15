@@ -5,7 +5,7 @@ export default class FormGroup extends Component {
     return (
       <div className='col-xs-12 no-side-padding'>
         <div className='row form-row'>
-          <div className='col-xs-12 col-sm-2'>
+          <div className='col-xs-12 col-sm-2 text-sm-right'>
             <span>{ this.props.placeholder }</span>
           </div>
           <div className='col-xs-12 col-sm-10'>
