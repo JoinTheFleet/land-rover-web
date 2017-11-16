@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
 
 import UsersService from '../../shared/services/users/users_service';
 import PayoutMethodsService from '../../shared/services/payout_methods_service';
@@ -9,6 +10,8 @@ import FormPanel from '../miscellaneous/forms/form_panel';
 import {injectStripe } from 'react-stripe-elements';
 import PayoutMethod from './payout_methods/payout_method';
 import PayoutMethodForm from './payout_methods/payout_method_form';
+
+import { Redirect } from 'react-router-dom';
 
 class UserPayoutMethods extends Component {
   constructor(props) {
@@ -60,6 +63,13 @@ class UserPayoutMethods extends Component {
                                accountLoading: false,
                                loading: false
                              });
+                           })
+                           .catch(error => {
+                             Alert.error(error.response.data.message);
+                             this.setState({
+                               loading: false,
+                               loadError: true
+                             });
                            });
      });
   }
@@ -99,6 +109,9 @@ class UserPayoutMethods extends Component {
   render() {
     if (this.state.loading) {
       return <Loading />;
+    }
+    else if (this.state.loadError) {
+      return <Redirect to='/account/verified_info' />
     }
     else {
       return (

@@ -918,3 +918,37 @@
     }
   }
 }
+
+.vehicle-select {
+  display: inline-block;
+
+  span.placeholder {
+    padding-right: 15px;
+  }
+}
+
+.listings-selector-bar .btn-group {
+  button {
+    border: 1px solid $secondary-color;
+    text-decoration: none;
+    color: $secondary-text-color;
+    background-color: white;
+    box-shadow: none;
+
+    &:hover {
+      border-color: $secondary-color;
+    }
+
+    &:focus,
+    &:active {
+      border: 1px solid $secondary-color;
+      background-color: white;
+      color: $secondary-color;
+    }
+
+    &.active {
+      background-color: $secondary-color;
+      color: white;
+    }
+  }
+}

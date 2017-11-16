@@ -65,10 +65,10 @@ class Bookings extends Component {
         }} />
 
         <Route path="/bookings" render={(props) => {
-          let overviewDiv = (<OwnerBookingsOverview {...props} currentUserRole={ role }  />);
+          let overviewDiv = (<OwnerBookingsOverview {...props} {...this.props} currentUserRole={ role }  />);
 
           if (this.props.currentUserRole === userRoles.renter) {
-            overviewDiv = (<RenterBookingsOverview {...props} currentUserRole={ role }  />);
+            overviewDiv = (<RenterBookingsOverview {...props} {...this.props} currentUserRole={ role }  />);
           }
 
           return overviewDiv;

@@ -53,41 +53,44 @@ export default class MessagingController extends Component {
   }
 
   render() {
-    let listingsSelector = '';
+    return (
+      <Switch>
+        <Route path="/messages/:id" render={(props) => {
+          if (this.state.loading) {
+            return <Loading />;
+          }
+          else {
+            return (
+              <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2'>
+                <Conversation {...this.props} {...props} />
+              </div>
+            );
+          }
+        }} />
+        <Route path="/messages" render={(props) => {
+          let contents = <Loading />;
 
-    if (this.props.role === 'owner' && this.state.listings.length > 0) {
-      listingsSelector = (
-        <ListingsSelector listings={ this.state.listings }
-                          currentListing={ this.state.listing }
-                          handleVehicleSelect={ this.handleVehicleSelect } />
-      )
-    }
+          if (!this.state.loading) {
+            contents = <ConversationList listing={ this.state.listing } {...this.props} />
+          }
 
-    if (this.state.loading) {
-      return <Loading />;
-    }
-    else {
-      return (
-        <div>
-          <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2'>
-            <Switch>
-              <Route path="/messages/:id" render={(props) => {
-                return <Conversation {...this.props} {...props} />
-              }} />
-              <Route path="/messages" render={(props) => {
-                return (
-                  <div className="col-xs-12 no-side-padding">
-                    <div className="row">
-                      { listingsSelector }
-                    </div>
-                    <ConversationList listing={ this.state.listing } {...this.props} />
-                  </div>
-                )
-              }} />
-            </Switch>
-          </div>
-        </div>
-      );
-    }
+          return (
+            <div className='col-xs-12 no-side-padding'>
+              <ListingsSelector listings={ this.state.listings }
+                                role={ this.props.role }
+                                loading={ this.state.loading }
+                                currentListing={ this.state.listing }
+                                handleVehicleSelect={ this.handleVehicleSelect }
+                                changeCurrentUserRole={ this.props.changeCurrentUserRole } />
+              <div className='col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2'>
+                <div className="col-xs-12 no-side-padding">
+                  { contents }
+                </div>
+              </div>
+            </div>
+          )
+        }} />
+      </Switch>
+    );
   }
 }
