@@ -41,6 +41,9 @@ class ListingForm extends Component {
     if (this.props.location && this.props.location.state) {
       if (this.props.location.state.finalStep) {
         currentStep = previousStep = listingSteps[steps[steps.length - 2]];
+      }
+
+      if (this.props.location.state.listing) {
         listing = this.props.location.state.listing;
       }
     }
@@ -79,7 +82,7 @@ class ListingForm extends Component {
                       verificationsNeeded: verificationsNeeded,
                       loading: false
                     }, () => {
-                      if (!verificationsNeeded) {
+                      if (verificationsNeeded.length === 0) {
                         let location = this.props.location;
 
                         if (location && location.state && location.state.listing) {

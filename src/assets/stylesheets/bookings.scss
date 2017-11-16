@@ -180,6 +180,8 @@
 
 /* Booking Form */
 .booking-form {
+  min-height: 200px;
+
   & > div:first-child {
     padding: 24px 15px;
   }
@@ -419,6 +421,13 @@
     .fleet-checkbox {
       label {
         top: 3px;
+      }
+    }
+
+    .booking-form-vehicle-survey-check-message {
+      & + .booking-form-vehicle-survey-row {
+        margin-top: 8px;
+        padding-top: 8px;
       }
     }
   }

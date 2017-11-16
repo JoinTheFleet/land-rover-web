@@ -430,6 +430,12 @@
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
+  .listings-amenity-filter.fleet-checkbox {
+    label:after {
+      top: 2px;
+    }
+  }
 }
 
 .listing-form-field-group {
