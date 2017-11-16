@@ -228,7 +228,9 @@ export default class App extends Component {
       };
 
       cookies.set('accessToken', accessToken, {
-        path: '/'
+        path: '/',
+        secure: window.location.hostname !== 'localhost',
+        maxAge: 86400 * 7
       });
 
       if (accessToken.length > 0) {
@@ -267,7 +269,6 @@ export default class App extends Component {
       AuthenticationService.logout()
                            .then(() => { this.setAccessToken(''); })
                            .catch(() => { this.setAccessToken(''); });
-      return (<Redirect to='/' />);
     }
   }
 
