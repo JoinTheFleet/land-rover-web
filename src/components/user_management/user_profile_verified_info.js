@@ -47,6 +47,7 @@ class UserProfileVerifiedInfo extends Component {
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleGenderChange = this.handleGenderChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleUserCountryChange = this.handleUserCountryChange.bind(this);
     this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
     this.handleAddressLine1Change = this.handleAddressLine1Change.bind(this);
     this.handleAddressLine2Change = this.handleAddressLine2Change.bind(this);
@@ -98,6 +99,7 @@ class UserProfileVerifiedInfo extends Component {
         date_of_birth: user.date_of_birth,
         gender: user.gender,
         email: user.email,
+        country_code: user.country_code || user.country.alpha2,
         account_type: user.account_type
       };
 
@@ -328,6 +330,14 @@ class UserProfileVerifiedInfo extends Component {
     this.setState({ user: user });
   }
 
+  handleUserCountryChange(country) {
+    let user = this.state.user;
+
+    user.country_code = country.value;
+
+    this.setState({ user: user });
+  }
+
   handleBusinessCountryChange(country) {
     let user = this.state.user;
 
@@ -436,6 +446,7 @@ class UserProfileVerifiedInfo extends Component {
                       handleAddressLine2Change={ this.handleAddressLine2Change }
                       handlePostCodeChange={ this.handlePostCodeChange }
                       handleCountryChange={ this.handleCountryChange }
+                      handleUserCountryChange={ this.handleUserCountryChange }
                       handleEmailChange={ this.handleEmailChange }
                       placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
           </div>
