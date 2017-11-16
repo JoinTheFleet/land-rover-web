@@ -98,6 +98,8 @@ class OwnerBookingsOverview extends Component {
   renderTopBar() {
     return (
       <ListingsSelector listings={ this.state.listings }
+                        role={ this.props.currentUserRole }
+                        changeCurrentUserRole={ this.props.changeCurrentUserRole }
                         currentListing={ this.state.currentListing }
                         handleVehicleSelect= { this.handleVehicleSelect } />
     );

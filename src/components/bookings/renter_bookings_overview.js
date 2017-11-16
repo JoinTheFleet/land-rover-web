@@ -5,6 +5,8 @@ import Alert from 'react-s-alert';
 import BookingRow from './booking_row';
 import Pageable from '../miscellaneous/pageable';
 
+import ListingsSelector from '../listings/listings_selector';
+
 import BookingsService from '../../shared/services/bookings/bookings_service';
 
 import Errors from '../../miscellaneous/errors';
@@ -154,9 +156,18 @@ class RenterBookingsOverview extends Component {
     )
   }
 
+  renderTopBar() {
+    return (
+      <ListingsSelector role={ this.props.currentUserRole }
+                        changeCurrentUserRole={ this.props.changeCurrentUserRole }
+                        handleVehicleSelect= { this.handleVehicleSelect } />
+    );
+  }
+
   render() {
     return (
       <div className="bookings-overview col-xs-12 no-side-padding">
+        { this.renderTopBar() }
 
         <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           { this.renderCurrentList() }

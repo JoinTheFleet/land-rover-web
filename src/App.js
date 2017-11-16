@@ -63,7 +63,6 @@ export default class App extends Component {
       accessToken: cookies.get('accessToken'),
       configuration: undefined,
       currentUserRole: cookies.get('currentUserRole') || userRoles.renter,
-      roleChanged: false,
       showAlerts: false,
       listings: [],
       searchLocations: [],
@@ -210,12 +209,6 @@ export default class App extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.roleChanged && prevState.roleChanged === this.state.roleChanged) {
-      this.setState({ roleChanged: false });
-    }
-  }
-
   setAccessToken(accessToken) {
     cookies.remove('accessToken');
 
@@ -257,8 +250,7 @@ export default class App extends Component {
     let newRole = (this.state.currentUserRole === userRoles.renter) ? userRoles.owner : userRoles.renter;
 
     this.setState((prevState) => ({
-      currentUserRole: newRole,
-      roleChanged: true
+      currentUserRole: newRole
     }), () => {
       cookies.set('currentUserRole', newRole);
     });
@@ -488,10 +480,6 @@ export default class App extends Component {
   }
 
   render() {
-    if( this.state.accessToken && this.state.roleChanged ) {
-      return <Redirect to="/dashboard" />;
-    }
-
     const alerts = this.state.showAlerts ? (<Alerts />) : '';
     let mainRouter = (<Redirect to="/" />);
 
@@ -501,6 +489,7 @@ export default class App extends Component {
           <Route exact path="/home" render={() => <Redirect to="/" /> } />
           <Route path="/messages" render={(props) => {
             return (<MessagingController {...props}
+                                        changeCurrentUserRole={ this.changeCurrentUserRole }
                                         role={ this.state.currentUserRole } />)
           }} />
           <Route path="/listings" render={(props) => {
@@ -518,7 +507,8 @@ export default class App extends Component {
           <Route path="/bookings" render={(props) => {
             return (<Bookings {...props}
                               configurations={ this.state.configuration }
-                              currentUserRole={ this.state.currentUserRole} />)
+                              currentUserRole={ this.state.currentUserRole}
+                              changeCurrentUserRole={ this.changeCurrentUserRole } />)
           }} />
           <Route path='/dashboard' render={ (props) => {
             return <DashboardController {...props} configuration={ this.state.configuration } />
