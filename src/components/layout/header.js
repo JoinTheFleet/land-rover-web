@@ -1,15 +1,7 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import HeaderMenu from './header_menu';
-import Helpers from '../../miscellaneous/helpers';
-import Roles from '../../miscellaneous/roles';
 import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import logo from '../../assets/images/menu_logo.png';
 
