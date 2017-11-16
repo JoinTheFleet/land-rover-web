@@ -603,6 +603,12 @@ export default class App extends Component {
                   }
                 }} />
 
+                <Route path="/listings/:id" render={(props) => {
+                  return (<Listings {...props}
+                                    configurations={ this.state.configuration }
+                                    currentUserRole={ this.state.currentUserRole } />)
+                }} />
+
                 <Route path="/search" render={(props) => {
                   return (
                     <Homefeed {...props}
