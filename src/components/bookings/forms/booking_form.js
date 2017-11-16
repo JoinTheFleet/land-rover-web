@@ -926,7 +926,7 @@ class BookingForm extends Component {
       return;
     }
 
-    if (this.state.booking.status === 'pending') {
+    if (!this.state.booking.id || this.state.booking.status === 'pending') {
       return;
     }
 
