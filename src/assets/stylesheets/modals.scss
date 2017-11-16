@@ -20,6 +20,8 @@
 }
 
 .modal {
+  overflow: scroll;
+
   .modal-header {
     padding: 10px;
   }
@@ -37,10 +39,12 @@
   }
 }
 
-.confirmation-modal {
-  .modal-footer {
-    & > div + div {
-      margin-top: 10px;
+@media screen and (max-width: $screen-xs-max) {
+  .confirmation-modal {
+    .modal-footer {
+      & > div + div {
+        margin-top: 10px;
+      }
     }
   }
 }

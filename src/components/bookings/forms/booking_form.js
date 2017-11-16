@@ -40,7 +40,9 @@ class BookingForm extends Component {
         'cancelBooking': false,
         'checkOut': false,
         'rejectBooking': false,
-        'writeReview': false
+        'writeReview': false,
+        'acceptTerms': false,
+        'acceptRules': false
       },
       booking: {
         agreed_to_rules: false,
@@ -689,9 +691,13 @@ class BookingForm extends Component {
     let paymentMethod = this.state.paymentMethod;
     let paymentMethodDescription = '';
 
-    if (this.state.booking.id) {
+    if (this.state.booking.id || !this.state.listing) {
       return '';
     }
+
+    const listing = this.state.listing;
+    let bookingTerms = listing ? listing.country_configuration.insurance_provider.booking_terms : {};
+    let listingTerms = listing ? listing.country_configuration.insurance_provider.listing_terms : {};
 
     if (Object.keys(paymentMethod).length > 0) {
       paymentMethodDescription = LocalizationService.formatMessage('payment_methods.payment_method_card', {
@@ -732,10 +738,31 @@ class BookingForm extends Component {
             <div className="fleet-checkbox">
               <input type="checkbox"
                      id="booking_form_agree_to_vehicle_rules"
-                     value={ this.state.booking.agreed_to_rules }
-                     onChange={ (event) => this.handleBookingChange('agreed_to_rules', event.target.checked) } />
+                     checked={ this.state.booking.agreed_to_rules }
+                     onChange={ (event) => { event.preventDefault(); this.toggleModal('acceptRules') } } />
               <label htmlFor="booking_form_agree_to_vehicle_rules"></label>
             </div>
+
+            <ConfirmationModal open={ this.state.modalsOpen.acceptRules }
+                               toggleModal={ this.toggleModal }
+                               modalName="acceptRules"
+                               title={ LocalizationService.formatMessage('bookings.vehicle_rules') }
+                               confirmationText={ LocalizationService.formatMessage('application.agree') }
+                               cancelText={ LocalizationService.formatMessage('application.decline') }
+                               confirmationAction={ () => this.handleBookingChange('agreed_to_rules', true) }
+                               cancelAction={ () => this.handleBookingChange('agreed_to_rules', false) } >
+              <p className="black-text text-left">
+                <b> { `${LocalizationService.formatMessage('application.rules')}:` } </b>
+                <br/><br/>
+                {
+                  listing.rules.map((rule, index) => {
+                    return (
+                      <span> { `${index + 1}: ${rule.rule}` } { index < listing.rules.length - 1 ? (<br/>) : ''} </span>
+                    )
+                  })
+                }
+              </p>
+            </ConfirmationModal>
           </div>
         </div>
 
@@ -745,10 +772,23 @@ class BookingForm extends Component {
             <div className="fleet-checkbox">
               <input type="checkbox"
                      id="booking_form_agree_to_insurance_terms"
-                     value={ this.state.booking.agreed_to_insurance_terms }
-                     onChange={ (event) => this.handleBookingChange('agreed_to_insurance_terms', event.target.checked) } />
+                     checked={ this.state.booking.agreed_to_insurance_terms }
+                     onChange={ (event) => { event.preventDefault(); this.toggleModal('acceptTerms') } } />
               <label htmlFor="booking_form_agree_to_insurance_terms"></label>
             </div>
+
+            <ConfirmationModal open={ this.state.modalsOpen.acceptTerms }
+                               toggleModal={ this.toggleModal }
+                               modalName="acceptTerms"
+                               title={ LocalizationService.formatMessage('bookings.insurance_terms') }
+                               confirmationText={ bookingTerms.actions.agree }
+                               cancelText={ bookingTerms.actions.decline }
+                               confirmationAction={ () => this.handleBookingChange('agreed_to_insurance_terms', true) }
+                               cancelAction={ () => this.handleBookingChange('agreed_to_insurance_terms', false) } >
+              <div className="black-text text-left">
+                { bookingTerms.text.split('\n').map((paragraph, index) => (<p key={ `insurance_term_paragraph_${index}`}>{ paragraph }<br/></p>)) }
+              </div>
+            </ConfirmationModal>
           </div>
         </div>
       </div>
@@ -886,7 +926,7 @@ class BookingForm extends Component {
       return;
     }
 
-    if (this.state.booking.status === 'pending') {
+    if (!this.state.booking.id || this.state.booking.status === 'pending') {
       return;
     }
 

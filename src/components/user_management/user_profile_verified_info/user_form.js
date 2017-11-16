@@ -54,11 +54,12 @@ class UserForm extends Component {
     if (!country && this.props.user.address.country) {
       country = this.props.user.address.country.alpha2;
     }
-
+    
     return (
       <div>
         <FormRow type='singleyeardate' id='user-dateofbirth' handleChange={ this.props.handleDateChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth) : moment() } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
         <FormRow type='select' id='user-gender' clearable={ false } handleChange={ this.props.handleGenderChange } value={ this.props.user.gender } options={ this.genderOptions } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.gender'}) } />
+        <FormRow type='country' id='user-country' clearable={ false } handleChange={ this.props.handleUserCountryChange } value={ this.props.user.country_code || (this.props.user && this.props.user.country ? this.props.user.country.alpha2 : undefined) } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.country_of_residence' })} />
 
         <FormGroup placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address'}) }>
           <FormField id='user-address-line1' handleChange={ this.props.handleAddressLine1Change } type='text' value={ this.props.user.address.line1 } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.address_line_1'})}/>
@@ -66,7 +67,7 @@ class UserForm extends Component {
           <FormField id='user-address-city' handleChange={ this.props.handleCityChange } type='text' value={ this.props.user.address.city } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.state'})}/>
           <FormField id='user-address-state' handleChange={ this.props.handleStateChange } type='text' value={ this.props.user.address.state } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.county'})}/>
           <FormField id='user-address-postcode' handleChange={ this.props.handlePostCodeChange } type='text' value={ this.props.user.address.postal_code } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.post_code'})}/>
-          <FormField id='user-address-country' handleChange={ this.props.handleCountryChange } type='country' value={ country } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.country'})}/>
+          <FormField id='user-address-country' handleChange={ this.props.handleCountryChange } type='country' value={ country } clearable={ false } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.address.country'})}/>
         </FormGroup>
 
         <FormRow type='text' id='user-email' handleChange={ this.props.handleEmailChange } value={ this.props.user.email } placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.email'}) } />

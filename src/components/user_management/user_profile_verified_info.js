@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import Alert from 'react-s-alert';
+import moment from 'moment';
 
 import UsersService from '../../shared/services/users/users_service';
 import FormButtonRow from '../miscellaneous/forms/form_button_row';
+import FormField from '../miscellaneous/forms/form_field';
+import Loading from '../miscellaneous/loading';
 
-import moment from 'moment';
 import UserForm from './user_profile_verified_info/user_form';
 import BusinessInformationForm from './user_profile_verified_info/business_information_form';
 
@@ -18,6 +20,7 @@ class UserProfileVerifiedInfo extends Component {
 
     this.state = {
       addressUpdated: false,
+      hideAccountType: false,
       user: {
         address: {
           country: {
@@ -29,27 +32,34 @@ class UserProfileVerifiedInfo extends Component {
             }
           }
         }
-      }
-    }
+      },
+      loading: false
+    };
+
+    this.addError = this.addError.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+    this.handleAccountTypeChange = this.handleAccountTypeChange.bind(this);
 
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+
+    this.handleCityChange = this.handleCityChange.bind(this);
+    this.handleStateChange = this.handleStateChange.bind(this);
     this.handleGenderChange = this.handleGenderChange.bind(this);
+    this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleUserCountryChange = this.handleUserCountryChange.bind(this);
+    this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
     this.handleAddressLine1Change = this.handleAddressLine1Change.bind(this);
     this.handleAddressLine2Change = this.handleAddressLine2Change.bind(this);
-    this.handleStateChange = this.handleStateChange.bind(this);
-    this.handleCityChange = this.handleCityChange.bind(this);
-    this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
-    this.handleCountryChange = this.handleCountryChange.bind(this);
+
+    this.handleBusinessNameChange = this.handleBusinessNameChange.bind(this);
+    this.handleBusinessCityChange = this.handleBusinessCityChange.bind(this);
+    this.handleBusinessTaxIDChange = this.handleBusinessTaxIDChange.bind(this);
+    this.handleBusinessStateChange = this.handleBusinessStateChange.bind(this);
+    this.handleBusinessCountryChange = this.handleBusinessCountryChange.bind(this);
+    this.handleBusinessPostCodeChange = this.handleBusinessPostCodeChange.bind(this);
     this.handleBusinessAddressLine1Change = this.handleBusinessAddressLine1Change.bind(this);
     this.handleBusinessAddressLine2Change = this.handleBusinessAddressLine2Change.bind(this);
-    this.handleBusinessStateChange = this.handleBusinessStateChange.bind(this);
-    this.handleBusinessCityChange = this.handleBusinessCityChange.bind(this);
-    this.handleBusinessPostCodeChange = this.handleBusinessPostCodeChange.bind(this);
-    this.handleBusinessCountryChange = this.handleBusinessCountryChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleBusinessNameChange = this.handleBusinessNameChange.bind(this);
-    this.handleBusinessTaxIDChange = this.handleBusinessTaxIDChange.bind(this);
-    this.updateUser = this.updateUser.bind(this);
   }
 
   componentDidMount() {
@@ -61,6 +71,90 @@ class UserProfileVerifiedInfo extends Component {
                                                       { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ') }));
       }
     }
+
+    this.setState({ loading: true }, () => {
+      UsersService.show('me')
+                  .then(response => {
+                    let user = response.data.data.user;
+
+                    if (!user.address) {
+                      user.address = {};
+                    }
+
+                    this.setState({ loading: false, user: user, hideAccountType: user.account_type === 'company' });
+                  })
+                  .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
+  updateUser() {
+    let user = this.state.user;
+
+    if (!user) {
+      return;
+    }
+
+    this.setState({ loading: true}, () => {
+      let user_params = {
+        date_of_birth: user.date_of_birth,
+        gender: user.gender,
+        email: user.email,
+        country_code: user.country_code || user.country.alpha2,
+        account_type: user.account_type
+      };
+
+      if (user.account_type === 'company' && user.business_details) {
+        let business_details = user.business_details;
+
+        user_params.business = {
+          name: business_details.name,
+          tax_id: business_details.tax_id,
+          line1: business_details.address.line1,
+          line2: business_details.address.line2,
+          city: business_details.address.city,
+          state: business_details.address.state,
+          postal_code: business_details.address.postal_code,
+          country_code: business_details.address.country_code || business_details.address.country.alpha2
+        };
+      }
+
+      if (this.state.addressUpdated) {
+        user_params.address = {
+          line1: user.address.line1,
+          line2: user.address.line2,
+          state: user.address.state,
+          city: user.address.city,
+          postal_code: user.address.postal_code,
+          country_code: user.address.country_code || user.address.country.alpha2
+        };
+      }
+
+      UsersService.update('me', { user: user_params })
+                  .then(response => {
+                    let user = response.data.data.user;
+
+                    if (!user.address) {
+                      user.address = {};
+                    }
+
+                    this.setState({ loading: false, user: user, hideAccountType: user.account_type === 'company' }, () => {
+                      Alert.success(LocalizationService.formatMessage('application.saved_changes_successfully'));
+                    });
+                  })
+                  .catch(error => this.addError(Errors.extractErrorMessage(error)));
+    });
+  }
+
+  addError(error) {
+    this.setState({ loading: false }, () => { Alert.error(error); });
+  }
+
+  handleAccountTypeChange(accountType) {
+    let user = this.state.user;
+
+    user.account_type = accountType.value;
+
+    this.setState({ user: user });
   }
 
   handleDateChange(date) {
@@ -68,7 +162,7 @@ class UserProfileVerifiedInfo extends Component {
 
     user.date_of_birth = moment(date).utc().unix();
 
-    this.setState({user: user})
+    this.setState({user: user});
   }
 
   handleAddressLine1Change(event) {
@@ -236,6 +330,14 @@ class UserProfileVerifiedInfo extends Component {
     this.setState({ user: user });
   }
 
+  handleUserCountryChange(country) {
+    let user = this.state.user;
+
+    user.country_code = country.value;
+
+    this.setState({ user: user });
+  }
+
   handleBusinessCountryChange(country) {
     let user = this.state.user;
 
@@ -299,67 +401,32 @@ class UserProfileVerifiedInfo extends Component {
     this.setState({ user: user })
   }
 
-  updateUser() {
-    let user = this.state.user;
-    let user_params = {
-      date_of_birth: user.date_of_birth,
-      gender: user.gender,
-      email: user.email,
-    };
-
-    if (user.account_type === 'company' && user.business_details) {
-      let business_details = user.business_details;
-
-      user_params.business = {
-        name: business_details.name,
-        tax_id: business_details.tax_id,
-        line1: business_details.address.line1,
-        line2: business_details.address.line2,
-        city: business_details.address.city,
-        state: business_details.address.state,
-        postal_code: business_details.address.postal_code,
-        country_code: business_details.address.country_code || business_details.address.country.alpha2
-      }
+  renderAccountType() {
+    if (this.state.hideAccountType) {
+      return '';
     }
 
-    if (this.state.addressUpdated) {
-      user_params.address = {
-        line1: user.address.line1,
-        line2: user.address.line2,
-        state: user.address.state,
-        city: user.address.city,
-        postal_code: user.address.postal_code,
-        country_code: user.address.country_code || user.address.country.alpha2
-      }
-    }
+    const accountTypeOptions = [
+      { label: 'Company', value: 'company' },
+      { label: 'Individual', value: 'individual' }
+    ];
 
-    if (user) {
-      UsersService.update('me', {
-        user: user_params
-      }).then(response => {
-        let user = response.data.data.user;
-
-        if (!user.address) {
-          user.address = {};
-        }
-
-        this.setState({ user: user });
-      })
-      .catch(error => Alert.error(Errors.extractErrorMessage(error)));
-    }
-  }
-
-  componentWillMount() {
-    UsersService.show('me')
-                .then(response => {
-                  let user = response.data.data.user;
-
-                  if (!user.address) {
-                    user.address = {};
-                  }
-
-                  this.setState({ user: user });
-                });
+    return (
+      <div>
+        <div className="panel-form row">
+          <div className='col-xs-12 form-header'>
+            <FormattedMessage id="user_profile_verified_info.account_type" />
+          </div>
+          <div className='col-xs-12 form-body'>
+            <FormField type="select"
+                       value={ this.state.user.account_type || 'individual' }
+                       options={ accountTypeOptions }
+                       handleChange={ this.handleAccountTypeChange  }
+                       clearable={ false } />
+          </div>
+        </div>
+      </div>
+    )
   }
 
   renderUserForm() {
@@ -379,6 +446,7 @@ class UserProfileVerifiedInfo extends Component {
                       handleAddressLine2Change={ this.handleAddressLine2Change }
                       handlePostCodeChange={ this.handlePostCodeChange }
                       handleCountryChange={ this.handleCountryChange }
+                      handleUserCountryChange={ this.handleUserCountryChange }
                       handleEmailChange={ this.handleEmailChange }
                       placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
           </div>
@@ -388,35 +456,39 @@ class UserProfileVerifiedInfo extends Component {
   }
 
   renderBusinessInformationForm() {
-    if (this.state.user && this.state.user.account_type === 'company') {
-      return(
-        <div className='panel-form row'>
-          <div className='col-xs-12 form-header'>
-            <FormattedMessage id="user_profile_verified_info.business_information" />
-          </div>
-          <div className='col-xs-12 form-body'>
-            <BusinessInformationForm user={ this.state.user }
-                                     handleNameChange={ this.handleBusinessNameChange }
-                                     handleTaxIDChange={ this.handleBusinessTaxIDChange }
-                                     handleCityChange={ this.handleBusinessCityChange }
-                                     handleStateChange={ this.handleBusinessStateChange }
-                                     handleAddressLine1Change={ this.handleBusinessAddressLine1Change }
-                                     handleAddressLine2Change={ this.handleBusinessAddressLine2Change }
-                                     handlePostCodeChange={ this.handleBusinessPostCodeChange }
-                                     handleCountryChange={ this.handleBusinessCountryChange } />
-
-          </div>
-        </div>
-      )
-    }
-    else {
+    if (this.state.user && this.state.user.account_type !== 'company') {
       return '';
     }
+
+    return(
+      <div className='panel-form row'>
+        <div className='col-xs-12 form-header'>
+          <FormattedMessage id="user_profile_verified_info.business_information" />
+        </div>
+        <div className='col-xs-12 form-body'>
+          <BusinessInformationForm user={ this.state.user }
+                                    handleNameChange={ this.handleBusinessNameChange }
+                                    handleTaxIDChange={ this.handleBusinessTaxIDChange }
+                                    handleCityChange={ this.handleBusinessCityChange }
+                                    handleStateChange={ this.handleBusinessStateChange }
+                                    handleAddressLine1Change={ this.handleBusinessAddressLine1Change }
+                                    handleAddressLine2Change={ this.handleBusinessAddressLine2Change }
+                                    handlePostCodeChange={ this.handleBusinessPostCodeChange }
+                                    handleCountryChange={ this.handleBusinessCountryChange } />
+
+        </div>
+      </div>
+    )
   }
 
   render() {
+    if (this.state.loading) {
+      return (<Loading fullWidthLoading={ true } />)
+    }
+
     return (
       <div className="col-xs-12 no-side-padding">
+        { this.renderAccountType() }
         { this.renderUserForm() }
         { this.renderBusinessInformationForm() }
         <FormButtonRow>
