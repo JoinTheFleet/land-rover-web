@@ -144,6 +144,7 @@
     "listings.engine_fuels": "Fuel",
     "listings.bodies": "Type",
     "listings.transmissions": "Transmission",
+    "listings.acceptance_rate": "Acceptance Rate: {rate}%",
     "listings.years": "Year",
     "listings.makes": "Make",
     "listings.nearby": "Nearby",
