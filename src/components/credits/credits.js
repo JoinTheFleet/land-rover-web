@@ -79,7 +79,7 @@ export default class Credits extends Component {
                 </div>
                 <div className='col-xs-12 no-side-padding credit-information'>
                   <div className='col-xs-12 credit-amount no-side-padding '>
-                    { this.props.user.credit_balance.message }
+                    { this.props.user && this.props.user.credit_balance ? this.props.user.credit_balance.message : '' }
                   </div>
                   <div className='col-xs-12 credit-explanation no-side-padding'>
                     { LocalizationService.formatMessage('dashboard.credits.invite') }

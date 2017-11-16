@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 import RatingInput from '../miscellaneous/rating_input';
+
 import LocalizationService from '../../shared/libraries/localization_service';
 
 export default class UserListing extends Component {

@@ -5,12 +5,13 @@ import Alert from 'react-s-alert';
 import BookingRow from './booking_row';
 import ListingsSelector from '../listings/listings_selector';
 
+import Placeholder from '../miscellaneous/placeholder';
 import Pageable from '../miscellaneous/pageable';
+import Loading from '../miscellaneous/loading';
 import Errors from '../../miscellaneous/errors';
 
 import ListingsService from '../../shared/services/listings/listings_service';
 import ListingsBookingsService from '../../shared/services/listings/listing_bookings_service';
-import LocalizationService from '../../shared/libraries/localization_service';
 
 const BOOKINGS_PER_PAGE = 10;
 
@@ -106,11 +107,11 @@ class OwnerBookingsOverview extends Component {
   }
 
   render() {
-    let bookingsList = (
-      <div className="col-xs-12 text-center tertiary-text-color text-secondary-font-weight fs-20">
-        { LocalizationService.formatMessage('bookings.no_bookings') }
-      </div>
-    );
+    let bookingsList = (<Placeholder contentType="bookings" />);
+
+    if (this.state.loading) {
+      bookingsList = (<Loading />);
+    }
 
     if (this.state.bookings.length > 0) {
       bookingsList = (

@@ -3,6 +3,7 @@ import Alert from 'react-s-alert';
 
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
+import Placeholder from '../miscellaneous/placeholder';
 import LocalizationService from '../../shared/libraries/localization_service';
 import UserCreditHistoriesService from '../../shared/services/users/user_credit_histories_service';
 import CreditCard from './credit_card';
@@ -64,6 +65,9 @@ export default class CreditList extends Component {
 
     if (this.state.initialLoad) {
       body = <Loading />
+    }
+    else if (this.state.credits.length === 0) {
+      body = <Placeholder />
     }
     else {
       body = (

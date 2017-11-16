@@ -6,6 +6,8 @@ import UserReviewsService from '../../shared/services/users/user_reviews_service
 import RenterReviewsService from '../../shared/services/renter_reviews_service';
 import Review from './review';
 
+import Placeholder from '../miscellaneous/placeholder';
+
 import LocalizationService from '../../shared/libraries/localization_service';
 
 const LIMIT = 5;
@@ -61,6 +63,22 @@ export default class ReviewSummary extends Component {
   }
 
   render() {
+    let reviews = (<Placeholder />)
+
+    if (this.state.reviews.length > 0) {
+      reviews = (
+        <div className='row'>
+          {
+            this.state.reviews.map((review) => {
+              return (
+                <Review review={review} />
+              )
+            })
+          }
+        </div>
+      )
+    }
+
     return (
       <div>
         <div className='col-xs-12 no-side-padding review-title'>
@@ -84,15 +102,7 @@ export default class ReviewSummary extends Component {
           </span>
         </div>
         <div className='col-xs-12 review-summary' >
-          <div className='row'>
-            {
-              this.state.reviews.map((review) => {
-                return (
-                  <Review review={review} />
-                )
-              })
-            }
-          </div>
+          { reviews }
         </div>
       </div>
     );

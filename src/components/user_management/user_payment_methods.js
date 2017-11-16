@@ -4,6 +4,7 @@ import PaymentMethodsService from '../../shared/services/payment_methods_service
 import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
 import Button from '../miscellaneous/button';
+import Placeholder from '../miscellaneous/placeholder';
 import FormPanel from '../miscellaneous/forms/form_panel';
 import {injectStripe } from 'react-stripe-elements';
 import PaymentMethod from './payment_methods/payment_method';
@@ -73,14 +74,18 @@ class UserPaymentMethods extends Component {
       return <Loading />;
     }
     else {
+      let paymentMethods = (<Placeholder />);
+
+      if (this.state.sources.length > 0) {
+        paymentMethods = this.state.sources.map((source, index) => {
+          return <PaymentMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ index === 0 }/>;
+        })
+      }
+
       return (
         <div className="col-xs-12 no-side-padding">
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.payment_methods') } >
-            {
-              this.state.sources.map((source, index) => {
-                return <PaymentMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ index === 0 }/>;
-              })
-            }
+            { paymentMethods }
           </FormPanel>
 
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.add_card') } >
