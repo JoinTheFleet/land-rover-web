@@ -32,6 +32,35 @@
       padding-bottom: 6px;
     }
 
+    input,
+    textarea {
+      border: solid 1px $smoke-grey;
+
+      & + input,
+      & + textarea {
+        margin-top: 3px;
+      }
+
+      & + .Select {
+        input {
+          border: none;
+        }
+
+        .Select-control {
+          top: 3px;
+        }
+      }
+    }
+
+    .Select {
+      .Select-control {
+        border: solid 1px $smoke-grey;
+        border-radius: 0;
+        width: calc(100% + 1px);
+      }
+    }
+
+
     span {
       display: block;
       padding-top: 10px;
