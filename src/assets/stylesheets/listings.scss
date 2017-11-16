@@ -260,8 +260,8 @@
   top: 50px;
   left: 0;
   padding: 38px 24px;
-  width: 100%;
   z-index: 100;
+  overflow-y: auto;
 
   .fleet-dropdown {
     width: 100%;
@@ -285,6 +285,12 @@
 
   .apply-listings-filters-div {
     padding: 17px 0;
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    .listings-filters {
+      height: auto !important;
+    }
   }
 }
 
@@ -614,6 +620,7 @@
   #listing_rules {
     resize: none;
     min-height: 200px;
+    padding-top: 10px;
   }
 }
 

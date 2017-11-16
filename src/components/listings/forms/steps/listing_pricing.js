@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
@@ -13,7 +12,10 @@ import FormField from '../../../miscellaneous/forms/form_field';
 import Helpers from '../../../../miscellaneous/helpers';
 import ListingsHelper from '../../../../miscellaneous/listings_helper';
 
+import ListingPreviewService from '../../../../shared/services/listings/listing_preview_service';
 import LocalizationService from '../../../../shared/libraries/localization_service';
+
+const DEFAULT_DISTANCE_UNITS = 'km';
 
 class ListingPricing extends Component {
   constructor(props) {
@@ -34,7 +36,8 @@ class ListingPricing extends Component {
     }
 
     this.state = {
-      listing: listing
+      listing: listing,
+      distanceUnits: DEFAULT_DISTANCE_UNITS
     };
 
     this.validateFields = this.validateFields.bind(this);
@@ -42,6 +45,16 @@ class ListingPricing extends Component {
     this.getListingProperties = this.getListingProperties.bind(this);
     this.handleRateInsertion = this.handleRateInsertion.bind(this);
     this.handleAddODCRate = this.handleAddODCRate.bind(this);
+  }
+
+  componentDidMount() {
+    const listingParams = ListingsHelper.extractListingParamsForSubmission(this.state.listing);
+
+    ListingPreviewService.create({ listing: listingParams })
+                         .then(response => {
+                           this.setState({ distanceUnits: response.data.data.listing.country_configuration.distance_units });
+                         })
+                         .catch(error => console.log(error.response.data.message)); // If it fails to retrieve the preview, the distanceUnits will be the default
   }
 
   getListingProperties() {
@@ -129,7 +142,7 @@ class ListingPricing extends Component {
                                         eventKey={`${index}_${distance}`}
                                         active={ od_rate.distance === distance }
                                         onClick={ () => { this.handleRateInsertion(index, 'distance', distance * 100) } }>
-                                { LocalizationService.formatMessage('listings.pricing.distance_km', { distance: distance }) }
+                                { `${distance} ${Helpers.capitalizeString(this.state.distanceUnits)}` }
                               </MenuItem>
                             )
                           })

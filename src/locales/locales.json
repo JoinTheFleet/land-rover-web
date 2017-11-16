@@ -140,6 +140,8 @@
     "bloglist.no_posts": "No posts to show yet. Check back later!",
     "bloglist.by_author": "By {author}",
 
+    "listings.reset_all_filters": "Reset All Filters",
+
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
     "listings.engine_fuels": "Fuel",

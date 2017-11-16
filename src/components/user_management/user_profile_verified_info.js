@@ -483,7 +483,7 @@ class UserProfileVerifiedInfo extends Component {
 
   render() {
     if (this.state.loading) {
-      return (<Loading fullWidthLoading={ true } />)
+      return (<Loading />)
     }
 
     return (

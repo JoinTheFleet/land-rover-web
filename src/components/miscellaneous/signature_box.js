@@ -40,10 +40,10 @@ class SignatureBox extends Component {
 
     return (
       <div className="fleet-signature-box fs-18 text-secondary-font-weight">
-        <div>
+        <div onClick={ this.toggleModal }>
           { signatureBox }
           <div className="fleet-signature-box-open-modal-btn">
-            <img src={ editSignatureIcon } alt="open_signature_modal_btn" onClick={ this.toggleModal } />
+            <img src={ editSignatureIcon } alt="open_signature_modal_btn"  />
           </div>
         </div>
 

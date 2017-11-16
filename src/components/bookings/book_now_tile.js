@@ -13,6 +13,7 @@ import ListingQuotationService from '../../shared/services/listings/listing_quot
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import Errors from '../../miscellaneous/errors';
+import Helpers from '../../miscellaneous/helpers';
 
 class BookNowTile extends Component {
   constructor(props) {
@@ -24,10 +25,34 @@ class BookNowTile extends Component {
       pricingQuote: {},
       quotation: {},
       loadingRates: false,
+      numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
+      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null
     };
 
     this.addError = this.addError.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
+    this.handleWindowResize = this.handleWindowResize.bind(this);
+
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  handleWindowResize() {
+    let width = Helpers.pageWidth();
+
+    if (width < 400) {
+      this.setState({ daySize: Math.round((Helpers.pageWidth() - 90) / 7) });
+    }
+
+    if (width > 400 && this.state.daySize) {
+      this.setState({ daySize: null });
+    }
+
+    if (width < 768 && this.state.numberOfMonthsToShow === 2) {
+      this.setState({ numberOfMonthsToShow: 1 });
+    }
+    else if(width >= 768 && this.state.numberOfMonthsToShow === 1 ) {
+      this.setState({ numberOfMonthsToShow: 2 });
+    }
   }
 
   addError(error) {
@@ -153,6 +178,8 @@ class BookNowTile extends Component {
           <DateRangePicker startDate={ startDate }
                            endDate={ endDate }
                            minimumNights={ 0 }
+                           daySize={ this.state.daySize }
+                           numberOfMonths={ this.state.numberOfMonthsToShow }
                            focusedInput={this.state.focusedInput}
                            onDatesChange={ this.handleDatesChange }
                            onFocusChange={ focusedInput => this.setState({ focusedInput }) }
