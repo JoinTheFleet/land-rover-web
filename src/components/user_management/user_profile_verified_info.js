@@ -420,10 +420,6 @@ class UserProfileVerifiedInfo extends Component {
   }
 
   renderUserForm() {
-    if (this.state.user && this.state.user.account_type === 'company') {
-      return '';
-    }
-
     return (
       <div>
         <div className="panel-form row">

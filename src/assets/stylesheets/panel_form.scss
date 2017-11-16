@@ -53,6 +53,10 @@
     }
 
     .Select {
+      .Select-input input {
+        border: none;
+      }
+
       .Select-control {
         border: solid 1px $smoke-grey;
         border-radius: 0;
