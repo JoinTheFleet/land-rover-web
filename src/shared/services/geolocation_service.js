@@ -1,5 +1,3 @@
-var geolocation = require('geolocation');
-
 var googleMapsClient = require('@google/maps').createClient({
   key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 });

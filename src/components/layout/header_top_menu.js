@@ -6,12 +6,45 @@ import { NavLink } from 'react-router-dom'
 
 import Menus from '../../miscellaneous/menus';
 
+import UsersService from '../../shared/services/users/users_service';
+
 export default class HeaderTopMenu extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: {
+        listing_count: 0
+      }
+    };
+
+    this.fetchUser = this.fetchUser.bind(this);
+  }
+
+  componentWillMount() {
+    if (this.props.loggedIn) {
+      this.fetchUser();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.loggedIn && nextProps.loggedIn !== this.props.loggedIn) {
+      this.fetchUser();
+    }
+  }
+
+  fetchUser() {
+    UsersService.show('me')
+                .then(response => {
+                  this.setState({ user: response.data.data.user });
+                });
+  }
+
   render() {
     let menu = <div></div>;
 
     if (this.props.loggedIn) {
-      let menuItems = Menus.getTopMenuForUserRole(this.props.currentUserRole);
+      let menuItems = Menus.getTopMenuForUserRole(this.props.currentUserRole, this.state.user);
       let menuItemsWithDivider = Menus.getTopMenuDividers();
       let itemHasDivider = false;
       let divider = '';
@@ -22,9 +55,7 @@ export default class HeaderTopMenu extends Component {
           <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             {
               menuItems.map((menuItem) => {
-                if (this.props.currentUserRole === 'owner') {
-                  itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
-                }
+                itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
 
                 divider = itemHasDivider ? (<div className="header-top-menu-divider tertiary-color"></div>) : '';
 

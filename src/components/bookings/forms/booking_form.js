@@ -697,7 +697,6 @@ class BookingForm extends Component {
 
     const listing = this.state.listing;
     let bookingTerms = listing ? listing.country_configuration.insurance_provider.booking_terms : {};
-    let listingTerms = listing ? listing.country_configuration.insurance_provider.listing_terms : {};
 
     if (Object.keys(paymentMethod).length > 0) {
       paymentMethodDescription = LocalizationService.formatMessage('payment_methods.payment_method_card', {
