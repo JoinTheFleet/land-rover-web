@@ -64,6 +64,7 @@ class ListingRules extends Component {
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.rules'}) }>
             <FormField id="listing_rules"
                        type="textarea"
+                       placeholder={ this.props.intl.formatMessage({id: 'listings.rules.rules_eg'}) }
                        value={ listing.rules ? listing.rules[0].rule : '' }
                        handleChange={ (event) => { this.handleRulesInsertion(event.target.value) } } />
 

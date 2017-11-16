@@ -111,7 +111,7 @@
     "authentication.first_name": "First Name",
     "authentication.last_name": "Last Name",
 
-    "homescreen.top_banner_title": "Car Sharing Made Smart",
+    "homescreen.top_banner_title": "Find Your Perfect Car",
     "homescreen.top_banner_slogan": "Rent nearby users cars quickly and easily with just a few clicks.",
     "homescreen.insurance_partner": "Insurance Partner",
     "homescreen.how_it_works": "How It Works",
@@ -211,7 +211,7 @@
     "listings.pricing.price": "Price",
 
     "listings.rules.rules": "Rules",
-    "listings.rules.rules_eg": "Rules eg. No Dogs",
+    "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
 
     "listings.need_to_complete_verifications": "You need to fill in the following info in order to be able to add a listing: {info_to_verify}",
