@@ -30,6 +30,10 @@
   & + .wishlist-card {
     margin-top: 20px;
   }
+
+  &:last-of-type {
+    margin-bottom: 20px;
+  }
 }
 
 .wishlist-summary {
