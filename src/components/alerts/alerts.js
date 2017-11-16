@@ -70,7 +70,11 @@ export default class Alerts extends Component {
                 arrows={ true }
                 infinite={ false }
                 autoplay={ true }
-                beforeChange={ (prev, next) => { this.markAlertAsRead(this.state.alerts[prev].id) }}
+                beforeChange={ (prev, next) => {
+                  if (this.state.alerts[prev]) {
+                    this.markAlertAsRead(this.state.alerts[prev].id);
+                  }
+                }}
                 autoplaySpeed={ 2000 }
                 slidesToShow={ 1 }>
           {
