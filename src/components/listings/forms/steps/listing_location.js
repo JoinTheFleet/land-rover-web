@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import { injectIntl, FormattedMessage } from 'react-intl';
+import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
 
@@ -99,16 +99,30 @@ class ListingLocation extends Component {
   }
 
   handleMapClick(position) {
-    if (window.google) {
-      let geocoder = new window.google.maps.Geocoder();
-      let component = this;
+    const latitude = typeof position.lat === 'function' ? position.lat() : position.lat;
+    const longitude = typeof position.lng === 'function' ? position.lng() : position.lng;
 
-      geocoder.geocode({ location: position }, function(results, status) {
-        if (status === 'OK' && results[0]) {
-          component.setLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng(), results[0].formatted_address);
-        }
-      });
-    }
+    this.setState({
+      selectedPosition: {
+        latitude: latitude,
+        longitude: longitude
+      },
+      selectedAddress: `${latitude}, ${longitude}`
+    }, () => {
+      GeolocationService.getLocationFromPosition(this.state.selectedPosition)
+                        .then(results => {
+                          if (results && results.length > 0) {
+                            console.log(`${latitude}, ${longitude}`);
+                            console.log(results);
+                            const index = results.findIndex(result => Math.abs(result.geometry.location.lat - latitude) <= 0.01 && Math.abs(result.geometry.location.lng - longitude) <= 0.01);
+
+                            if (index > -1) {
+                              this.setLocation(results[index].geometry.location.lat, results[index].geometry.location.lng, results[index].formatted_address);
+                            }
+                          }
+                        })
+                        .catch(error => { Alert.error(error.toString()); });
+    });
   }
 
   render() {

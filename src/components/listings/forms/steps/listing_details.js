@@ -120,7 +120,7 @@ class ListingDetails extends Component {
               [ 'body', 'make', 'model'].map(param => {
                 return (
                   <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
-                    <span className="listings-readonly-value">
+                    <span className="listings-readonly-value text-capitalize">
                       { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
                     </span>
                   </ListingFormField>
@@ -134,7 +134,7 @@ class ListingDetails extends Component {
               [ 'engine_fuel', 'transmission', 'seat_count', 'door_count' ].map(param => {
                 return (
                   <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
-                    <span className="listings-readonly-value">
+                    <span className="listings-readonly-value text-capitalize">
                       { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
                     </span>
                   </ListingFormField>

@@ -8,7 +8,9 @@ import FormGroup from '../../miscellaneous/forms/form_group';
 import FormField from '../../miscellaneous/forms/form_field';
 import Button from '../../miscellaneous/button';
 import Loading from '../../miscellaneous/loading';
+import ConfirmationModal from '../../miscellaneous/confirmation_modal';
 
+import BookingsService from '../../../shared/services/bookings/bookings_service';
 import BookingSurveysService from '../../../shared/services/bookings/booking_surveys_service';
 import BookingSurveyIssuesService from '../../../shared/services/bookings/booking_survey_issues_service';
 import LocalizationService from '../../../shared/libraries/localization_service';
@@ -23,12 +25,14 @@ class BookingSurvey extends Component {
     this.state = {
       survey: {},
       currentIssue: {},
+      showConfirmNoIssuesModal: false,
       loading: false
     };
 
     this.addError = this.addError.bind(this);
     this.deleteIssue = this.deleteIssue.bind(this);
     this.fetchSurvey = this.fetchSurvey.bind(this);
+    this.confirmNoIssues = this.confirmNoIssues.bind(this);
     this.saveCurrentIssue = this.saveCurrentIssue.bind(this);
     this.setCurrentIssueParamValue = this.setCurrentIssueParamValue.bind(this);
   }
@@ -93,6 +97,16 @@ class BookingSurvey extends Component {
     });
   }
 
+  confirmNoIssues() {
+    this.setState({ loading: true }, () => {
+      BookingsService.confirm_survey(this.props.booking.id)
+                     .then(response => {
+                       this.setState({ loading: false }, this.props.handleSaveSurvey);
+                     })
+                     .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
+    });
+  }
+
   addError(error) {
     this.setState({ loading: false }, () => { Alert.error(error); });
   }
@@ -123,6 +137,10 @@ class BookingSurvey extends Component {
   }
 
   renderRaiseIssueTile() {
+    if (!this.state.survey.issues || (this.state.survey.issues && this.state.survey.issues.length === 0)) {
+      return '';
+    }
+
     return (
       <div className="booking-survey-raise-issue-tile fleet-tile col-xs-12 no-side-padding">
         <div className="booking-survey-raise-issue-tile-header tile-header fs-16 secondary-color white-text col-xs-12">
@@ -161,8 +179,30 @@ class BookingSurvey extends Component {
   }
 
   renderIssuesList() {
-    if (Object.keys(this.state.survey).length === 0) {
-      return '';
+    if (!this.state.survey.issues || (this.state.survey.issues && this.state.survey.issues.length === 0)) {
+      if (this.props.currentUserRole === 'owner' && this.props.booking.survey_confirmed) {
+        return (
+          <div className="text-center col-xs-12 no-side-padding">
+            <p className="tertiary-text-color fs-20">
+              <br/>
+              { LocalizationService.formatMessage('bookings.surveys.no_issues_reported') }
+            </p>
+          </div>
+        )
+      }
+
+      if (!this.props.confirmSurvey) {
+        return '';
+      }
+
+      return (
+        <div className="secondary-text-color text-center col-xs-12 no-side-padding">
+          <p>
+            <br/>
+            { `*${LocalizationService.formatMessage('bookings.surveys.please_walk_around_the_vehicle_and_make_note')}` }
+          </p>
+        </div>
+      )
     }
 
     return (
@@ -176,6 +216,49 @@ class BookingSurvey extends Component {
     )
   }
 
+  renderButtons() {
+    let confirmNoIssuesDiv = '';
+    let saveSurveyDiv = (
+      <div className="col-xs-12 text-center no-side-padding">
+        <Button className="tomato white-text text-center fs-16"
+                onClick={ this.props.handleSaveSurvey }>
+          { LocalizationService.formatMessage('bookings.surveys.save_vehicle_survey') }
+        </Button>
+      </div>
+    );
+
+    if (this.props.confirmSurvey && (!this.state.survey.issues || (this.state.survey.issues && this.state.survey.issues.length === 0))) {
+      saveSurveyDiv = '';
+      confirmNoIssuesDiv = (
+        <div className="col-xs-12 text-center no-side-padding">
+          <Button className="secondary-color white-text text-center fs-16"
+                  onClick={ () => { this.setState({ showConfirmNoIssuesModal: true }) } }>
+            { LocalizationService.formatMessage('bookings.surveys.confirm_no_issues') }
+          </Button>
+
+          <ConfirmationModal open={ this.state.showConfirmNoIssuesModal }
+                             toggleModal={ () => { this.setState(prevState => ({ showConfirmNoIssuesModal: !prevState.showConfirmNoIssuesModal })) } }
+                             modalName="confirmNoIssues"
+                             title={ LocalizationService.formatMessage('bookings.surveys.confirm_no_issues') }
+                             confirmationText={ LocalizationService.formatMessage('application.confirm') }
+                             cancelText={ LocalizationService.formatMessage('application.cancel') }
+                             confirmationAction={ this.confirmNoIssues }
+                             cancelAction={ () => { this.setState(prevState => ({ showConfirmNoIssuesModal: !prevState.showConfirmNoIssuesModal })) } } >
+            <p> { LocalizationService.formatMessage('bookings.surveys.confirm_there_is_no_damage') } </p>
+          </ConfirmationModal>
+        </div>
+      )
+    }
+
+    return (
+      <div className="booking-survey-action-buttons text-center col-xs-12">
+        { saveSurveyDiv }
+
+        { confirmNoIssuesDiv }
+      </div>
+    )
+  }
+
   renderLoading() {
     if (!this.state.loading) {
       return '';
@@ -185,6 +268,7 @@ class BookingSurvey extends Component {
   }
 
   render() {
+
     return (
       <div className="booking-survey-div col-xs-12 no-side-padding">
         <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
@@ -195,12 +279,7 @@ class BookingSurvey extends Component {
           { this.renderIssuesList() }
         </div>
 
-        <div className="booking-survey-action-buttons text-center col-xs-12">
-          <Button className="tomato white-text text-center fs-16"
-                  onClick={ this.props.handleSaveSurvey }>
-            { LocalizationService.formatMessage('bookings.surveys.save_vehicle_survey') }
-          </Button>
-        </div>
+        { this.renderButtons() }
 
         { this.renderLoading() }
       </div>
@@ -210,7 +289,8 @@ class BookingSurvey extends Component {
 
 BookingSurvey.propTypes = {
   booking: PropTypes.object.isRequired,
-  handleSaveSurvey: PropTypes.func
+  handleSaveSurvey: PropTypes.func,
+  confirmSurvey: PropTypes.bool
 };
 
 export default BookingSurvey;
