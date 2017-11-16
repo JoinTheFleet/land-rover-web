@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DateRangePicker } from 'react-dates';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
@@ -11,6 +12,7 @@ import Loading from '../miscellaneous/loading';
 import ListingQuotationService from '../../shared/services/listings/listing_quotation_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
+import Errors from '../../miscellaneous/errors';
 
 class BookNowTile extends Component {
   constructor(props) {
@@ -21,7 +23,6 @@ class BookNowTile extends Component {
       endDate: this.props.endDate,
       pricingQuote: {},
       quotation: {},
-      errors: [],
       loadingRates: false,
     };
 
@@ -30,10 +31,7 @@ class BookNowTile extends Component {
   }
 
   addError(error) {
-    this.setState(prevState => ({
-      errors: prevState.errors.concat([error]),
-      loadingRates: false
-    }));
+    this.setState(prevState => ({ loadingRates: false }), () => { Alert.error(error); });
   }
 
   handleDatesChange(dates) {
@@ -54,13 +52,13 @@ class BookNowTile extends Component {
     this.setState(newState, () => {
       if (fetchQuotation) {
         ListingQuotationService.create(this.props.listing.id, quotation.start_at, quotation.end_at, false, {}, {})
-                              .then(response => {
-                                this.setState({
-                                  pricingQuote: response.data.data.pricing_quote,
-                                  loadingRates: false
-                                });
-                              })
-                              .catch(error => { this.addError(error); });
+                               .then(response => {
+                                 this.setState({
+                                   pricingQuote: response.data.data.pricing_quote,
+                                   loadingRates: false
+                                 });
+                               })
+                               .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
       }
     });
   }

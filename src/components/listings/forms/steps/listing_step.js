@@ -78,7 +78,7 @@ class ListingStep extends Component {
         <div className="col-xs-12 no-side-padding">
           { this.props.children }
 
-          <div className="listing-step-buttons col-xs-12 text-right">
+          <div className="listing-step-buttons col-xs-12 no-side-padding text-right">
             { previewButton }
 
             <Button className="proceed-to-step-btn secondary-color white-text fs-12"

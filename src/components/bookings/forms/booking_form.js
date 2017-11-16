@@ -95,77 +95,65 @@ class BookingForm extends Component {
   componentDidMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.booking) {
-      this.setState({
-        booking: location.state.booking,
-        listing: location.state.booking.listing,
-        pricingQuote: location.state.booking.quotation
-      }, () => {
-        this.fetchPaymentMethods(this.fetchBookingOnDemandLocations);
+    if (this.props.match.params.id) {
+      this.fetchPaymentMethods(() => {
+        this.fetchBooking(true);
       });
     }
-    else {
-      if (this.props.match.params.id) {
-        this.fetchPaymentMethods(() => {
-          this.fetchBooking(true);
-        });
-      }
-      else if (this.props.match.params.listing_id) {
-        this.setState({ loading: true }, () => {
-          ListingsService.show(this.props.match.params.listing_id)
-                         .then(response => {
-                           this.setState({
-                             listing: response.data.data.listing
-                           }, () => {
-                             let quotation = this.state.quotation;
-                             let booking = this.state.booking;
-                             let pricingQuote = this.state.pricingQuote;
+    else if (this.props.match.params.listing_id) {
+      this.setState({ loading: true }, () => {
+        ListingsService.show(this.props.match.params.listing_id)
+                        .then(response => {
+                          this.setState({
+                            listing: response.data.data.listing
+                          }, () => {
+                            let quotation = this.state.quotation;
+                            let booking = this.state.booking;
+                            let pricingQuote = this.state.pricingQuote;
 
-                             if (location && location.state && location.state.pricingQuote) {
-                               pricingQuote = location.state.pricingQuote;
-                             }
+                            if (location && location.state && location.state.pricingQuote) {
+                              pricingQuote = location.state.pricingQuote;
+                            }
 
-                             if (location && location.state && location.state.quotation) {
-                               quotation = location.state.quotation;
-                               booking.quotation = quotation.uuid;
-                             }
+                            if (location && location.state && location.state.quotation) {
+                              quotation = location.state.quotation;
+                              booking.quotation = quotation.uuid;
+                            }
 
-                             if (typeof quotation.insurance_criteria === 'undefined') {
-                               quotation.insurance_criteria = [];
-                             }
+                            if (typeof quotation.insurance_criteria === 'undefined') {
+                              quotation.insurance_criteria = [];
+                            }
 
-                             if (typeof quotation.on_demand === 'undefined') {
-                               quotation.on_demand = false;
-                             }
+                            if (typeof quotation.on_demand === 'undefined') {
+                              quotation.on_demand = false;
+                            }
 
-                             if (typeof quotation.on_demand_location === 'undefined') {
-                              let location = this.state.listing.location || {
-                                latitude: 0,
-                                longitude: 0
+                            if (typeof quotation.on_demand_location === 'undefined') {
+                            let location = this.state.listing.location || {
+                              latitude: 0,
+                              longitude: 0
+                            };
+
+                              quotation.on_demand_location = {
+                                pick_up_time: this.state.listing.check_in_time,
+                                drop_off_time: this.state.listing.check_out_time,
+                                pick_up_location: location,
+                                drop_off_location: location
                               };
+                            }
 
-                               quotation.on_demand_location = {
-                                 pick_up_time: this.state.listing.check_in_time,
-                                 drop_off_time: this.state.listing.check_out_time,
-                                 pick_up_location: location,
-                                 drop_off_location: location
-                               };
-                             }
-
-                             this.setState({
-                               booking: booking,
-                               quotation: quotation,
-                               pricingQuote: pricingQuote
-                             }, () => {
-                                this.fetchPaymentMethods(this.fetchLocationFromListingPosition, this.fetchLocationFromListingPosition);
-                             });
-                           });
-                         })
-                         .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
-        });
-      }
+                            this.setState({
+                              booking: booking,
+                              quotation: quotation,
+                              pricingQuote: pricingQuote
+                            }, () => {
+                              this.fetchPaymentMethods(this.fetchLocationFromListingPosition, this.fetchLocationFromListingPosition);
+                            });
+                          });
+                        })
+                        .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
+      });
     }
-
   }
 
   fetchBooking(fetchLocations) {
@@ -303,7 +291,9 @@ class BookingForm extends Component {
                                }, successCallback);
                              })
                              .catch(error => {
-                               errorCallback();
+                               if (errorCallback) {
+                                 errorCallback();
+                               }
 
                                this.addError(error);
                              });
@@ -521,16 +511,23 @@ class BookingForm extends Component {
   }
 
   handleConfirmCheckOut() {
-    this.setState({
-      loading: true
-    }, () => {
-      BookingsService.check_out(this.state.booking.id)
-                     .then(response => {
-                       this.toggleModal('writeReview');
-                       Alert.success(LocalizationService.formatMessage('bookings.check_out_successful'));
-                     })
-                     .catch(error => this.addError(Errors.extractErrorMessage(error)));
-    });
+    if (!this.state.booking.survey_completed && !this.state.booking.survey_confirmed) {
+      this.setState({
+        showBookingSurvey: true
+      }, () => { Alert.error(LocalizationService.formatMessage('bookings.surveys.please_fill_survey_before_checkout')) });
+    }
+    else {
+      this.setState({
+        loading: true
+      }, () => {
+        BookingsService.check_out(this.state.booking.id)
+                       .then(response => {
+                         this.toggleModal('writeReview');
+                         Alert.success(LocalizationService.formatMessage('bookings.check_out_successful'));
+                       })
+                       .catch(error => this.addError(Errors.extractErrorMessage(error)));
+      });
+    }
   }
 
   hideLocationSearchResults(type) {
@@ -930,15 +927,29 @@ class BookingForm extends Component {
       return;
     }
 
+    let messageDiv = '';
+
+    if (this.props.currentUserRole === 'owner' && this.state.booking.status === 'in_progress' && !this.state.booking.survey_confirmed && !this.state.booking.survey_confirmed) {
+      messageDiv = (
+        <div className="booking-form-vehicle-survey-check-message fs-14 col-xs-12 no-side-padding">
+          <p className="secondary-text-color"> { `*${LocalizationService.formatMessage('bookings.surveys.please_walk_around_the_vehicle')}` } </p>
+        </div>
+      )
+    }
+
     return (
       <div className="booking-form-vehicle-survey booking-form-box fs-16 col-xs-12 no-side-padding">
-        <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.surveys.vehicle_survey') } </span>
+        { messageDiv }
 
-        <div className="pull-right text-right">
-          <FormField type="checkbox"
-                     id="booking_form_survey_completed"
-                     value={ this.state.booking.survey_completed }
-                     handleChange={ () => { this.showBookingSurvey(true) } } />
+        <div className="booking-form-vehicle-survey-row col-xs-12 no-side-padding">
+          <span className="tertiary-text-color"> { LocalizationService.formatMessage('bookings.surveys.vehicle_survey') } </span>
+
+          <div className="pull-right text-right">
+            <FormField type="checkbox"
+                       id="booking_form_survey_completed"
+                       value={ this.state.booking.survey_completed || this.state.booking.survey_confirmed }
+                       handleChange={ () => { this.showBookingSurvey(true) } } />
+          </div>
         </div>
       </div>
     )
@@ -967,8 +978,10 @@ class BookingForm extends Component {
     }
 
     if (this.state.showBookingSurvey) {
+      const confirmSurvey = this.props.currentUserRole === 'owner' && this.state.booking.status === 'in_progress' && !this.state.booking.survey_confirmed && !this.state.booking.survey_completed;
+
       return (
-        <BookingSurvey booking={ this.state.booking } handleSaveSurvey={ () => { this.showBookingSurvey(false) } }  />
+        <BookingSurvey booking={ this.state.booking } currentUserRole={ this.props.currentUserRole } confirmSurvey={ confirmSurvey } handleSaveSurvey={ () => { this.showBookingSurvey(false) } }  />
       )
     }
 
