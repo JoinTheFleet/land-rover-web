@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 
 import Modal from '../miscellaneous/modal';
+import Slider from 'react-slick';
 
 import AlertsService from '../../shared/services/alerts_service';
 import LocalizationService from '../../shared/libraries/localization_service';
@@ -34,7 +35,13 @@ export default class Alerts extends Component {
     AlertsService.sent()
                  .then(response => {
                    const alerts = response.data.data.alerts;
-                   this.setState({ alerts: alerts, open: alerts.length > 0 });
+                   this.setState({
+                     alerts: alerts,
+                     open: alerts.length > 0 }, () => {
+                      setTimeout(() => {
+                        this.markAlertAsRead(this.state.alerts[0].id);
+                      }, 2000)
+                     });
                  })
                  .catch(error => { Alert.error(error.response.data.message); });
   }
@@ -59,17 +66,24 @@ export default class Alerts extends Component {
              modalClass="alerts-modal"
              closeButtonPosition="right"
              toggleModal={ this.toggleModal } >
-        {
-          this.state.alerts.map(alert => {
-            return (
-              <div key={ alert.id } className="alert-modal-row">
-                <div style={ { backgroundImage: `url(${alert.image})` } } ></div>
-                <div> { alert.message } </div>
-                <div> <img src={ checkIcon } alt="check_icon" onClick={ () => { this.markAlertAsRead(alert.id) } } /></div>
-              </div>
-            )
-          })
-        }
+        <Slider dots={ true }
+                arrows={ true }
+                infinite={ false }
+                autoplay={ true }
+                beforeChange={ (prev, next) => { this.markAlertAsRead(this.state.alerts[prev].id) }}
+                autoplaySpeed={ 2000 }
+                slidesToShow={ 1 }>
+          {
+            this.state.alerts.map(alert => {
+              return (
+                <div key={ alert.id } className="col-xs-12 alert-modal-row">
+                  <div style={ { backgroundImage: `url(${alert.image})` } } ></div>
+                  <div> { alert.message } </div>
+                </div>
+              )
+            })
+          }
+        </Slider>
       </Modal>
     );
   }
