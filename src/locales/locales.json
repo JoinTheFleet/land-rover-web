@@ -184,6 +184,9 @@
     "listings.promote_listing": "Promote Listing",
     "listings.listing_promoted_until": "Your Listing is {promotionType}ed until:",
     "listings.spotlighted": "Spotlighted",
+    "listings.successfully_updated": "Listing successfully updated",
+    "listings.successfully_created": "Listing successfully created",
+    "listings.image_updated": "Listing images updated",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",

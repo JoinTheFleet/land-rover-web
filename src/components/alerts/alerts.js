@@ -55,7 +55,6 @@ export default class Alerts extends Component {
                    this.setState({ alerts: alerts, open: alerts.length > 0 });
                  })
                  .catch(error => { Alert.error(error.response.data.message); });
-
   }
 
   render() {

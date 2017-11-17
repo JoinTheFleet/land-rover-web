@@ -12,7 +12,9 @@ class ListingImagesService extends Service {
 
   static create(id, url) {
     return client.post(this.baseURL.replace(':listing_id', id), {
-      image_url: url
+      images: [{
+        url: url
+      }]
     });
   }
 

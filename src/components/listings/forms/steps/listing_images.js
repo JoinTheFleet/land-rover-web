@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
+import Alert from 'react-s-alert';
 
 import noImagesIcon from '../../../../assets/images/placeholder-no-images.png';
 
 import S3Uploader from '../../../../shared/external/s3_uploader';
 import Helpers from '../../../../miscellaneous/helpers';
+
+import ListingImagesService from '../../../../shared/services/listings/listing_images_service';
+import LocalizationService from '../../../../shared/libraries/localization_service';
 
 import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
@@ -41,6 +45,7 @@ class ListingImages extends Component {
     this.handleImagesUpload = this.handleImagesUpload.bind(this);
     this.readUploadedImages = this.readUploadedImages.bind(this);
     this.handleUploadImagesButtonClick = this.handleUploadImagesButtonClick.bind(this);
+    this.handleImageUpdateResponse = this.handleImageUpdateResponse.bind(this);
   }
 
   componentDidMount() {
@@ -120,11 +125,20 @@ class ListingImages extends Component {
       numberOfImagesToAdd--;
     }
 
-    if ( imagesToAdd.length === numberOfImagesToAdd ) {
-      this.setState((prevState) => ({
-        loading: false,
-        images: prevState.images.concat(imagesToAdd)
-      }));
+    if (this.props.edit) {
+      ListingImagesService.create(this.props.listing.id, image)
+                          .then(this.handleImageUpdateResponse)
+                          .catch(error => {
+                            Alert.error(error.response.data.message);
+                          });
+    }
+    else {
+      if ( imagesToAdd.length === numberOfImagesToAdd ) {
+        this.setState((prevState) => ({
+          loading: false,
+          images: prevState.images.concat(imagesToAdd)
+        }));
+      }
     }
   }
 
@@ -133,10 +147,30 @@ class ListingImages extends Component {
     let index = images.findIndex(currentImage => currentImage.url === image);
 
     if (index >= 0) {
-      images.splice(index, 1);
+      let existingObject = images[index];
 
-      this.setState({ images: images });
+      if (this.props.edit) {
+        ListingImagesService.destroy(this.props.listing.id, existingObject.id)
+                            .then(this.handleImageUpdateResponse)
+                            .catch(error => {
+                              Alert.error(error.response.data.message);
+                            });
+      }
+      else {
+        images.splice(index, 1);
+        this.setState({ images: images });
+      }      
     }
+  }
+
+  handleImageUpdateResponse(response) {
+    this.setState({ 
+      loading: false,
+      images: response.data.data.images.map(galleryImage => {
+        return { url: galleryImage.images.original_url, id: galleryImage.id };
+      })
+    });
+    Alert.success(LocalizationService.formatMessage('listings.image_updated'))
   }
 
   renderImagesCarousel() {
@@ -176,7 +210,7 @@ class ListingImages extends Component {
           <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.images.vehicle_images'}) + this.requiredImagesText() }>
             { this.renderImagesCarousel() }
             <button className="listing-form-images-upload-btn btn secondary-color white-text fs-12 ls-dot-five col-xs-12"
-                    onClick={ () => { this.handleUploadImagesButtonClick() } }>
+                    onClick={ (event) => { event.preventDefault(); this.handleUploadImagesButtonClick() } }>
               <FormattedMessage id="listings.images.upload_vehicle_images" />
             </button>
 
