@@ -62,7 +62,7 @@ class Homefeed extends Component {
         loading: true
       }, () => {
         GeolocationService.getCurrentPosition()
-        .then(position => { 
+        .then(position => {
           this.fetchHomeFeed(position.coords.latitude, position.coords.longitude);
         })
         .catch(error => {
@@ -72,6 +72,18 @@ class Homefeed extends Component {
     }
 
     this.setupEvents();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.accessToken && !this.props.accessToken) {
+      GeolocationService.getCurrentPosition()
+      .then(position => {
+        this.fetchHomeFeed(position.coords.latitude, position.coords.longitude);
+      })
+      .catch(error => {
+        this.fetchHomeFeed();
+      })
+    }
   }
 
   fetchHomeFeed(latitude, longitude) {
@@ -204,7 +216,7 @@ class Homefeed extends Component {
     let nearbyListings = this.state.nearby.objects;
     let collections = this.state.collections;
 
-    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && (this.state.nearby && this.state.nearby.objects && this.state.nearby.objects.length === 0))) && this.props.listings && this.props.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings && this.props.listings.length > 0) {
       return (
         <div>
           <div>
@@ -249,7 +261,7 @@ class Homefeed extends Component {
                     </p>
                     { body }
                   </div>
-  )
+                )
               })
             }
           </div>
