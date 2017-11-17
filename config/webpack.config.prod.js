@@ -252,6 +252,13 @@ module.exports = {
     // In production, it will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
     new InterpolateHtmlPlugin(env.raw),
+    new webpack.ContextReplacementPlugin(
+      // NOTE: If further languages are included, include their moment locale name here.
+      // The path to directory which should be handled by this plugin
+      /moment[\/\\]locale/,
+      // A regular expression matching files that should be included
+      /(en-gb)\.js/
+    ),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
@@ -282,6 +289,10 @@ module.exports = {
         // Pending further investigation:
         // https://github.com/mishoo/UglifyJS2/issues/2011
         comparisons: false,
+        warnings: true,
+        drop_console: true,
+        passes: 2,
+        switches: true
       },
       output: {
         comments: false,
