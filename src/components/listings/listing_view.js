@@ -50,7 +50,7 @@ class ListingView extends Component {
   }
 
   componentDidMount() {
-    let location = this.props.location;
+    let location = this.props;
 
     if (location && location.state && location.state.listing) {
       if (this.props.preview) {
@@ -64,13 +64,10 @@ class ListingView extends Component {
                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
       }
-      else if (!location.state.listing.variant) {
+      else {
         this.fetchListing(location.state.listing.id);
       }
-      else {
-        this.setState({ listing: location.state.listing });
       }
-    }
     else {
       this.fetchListing(this.props.match.params.id);
     }
