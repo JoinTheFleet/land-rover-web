@@ -8,6 +8,7 @@ import OwnerConversationDetails from './owner_conversation_details';
 
 import Pageable from '../miscellaneous/pageable';
 import Placeholder from '../miscellaneous/placeholder';
+import Loading from '../miscellaneous/loading';
 
 export default class ConversationList extends Component {
   constructor(props) {
@@ -89,25 +90,29 @@ export default class ConversationList extends Component {
   }
 
   render() {
-    if (this.state.conversations.length === 0) {
+    if (this.state.loading) {
+      return <Loading/>;
+    }
+    else if (this.state.conversations.length === 0) {
       return (<Placeholder contentType="messages" />);
     }
-
-    return (
-      <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage + 1 } handlePageChange={ this.handlePageChange } loading={ this.state.loading }>
-        <div className='conversation-list col-xs-12 no-side-padding'>
-          {
-            this.state.conversations.map((conversation) => {
-              if (this.props.role === 'renter') {
-                return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
-              }
-              else {
-                return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
-              }
-            })
-          }
-        </div>
-      </Pageable>
-    );
+    else {
+      return (
+        <Pageable totalPages={ this.state.totalPages } currentPage={ this.state.currentPage + 1 } handlePageChange={ this.handlePageChange } loading={ this.state.loading }>
+          <div className='conversation-list col-xs-12 no-side-padding'>
+            {
+              this.state.conversations.map((conversation) => {
+                if (this.props.role === 'renter') {
+                  return <RenterConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
+                }
+                else {
+                  return <OwnerConversationDetails key={ `conversation_${conversation.id}` } conversation={ conversation } />;
+                }
+              })
+            }
+          </div>
+        </Pageable>
+      );
+    }
   }
 }

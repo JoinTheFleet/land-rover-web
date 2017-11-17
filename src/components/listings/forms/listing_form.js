@@ -17,6 +17,7 @@ import ListingRules from './steps/listing_rules';
 import ListingsService from '../../../shared/services/listings/listings_service';
 import VehicleLookupsService from '../../../shared/services/vehicles/vehicle_lookups_service';
 import UsersService from '../../../shared/services/users/users_service';
+import LocalizationService from '../../../shared/libraries/localization_service';
 
 import { Redirect } from 'react-router-dom';
 
@@ -201,11 +202,12 @@ class ListingForm extends Component {
       loading: true,
       listing: Helpers.extendObject(prevState.listing, propertiesToAdd)
     }), () => {
-      let submissionParams = ListingsHelper.extractListingParamsForSubmission(this.state.listing);
+      let submissionParams = ListingsHelper.extractListingParamsForSubmission(this.state.listing, this.props.edit);
 
       if (this.props.edit) {
         ListingsService.update(this.state.listing.id, { listing: submissionParams })
                        .then(response => {
+                        Alert.success(LocalizationService.formatMessage('listings.successfully_updated'))
                          this.setState({
                            listing: response.data.data.listing,
                            currentStep: 'finished',
@@ -217,6 +219,7 @@ class ListingForm extends Component {
       else {
         ListingsService.create({ listing: submissionParams })
                        .then(response => {
+                         Alert.success(LocalizationService.formatMessage('listings.successfully_created'))
                          this.setState({
                            listing: response.data.data.listing,
                            currentStep: 'finished',
@@ -275,6 +278,7 @@ class ListingForm extends Component {
           break;
         case listingSteps.images:
           renderedStep = (<ListingImages listing={ this.state.listing }
+                                         edit={ this.props.edit }
                                          handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.pricing:

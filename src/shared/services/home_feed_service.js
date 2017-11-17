@@ -7,7 +7,7 @@ class HomeFeedService extends Service {
 
   static get actions() {
     return {
-      show: true
+      index: true
     }
   }
 }

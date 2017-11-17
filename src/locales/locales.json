@@ -184,6 +184,9 @@
     "listings.promote_listing": "Promote Listing",
     "listings.listing_promoted_until": "Your Listing is {promotionType}ed until:",
     "listings.spotlighted": "Spotlighted",
+    "listings.successfully_updated": "Listing successfully updated",
+    "listings.successfully_created": "Listing successfully created",
+    "listings.image_updated": "Listing images updated",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",
@@ -382,6 +385,8 @@
 
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
     "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
+    "user_profile_verified_info.payout_method_error": "There was an error processing your payout information, please try again.",
+    "user_profile_verified_info.payout_method_success": "Your payout information was processed successfully.",
     "notification_settings.notifications.title": "Notifications",
     "notification_settings.push_notifications.notification_title": "Push Notifications Settings",
     "notification_settings.sms_notifications.notification_title": "SMS Notifications Settings",

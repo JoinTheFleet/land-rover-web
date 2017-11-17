@@ -27,6 +27,6 @@ export default class Advertisement extends Component {
 }
 
 Advertisement.propTypes = {
-  advertisement: PropTypes.string,
+  advertisement: PropTypes.object,
   accessToken: PropTypes.string
 }

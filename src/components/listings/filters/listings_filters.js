@@ -44,6 +44,10 @@ export default class ListingsFilters extends Component {
     this.setState({
       open: nextProps.open || false
     });
+
+    if (nextProps.shouldClearFilters) {
+      this.resetAllFilters();
+    }
   }
 
   componentDidUpdate(props, state) {
@@ -219,10 +223,6 @@ export default class ListingsFilters extends Component {
     if (this.state.open) {
       return (
         <div className="listings-filters white col-xs-12 col-lg-7" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
-          <Button className="secondary-color white-text" onClick={ this.resetAllFilters }>
-            { LocalizationService.formatMessage('listings.reset_all_filters') }
-          </Button>
-
           {
             filterGroups.map((filtersGroup, index) => {
               let filters = this.state.filterOptions[filtersGroup];

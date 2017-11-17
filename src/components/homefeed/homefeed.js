@@ -20,6 +20,9 @@ import Helpers from '../../miscellaneous/helpers';
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
+import GeolocationService from '../../shared/services/geolocation_service';
+import Placeholder from '../miscellaneous/placeholder';
+
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
 class Homefeed extends Component {
@@ -50,26 +53,51 @@ class Homefeed extends Component {
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
     this.removeWishListFromNearbyListing = this.removeWishListFromNearbyListing.bind(this);
     this.removeWishListFromCollectionListing = this.removeWishListFromCollectionListing.bind(this);
+    this.fetchHomeFeed = this.fetchHomeFeed.bind(this);
   }
 
   componentDidMount() {
     if (this.props.accessToken) {
-
       this.setState({
         loading: true
       }, () => {
-        HomeFeedService.show()
-                       .then((response) => {
-                         this.setState({
-                           nearby: response.data.data.home_feed.nearby,
-                           collections: response.data.data.home_feed.collections,
-                           loading: false
-                         });
-                       });
+        GeolocationService.getCurrentPosition()
+        .then(position => { 
+          this.fetchHomeFeed(position.coords.latitude, position.coords.longitude);
+        })
+        .catch(error => {
+          this.fetchHomeFeed();
+        })
       });
     }
 
     this.setupEvents();
+  }
+
+  fetchHomeFeed(latitude, longitude) {
+    if (latitude && longitude) {
+      HomeFeedService.index({
+        latitude: latitude,
+        longitude: longitude
+      })
+      .then((response) => {
+        this.setState({
+          nearby: response.data.data.home_feed.nearby,
+          collections: response.data.data.home_feed.collections,
+          loading: false
+        });
+      });
+    }
+    else {
+      HomeFeedService.index()
+      .then((response) => {
+        this.setState({
+          nearby: response.data.data.home_feed.nearby,
+          collections: response.data.data.home_feed.collections,
+          loading: false
+        });
+      });
+    }
   }
 
   setupEvents() {
@@ -190,38 +218,43 @@ class Homefeed extends Component {
       )
     }
     else {
-      return (
-        <div>
+      if ((collections.length === 0 || collections.every((collection) => { return collection.object_type === 'Advertisement' })) && (!nearbyListings || nearbyListings.length === 0)) {
+        return <Placeholder contentType='vehicles_renter' />;
+      }
+      else {
+        return (
           <div>
-            <p className="top-seller-title strong-font-weight title-font-size">
-              <FormattedMessage id="listings.nearby" />
-            </p>
-
-            <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
+            <div>
+              <p className="top-seller-title strong-font-weight title-font-size">
+                <FormattedMessage id="listings.nearby" />
+              </p>
+  
+              <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
+            </div>
+  
+            {
+              collections.map((collection) => {
+                let body = '';
+                if (collection.object_type === 'Listing') {
+                  body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
+                }
+                else if (collection.object_type === 'Advertisement') {
+                  body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
+                }
+  
+                return (
+                  <div key={collection.id + '_' + collection.name + '_listing'}>
+                    <p className="top-seller-title strong-font-weight title-font-size">
+                      <span>{collection.name}</span>
+                    </p>
+                    { body }
+                  </div>
+  )
+              })
+            }
           </div>
-
-          {
-            collections.map((collection) => {
-              let body = '';
-              if (collection.object_type === 'Listing') {
-                body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
-              }
-              else if (collection.object_type === 'Advertisement') {
-                body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
-              }
-
-              return (
-                <div key={collection.id + '_' + collection.name + '_listing'}>
-                  <p className="top-seller-title strong-font-weight title-font-size">
-                    <span>{collection.name}</span>
-                  </p>
-                  { body }
-                </div>
-)
-            })
-          }
-        </div>
-      )
+        )
+      }
     }
   }
 

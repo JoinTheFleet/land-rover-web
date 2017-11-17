@@ -1,14 +1,14 @@
 export default class ListingsHelper {
-  static extractListingParamsForSubmission(listing) {
+  static extractListingParamsForSubmission(listing, edit) {
     if (!listing) {
       return {};
     }
 
-    return {
+    let submissionParams = {
       latitude: listing.location.latitude,
       longitude: listing.location.longitude,
       vehicle_variant_id: listing.variant.id,
-      images: listing.images,
+
       on_demand: listing.on_demand,
       on_demand_rates: listing.on_demand_rates,
       amenities: listing.amenities,
@@ -19,6 +19,12 @@ export default class ListingsHelper {
       check_out_time: listing.check_out_time,
       rules: listing.rules
     };
+
+    if (!edit) {
+      submissionParams.images = listing.images;
+    }
+
+    return submissionParams;
   }
 
   static getOnDemandDistances() {
