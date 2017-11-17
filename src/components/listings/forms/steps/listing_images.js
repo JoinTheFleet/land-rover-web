@@ -28,7 +28,7 @@ class ListingImages extends Component {
 
     if (listing.gallery) {
       images = listing.gallery.map(galleryImage => {
-        return { url: galleryImage.images.original_url };
+        return { url: galleryImage.images.original_url, id: galleryImage.id };
       });
     }
 
