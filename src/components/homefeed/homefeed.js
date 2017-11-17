@@ -38,6 +38,9 @@ class Homefeed extends Component {
     let component = this;
 
     window.addEventListener('resize', () => {
+      if (Helpers.windowWidth() < MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent === '') {
+        component.setState({ toggledComponent: 'list' });
+      }
       if (Helpers.windowWidth() >= MINIMUM_WIDTH_TO_SHOW_ALL && component.state.toggledComponent !== '') {
         component.setState({ toggledComponent: '' });
       }

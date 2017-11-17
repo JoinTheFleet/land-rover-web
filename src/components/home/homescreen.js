@@ -9,7 +9,6 @@ import BlogList from './blog_list';
 // Images
 import topBanner from '../../assets/images/beach-cars-bmw.jpg';
 import axaLogo from '../../assets/images/axa-logo.png';
-import testimonialsBackground from '../../assets/images/testimonials_bg.png';
 import independentLogo from '../../assets/images/independent-grey.png';
 import newstalkLogo from '../../assets/images/newstalk-grey.png';
 import foraLogo from '../../assets/images/fora-grey.png';
@@ -162,8 +161,6 @@ class Homescreen extends Component {
 
         { topSellers }
         { nearbyListings }
-
-        <div id="testimonials_div" className="col-xs-12 no-side-padding" style={ { backgroundImage: `url(${testimonialsBackground})` } }></div>
 
         <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 

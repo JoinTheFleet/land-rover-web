@@ -3,9 +3,10 @@ import Alert from 'react-s-alert';
 
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
+import Placeholder from '../miscellaneous/placeholder';
 import LocalizationService from '../../shared/libraries/localization_service';
 import WishListsService from '../../shared/services/wish_lists_service';
-import WishListCard from './wish_list_card'
+import WishListCard from './wish_list_card';
 
 const LIMIT = 10;
 
@@ -19,7 +20,7 @@ export default class WishListList extends Component {
       pages: 1,
       initialLoad: true,
       loading: false
-    }
+    };
 
     this.loadData = this.loadData.bind(this);
     this.reloadData = this.reloadData.bind(this);
@@ -83,6 +84,9 @@ export default class WishListList extends Component {
 
     if (this.state.initialLoad) {
       body = <Loading />
+    }
+    else if (this.state.wish_lists.length === 0) {
+      body = (<Placeholder />);
     }
     else {
       body = (

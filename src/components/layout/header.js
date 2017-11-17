@@ -5,6 +5,8 @@ import HeaderMenu from './header_menu';
 import LocationPeriodFilter from '../listings/filters/location_period_filter';
 import logo from '../../assets/images/menu_logo.png';
 
+import LocalizationService from '../../shared/libraries/localization_service';
+
 export default class Header extends Component {
   constructor(props) {
     super(props);
@@ -42,9 +44,9 @@ export default class Header extends Component {
         <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm } />
 
         <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
-          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}>List your car</a>
-          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}>Log in</a>
-          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}>Sign up</a>
+          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
+          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
+          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
         </div>
 
         <HeaderMenu loggedIn={ this.props.loggedIn }

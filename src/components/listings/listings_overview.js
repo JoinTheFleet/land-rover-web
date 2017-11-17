@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ListingCard from './listing_card';
 import ListingPromotion from './listing_promotion';
 import Pageable from '../miscellaneous/pageable';
+import Placeholder from '../miscellaneous/placeholder';
 import ConfirmationModal from '../miscellaneous/confirmation_modal';
 
 import Errors from '../../miscellaneous/errors';
@@ -123,6 +124,10 @@ export default class ListingsOverview extends Component {
   }
 
   renderMainContent() {
+    if (this.state.listings.length === 0) {
+      return (<Placeholder contentType="vehicles_guest" />)
+    }
+
     return (
       <div className="listings-overview-list col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
         {

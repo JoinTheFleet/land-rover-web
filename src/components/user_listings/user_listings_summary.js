@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import UserListing from './user_listing';
 import { Link } from 'react-router-dom';
+import Placeholder from '../miscellaneous/placeholder';
 
 import UserListingsService from '../../shared/services/users/user_listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
@@ -41,6 +42,22 @@ export default class UserListingsSummary extends Component {
   }
 
   render() {
+    let listings = (<Placeholder contentType="vehicles_guest" />)
+
+    if (this.state.listings.length > 0) {
+      listings = (
+        <div className='row'>
+          {
+            this.state.listings.map((listing) => {
+              return (
+                <UserListing listing={listing} />
+              )
+            })
+          }
+        </div>
+      )
+    }
+
     return (
       <div>
         <div className='col-xs-12 no-side-padding user-listings-title'>
@@ -63,15 +80,7 @@ export default class UserListingsSummary extends Component {
           </span>
         </div>
         <div className='col-xs-12' >
-          <div className='row'>
-            {
-              this.state.listings.map((listing) => {
-                return (
-                  <UserListing listing={listing} />
-                )
-              })
-            }
-          </div>
+          { listings }
         </div>
       </div>
     );

@@ -103,10 +103,6 @@
     padding-top: 0 !important;
   }
 
-  .Select {
-    position: initial;
-  }
-
   .form--checkbox-row {
     display: block;
     padding-top: 10px;
@@ -128,6 +124,10 @@
         position: relative;
         left: 3px;
       }
+    }
+
+    & + .form--checkbox-row {
+      border-top: none;
     }
   }
 }

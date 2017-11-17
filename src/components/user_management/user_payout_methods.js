@@ -6,6 +6,7 @@ import PayoutMethodsService from '../../shared/services/payout_methods_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
 import Button from '../miscellaneous/button';
+import Placeholder from '../miscellaneous/placeholder';
 import FormPanel from '../miscellaneous/forms/form_panel';
 import {injectStripe } from 'react-stripe-elements';
 import PayoutMethod from './payout_methods/payout_method';
@@ -114,14 +115,18 @@ class UserPayoutMethods extends Component {
       return <Redirect to='/account/verified_info' />
     }
     else {
+      let payoutMethods = (<Placeholder />);
+
+      if (this.state.sources.length > 0) {
+        payoutMethods = this.state.sources.map((source, index) => {
+          return <PayoutMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ false }/>;
+        })
+      }
+
       return (
         <div className="col-xs-12 no-side-padding">
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.payout_methods') } >
-            {
-              this.state.sources.map((source, index) => {
-                return <PayoutMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ false }/>;
-              })
-            }
+            { payoutMethods }
           </FormPanel>
 
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.add_account') } >

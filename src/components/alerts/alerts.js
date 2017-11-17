@@ -7,8 +7,6 @@ import Slider from 'react-slick';
 import AlertsService from '../../shared/services/alerts_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
-import checkIcon from '../../assets/images/check.png';
-
 export default class Alerts extends Component {
   constructor(props) {
     super(props);
@@ -38,9 +36,11 @@ export default class Alerts extends Component {
                    this.setState({
                      alerts: alerts,
                      open: alerts.length > 0 }, () => {
-                      setTimeout(() => {
-                        this.markAlertAsRead(this.state.alerts[0].id);
-                      }, 2000)
+                       if (alerts.length > 0) {
+                        setTimeout(() => {
+                          this.markAlertAsRead(this.state.alerts[0].id);
+                        }, 2000);
+                       }
                      });
                  })
                  .catch(error => { Alert.error(error.response.data.message); });

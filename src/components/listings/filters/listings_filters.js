@@ -16,9 +16,11 @@ import ListingAmenitiesService from '../../../shared/services/listings/listing_a
 
 import LocalizationService from '../../../shared/libraries/localization_service';
 
-import Toggleable from '../../miscellaneous/toggleable';
+import Helpers from '../../../miscellaneous/helpers';
 
+import Toggleable from '../../miscellaneous/toggleable';
 import Dropdown from '../../miscellaneous/dropdown';
+import Button from '../../miscellaneous/button';
 
 export default class ListingsFilters extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ export default class ListingsFilters extends Component {
       amenities: []
     };
 
+    this.resetAllFilters = this.resetAllFilters.bind(this);
     this.handleFilterSelected = this.handleFilterSelected.bind(this);
   }
 
@@ -164,6 +167,12 @@ export default class ListingsFilters extends Component {
     });
   }
 
+  resetAllFilters() {
+    this.setState({ selectedFilters: {} }, () => {
+      this.props.handleFilterToggle({});
+    });
+  }
+
   handleFilterSelected(name, value) {
     let selectedFilters = JSON.parse(JSON.stringify(this.state.selectedFilters));
 
@@ -199,7 +208,7 @@ export default class ListingsFilters extends Component {
     this.setState({
       selectedFilters: selectedFilters
     }, () => {
-      this.props.handleFilterToggle(selectedFilters)
+      this.props.handleFilterToggle(selectedFilters);
     });
   }
 
@@ -209,7 +218,11 @@ export default class ListingsFilters extends Component {
 
     if (this.state.open) {
       return (
-        <div className="listings-filters white">
+        <div className="listings-filters white col-xs-12 col-lg-7" style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
+          <Button className="secondary-color white-text" onClick={ this.resetAllFilters }>
+            { LocalizationService.formatMessage('listings.reset_all_filters') }
+          </Button>
+
           {
             filterGroups.map((filtersGroup, index) => {
               let filters = this.state.filterOptions[filtersGroup];
