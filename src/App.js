@@ -236,6 +236,10 @@ export default class App extends Component {
       this.setState(newState);
     }
     else {
+      if (client.defaults.headers.common) {
+        delete client.defaults.headers.common['Authorization'];
+      }
+
       this.setState({
         accessToken: undefined
       });
