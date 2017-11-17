@@ -20,6 +20,9 @@ import Helpers from '../../miscellaneous/helpers';
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
+import GeolocationService from '../../shared/services/geolocation_service';
+import Placeholder from '../miscellaneous/placeholder';
+
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
 class Homefeed extends Component {
@@ -50,15 +53,33 @@ class Homefeed extends Component {
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
     this.removeWishListFromNearbyListing = this.removeWishListFromNearbyListing.bind(this);
     this.removeWishListFromCollectionListing = this.removeWishListFromCollectionListing.bind(this);
+    this.fetchHomeFeed = this.fetchHomeFeed.bind(this);
   }
 
   componentDidMount() {
     if (this.props.accessToken) {
-
       this.setState({
         loading: true
       }, () => {
-        HomeFeedService.show()
+        GeolocationService.getCurrentPosition()
+        .then(position => { 
+          this.fetchHomeFeed(position.coords.latitude, position.coords.longitude);
+        })
+        .catch(error => {
+          this.fetchHomeFeed();
+        })
+      });
+    }
+
+    this.setupEvents();
+  }
+
+  fetchHomeFeed(latitude, longitude) {
+    if (latitude && longitude) {
+      HomeFeedService.index({
+        latitude: latitude,
+        longitude: longitude
+      })
                        .then((response) => {
                          this.setState({
                            nearby: response.data.data.home_feed.nearby,
@@ -66,10 +87,17 @@ class Homefeed extends Component {
                            loading: false
                          });
                        });
+    }
+    else {
+      HomeFeedService.index()
+      .then((response) => {
+        this.setState({
+          nearby: response.data.data.home_feed.nearby,
+          collections: response.data.data.home_feed.collections,
+          loading: false
+        });
       });
     }
-
-    this.setupEvents();
   }
 
   setupEvents() {
