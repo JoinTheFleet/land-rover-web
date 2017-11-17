@@ -90,16 +90,24 @@ class UserPayoutMethods extends Component {
         account_number: this.state.iban,
         currency: currency
       })
-      .then(({token}) => {
-        if (token.id) {
+      .then((token) => {
+        if (token.error) {
+          Alert.error(token.error.message)
+          this.setState({ accountLoading: false });
+        }
+        else if (token.token.id) {
           PayoutMethodsService.create({
             payout_method: {
-              token: token.id
+              token: token.token.id
             }
-          }).then(this.reloadData);
+          }).then(response => {
+            Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payout_method_success'));
+            this.reloadData();
+          });
         }
       })
       .catch((error) => {
+        Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_error'));
         this.setState({
           accountLoading: false
         });
