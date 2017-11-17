@@ -36,7 +36,15 @@ export default class ListingPeriodFilter extends Component {
       button = (
         <Link to='/search'>
           <Button bsStyle='primary search'
-                  onClick={ this.props.handleSearch }>
+                  onClick={ () => {
+                    if (this.props.closeMenu) {
+                      this.props.closeMenu();
+                    }
+                    if (this.props.hideSearchResults) {
+                      this.props.hideSearchResults();
+                    }
+                    this.props.handleSearch();
+                  }}>
             <FormattedMessage id="application.search" />
           </Button>
         </Link>
@@ -72,7 +80,7 @@ export default class ListingPeriodFilter extends Component {
               <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 } onToggle={ () => {} }>
                   <Dropdown.Menu>
                     {
-                      this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                      this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } hideSearchResults={ this.props.hideSearchResults } handleLocationSelect={ this.props.handleLocationSelect }/> })
                     }
                   </Dropdown.Menu>
               </Dropdown>
@@ -85,7 +93,7 @@ export default class ListingPeriodFilter extends Component {
             <Dropdown id="location_search_results_dropdown" open={ this.props.searchLocations && this.props.searchLocations.length > 0 } onToggle={ () => {} }>
                 <Dropdown.Menu>
                   {
-                    this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } handleLocationSelect={ this.props.handleLocationSelect }/> })
+                    this.props.searchLocations.map(location => { return <LocationMenuItem key={ `location_${location.id}` } location={ location } hideSearchResults={ this.props.hideSearchResults } handleLocationSelect={ this.props.handleLocationSelect }/> })
                   }
                 </Dropdown.Menu>
             </Dropdown>
