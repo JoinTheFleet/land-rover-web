@@ -448,6 +448,13 @@
 
   .fleet-signature-box {
     margin-top: 24px;
+
+    & > div {
+      img,
+      input {
+        cursor: pointer;
+      }
+    }
   }
 
   .fleet-checkbox label {
@@ -493,11 +500,23 @@
     margin-top: 30px;
   }
 
+  .bookings-overview-list-title {
+    & > span + span {
+      position: relative;
+      bottom: 5px;
+    }
+  }
+
   .renter-bookings-overview-previous-list {
     margin-top: 30px;
   }
 
   .bookings-overview-list-expand {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
     span {
       cursor: pointer;
     }

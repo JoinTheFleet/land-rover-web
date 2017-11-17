@@ -5,7 +5,13 @@ var googleMapsClient = require('@google/maps').createClient({
 class GeolocationService {
   static getCurrentPosition() {
     return new Promise(function(resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      }
+      else {
+        console.log('geolocation not supported on this browser');
+        resolve(null);
+      }
     });
   }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import Loading from '../miscellaneous/loading';
+import Placeholder from '../miscellaneous/placeholder';
 
 import WishListsService from '../../shared/services/wish_lists_service';
 import WishListCard from './wish_list_card';
@@ -56,6 +57,22 @@ export default class WishListSummary extends Component {
       return <Loading />;
     }
     else {
+      let wishlists = (<Placeholder></Placeholder>)
+
+      if (this.state.wish_lists.length > 0) {
+        wishlists = (
+          <div className='row'>
+            {
+              this.state.wish_lists.map((wish_list) => {
+                return (
+                  <WishListCard key={wish_list.id} wish_list={wish_list} />
+                )
+              })
+            }
+          </div>
+        )
+      }
+
       return (
         <div>
           <div className='col-xs-12 no-side-padding review-title'>
@@ -78,15 +95,7 @@ export default class WishListSummary extends Component {
             </span>
           </div>
           <div className='col-xs-12 wishlist-summary' >
-            <div className='row'>
-              {
-                this.state.wish_lists.map((wish_list) => {
-                  return (
-                    <WishListCard key={wish_list.id} wish_list={wish_list} />
-                  )
-                })
-              }
-            </div>
+            { wishlists }
           </div>
         </div>
       );

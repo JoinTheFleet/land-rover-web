@@ -112,8 +112,6 @@ class ListingLocation extends Component {
       GeolocationService.getLocationFromPosition(this.state.selectedPosition)
                         .then(results => {
                           if (results && results.length > 0) {
-                            console.log(`${latitude}, ${longitude}`);
-                            console.log(results);
                             const index = results.findIndex(result => Math.abs(result.geometry.location.lat - latitude) <= 0.01 && Math.abs(result.geometry.location.lng - longitude) <= 0.01);
 
                             if (index > -1) {

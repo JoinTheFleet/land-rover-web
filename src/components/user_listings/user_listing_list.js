@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Loading from '../miscellaneous/loading';
 import Pageable from '../miscellaneous/pageable';
+import Placeholder from '../miscellaneous/placeholder';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import UserListing from './user_listing';
@@ -12,6 +13,9 @@ export default class UserListingList extends Component {
 
     if (this.props.initialLoad) {
       body = <Loading hiddenText />
+    }
+    else if (this.props.listings.length === 0) {
+      body = <Placeholder contentType="vehicles_guest" />
     }
     else {
       body = (

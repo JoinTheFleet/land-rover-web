@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 
 import BookingRow from './booking_row';
-import Pageable from '../miscellaneous/pageable';
-
 import ListingsSelector from '../listings/listings_selector';
 
-import BookingsService from '../../shared/services/bookings/bookings_service';
+import Loading from '../miscellaneous/loading';
+import Pageable from '../miscellaneous/pageable';
+import Placeholder from '../miscellaneous/placeholder';
 
 import Errors from '../../miscellaneous/errors';
 
+import BookingsService from '../../shared/services/bookings/bookings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 const BOOKINGS_PER_PAGE = 10;
@@ -97,7 +98,7 @@ class RenterBookingsOverview extends Component {
   }
 
   renderCurrentList() {
-    if ( this.state.expandedList === 'previous' ) {
+    if ( this.state.expandedList === 'previous' || this.state.bookings.previous.length === 0 ) {
       return '';
     }
 
@@ -127,7 +128,7 @@ class RenterBookingsOverview extends Component {
   }
 
   renderPreviousList() {
-    if ( this.state.expandedList === 'current' ) {
+    if ( this.state.expandedList === 'current' || this.state.bookings.current.length === 0  ) {
       return '';
     }
 
@@ -165,15 +166,26 @@ class RenterBookingsOverview extends Component {
   }
 
   render() {
+    let lists = (<Placeholder contentType="bookings" />);
+
+    if (this.state.loading) {
+      lists = (<Loading />);
+    }
+
+    if (this.state.bookings.current.length > 0 || this.state.bookings.current.length > 0) {
+      lists = (
+        <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+          { this.renderCurrentList() }
+          { this.renderPreviousList() }
+        </div>
+      )
+    }
+
     return (
       <div className="bookings-overview col-xs-12 no-side-padding">
         { this.renderTopBar() }
 
-        <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-          { this.renderCurrentList() }
-
-          { this.renderPreviousList() }
-        </div>
+        { lists }
       </div>
     );
   }

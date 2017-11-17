@@ -140,6 +140,8 @@
     "bloglist.no_posts": "No posts to show yet. Check back later!",
     "bloglist.by_author": "By {author}",
 
+    "listings.reset_all_filters": "Reset All Filters",
+
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
     "listings.engine_fuels": "Fuel",
@@ -329,6 +331,7 @@
     "user_profile_menu.payment_methods": "Payment Methods",
     "user_profile_menu.payout_methods": "Payout Methods",
 
+    "user_profile.unable_to_retrieve_account_details": "Unable to retrieve account details",
     "user_profile.profile_photo": "Profile Photo",
     "user_profile.upload_profile_pic": "Upload Profile Pic",
     "user_profile.profile": "Profile",
