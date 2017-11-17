@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NotificationBuilder from './notification_builder';
 import Pageable from '../miscellaneous/pageable';
 import Placeholder from '../miscellaneous/placeholder';
-
+import Loading from '../miscellaneous/loading';
 import NotificationsService from '../../shared/services/notifications_service';
 
 const LIMIT = 10;
@@ -54,20 +54,24 @@ export default class NotificationsList extends Component {
   }
 
   render() {
-    if (this.state.notifications.length === 0) {
+    if (this.state.loading) {
+      return <Loading />;
+    }
+    else if (this.state.notifications.length === 0) {
       return (<Placeholder />);
     }
-
-    return (
-      <Pageable loading={ this.state.loading } currentPage={ this.state.page + 1 } totalPages={ this.state.pages } handlePageChange={ this.handlePageChange }>
-        <div className="notifications-list col-xs-12 no-side-padding">
-          {
-            this.state.notifications.map((notification) => {
-              return <NotificationBuilder key={ `notification_builder_${notification.id}` } notification={ notification } />;
-            })
-          }
-        </div>
-      </Pageable>
-    )
+    else {
+      return (
+        <Pageable loading={ this.state.loading } currentPage={ this.state.page + 1 } totalPages={ this.state.pages } handlePageChange={ this.handlePageChange }>
+          <div className="notifications-list col-xs-12 no-side-padding">
+            {
+              this.state.notifications.map((notification) => {
+                return <NotificationBuilder key={ `notification_builder_${notification.id}` } notification={ notification } />;
+              })
+            }
+          </div>
+        </Pageable>
+      )
+    } 
   }
 }
