@@ -54,3 +54,16 @@ button.search {
   background-color: $secondary-color;
   color: white;
 }
+
+.reset-filters {
+  float: right;
+  margin-top: 10px;
+}
+
+@media screen and (min-width: 378px) {
+  .reset-filters {
+    float: none;
+    margin-top: inherit;
+    margin-left: 20px;
+  }
+}
