@@ -205,7 +205,6 @@ class Homefeed extends Component {
     let collections = this.state.collections;
 
     if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && (this.state.nearby && this.state.nearby.objects && this.state.nearby.objects.length === 0))) && this.props.listings && this.props.listings.length > 0) {
-      console.log(collections)
       return (
         <div>
           <div>
