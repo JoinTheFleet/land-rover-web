@@ -100,7 +100,7 @@ export default class ListingReviews extends Component {
           reviews: data.reviews,
           metadata: data.metadata,
           initialLoad: false,
-          pages: Math.ceil(data.metadata.total_reviews / LIMIT),
+          pages: Math.ceil(data.metadata ? (data.metadata.total_reviews / LIMIT) : 1),
           loading: false
         });
       }

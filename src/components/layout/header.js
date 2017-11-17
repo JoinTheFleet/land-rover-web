@@ -17,7 +17,12 @@ export default class Header extends Component {
 
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
     this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
+  }
+
+  closeMenu() {
+    this.setState({menuOpen: false})
   }
 
   toggleMenu() {
@@ -41,7 +46,7 @@ export default class Header extends Component {
       <div className="app-header">
         <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
 
-        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm } />
+        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm } closeMenu={ this.closeMenu }/>
 
         <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>

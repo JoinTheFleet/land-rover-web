@@ -5,9 +5,10 @@ import Alert from 'react-s-alert';
 import UserForm from './user_profile/user_form';
 import UserImage from './user_profile/user_image';
 import FormButtonRow from '../miscellaneous/forms/form_button_row';
+import Button from '../miscellaneous/button';
 import Loading from '../miscellaneous/loading';
 
-import LocatizationService from '../../shared/libraries/localization_service';
+import LocalizationService from '../../shared/libraries/localization_service';
 import UsersService from '../../shared/services/users/users_service';
 import S3Uploader from '../../shared/external/s3_uploader';
 
@@ -20,7 +21,8 @@ export default class UserProfileDetails extends Component {
       user: {
         images: {}
       },
-      loading: false
+      loading: false,
+      accountUpdating: false
     };
 
     this.handleImageFile = this.handleImageFile.bind(this);
@@ -44,7 +46,7 @@ export default class UserProfileDetails extends Component {
                     });
                   })
                   .catch(error => {
-                    this.setState({ loading: false }, Alert.error(LocatizationService.formatMessage('user_profile.unable_to_retrieve_account_details')));
+                    this.setState({ loading: false }, Alert.error(LocalizationService.formatMessage('user_profile.unable_to_retrieve_account_details')));
                   });
     });
   }
@@ -92,7 +94,11 @@ export default class UserProfileDetails extends Component {
   }
 
 
-  updateUser() {
+  updateUser(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
     let user = this.state.user;
     let user_params = {
       first_name: user.first_name,
@@ -105,13 +111,22 @@ export default class UserProfileDetails extends Component {
     }
 
     if (user) {
-      UsersService.update('me', {
-        user: user_params
-      }).then(response => {
-        this.setState({
-          user: response.data.data.user
-        });
-      })
+      this.setState({
+        accountUpdating: true
+      }, () => {
+        UsersService.update('me', {
+          user: user_params
+        }).then(response => {
+          Alert.success(LocalizationService.formatMessage('user_profile_verified_info.account_success'));
+          this.setState({
+            user: response.data.data.user,
+            accountUpdating: false
+          });
+        }).catch(error => {
+          this.setState({ accountUpdating: false });
+          Alert.error(error.response.data.message);
+        })
+      });
     }
   }
 
@@ -124,17 +139,22 @@ export default class UserProfileDetails extends Component {
     return (
       <div className="col-xs-12 no-side-padding">
         <UserImage handleImageFile={this.handleImageFile}
-                   imageURL={this.state.imageURL} />
-        <UserForm user={this.state.user}
-                  handleFirstNameUpdate={this.handleFirstNameUpdate}
-                  handleLastNameUpdate={this.handleLastNameUpdate}
-                  handleDescriptionUpdate={this.handleDescriptionUpdate} />
+                  imageURL={this.state.imageURL} />
+        <form onSubmit={ this.updateUser }>
+          <UserForm user={this.state.user}
+                    handleFirstNameUpdate={this.handleFirstNameUpdate}
+                    handleLastNameUpdate={this.handleLastNameUpdate}
+                    handleDescriptionUpdate={this.handleDescriptionUpdate} />
 
-        <FormButtonRow>
-          <button className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
-            <FormattedMessage id="application.save" />
-          </button>
-        </FormButtonRow>
+          <FormButtonRow>
+            <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
+                    spinner={ this.state.accountUpdating }
+                    disabled={ this.state.accountUpdating }
+                    onClick={ this.updateUser } >
+              { LocalizationService.formatMessage('application.save') }
+            </Button>
+          </FormButtonRow>
+        </form>
       </div>
     )
   }

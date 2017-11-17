@@ -228,7 +228,7 @@ class ListingView extends Component {
 
         <div className="listing-view-listing-spec">
           <img src={ specTransmissionIcon } alt="listing_transmission_icon" />
-          <span className="fs-18 text-capitalize"> { listing.variant.transmission.transmission + ' (' + listing.variant.transmission.gears + ')' } </span>
+          <span className="fs-18 text-capitalize"> { listing.variant.transmission.transmission } </span>
         </div>
       </div>
     )
