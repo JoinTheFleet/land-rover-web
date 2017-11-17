@@ -80,13 +80,13 @@ class Homefeed extends Component {
         latitude: latitude,
         longitude: longitude
       })
-                       .then((response) => {
-                         this.setState({
-                           nearby: response.data.data.home_feed.nearby,
-                           collections: response.data.data.home_feed.collections,
-                           loading: false
-                         });
-                       });
+      .then((response) => {
+        this.setState({
+          nearby: response.data.data.home_feed.nearby,
+          collections: response.data.data.home_feed.collections,
+          loading: false
+        });
+      });
     }
     else {
       HomeFeedService.index()
@@ -205,6 +205,7 @@ class Homefeed extends Component {
     let collections = this.state.collections;
 
     if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && (this.state.nearby && this.state.nearby.objects && this.state.nearby.objects.length === 0))) && this.props.listings && this.props.listings.length > 0) {
+      console.log(collections)
       return (
         <div>
           <div>
@@ -218,38 +219,43 @@ class Homefeed extends Component {
       )
     }
     else {
-      return (
-        <div>
+      if ((collections.length === 0 || collections.every((collection) => { return collection.object_type === 'Advertisement' })) && (!nearbyListings || nearbyListings.length === 0)) {
+        return <Placeholder contentType='vehicles_renter' />;
+      }
+      else {
+        return (
           <div>
-            <p className="top-seller-title strong-font-weight title-font-size">
-              <FormattedMessage id="listings.nearby" />
-            </p>
-
-            <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
+            <div>
+              <p className="top-seller-title strong-font-weight title-font-size">
+                <FormattedMessage id="listings.nearby" />
+              </p>
+  
+              <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
+            </div>
+  
+            {
+              collections.map((collection) => {
+                let body = '';
+                if (collection.object_type === 'Listing') {
+                  body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
+                }
+                else if (collection.object_type === 'Advertisement') {
+                  body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
+                }
+  
+                return (
+                  <div key={collection.id + '_' + collection.name + '_listing'}>
+                    <p className="top-seller-title strong-font-weight title-font-size">
+                      <span>{collection.name}</span>
+                    </p>
+                    { body }
+                  </div>
+  )
+              })
+            }
           </div>
-
-          {
-            collections.map((collection) => {
-              let body = '';
-              if (collection.object_type === 'Listing') {
-                body = <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={collection.objects} />;
-              }
-              else if (collection.object_type === 'Advertisement') {
-                body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
-              }
-
-              return (
-                <div key={collection.id + '_' + collection.name + '_listing'}>
-                  <p className="top-seller-title strong-font-weight title-font-size">
-                    <span>{collection.name}</span>
-                  </p>
-                  { body }
-                </div>
-)
-            })
-          }
-        </div>
-      )
+        )
+      }
     }
   }
 
