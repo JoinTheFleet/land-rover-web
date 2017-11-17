@@ -178,7 +178,7 @@ class BookNowTile extends Component {
           <DateRangePicker startDate={ startDate }
                            endDate={ endDate }
                            minimumNights={ 0 }
-                           daySize={ this.state.daySize }
+                          //  daySize={ this.state.daySize } TODO: This is incorrect
                            numberOfMonths={ this.state.numberOfMonthsToShow }
                            focusedInput={this.state.focusedInput}
                            onDatesChange={ this.handleDatesChange }
