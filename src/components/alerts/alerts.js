@@ -47,7 +47,7 @@ export default class Alerts extends Component {
   }
 
   markAlertAsRead(alertId) {
-    AlertsService.update(alertId, { status: 'sent' })
+    AlertsService.update(alertId, { status: 'delivered' })
                  .then(response => {
                    let alerts = this.state.alerts;
                    alerts.splice(this.state.alerts.findIndex(alert => alert.id === alertId), 1);

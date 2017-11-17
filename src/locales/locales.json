@@ -78,6 +78,8 @@
     "menu.logout": "Log Out",
     "menu.notifications": "Notifications",
 
+    "calendar.manage_availability": "Manage Availability",
+
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
     "header.sign_up": "Sign up",
@@ -147,6 +149,7 @@
     "listings.engine_fuels": "Fuel",
     "listings.bodies": "Type",
     "listings.transmissions": "Transmission",
+    "listings.acceptance_rate": "Acceptance Rate: {rate}%",
     "listings.years": "Year",
     "listings.makes": "Make",
     "listings.nearby": "Nearby",

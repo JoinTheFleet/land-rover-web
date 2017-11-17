@@ -147,6 +147,11 @@ class ListingView extends Component {
     let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
     let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+    let acceptanceRate = '';
+
+    if (listing.acceptance_rating >= 0) {
+      acceptanceRate = LocalizationService.formatMessage('listings.acceptance_rate', { rate: listing.acceptance_rating })
+    }
 
     return (
       <div className="listing-view-top-part col-xs-12 no-side-padding">
@@ -162,6 +167,10 @@ class ListingView extends Component {
                                 price: listing.price / 100
                               } } />
 
+            <br/>
+            <span className='listing-view-acceptance-rate no-side-padding'>
+              { acceptanceRate }
+            </span>
             <br/>
             <div className="listing-view-rating-reviews">
               <RatingInput rating={ listing.rating } inputNameSufix={ listing.id ? listing.id.toString() : '' } readonly={true} />

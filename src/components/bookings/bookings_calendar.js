@@ -276,6 +276,8 @@ class BookingsCalendar extends Component {
   renderTopBar() {
     return (
       <ListingsSelector listings={ this.state.listings }
+                        role='owner'
+                        hideRoleSelector={true}
                         currentListing={ this.state.currentListing }
                         handleVehicleSelect= { this.handleVehicleSelect } />
     );
@@ -312,6 +314,7 @@ class BookingsCalendar extends Component {
       setRateTile = (
         <div className="bookings-calendar-set-rate-tile col-xs-12 no-side-padding">
           <div className="bookings-calendar-set-rate-tile-title secondary-color white-text ls-dot-two col-xs-12 no-side-padding">
+            <FormattedMessage id='calendar.manage_availability' />
           </div>
           <div className="bookings-calendar-set-rate-tile-container col-xs-12 no-side-padding">
 

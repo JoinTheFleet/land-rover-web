@@ -46,19 +46,26 @@ export default class ListingsSelector extends Component {
       )
     }
 
+    let roleSelector = '';
+
+    if (!this.props.hideRoleSelector) {
+      roleSelector = (
+        <ButtonGroup pullLeft={ true }>
+          <Button onClick={ () => { this.props.changeCurrentUserRole('renter'); }}
+                  active={ this.props.role === 'renter' }>
+            { LocalizationService.formatMessage('application.renter') }
+          </Button>
+          <Button onClick={ () => { this.props.changeCurrentUserRole('owner'); }}
+                  active={ this.props.role === 'owner' }>
+            { LocalizationService.formatMessage('application.owner') }
+          </Button>
+        </ButtonGroup>
+      );
+    }
+
     return (
         <div className="listings-selector-bar smoke-grey">
-          <ButtonGroup pullLeft={ true }>
-            <Button onClick={ () => { this.props.changeCurrentUserRole('renter'); }}
-                    active={ this.props.role === 'renter' }>
-              { LocalizationService.formatMessage('application.renter') }
-            </Button>
-            <Button onClick={ () => { this.props.changeCurrentUserRole('owner'); }}
-                    active={ this.props.role === 'owner' }>
-              { LocalizationService.formatMessage('application.owner') }
-            </Button>
-          </ButtonGroup>
-
+          { roleSelector }
           { listingSelector }
         </div>
     );
