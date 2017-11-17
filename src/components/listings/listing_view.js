@@ -67,7 +67,7 @@ class ListingView extends Component {
       else {
         this.fetchListing(location.state.listing.id);
       }
-      }
+    }
     else {
       this.fetchListing(this.props.match.params.id);
     }
@@ -146,8 +146,15 @@ class ListingView extends Component {
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
     let acceptanceRate = '';
 
-    if (listing.acceptance_rating >= 0) {
-      acceptanceRate = LocalizationService.formatMessage('listings.acceptance_rate', { rate: listing.acceptance_rating })
+    if (listing.acceptance_rating !== null && listing.acceptance_rating >= 0) {
+      acceptanceRate = (
+        <div> 
+          <span className='listing-view-acceptance-rate no-side-padding'>
+            { LocalizationService.formatMessage('listings.acceptance_rate', { rate: listing.acceptance_rating }) }
+          </span>
+          <br/>
+        </div>
+      ) 
     }
 
     return (
@@ -165,10 +172,7 @@ class ListingView extends Component {
                               } } />
 
             <br/>
-            <span className='listing-view-acceptance-rate no-side-padding'>
-              { acceptanceRate }
-            </span>
-            <br/>
+            { acceptanceRate }
             <div className="listing-view-rating-reviews">
               <RatingInput rating={ listing.rating } inputNameSufix={ listing.id ? listing.id.toString() : '' } readonly={true} />
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: listing.total_reviews} } />
