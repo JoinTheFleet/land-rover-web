@@ -146,10 +146,47 @@ class BookNowTile extends Component {
     return bookingRates;
   }
 
+  renderBookNowTileContent() {
+    let bookNowTileContent = (<div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding"> { LocalizationService.formatMessage('bookings.log_in_before_booking') } </div>);
+
+    if ( this.props.loggedIn ) {
+      const startDate = this.state.quotation.start_at ? moment.unix(this.state.quotation.start_at) : null;
+      const endDate = this.state.quotation.end_at ? moment.unix(this.state.quotation.end_at) : null;
+
+
+      bookNowTileContent = (
+        <div className="book-now-tile-details col-xs-12 no-side-padding">
+          <div className="book-now-tile-datepicker-title col-xs-12 no-side-padding">
+            <div className="tertiary-text-color">
+              { LocalizationService.formatMessage('bookings.check_in_date') }
+            </div>
+
+            <div className="tertiary-text-color">
+              { LocalizationService.formatMessage('bookings.check_out_date') }
+            </div>
+          </div>
+
+          <DateRangePicker startDate={ startDate }
+                          endDate={ endDate }
+                          minimumNights={ 0 }
+                          //  daySize={ this.state.daySize } TODO: This is incorrect
+                          numberOfMonths={ this.state.numberOfMonthsToShow }
+                          focusedInput={this.state.focusedInput}
+                          onDatesChange={ this.handleDatesChange }
+                          onFocusChange={ focusedInput => this.setState({ focusedInput }) }
+                          hideKeyboardShortcutsPanel={ true }
+                          isDayBlocked={ (day) => day.utc().isBefore(moment().utc()) } />
+
+          { this.renderBookingRates() }
+        </div>
+      )
+    }
+
+    return bookNowTileContent;
+  }
+
   render() {
     let listing = this.props.listing;
-    let startDate = this.state.quotation.start_at ? moment.unix(this.state.quotation.start_at) : null;
-    let endDate = this.state.quotation.end_at ? moment.unix(this.state.quotation.end_at) : null;
     let pricePerDay = LocalizationService.formatMessage('listings.price_per_day',
                                                         { currency_symbol: listing.country_configuration.country.currency_symbol,
                                                           price: listing.price / 100 }
@@ -164,30 +201,7 @@ class BookNowTile extends Component {
           <b> { ` ${ pricePerDay }` } </b>
         </div>
 
-        <div className="book-now-tile-details col-xs-12 no-side-padding">
-          <div className="book-now-tile-datepicker-title col-xs-12 no-side-padding">
-            <div className="tertiary-text-color">
-              { LocalizationService.formatMessage('bookings.check_in_date') }
-            </div>
-
-            <div className="tertiary-text-color">
-              { LocalizationService.formatMessage('bookings.check_out_date') }
-            </div>
-          </div>
-
-          <DateRangePicker startDate={ startDate }
-                           endDate={ endDate }
-                           minimumNights={ 0 }
-                          //  daySize={ this.state.daySize } TODO: This is incorrect
-                           numberOfMonths={ this.state.numberOfMonthsToShow }
-                           focusedInput={this.state.focusedInput}
-                           onDatesChange={ this.handleDatesChange }
-                           onFocusChange={ focusedInput => this.setState({ focusedInput }) }
-                           hideKeyboardShortcutsPanel={ true }
-                           isDayBlocked={ (day) => day.utc().isBefore(moment().utc()) } />
-
-          { this.renderBookingRates() }
-        </div>
+        { this.renderBookNowTileContent() }
       </div>
     );
   }

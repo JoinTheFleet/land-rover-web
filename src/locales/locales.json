@@ -284,6 +284,7 @@
     "bookings.check_out_successful": "Check Out Successful!",
     "bookings.your_booking_is": "Your booking is",
     "bookings.reviewed": "Reviewed",
+    "bookings.log_in_before_booking": "Log in now to book this vehicle!",
 
     "bookings.surveys.please_walk_around_the_vehicle": "Please walk around the vehicle and make sure there is no visible damage. If you find damage, add a note of it here. Once you have made sure there is no further damage, check the box at the bottom of the screen.",
     "bookings.surveys.please_walk_around_the_vehicle_and_make_note": "Please walk around the vehicle and make sure there is no visible damage. If you find damage, please make a note of it here using the Raise an Issue form.",
@@ -301,9 +302,6 @@
     "bookings.surveys.invalid_image": "Please provide a valid image",
     "bookings.surveys.could_not_upload_image": "Error while uploading image",
 
-    "payment_methods.payment_method": "Payment method",
-    "payment_methods.payment_method_card": "{brand} **** {last_four}",
-
     "bookings.statuses.completed": "Completed",
     "bookings.statuses.in_progress": "In Progress",
     "bookings.statuses.cancelled": "Cancelled",
@@ -314,6 +312,9 @@
 
     "signatures.draw_signature": "Draw Signature",
     "signatures.please_sign_above": "Please sign above as confirmation of your acceptance of Fleet’s {terms_and_conditions}.",
+
+    "payment_methods.payment_method": "Payment method",
+    "payment_methods.payment_method_card": "{brand} **** {last_four}",
 
     "google.maps.javascript_api_link": "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key={key}",
 

@@ -499,7 +499,8 @@ export default class App extends Component {
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
                               configurations={ this.state.configuration }
-                              currentUserRole={ this.state.currentUserRole } />)
+                              currentUserRole={ this.state.currentUserRole }
+                              loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
           }} />
           <Route path="/account" render={(props) => {
             return (<UserManagement {...props}
@@ -601,7 +602,8 @@ export default class App extends Component {
                 <Route path="/listings/:id" render={(props) => {
                   return (<Listings {...props}
                                     configurations={ this.state.configuration }
-                                    currentUserRole={ this.state.currentUserRole } />)
+                                    currentUserRole={ this.state.currentUserRole }
+                                    loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
                 }} />
 
                 <Route path="/search" render={(props) => {

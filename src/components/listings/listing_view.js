@@ -76,10 +76,10 @@ class ListingView extends Component {
   fetchListing(id) {
     this.setState({ loading: true }, () => {
       ListingsService.show(id)
-                      .then(response => {
-                        this.setState({ listing: response.data.data.listing, loading: false });
-                      })
-                      .catch(error => this.addError(Errors.extractErrorMessage(error)));
+                     .then(response => {
+                       this.setState({ listing: response.data.data.listing, loading: false });
+                     })
+                     .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
   }
 
@@ -310,7 +310,7 @@ class ListingView extends Component {
     if (this.props.currentUserRole === userRoles.renter) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
-          <BookNowTile listing={ this.state.listing } handleBookButtonClick={ this.handleBookButtonClick } />
+          <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
     }
@@ -466,7 +466,8 @@ ListingView.propTypes = {
   listing: PropTypes.object,
   currentUserRole: PropTypes.string.isRequired,
   handleChangeView: PropTypes.func,
-  preview: PropTypes.bool
+  preview: PropTypes.bool,
+  loggedIn: PropTypes.bool
 };
 
 export default injectIntl(ListingView);
