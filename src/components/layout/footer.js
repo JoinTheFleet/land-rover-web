@@ -64,21 +64,21 @@ class Footer extends Component {
               <FormattedMessage id="footer.top_destinations" />
             </span>
             <p className="footer-links-list">
-              <a className="white-text">
+              <span className="white-text">
                 <FormattedMessage id="locations.dublin" />
-              </a>
+              </span>
               <br/>
-              <a className="white-text">
+              <span className="white-text">
                 <FormattedMessage id="locations.galway" />
-              </a>
+              </span>
               <br/>
-              <a className="white-text">
+              <span className="white-text">
                 <FormattedMessage id="locations.cork" />
-              </a>
+              </span>
               <br/>
-              <a className="white-text">
+              <span className="white-text">
                 <FormattedMessage id="locations.wicklow" />
-              </a>
+              </span>
             </p>
           </div>
 

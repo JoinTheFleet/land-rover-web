@@ -604,6 +604,7 @@ export default class App extends Component {
                   return (<Listings {...props}
                                     configurations={ this.state.configuration }
                                     currentUserRole={ this.state.currentUserRole }
+                                    toggleModal={ this.toggleModal }
                                     loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
                 }} />
 

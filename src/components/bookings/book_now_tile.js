@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 
 import Loading from '../miscellaneous/loading';
+import Button from '../miscellaneous/button';
 
 import ListingQuotationService from '../../shared/services/listings/listing_quotation_service';
 import LocalizationService from '../../shared/libraries/localization_service';
@@ -147,7 +148,12 @@ class BookNowTile extends Component {
   }
 
   renderBookNowTileContent() {
-    let bookNowTileContent = (<div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding"> { LocalizationService.formatMessage('bookings.log_in_before_booking') } </div>);
+    let bookNowTileContent = (
+      <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
+        { LocalizationService.formatMessage('bookings.log_in_before_booking') }
+        <Button className="login-to-book-button secondary-color white-text" onClick={ () => { this.props.toggleModal('login') } }> { LocalizationService.formatMessage('authentication.log_in') } </Button>
+      </div>
+    );
 
     if ( this.props.loggedIn ) {
       const startDate = this.state.quotation.start_at ? moment.unix(this.state.quotation.start_at) : null;

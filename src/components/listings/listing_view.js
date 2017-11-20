@@ -310,7 +310,7 @@ class ListingView extends Component {
     if (this.props.currentUserRole === userRoles.renter) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
-          <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } handleBookButtonClick={ this.handleBookButtonClick } />
+          <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
     }
