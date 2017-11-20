@@ -124,6 +124,12 @@
   padding: 15px;
 }
 
+.user-form {
+  .Select {
+    margin-top: 3px;
+  }
+}
+
 @media screen and (max-width: $screen-xs-max) {
   .user-management {
     padding-top: 0;
