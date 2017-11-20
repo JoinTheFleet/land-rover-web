@@ -220,16 +220,17 @@ export default class App extends Component {
         modalName: undefined
       };
 
-      cookies.set('accessToken', accessToken, {
-        path: '/',
-        secure: window.location.hostname !== 'localhost',
-        maxAge: 86400 * 7
-      });
-
       if (accessToken.length > 0) {
+        cookies.set('accessToken', accessToken, {
+          path: '/',
+          secure: window.location.hostname !== 'localhost',
+          maxAge: 86400 * 7
+        });
+
         client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
       else {
+        cookies.remove('accessToken');
         delete client.defaults.headers.common['Authorization'];
       }
 
