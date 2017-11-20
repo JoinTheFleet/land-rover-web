@@ -19,7 +19,7 @@ class BlogListPost extends Component {
 
     return (
       <div className="blog-list-post">
-        <a href={ `${process.env.REACT_APP_MEDIUM_URL}/${post.uniqueSlug}` } target="_blank">
+        <a href={ `${process.env.REACT_APP_MEDIUM_URL}${post.uniqueSlug}` } target="_blank">
           <div className="blog-list-post-image" style={ { backgroundImage: `url(${image})` } }></div>
           <p className="blog-list-post-title">
             <span className="secondary-text-color subtitle-font-weight text-uppercase fs-19"> { moment.unix(post.createdAt).format('DD MMM') } </span>
