@@ -1,18 +1,30 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import facebookIcon from '../../assets/images/facebook.png';
 import twitterIcon from '../../assets/images/twitter.png';
 import instagramIcon from '../../assets/images/instagram.png';
 
 class Footer extends Component {
+
   render() {
+    let makeYourCarWorkLink = (
+      <a className="white-text" onClick={ () => { this.props.toggleModal('login') }}>
+        <FormattedMessage id="footer.make_your_car" />
+      </a>
+    )
+
+    if (this.props.loggedIn) {
+      makeYourCarWorkLink = (
+        <Link to="/listings">
+          <span className="white-text">
+            <FormattedMessage id="footer.make_your_car" />
+          </span>
+        </Link>
+      )
+    }
+
     return (
       <footer id="footer" className="col-xs-12 secondary-color white-text text-secondary-font-weight ls-dot-five">
         <div id="footer_top_part" className="col-xs-12">
@@ -30,13 +42,13 @@ class Footer extends Component {
                 <FormattedMessage id="footer.get_android_app" />
               </a>
               <br/>
-              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
-                <FormattedMessage id="footer.rent_a_car" />
-              </a>
+              <Link to="/search">
+                <span className="white-text">
+                  <FormattedMessage id="footer.rent_a_car" />
+                </span>
+              </Link>
               <br/>
-              <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
-                <FormattedMessage id="footer.make_your_car" />
-              </a>
+              { makeYourCarWorkLink }
             </p>
           </div>
 
@@ -64,21 +76,29 @@ class Footer extends Component {
               <FormattedMessage id="footer.top_destinations" />
             </span>
             <p className="footer-links-list">
-              <span className="white-text">
-                <FormattedMessage id="locations.dublin" />
-              </span>
+              <Link to="/search">
+                <span className="white-text">
+                  <FormattedMessage id="locations.dublin" />
+                </span>
+              </Link>
               <br/>
-              <span className="white-text">
-                <FormattedMessage id="locations.galway" />
-              </span>
+              <Link to="/search">
+                <span className="white-text">
+                  <FormattedMessage id="locations.galway" />
+                </span>
+              </Link>
               <br/>
-              <span className="white-text">
-                <FormattedMessage id="locations.cork" />
-              </span>
+              <Link to="/search">
+                <span className="white-text">
+                  <FormattedMessage id="locations.cork" />
+                </span>
+              </Link>
               <br/>
-              <span className="white-text">
-                <FormattedMessage id="locations.wicklow" />
-              </span>
+              <Link to="/search">
+                <span className="white-text">
+                  <FormattedMessage id="locations.wicklow" />
+                </span>
+              </Link>
             </p>
           </div>
 

@@ -640,7 +640,7 @@ export default class App extends Component {
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
-            <Footer />
+            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } />
 
             { alerts }
           </div>
