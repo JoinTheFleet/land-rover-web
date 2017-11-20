@@ -242,9 +242,6 @@ export default class ListingsFilters extends Component {
                           return filter.data[0][property] !== undefined
                         })];
 
-                        console.log(displayProperty);
-                        console.log(filter.data);
-
                         return <Dropdown key={ 'filters_group_' + filter.param }
                                          name={ filter.param }
                                          capitalize={ true }
