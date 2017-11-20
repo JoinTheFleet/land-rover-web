@@ -330,6 +330,8 @@
     "reviews.review_submitted_successfully": "Review Submitted Successfully!",
     "reviews.share_your_experience": "Share your experience working with the renter",
 
+    "messages.enter_text_here": "Enter text here",
+
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
     "user_profile_menu.settings": "Settings",

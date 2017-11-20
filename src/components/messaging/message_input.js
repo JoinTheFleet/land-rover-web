@@ -5,6 +5,8 @@ import addFileImage from '../../assets/images/add-file.png';
 import S3Uploader from '../../shared/external/s3_uploader';
 import Alert from 'react-s-alert';
 
+import LocalizationService from '../../shared/libraries/localization_service';
+
 export default class MessageInput extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ export default class MessageInput extends Component {
       text: '',
       attachmentURL: undefined,
       submitting: false
-    }
+    };
 
     this.handleMessageInput = this.handleMessageInput.bind(this);
     this.handleMessageAttachment = this.handleMessageAttachment.bind(this);
@@ -50,7 +52,7 @@ export default class MessageInput extends Component {
 
   submitMessage(event) {
     if (event) {
-      event.preventDefault()
+      event.preventDefault();
     }
 
     if (this.state.text.length > 0 || this.state.attachmentURL) {
@@ -63,9 +65,9 @@ export default class MessageInput extends Component {
                                        this.setState({
                                          text: '',
                                          submitting: false
-                                       }, this.props.reloadData)
+                                       }, this.props.reloadData);
                                      })
-                                     .catch((error) => { this.setState({ submitting: false }, () => { Alert.error(error.response.data.message); }) });
+                                     .catch((error) => { this.setState({ submitting: false }, () => { Alert.error(error.response.data.message); }); });
         }
         else if (this.state.attachmentURL) {
           ConversationMessagesService.create(this.props.conversation.id, '', this.buildImageAttachment())
@@ -73,9 +75,9 @@ export default class MessageInput extends Component {
                                        this.setState({
                                          submitting: false,
                                          attachmentURL: undefined
-                                       }, this.props.reloadData)
+                                       }, this.props.reloadData);
                                      })
-                                     .catch((error) => { this.setState({ submitting: false, attachmentURL: undefined }, () => { Alert.error(error.response.data.message); }) });
+                                     .catch((error) => { this.setState({ submitting: false, attachmentURL: undefined }, () => { Alert.error(error.response.data.message); }); });
 
         }
       })
@@ -88,7 +90,7 @@ export default class MessageInput extends Component {
         <form onSubmit={ this.submitMessage }>
           <input id='imageInput' type='file' onChange={ this.handleMessageAttachment } style={{ display: 'none'}} ref={(ref) => this.imageInput = ref} />
           <div className='col-xs-11 no-side-padding'>
-            <FormField id='message-input' type='text' handleChange={ this.handleMessageInput } value={ this.state.text } disabled={ this.state.submitting } />
+            <FormField id='message-input' type='text' autocomplete='off' handleChange={ this.handleMessageInput } value={ this.state.text } placeholder={ LocalizationService.formatMessage('messages.enter_text_here') } disabled={ this.state.submitting } />
           </div>
           <div className='col-xs-1 no-side-padding' onClick={ (event) => this.imageInput.click() }>
             <i className='pull-right'><img src={addFileImage} alt='' /></i>
