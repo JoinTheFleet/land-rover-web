@@ -56,7 +56,7 @@ export default class Dropdown extends Component {
         if (displayProperty) {
           if (displayProperty.constructor === Array) {
             for(let i = 0; i < displayProperty.length; i++) {
-              if (item[displayProperty[i]] && item[displayProperty[i]] !== '') {
+              if (item[displayProperty[i]] !== undefined) {
                 displayText = item[displayProperty[i]];
                 break;
               }
@@ -71,7 +71,7 @@ export default class Dropdown extends Component {
           currentItemText = `${this.props.placeholder}: ${displayText}`;
         }
 
-        return (<li className="dropdown-item" key={ this.props.name + '_item_' + index } onClick={ () => { this.handleItemClick(valueText, displayText) } } >{ displayText }</li>);
+        return (<li className={`dropdown-item ${this.props.capitalize ? 'text-capitalize' : ''}`}  key={ this.props.name + '_item_' + index } onClick={ () => { this.handleItemClick(valueText, displayText) } } >{ displayText }</li>);
       });
 
     return (

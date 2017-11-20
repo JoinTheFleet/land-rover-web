@@ -219,6 +219,7 @@ export default class ListingsFilters extends Component {
   renderListingsFilters() {
     let filterGroups = Object.keys(this.state.filterOptions);
     let selectedFilters = this.state.selectedFilters;
+    const displayProperties = ['display', 'name', 'year', 'fuel', 'body', 'transmission', 'seats', 'doors'];
 
     if (this.state.open) {
       return (
@@ -237,13 +238,26 @@ export default class ListingsFilters extends Component {
                     filters
                       .sort((a, b) => a.position - b.position)
                       .map(filter => {
+                        const displayProperty = displayProperties[displayProperties.findIndex(property => {
+                          return filter.data[0][property] !== undefined
+                        })];
+
+                        console.log(displayProperty);
+                        console.log(filter.data);
+
                         return <Dropdown key={ 'filters_group_' + filter.param }
                                          name={ filter.param }
+                                         capitalize={ true }
                                          placeholder={ filter.name }
-                                         items={ filter.data }
+                                         items={ filter.data.sort((itemA, itemB) => {
+                                           const itemAText = itemA[displayProperty];
+                                           const itemBText = itemB[displayProperty];
+
+                                           return itemAText < itemBText ? -1 : (itemAText > itemBText ? 1 : 0);
+                                         }) }
                                          selectedValue={ selectedFilters[filter.param] }
                                          valueProperty="id"
-                                         displayProperty={ ['display', 'name','year','fuel','body','transmission'] }
+                                         displayProperty={ displayProperties }
                                          itemClickHandler={ this.handleFilterSelected } />
                       })
                   }
@@ -273,7 +287,7 @@ export default class ListingsFilters extends Component {
 
           <div className="listings-filters-amenities">
             {
-              this.state.amenities.map((amenity) => {
+              this.state.amenities.sort((amenityA, amenityB) => amenityA.name >= amenityB.name).map((amenity) => {
                 let checkboxId = 'listings_amenity_' + amenity.id;
 
                 return (
