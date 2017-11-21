@@ -379,10 +379,6 @@ export default class ListingView extends Component {
   }
 
   renderButtons() {
-    if (this.props.currentUserRole === userRoles.renter) {
-      return '';
-    }
-
     return (
       <div className="listing-view-buttons text-center col-xs-12 no-side-padding">
         { this.renderGoBackButton() }

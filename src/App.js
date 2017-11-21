@@ -60,6 +60,11 @@ export default class App extends Component {
 
     this.eventEmitter = new EventEmitter();
 
+    const defaultLocation = {
+      latitude: 0,
+      longitude: 0
+    };
+
     this.state = {
       accessToken: cookies.get('accessToken'),
       configuration: undefined,
@@ -73,10 +78,8 @@ export default class App extends Component {
       modalName: undefined,
       startDate: undefined,
       endDate: undefined,
-      location: {
-        latitude: 0,
-        longitude: 0
-      },
+      defaultLocation: defaultLocation,
+      location: defaultLocation,
       loadings: {
         homefeed: false
       },
@@ -126,7 +129,8 @@ export default class App extends Component {
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude
                           };
-                          this.setState({location: location});
+
+                          this.setState({ defaultLocation: location, location: location });
                         });
     }, 1000);
 
@@ -447,8 +451,8 @@ export default class App extends Component {
   }
 
   handleLocationChange(event, immediate) {
-    let location = this.state.location;
     let term = event.target.value;
+    let location = term !== '' ? this.state.location : this.state.defaultLocation;
     let latitude = location ? location.latitude : undefined;
     let longitude = location ? location.longitude : undefined;
     let locationTimeout = this.state.locationTimeout;
@@ -461,6 +465,7 @@ export default class App extends Component {
     if (Helpers.pageWidth() < 768 && (!term || term === '')) {
       this.setState({
         locationName: term,
+        location: location,
         searchLocations: []
       })
     }
@@ -478,6 +483,7 @@ export default class App extends Component {
 
       this.setState({
         locationName: term,
+        location: location,
         locationTimeout: locationTimeout
       });
     }
@@ -485,6 +491,7 @@ export default class App extends Component {
 
   render() {
     const alerts = this.state.showAlerts ? (<Alerts />) : '';
+    const disableSearchButton = this.state.searchLocations.length > 0 && this.state.locationName !== '' && this.state.location === this.state.defaultLocation;
     let mainRouter = (<Redirect to="/" />);
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -544,6 +551,7 @@ export default class App extends Component {
                     hideSearchResults={ this.hideSearchResults }
                     searchLocations={ this.state.searchLocations }
                     hideSearchForm={ props.location.pathname === '/' }
+                    disableSearchButton={ disableSearchButton }
                     showSearchButton={ true } />
 
             { this.renderHeaderTopMenu() }
@@ -570,6 +578,7 @@ export default class App extends Component {
                                        hideSearchResults={ this.hideSearchResults }
                                        searchLocations={ this.state.searchLocations }
                                        showSearchButton={ true }
+                                       disableSearchButton={ disableSearchButton }
                                        toggleWishListModal={ this.toggleWishListModal } />
                   }
                 }} />
@@ -594,6 +603,7 @@ export default class App extends Component {
                                        hideSearchResults={ this.hideSearchResults }
                                        searchLocations={ this.state.searchLocations }
                                        showSearchButton={ true }
+                                       disableSearchButton={ disableSearchButton }
                                        toggleWishListModal={ this.toggleWishListModal } />
                   }
                 }} />

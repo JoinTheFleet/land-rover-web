@@ -6,6 +6,18 @@ import closeGreyIcon from '../../assets/images/close-grey.png';
 import CloseOnEscape from 'react-close-on-escape';
 
 export default class Modal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleCloseOnEscape = this.handleCloseOnEscape.bind(this);
+  }
+
+  handleCloseOnEscape() {
+    if (this.props.open) {
+      this.props.toggleModal(this.props.modalName)
+    }
+  }
+
   render() {
     let title = '';
     let closeBtn = '';
@@ -25,7 +37,7 @@ export default class Modal extends Component {
     }
 
     return (
-      <CloseOnEscape onEscape={ () => { this.props.toggleModal(this.props.modalName) }}>
+      <CloseOnEscape onEscape={ this.handleCloseOnEscape }>
         <Toggleable open={ this.props.open }>
           <div className={`${this.props.modalClass || 'custom-modal'} modal`} role="dialog">
             <div className="modal-dialog">

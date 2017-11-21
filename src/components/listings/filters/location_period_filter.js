@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Button, Dropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import FormField from '../../miscellaneous/forms/form_field';
 import PropTypes from 'prop-types';
 import LocationMenuItem from './location_menu_item';
 import momentPropTypes from 'react-moment-proptypes';
 import CloseOnEscape from 'react-close-on-escape';
 import { Link } from 'react-router-dom';
+
+import Button from '../../miscellaneous/button';
 
 import Helpers from '../../../miscellaneous/helpers';
 
@@ -33,22 +35,32 @@ export default class ListingPeriodFilter extends Component {
     let button = '';
 
     if (this.props.showSearchButton) {
-      button = (
-        <Link to='/search'>
-          <Button bsStyle='primary search'
-                  onClick={ () => {
-                    if (this.props.closeMenu) {
-                      this.props.closeMenu();
-                    }
-                    if (this.props.hideSearchResults) {
-                      this.props.hideSearchResults();
-                    }
-                    this.props.handleSearch();
-                  }}>
-            <FormattedMessage id="application.search" />
-          </Button>
-        </Link>
-      );
+      const buttonContent = (
+        <Button className='search'
+                disabled={ this.props.disableSearchButton }
+                onClick={ () => {
+                  if (this.props.closeMenu) {
+                    this.props.closeMenu();
+                  }
+                  if (this.props.hideSearchResults) {
+                    this.props.hideSearchResults();
+                  }
+                  this.props.handleSearch();
+                }}>
+          <FormattedMessage id="application.search" />
+        </Button>
+      )
+
+      if (this.props.disableSearchButton) {
+        button = buttonContent;
+      }
+      else {
+        button = (
+          <Link to='/search'>
+            { buttonContent }
+          </Link>
+        );
+      }
     }
 
     return (
@@ -116,5 +128,6 @@ ListingPeriodFilter.propTypes = {
   endDate: momentPropTypes.momentObj,
   locationName: PropTypes.string,
   searchLocations: PropTypes.array.isRequired,
-  showSearchButton: PropTypes.bool
+  showSearchButton: PropTypes.bool,
+  disableSearchButton: PropTypes.bool
 }

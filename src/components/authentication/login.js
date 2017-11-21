@@ -291,10 +291,12 @@ export default class Login extends Component {
              <br className="visible-xs" />
              <FormattedMessage id="menu.signup" >
                { (message) => (
-                 <span className="secondary-text-color subtitle-font-weight"
-                       onClick={ () =>  {this.props.toggleModal('registration') }}>
-                   {` ${message}`}
-                 </span>
+                 <a>
+                  <span className="secondary-text-color subtitle-font-weight"
+                        onClick={ () =>  {this.props.toggleModal('registration') }}>
+                    {` ${message}`}
+                  </span>
+                 </a>
                ) }
              </FormattedMessage>
            </div>
@@ -386,10 +388,12 @@ export default class Login extends Component {
           <br className="visible-xs" />
           <FormattedMessage id="menu.signup" >
             { (message) => (
-              <span className="secondary-text-color subtitle-font-weight"
-                    onClick={ () =>  {this.props.toggleModal('registration') }}>
-                {` ${message}`}
-              </span>
+              <a>
+                <span className="secondary-text-color subtitle-font-weight"
+                      onClick={ () =>  {this.props.toggleModal('registration') }}>
+                  {` ${message}`}
+                </span>
+              </a>
             ) }
           </FormattedMessage>
         </div>

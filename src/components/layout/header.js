@@ -35,7 +35,6 @@ export default class Header extends Component {
   }
 
   handleMenuItemSelect(item) {
-    this.props.handleMenuItemSelect(item);
     this.setState({menuOpen: false});
   }
 

@@ -695,7 +695,7 @@ class BookingForm extends Component {
     const listing = this.state.listing;
     let bookingTerms = listing ? listing.country_configuration.insurance_provider.booking_terms : {};
 
-    if (Object.keys(paymentMethod).length > 0) {
+    if (paymentMethod && Object.keys(paymentMethod).length > 0) {
       paymentMethodDescription = LocalizationService.formatMessage('payment_methods.payment_method_card', {
         brand: paymentMethod.brand,
         last_four: paymentMethod.last_four

@@ -70,6 +70,9 @@ export default class HeaderMenu extends Component {
                         event.preventDefault();
                         this.props.toggleModal(item);
                       }
+                      else {
+                        this.props.handleMenuItemSelect(item);
+                      }
                     }} >
             <FormattedMessage id={'menu.' + item} />
           </NavLink>

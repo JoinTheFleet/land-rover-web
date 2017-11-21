@@ -44,58 +44,12 @@ export default class Homescreen extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       topSellersLoading: true,
+      loadingPosts: true,
+      nearbyListingsLoading: true
     }, () => {
-      TopSellersService.index()
-                        .then(response => {
-                          this.setState({
-                            topSellers: response.data.data.listings,
-                            topSellersLoading: false
-                          });
-                        });
-      GeolocationService.getCurrentPosition()
-                        .then(position => {
-
-                          this.setState({
-                            nearbyListingsLoading: true
-                            }, () => {
-                            NearbyListingsService.index({
-                              latitude: position.coords.latitude,
-                              longitude: position.coords.longitude
-                            }).then(response => {
-                              this.setState({
-                                nearbyListings: response.data.data.listings,
-                                nearbyListingsLoading: false
-                              });
-                            });
-                          });
-                        })
-                        .catch((error) => {
-                          this.setState({
-                            nearbyListingsLoading: true
-                          }, () => {
-                            NearbyListingsService.index()
-                                                 .then(response => {
-                                                   this.setState({
-                                                     nearbyListings: response.data.data.listings,
-                                                     nearbyListingsLoading: false
-                                                   });
-                                                 });
-                          });
-                        });
-    });
-
-    let referralCode = this.props.match.params.referral_code;
-
-    if (referralCode) {
-      this.props.handleReferral(referralCode);
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ loadingPosts: true }, () => {
       MediumService.show()
                    .then(response => {
                      this.setState({
@@ -106,8 +60,44 @@ export default class Homescreen extends Component {
                        loadingPosts: false
                      });
                    })
-                   .catch(error => Errors.extractErrorMessage(error));
+                   .catch(error => { this.setState({ loadingPosts: false }, () => { Errors.extractErrorMessage(error); }); });
+
+      TopSellersService.index()
+                       .then(response => {
+                         this.setState({
+                           topSellers: response.data.data.listings,
+                           topSellersLoading: false
+                         });
+                       });
+
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+                          NearbyListingsService.index({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                          }).then(response => {
+                            this.setState({
+                              nearbyListings: response.data.data.listings,
+                              nearbyListingsLoading: false
+                            });
+                          });
+                        })
+                        .catch((error) => {
+                          NearbyListingsService.index()
+                                                .then(response => {
+                                                  this.setState({
+                                                    nearbyListings: response.data.data.listings,
+                                                    nearbyListingsLoading: false
+                                                  });
+                                                });
+                        });
     });
+
+    let referralCode = this.props.match.params.referral_code;
+
+    if (referralCode) {
+      this.props.handleReferral(referralCode);
+    }
   }
 
   render() {
