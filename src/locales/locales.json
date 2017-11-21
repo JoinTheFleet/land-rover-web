@@ -388,7 +388,9 @@
     "user_profile_verified_info.business_name": "Name",
     "user_profile_verified_info.tax_id": "Tax ID",
 
+    "user_profile_verified_info.payment_method_invalid_card": "Please provide valid card details",
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
+    "user_profile_verified_info.payout_method_invalid_account": "Please provide valid account details",
     "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
     "user_profile_verified_info.payout_method_error": "There was an error processing your payout information, please try again.",
     "user_profile_verified_info.payout_method_success": "Your payout information was processed successfully.",
@@ -399,7 +401,7 @@
     "notification_settings.messages.title": "Messages",
     "notification_settings.rental_updates.title": "Reservation Updates",
     "notification_settings.other.title": "Other",
-    "notification_settings.updated": "Your notification prefaces have been updated",
+    "notification_settings.updated": "Your notification preferences have been updated",
 
     "notification_settings.messages.label": "From owners and renters",
     "notification_settings.rental_updates.label": "Request, confirmations, changes and more",

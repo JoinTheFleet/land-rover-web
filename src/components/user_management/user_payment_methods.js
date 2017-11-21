@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
 
 import PaymentMethodsService from '../../shared/services/payment_methods_service';
 import LocalizationService from '../../shared/libraries/localization_service';
@@ -18,7 +19,7 @@ class UserPaymentMethods extends Component {
       sources: [],
       loading: false,
       cardSaving: false
-    }
+    };
 
     this.reloadData = this.reloadData.bind(this);
     this.addPaymentSource = this.addPaymentSource.bind(this);
@@ -54,16 +55,15 @@ class UserPaymentMethods extends Component {
       this.props.stripe.createToken({ type: 'card' })
                        .then(({token}) => {
                          if (token.id) {
-                           PaymentMethodsService.create({
-                             payment_method: {
-                               token: token.id
-                             }
-                           }).then(this.reloadData);
+                           PaymentMethodsService.create({ payment_method: { token: token.id } }).then(() => {
+                             this.reloadData();
+                             Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payment_information_updated'));
+                           });
                          }
                        })
                        .catch(() => {
-                         this.setState({
-                           cardLoading: false
+                         this.setState({ cardLoading: false }, () => {
+                           Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payment_method_invalid_card'));
                          });
                        });
     });

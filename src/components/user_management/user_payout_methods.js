@@ -92,7 +92,7 @@ class UserPayoutMethods extends Component {
       })
       .then((token) => {
         if (token.error) {
-          Alert.error(token.error.message)
+          Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_invalid_account'));
           this.setState({ accountLoading: false });
         }
         else if (token.token.id) {
