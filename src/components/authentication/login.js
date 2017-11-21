@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import FacebookLogin from 'react-facebook-login';
 import Anime from 'react-anime';
 import Alert from 'react-s-alert';
@@ -16,7 +16,7 @@ import Button from '../miscellaneous/button';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 const facebookAppID = process.env.REACT_APP_FACEBOOK_APP_ID;
-class Login extends Component {
+export default class Login extends Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ class Login extends Component {
   setSelectedLoginMode() {
     if (this.props.modalName === 'login') {
       this.setState({
-        loginTitle: this.props.intl.formatMessage({id: 'authentication.log_in_to_continue'}),
+        loginTitle: LocalizationService.formatMessage('authentication.log_in_to_continue'),
         user: {}
       });
     }
@@ -225,28 +225,28 @@ class Login extends Component {
               disabled={ this.state.loading }
                          value={ user.first_name }
                          handleChange={ this.setFirstName }
-                         placeholder={ this.props.intl.formatMessage({id: 'user_profile.first_name'}) }
+                         placeholder={ LocalizationService.formatMessage('user_profile.first_name') }
                          className='form-control text-secondary-font-weight fs-18'
                          type='text' />
               <FormField id='registration_last_name'
                          value={ user.last_name }
                          disabled={ this.state.loading }
                          handleChange={ this.setLastName }
-                         placeholder={ this.props.intl.formatMessage({id: 'user_profile.last_name'}) }
+                         placeholder={ LocalizationService.formatMessage('user_profile.last_name') }
                          className='form-control text-secondary-font-weight fs-18'
                          type='text' />
               <FormField id='registration_email'
                          value={ user.email }
                          disabled={ this.state.loading }
                          handleChange={ this.setEmail }
-                         placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.email'}) }
+                         placeholder={ LocalizationService.formatMessage('user_profile_verified_info.email') }
                          className='form-control text-secondary-font-weight fs-18'
                          type='text' />
               <FormField id='registration_password'
                          value={ user.password }
                          disabled={ this.state.loading }
                          handleChange={ this.setPassword }
-                         placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
+                         placeholder={ LocalizationService.formatMessage('authentication.password') }
                          className='form-control text-secondary-font-weight fs-18'
                          type='password' />
               { this.renderRegistrationReferralCode() }
@@ -255,7 +255,7 @@ class Login extends Component {
                   onClick={ this.registerUser }
                   spinner={ this.state.loading }
                   disabled={ this.state.loading } >
-            { this.props.intl.formatMessage({id: 'authentication.register'}) }
+            { LocalizationService.formatMessage('authentication.register') }
           </Button>
         </Anime>
       </form>
@@ -272,7 +272,7 @@ class Login extends Component {
                <FormField id='login_username'
                           value={ this.state.user.email }
                           handleChange={ this.setEmail }
-                          placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
+                          placeholder={ LocalizationService.formatMessage('authentication.email_address') }
                           className='form-control text-secondary-font-weight fs-18'
                           disabled={ this.state.loading }
                           type='text' />
@@ -280,7 +280,7 @@ class Login extends Component {
            <Button className="secondary-color white-text text-secondary-font-weight fs-18"
                    spinner={ this.state.loading }
                    disabled={ this.state.loading }>
-             { this.props.intl.formatMessage({id: 'authentication.password_reset'}) }
+             { LocalizationService.formatMessage('authentication.password_reset') }
            </Button>
            <div className="divider">
              <div className="divider-line tertiary-color"></div>
@@ -305,8 +305,8 @@ class Login extends Component {
 
   renderLoginModalBody() {
     let loginMessage = this.props.modalName === 'email' ?
-                          this.props.intl.formatMessage({id: 'authentication.log_in'}) :
-                          this.props.intl.formatMessage({id: 'authentication.log_in_with_email'});
+                          LocalizationService.formatMessage('authentication.log_in') :
+                          LocalizationService.formatMessage('authentication.log_in_with_email');
 
     let emailAccessory = (
       <i><img src={emailIcon} alt="email icon" /></i>
@@ -330,14 +330,14 @@ class Login extends Component {
                  <FormField id='login_username'
                             value={ this.state.user.email }
                             handleChange={ this.setEmail }
-                            placeholder={ this.props.intl.formatMessage({id: 'authentication.email_address'}) }
+                            placeholder={ LocalizationService.formatMessage('authentication.email_address') }
                             className='form-control text-secondary-font-weight fs-18'
                             disabled={ this.state.loading }
                             type='text' />
                  <FormField id='login_password'
                             value={ this.state.user.password }
                             handleChange={ this.setPassword }
-                            placeholder={ this.props.intl.formatMessage({id: 'authentication.password'}) }
+                            placeholder={ LocalizationService.formatMessage('authentication.password') }
                             className='form-control text-secondary-font-weight fs-18'
                             disabled={ this.state.loading }
                             type='password' />
@@ -349,7 +349,7 @@ class Login extends Component {
              </Button>
              <div className='row'>
                <div className='col-xs-12 modal_link text-center secondary-text-color subtitle-font-weight' onClick={ () => { this.props.toggleModal('forgotten-password'); }}>
-                 { this.props.intl.formatMessage({id: 'authentication.forgot_password'}) }
+                 { LocalizationService.formatMessage('authentication.forgot_password') }
                </div>
              </div>
           </Anime>
@@ -364,7 +364,7 @@ class Login extends Component {
                        fields="name,email,picture"
                        icon="fa-facebook"
                        cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
-                       textButton={ this.props.intl.formatMessage({id: 'authentication.log_in_with_facebook'}) }
+                       textButton={ LocalizationService.formatMessage('authentication.log_in_with_facebook') }
                        callback={ this.handleFacebookLogin }
                        onClick={ () => { this.props.toggleModal('facebook') } } />
 
@@ -424,8 +424,6 @@ class Login extends Component {
     )
   }
 }
-
-export default injectIntl(Login);
 
 Login.propTypes = {
   setAccessToken: PropTypes.func.isRequired,

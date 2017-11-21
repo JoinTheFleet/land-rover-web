@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Alert from 'react-s-alert';
 import moment from 'moment';
 
@@ -14,7 +14,7 @@ import BusinessInformationForm from './user_profile_verified_info/business_infor
 import LocalizationService from '../../shared/libraries/localization_service';
 import Errors from '../../miscellaneous/errors';
 
-class UserProfileVerifiedInfo extends Component {
+export default class UserProfileVerifiedInfo extends Component {
   constructor(props) {
     super(props);
 
@@ -468,7 +468,7 @@ class UserProfileVerifiedInfo extends Component {
                       handleCountryChange={ this.handleCountryChange }
                       handleUserCountryChange={ this.handleUserCountryChange }
                       handleEmailChange={ this.handleEmailChange }
-                      placeholder={ this.props.intl.formatMessage({id: 'user_profile_verified_info.date_of_birth'}) } />
+                      placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
           </div>
         </div>
       </div>
@@ -520,5 +520,3 @@ class UserProfileVerifiedInfo extends Component {
     )
   }
 }
-
-export default injectIntl(UserProfileVerifiedInfo)

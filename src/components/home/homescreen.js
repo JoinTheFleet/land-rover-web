@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
@@ -27,7 +27,7 @@ import MediumService from '../../shared/services/medium_service';
 
 import Errors from '../../miscellaneous/errors';
 
-class Homescreen extends Component {
+export default class Homescreen extends Component {
   constructor(props) {
     super(props);
 
@@ -68,9 +68,9 @@ class Homescreen extends Component {
                               this.setState({
                                 nearbyListings: response.data.data.listings,
                                 nearbyListingsLoading: false
-                              })
-                            })
-                          })
+                              });
+                            });
+                          });
                         })
                         .catch((error) => {
                           this.setState({
@@ -81,10 +81,10 @@ class Homescreen extends Component {
                                                    this.setState({
                                                      nearbyListings: response.data.data.listings,
                                                      nearbyListingsLoading: false
-                                                   })
-                                                 })
-                          })
-                        })
+                                                   });
+                                                 });
+                          });
+                        });
     });
 
     let referralCode = this.props.match.params.referral_code;
@@ -178,8 +178,6 @@ class Homescreen extends Component {
     )
   }
 }
-
-export default injectIntl(Homescreen)
 
 Homescreen.propTypes = {
   accessToken: PropTypes.string,

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
@@ -30,7 +29,7 @@ const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
 
-class ListingForm extends Component {
+export default class ListingForm extends Component {
   constructor(props) {
     super(props);
 
@@ -244,7 +243,7 @@ class ListingForm extends Component {
 
     for(let i = 0; i < listingStepsKeys.length - 1; i++) {
       step = listingStepsKeys[i];
-      steps[step]= this.props.intl.formatMessage({ id: 'listings.forms.steps.' + step });
+      steps[step]= LocalizationService.formatMessage(`listings.forms.steps.${step}`);
     }
 
     return (
@@ -330,8 +329,6 @@ class ListingForm extends Component {
     }
   }
 }
-
-export default injectIntl(ListingForm);
 
 ListingForm.propTypes = {
   edit: PropTypes.bool

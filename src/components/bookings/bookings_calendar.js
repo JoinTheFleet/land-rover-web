@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 
 import moment from 'moment';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 
 import Alert from 'react-s-alert';
 import Loading from '../miscellaneous/loading';
 import FormField from '../miscellaneous/forms/form_field';
 
-import ListingsService from '../../shared/services/listings/listings_service';
-import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
-import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
-
 import ListingsSelector from '../listings/listings_selector';
 
 import Helpers from '../../miscellaneous/helpers';
+import ListingsService from '../../shared/services/listings/listings_service';
+import ListingCalendarService from '../../shared/services/listings/listing_calendar_service';
+import ListingBookingsService from '../../shared/services/listings/listing_bookings_service';
+import LocalizationService from '../../shared/libraries/localization_service';
 
-class BookingsCalendar extends Component {
+export default class BookingsCalendar extends Component {
   constructor(props) {
     super(props);
 
@@ -214,7 +214,7 @@ class BookingsCalendar extends Component {
 
       ListingCalendarService.create(this.state.currentListing.id, dates)
                             .then(response => {
-                              let message = this.props.intl.formatMessage({ id: 'bookings.saved_changes_successfully' });
+                              let message = LocalizationService.formatMessage('bookings.saved_changes_successfully');
 
                               Alert.success(message);
                               this.fetchCurrentAvailability();
@@ -410,5 +410,3 @@ class BookingsCalendar extends Component {
     );
   }
 }
-
-export default injectIntl(BookingsCalendar);

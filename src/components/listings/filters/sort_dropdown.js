@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import LocalizationService from '../../../shared/libraries/localization_service';
 
@@ -7,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const SORT_FILTERS = ['price', 'name', 'rating', 'distance']
 
-class SortDropdown extends Component {
+export default class SortDropdown extends Component {
   render() {
     return (
       <div>
@@ -31,8 +30,6 @@ class SortDropdown extends Component {
     )
   }
 }
-
-export default injectIntl(SortDropdown);
 
 SortDropdown.propTypes = {
   handleSortToggle: PropTypes.func.isRequired,

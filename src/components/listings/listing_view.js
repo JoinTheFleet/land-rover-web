@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 import Avatar from 'react-avatar';
@@ -33,7 +33,7 @@ import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 const listingsViews = Constants.listingsViews();
 const userRoles = Constants.userRoles();
 
-class ListingView extends Component {
+export default class ListingView extends Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +50,7 @@ class ListingView extends Component {
   }
 
   componentDidMount() {
-    let location = this.props;
+    let location = this.props.location;
 
     if (location && location.state && location.state.listing) {
       if (this.props.preview) {
@@ -287,7 +287,7 @@ class ListingView extends Component {
         fillOpacity: 0.35
       }
     }
-    let googleMapUrl = this.props.intl.formatMessage({ id: 'google.maps.javascript_api_link' }, { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
+    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
 
     return (
       <div className="listing-view-map col-xs-12 no-side-padding">
@@ -307,7 +307,7 @@ class ListingView extends Component {
   renderBookingTile() {
     let bookingDiv = '';
 
-    if (this.props.currentUserRole === userRoles.renter) {
+    if (this.props.currentUserRole === userRoles.renter && !this.props.preview) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
           <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
@@ -469,5 +469,3 @@ ListingView.propTypes = {
   preview: PropTypes.bool,
   loggedIn: PropTypes.bool
 };
-
-export default injectIntl(ListingView);

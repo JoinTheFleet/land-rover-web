@@ -8,6 +8,7 @@ import Alert from 'react-s-alert';
 import Button from '../../../miscellaneous/button';
 
 import Constants from '../../../../miscellaneous/constants';
+import LocalizationService from '../../../../shared/libraries/localization_service';
 
 const stepDirections = Constants.stepDirections();
 
@@ -30,7 +31,7 @@ class ListingStep extends Component {
       }
     }
     else {
-      let errorMessage = this.props.intl.formatMessage({ id: 'errors.forms.fill_up_all_required_fields' });
+      let errorMessage = LocalizationService.formatMessage('errors.forms.fill_up_all_required_fields');
       Alert.error(errorMessage);
     }
   }

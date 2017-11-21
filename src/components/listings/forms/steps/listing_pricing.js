@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import PropTypes from 'prop-types';
@@ -17,7 +16,7 @@ import LocalizationService from '../../../../shared/libraries/localization_servi
 
 const DEFAULT_DISTANCE_UNITS = 'km';
 
-class ListingPricing extends Component {
+export default class ListingPricing extends Component {
   constructor(props) {
     super(props);
 
@@ -116,8 +115,8 @@ class ListingPricing extends Component {
 
     if ( listing.on_demand ) {
       odcFields = (
-        <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.pricing.on_demand_collection'}) }
-                               fieldsDescription={ this.props.intl.formatMessage({ id: 'listings.pricing.earn_more_by_offering' }) } >
+        <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.pricing.on_demand_collection') }
+                               fieldsDescription={ LocalizationService.formatMessage('listings.pricing.earn_more_by_offering') } >
           {
             listing.on_demand_rates.map((od_rate, index) => {
               if (od_rate.distance > 0) {
@@ -126,7 +125,7 @@ class ListingPricing extends Component {
 
               return (
                 <div key={ 'listing_on_demand_rate_' + index } className="listing-on-demand-rate-row col-xs-12 no-side-padding">
-                  <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.distance'}) }>
+                  <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.distance') }>
                     <Dropdown key={ `listing_odc_distance_selector_${index}` }
                               id={ `listing_odc_distance_selector_${index}` }>
 
@@ -151,7 +150,7 @@ class ListingPricing extends Component {
                     </Dropdown>
                   </ListingFormField>
 
-                  <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.price'}) }>
+                  <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.price') }>
                     <FormField id={ 'listing_od_rate_rate_' + index }
                               type="text"
                               value={ listing.on_demand_rates[index].rate / 100.0 }
@@ -174,17 +173,16 @@ class ListingPricing extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }
                      listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.pricing.prices'}) }>
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.daily'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.pricing.prices') }>
+            <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.daily') }>
               <FormField id="listing_price"
                          type="text"
                          value={ listing.price / 100.0 }
                          handleChange={ (event) => { this.handleInputChange('price', event.target.value * 100) } } />
             </ListingFormField>
 
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.pricing.cleaning'}) }>
+            <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.cleaning') }>
               <FormField id="listing_cleaning_fee"
                         type="text"
                         value={ listing.cleaning_fee / 100.0 }
@@ -204,5 +202,3 @@ ListingPricing.propTypes = {
   handleProceedToStepAndAddProperties: PropTypes.func.isRequired,
   listing: PropTypes.object
 };
-
-export default injectIntl(ListingPricing);

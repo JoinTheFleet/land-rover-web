@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import FormField from './form_field';
 
-class FormRow extends Component {
+export default class FormRow extends Component {
   render() {
     return (
       <div className='col-xs-12 no-side-padding'>
@@ -18,5 +17,3 @@ class FormRow extends Component {
     )
   }
 }
-
-export default injectIntl(FormRow)

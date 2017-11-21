@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import LocalizationService from '../../../shared/libraries/localization_service';
 
 import PropTypes from 'prop-types';
 
 import ListingsFilters from './listings_filters';
 import SortDropdown from './sort_dropdown';
-import Button from '../../miscellaneous/button';
 
-class ListingsFiltersTopBar extends Component {
+export default class ListingsFiltersTopBar extends Component {
   constructor(props) {
     super(props);
 
@@ -62,8 +60,6 @@ class ListingsFiltersTopBar extends Component {
     )
   }
 }
-
-export default injectIntl(ListingsFiltersTopBar);
 
 ListingsFiltersTopBar.propTypes = {
   handleFilterToggle: PropTypes.func.isRequired,

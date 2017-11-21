@@ -1,12 +1,5 @@
-import React, {
-  Component
-} from 'react';
-
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import {
-  injectIntl
-} from 'react-intl';
 
 import {
   withScriptjs,
@@ -19,6 +12,7 @@ import {
 import SearchBox from 'react-google-maps/lib/components/places/SearchBox';
 
 import GeolocationService from '../../shared/services/geolocation_service';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 const DEFAULT_CIRCLE_RADIUS = 750;
 
@@ -119,7 +113,7 @@ class Map extends Component {
           onPlacesChanged={this.onPlacesChanged}
           ref={ (searchBox) => { this.searchBox = searchBox } }>
           <input type="text"
-                 placeholder={ this.props.intl.formatMessage({ id: 'listings.location.location_search' }) }
+                 placeholder={ LocalizationService.formatMessage('listings.location.location_search') }
                  style={{
                    boxSizing: `border-box`,
                    border: `1px solid transparent`,
@@ -171,7 +165,7 @@ class Map extends Component {
   }
 }
 
-export default withScriptjs(withGoogleMap(injectIntl(Map)))
+export default withScriptjs(withGoogleMap(Map))
 
 Map.propTypes = {
   includeSearchBox: PropTypes.bool,
