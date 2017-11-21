@@ -33,6 +33,9 @@ class UserProfileVerifiedInfo extends Component {
           }
         }
       },
+      fieldsToDisable: {
+        countryOfResidence: false
+      },
       loading: false
     };
 
@@ -81,7 +84,13 @@ class UserProfileVerifiedInfo extends Component {
                       user.address = {};
                     }
 
-                    this.setState({ loading: false, user: user, hideAccountType: user.account_type === 'company' });
+                    this.setState(prevState => ({
+                      loading: false,
+                      user: user,
+                      hideAccountType: !!user.account_type,
+                      fieldsToDisable: {
+                        countryOfResidence: !!(user.country_code || (user.country ? user.country.alpha2 : undefined))
+                      } }));
                   })
                   .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
@@ -132,12 +141,21 @@ class UserProfileVerifiedInfo extends Component {
       UsersService.update('me', { user: user_params })
                   .then(response => {
                     let user = response.data.data.user;
+                    let fieldsToDisable = this.state.fieldsToDisable;
 
                     if (!user.address) {
                       user.address = {};
                     }
 
-                    this.setState({ loading: false, user: user, hideAccountType: user.account_type === 'company' }, () => {
+                    fieldsToDisable.accountType = !!user.account_type;
+                    fieldsToDisable.countryOfResidence = !!(user.country_code || (user.country ? user.country.alpha2 : undefined));
+
+                    this.setState(prevState => ({
+                      loading: false,
+                      user: user,
+                      hideAccountType: !!user.account_type,
+                      fieldsToDisable: fieldsToDisable
+                    }), () => {
                       Alert.success(LocalizationService.formatMessage('application.saved_changes_successfully'));
                     });
                   })
@@ -419,6 +437,7 @@ class UserProfileVerifiedInfo extends Component {
           </div>
           <div className='col-xs-12 form-body'>
             <FormField type="select"
+                       disabled={ this.state.fieldsToDisable.accountType }
                        value={ this.state.user.account_type || 'individual' }
                        options={ accountTypeOptions }
                        handleChange={ this.handleAccountTypeChange  }
@@ -437,7 +456,8 @@ class UserProfileVerifiedInfo extends Component {
             <FormattedMessage id="user_profile_verified_info.verified_info" />
           </div>
           <div className='col-xs-12 form-body'>
-            <UserForm user={this.state.user}
+            <UserForm user={ this.state.user }
+                      fieldsToDisable={ this.state.fieldsToDisable }
                       handleDateChange={ this.handleDateChange }
                       handleGenderChange={ this.handleGenderChange }
                       handleCityChange={ this.handleCityChange }
@@ -467,14 +487,14 @@ class UserProfileVerifiedInfo extends Component {
         </div>
         <div className='col-xs-12 form-body'>
           <BusinessInformationForm user={ this.state.user }
-                                    handleNameChange={ this.handleBusinessNameChange }
-                                    handleTaxIDChange={ this.handleBusinessTaxIDChange }
-                                    handleCityChange={ this.handleBusinessCityChange }
-                                    handleStateChange={ this.handleBusinessStateChange }
-                                    handleAddressLine1Change={ this.handleBusinessAddressLine1Change }
-                                    handleAddressLine2Change={ this.handleBusinessAddressLine2Change }
-                                    handlePostCodeChange={ this.handleBusinessPostCodeChange }
-                                    handleCountryChange={ this.handleBusinessCountryChange } />
+                                   handleNameChange={ this.handleBusinessNameChange }
+                                   handleTaxIDChange={ this.handleBusinessTaxIDChange }
+                                   handleCityChange={ this.handleBusinessCityChange }
+                                   handleStateChange={ this.handleBusinessStateChange }
+                                   handleAddressLine1Change={ this.handleBusinessAddressLine1Change }
+                                   handleAddressLine2Change={ this.handleBusinessAddressLine2Change }
+                                   handlePostCodeChange={ this.handleBusinessPostCodeChange }
+                                   handleCountryChange={ this.handleBusinessCountryChange } />
 
         </div>
       </div>

@@ -22,7 +22,8 @@ export default class Listings extends Component {
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
                                 preview={ true }
-                                currentUserRole={ this.props.currentUserRole } />
+                                currentUserRole={ this.props.currentUserRole }
+                                loggedIn={ this.props.loggedIn } />
           } } />
 
           <Route path="/listings/:listing_id/bookings/new" render={(props) => {
@@ -46,7 +47,9 @@ export default class Listings extends Component {
 
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
-                                currentUserRole={ this.props.currentUserRole } />
+                                currentUserRole={ this.props.currentUserRole }
+                                loggedIn={ this.props.loggedIn }
+                                toggleModal={ this.props.toggleModal } />
           }} />
 
           <Route path="/listings" component={ ListingsOverview } />
@@ -57,5 +60,6 @@ export default class Listings extends Component {
 }
 
 Listings.propTypes = {
-  currentUserRole: PropTypes.string
+  currentUserRole: PropTypes.string,
+  loggedIn: PropTypes.bool
 }

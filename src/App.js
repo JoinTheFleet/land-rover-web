@@ -220,16 +220,17 @@ export default class App extends Component {
         modalName: undefined
       };
 
-      cookies.set('accessToken', accessToken, {
-        path: '/',
-        secure: window.location.hostname !== 'localhost',
-        maxAge: 86400 * 7
-      });
-
       if (accessToken.length > 0) {
+        cookies.set('accessToken', accessToken, {
+          path: '/',
+          secure: window.location.hostname !== 'localhost',
+          maxAge: 86400 * 7
+        });
+
         client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
       else {
+        cookies.remove('accessToken');
         delete client.defaults.headers.common['Authorization'];
       }
 
@@ -499,7 +500,8 @@ export default class App extends Component {
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
                               configurations={ this.state.configuration }
-                              currentUserRole={ this.state.currentUserRole } />)
+                              currentUserRole={ this.state.currentUserRole }
+                              loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
           }} />
           <Route path="/account" render={(props) => {
             return (<UserManagement {...props}
@@ -601,7 +603,9 @@ export default class App extends Component {
                 <Route path="/listings/:id" render={(props) => {
                   return (<Listings {...props}
                                     configurations={ this.state.configuration }
-                                    currentUserRole={ this.state.currentUserRole } />)
+                                    currentUserRole={ this.state.currentUserRole }
+                                    toggleModal={ this.toggleModal }
+                                    loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
                 }} />
 
                 <Route path="/search" render={(props) => {
@@ -636,7 +640,7 @@ export default class App extends Component {
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
-            <Footer />
+            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } />
 
             { alerts }
           </div>

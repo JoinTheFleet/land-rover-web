@@ -61,7 +61,7 @@ class BusinessInformationForm extends Component {
     }
 
     return (
-      <div>
+      <div className="business-form">
         <FormRow type='text' id='business-name' handleChange={ this.props.handleNameChange } value={ businessDetails.name } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.business_name') } />
         <FormRow type='text' id='business-taxid' handleChange={ this.props.handleTaxIDChange } value={ businessDetails.tax_id } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.tax_id') } />
 
@@ -71,7 +71,10 @@ class BusinessInformationForm extends Component {
           <FormField id='business-address-city' handleChange={ this.props.handleCityChange } type='text' value={ address.city } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.state')}/>
           <FormField id='business-address-state' handleChange={ this.props.handleStateChange } type='text' value={ address.state } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.county')}/>
           <FormField id='business-address-postcode' handleChange={ this.props.handlePostCodeChange } type='text' value={ address.postal_code } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.post_code')}/>
-          <FormField id='business-address-country' handleChange={ this.props.handleCountryChange } type='country' value={ address.country_code || address.country.alpha2 } clearable={ false } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
+
+          <div className="col-xs-12 no-side-padding">
+            <FormField id='business-address-country' handleChange={ this.props.handleCountryChange } type='country' value={ address.country_code || address.country.alpha2 } clearable={ false } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
+          </div>
         </FormGroup>
       </div>
     )

@@ -17,7 +17,8 @@ export default class Credits extends Component {
       referralURL: undefined,
       buttonText: LocalizationService.formatMessage('dashboard.credits.copy_url'),
       buttonTimeout: undefined
-    }
+    };
+
     this.copyReferralURL = this.copyReferralURL.bind(this);
   }
 
