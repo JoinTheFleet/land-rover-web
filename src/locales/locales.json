@@ -229,8 +229,6 @@
     "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
 
-    "listings.need_to_complete_verifications": "You need to fill in the following info in order to be able to add a listing: {info_to_verify}",
-
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",
     "bookings.check_in_date": "Check In Date",
@@ -287,6 +285,8 @@
     "bookings.your_booking_is": "Your booking is",
     "bookings.reviewed": "Reviewed",
     "bookings.log_in_before_booking": "Log in now to book this vehicle!",
+    "bookings.verify_info_before_booking": "You need to verify your information before being able to request a booking!",
+    "bookings.verify_info": "Verify Info",
 
     "bookings.surveys.please_walk_around_the_vehicle": "Please walk around the vehicle and make sure there is no visible damage. If you find damage, add a note of it here. Once you have made sure there is no further damage, check the box at the bottom of the screen.",
     "bookings.surveys.please_walk_around_the_vehicle_and_make_note": "Please walk around the vehicle and make sure there is no visible damage. If you find damage, please make a note of it here using the Raise an Issue form.",
@@ -351,6 +351,7 @@
     "user_profile.description": "Description",
     "user_profile.date_of_birth": "Date of Birth",
 
+    "user_profile.verified_info.need_to_complete_verifications": "You need to fill in the following info in order to be able to continue: {info_to_verify}",
     "user_profile_verified_info.account_type": "Account Type",
     "user_profile_verified_info.country_of_residence": "Country of Residence",
     "user_profile_verified_info.verified_info": "Verified Information",

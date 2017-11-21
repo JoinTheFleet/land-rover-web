@@ -259,7 +259,7 @@ export default class ListingForm extends Component {
     let renderedStep;
 
     if ( this.state.verificationsNeeded.length > 0 ) {
-      return (<Redirect to={ { pathname: "/account/verified_info", state: { verificationsNeeded: this.state.verificationsNeeded } }} />)
+      return (<Redirect to={ { pathname: "/account", state: { verificationsNeeded: this.state.verificationsNeeded } }} />)
     }
 
     if ( this.state.loading ) {

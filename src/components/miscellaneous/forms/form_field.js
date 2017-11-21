@@ -187,8 +187,8 @@ export default class FormField extends Component {
                         onChange={ this.props.handleChange }
                         loadOptions={ this.props.loadOptions }
                         isLoading={ this.props.loading }
-                        className={ this.props.className } 
-                        clearable={ this.props.clearable } 
+                        className={ this.props.className }
+                        clearable={ this.props.clearable }
                         promptTextCreator={ this.props.promptTextCreator } />
       );
     }

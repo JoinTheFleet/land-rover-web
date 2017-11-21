@@ -66,15 +66,6 @@ export default class UserProfileVerifiedInfo extends Component {
   }
 
   componentDidMount() {
-    if (this.props.location && this.props.location.state) {
-      let verificationsNeeded = this.props.location.state.verificationsNeeded;
-
-      if (verificationsNeeded && verificationsNeeded.length > 0) {
-        Alert.error(LocalizationService.formatMessage('listings.need_to_complete_verifications',
-                                                      { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ') }));
-      }
-    }
-
     this.setState({ loading: true }, () => {
       UsersService.show('me')
                   .then(response => {
