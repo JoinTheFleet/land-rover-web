@@ -111,6 +111,8 @@
     "authentication.register": "Register",
     "authentication.password_reset": "Send a Password Reset Email",
     "authentication.fill_in_all_fields": "Please fill in all required fields",
+    "authentication.confirm_log_out": "Confirm Log Out",
+    "authentication.confirm_log_out_text": "Are you sure you want to log out?",
 
     "authentication.sign_up_with_facebook": "Sign up with Facebook",
     "authentication.sign_up_with_email": "Sign up with Email",

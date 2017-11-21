@@ -28,6 +28,7 @@ import UserController from './components/users/user_controller';
 import DashboardController from './components/dashboard/dashboard_controller';
 import NotificationsController from './components/notifications/notifications_controller';
 import WishListModal from './components/wishlists/wish_list_modal';
+import ConfirmationModal from './components/miscellaneous/confirmation_modal';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
@@ -95,6 +96,7 @@ export default class App extends Component {
 
     this.setupEvents = this.setupEvents.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
     this.handleMapDrag = this.handleMapDrag.bind(this);
     this.performSearch = this.performSearch.bind(this);
     this.setAccessToken = this.setAccessToken.bind(this);
@@ -107,7 +109,6 @@ export default class App extends Component {
     this.handleFilterToggle = this.handleFilterToggle.bind(this);
     this.toggleWishListModal = this.toggleWishListModal.bind(this);
     this.handleLocationFocus = this.handleLocationFocus.bind(this);
-    this.handleMenuItemSelect = this.handleMenuItemSelect.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
@@ -261,12 +262,10 @@ export default class App extends Component {
     });
   }
 
-  handleMenuItemSelect(menuItem) {
-    if (menuItem === navigationSections.logout) {
-      AuthenticationService.logout()
-                           .then(() => { this.setAccessToken(''); })
-                           .catch(() => { this.setAccessToken(''); });
-    }
+  handleLogOut() {
+    AuthenticationService.logout()
+                         .then(() => { this.setAccessToken(''); })
+                         .catch(() => { this.setAccessToken(''); });
   }
 
   toggleModal(modal) {
@@ -532,7 +531,6 @@ export default class App extends Component {
             <Alert {...ALERT_OPTIONS} />
             <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
                     currentUserRole={ this.state.currentUserRole }
-                    handleMenuItemSelect={ this.handleMenuItemSelect }
                     toggleModal={ this.toggleModal }
                     handleChangeCurrentUserRole={ this.changeCurrentUserRole }
                     handleLocationChange={ this.handleLocationChange }
@@ -638,9 +636,17 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
-            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName }/>
+            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } />
+
+            <ConfirmationModal open={ this.state.modalName === navigationSections.logout }
+                               modalName={ navigationSections.logout }
+                               toggleModal={ this.toggleModal }
+                               confirmationAction={ this.handleLogOut }
+                               title={ LocalizationService.formatMessage('authentication.confirm_log_out') } >
+              { LocalizationService.formatMessage('authentication.confirm_log_out_text') }
+            </ConfirmationModal>
 
             { alerts }
           </div>

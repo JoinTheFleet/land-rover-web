@@ -38,7 +38,7 @@ export default class HeaderMenu extends Component {
       navigationSections.login
     ];
     let itemsWithDivider = ['home'];
-    let itemsWithModal = ['login', 'signup'];
+    let itemsWithModal = ['login', 'signup', 'logout'];
 
     if (this.props.loggedIn) {
       items = [
@@ -69,9 +69,6 @@ export default class HeaderMenu extends Component {
                       if (itemsWithModal.indexOf(item) > -1) {
                         event.preventDefault();
                         this.props.toggleModal(item);
-                      }
-                      else {
-                        this.props.handleMenuItemSelect(item);
                       }
                     }} >
             <FormattedMessage id={'menu.' + item} />
