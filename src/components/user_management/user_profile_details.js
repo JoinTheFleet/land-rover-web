@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import Alert from 'react-s-alert';
 
 import UserForm from './user_profile/user_form';

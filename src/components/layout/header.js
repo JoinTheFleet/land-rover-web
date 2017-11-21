@@ -39,13 +39,11 @@ export default class Header extends Component {
   }
 
   render() {
-    let hideSearchForm = !this.props.loggedIn || this.props.hideSearchForm;
-
     return (
       <div className="app-header">
         <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
 
-        <LocationPeriodFilter {...this.props} hideSearchForm={ hideSearchForm } closeMenu={ this.closeMenu }/>
+        <LocationPeriodFilter {...this.props} hideSearchForm={ this.props.hideSearchForm } closeMenu={ this.closeMenu }/>
 
         <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
