@@ -319,7 +319,7 @@ export default class App extends Component {
 
   handleLocationSelect(location) {
     this.setState({
-      locationName: location.name,
+      locationName: location.address,
       searchLocations: [],
       customSearch: true,
       pages: 1,

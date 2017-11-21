@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -112,11 +113,20 @@ export default class ListingPricing extends Component {
     let listing = this.state.listing;
     let odcFields = '';
     let odcDistancePlaceholder = LocalizationService.formatMessage('listings.pricing.select_distance');
+    let termsAndConditions = (
+      <a target="_blank" href={ process.env.REACT_APP_FLEET_TERMS_URL } className="secondary-text-color">
+        <b>{ LocalizationService.formatMessage('application.terms_and_conditions') } </b>
+      </a>
+    );
+
+    const fieldsDescription = (
+      <FormattedMessage id="listings.pricing.earn_more_by_offering" values={ { terms_and_conditions: termsAndConditions } } />
+    )
 
     if ( listing.on_demand ) {
       odcFields = (
         <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.pricing.on_demand_collection') }
-                               fieldsDescription={ LocalizationService.formatMessage('listings.pricing.earn_more_by_offering') } >
+                               fieldsDescription={ fieldsDescription } >
           {
             listing.on_demand_rates.map((od_rate, index) => {
               if (od_rate.distance > 0) {

@@ -29,11 +29,13 @@ export default class ListingLocation extends Component {
       selectedAddress: ''
     };
 
-    this.onPlacesChanged = this.onPlacesChanged.bind(this);
-    this.validateFields = this.validateFields.bind(this);
-    this.getListingProperties = this.getListingProperties.bind(this);
-    this.handleMapClick = this.handleMapClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
+    this.fetchLocation = this.fetchLocation.bind(this);
+    this.validateFields = this.validateFields.bind(this);
+    this.onPlacesChanged = this.onPlacesChanged.bind(this);
+    this.getListingProperties = this.getListingProperties.bind(this);
+    this.handleMarkerDragEnd = this.handleMarkerDragEnd.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
   componentWillMount() {
@@ -99,7 +101,15 @@ export default class ListingLocation extends Component {
     }
   }
 
+  handleMarkerDragEnd(position){
+    this.fetchLocation(position.latLng);
+  }
+
   handleMapClick(position) {
+    this.fetchLocation(position);
+  }
+
+  fetchLocation(position) {
     const latitude = typeof position.lat === 'function' ? position.lat() : position.lat;
     const longitude = typeof position.lng === 'function' ? position.lng() : position.lng;
 
@@ -146,6 +156,7 @@ export default class ListingLocation extends Component {
                includeSearchBox={ true }
                onPlacesChanged={ this.onPlacesChanged }
                handleMapClick={ this.handleMapClick }
+               handleMarkerDragEnd={ this.handleMarkerDragEnd }
                center={ this.state.center }
                draggableMarkers={ true }
                markers={ selectedPosition ? [{ position: selectedPosition}] : [] } >
