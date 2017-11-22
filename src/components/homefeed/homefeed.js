@@ -217,7 +217,11 @@ export default class Homefeed extends Component {
     let nearbyListings = this.state.nearby.objects;
     let collections = this.state.collections;
 
-    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings && this.props.listings.length > 0) {
+    if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings) {
+      if (this.props.listings.length === 0) {
+        return <Placeholder contentType="vehicles_renter" />
+      }
+
       return (
         <div>
           <div>
@@ -241,10 +245,10 @@ export default class Homefeed extends Component {
               <p className="top-seller-title strong-font-weight title-font-size">
                 <FormattedMessage id="listings.nearby" />
               </p>
-  
+
               <ListingList toggleWishListModal={ this.props.toggleWishListModal } scrollable={true} simpleListing={true} listings={nearbyListings} />
             </div>
-  
+
             {
               collections.map((collection) => {
                 let body = '';
@@ -254,7 +258,7 @@ export default class Homefeed extends Component {
                 else if (collection.object_type === 'Advertisement') {
                   body = <Advertisement advertisement={ collection.objects[0] } accessToken={ this.props.accessToken } />;
                 }
-  
+
                 return (
                   <div key={collection.id + '_' + collection.name + '_listing'}>
                     <p className="top-seller-title strong-font-weight title-font-size">

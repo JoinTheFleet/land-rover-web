@@ -75,6 +75,10 @@ export default class UserProfileVerifiedInfo extends Component {
                       user.address = {};
                     }
 
+                    if (!user.account_type) {
+                      user.account_type = 'individual';
+                    }
+
                     this.setState(prevState => ({
                       loading: false,
                       user: user,
@@ -99,7 +103,7 @@ export default class UserProfileVerifiedInfo extends Component {
         date_of_birth: user.date_of_birth,
         gender: user.gender,
         email: user.email,
-        country_code: user.country_code || user.country.alpha2,
+        country_code: user.country_code || (user.country ? user.country.alpha2 : ''),
         account_type: user.account_type
       };
 
