@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import { TimePicker } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -8,11 +7,12 @@ import ListingStep from './listing_step';
 import ListingFormFieldGroup from '../listing_form_field_group';
 import FormField from '../../../miscellaneous/forms/form_field';
 
+import LocalizationService from '../../../../shared/libraries/localization_service';
 import Helpers from '../../../../miscellaneous/helpers';
 
 const format = 'HH:mm';
 
-class ListingRules extends Component {
+export default class ListingRules extends Component {
 
   constructor(props) {
     super(props);
@@ -59,18 +59,17 @@ class ListingRules extends Component {
                      getListingProperties={ this.getListingProperties }
                      handleCompleteListing={ this.props.handleCompleteListing }
                      finalStep={ true }
-                     intl={ this.props.intl }
                      listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.rules'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.rules.rules') }>
             <FormField id="listing_rules"
                        type="textarea"
-                       placeholder={ this.props.intl.formatMessage({id: 'listings.rules.rules_eg'}) }
+                       placeholder={ LocalizationService.formatMessage('listings.rules.rules_eg') }
                        value={ listing.rules ? listing.rules[0].rule : '' }
                        handleChange={ (event) => { this.handleRulesInsertion(event.target.value) } } />
 
           </ListingFormFieldGroup>
 
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.rules.pick_up_time'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.rules.pick_up_time') }>
             <TimePicker onChange={ this.handleAddPickupTimeSelected }
                         defaultValue={ moment.unix(this.state.listing.check_in_time || 0).utc() }
                         format={ format } />
@@ -86,5 +85,3 @@ ListingRules.propTypes = {
   handleCompleteListing: PropTypes.func.isRequired,
   listing: PropTypes.object
 };
-
-export default injectIntl(ListingRules);

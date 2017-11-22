@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
@@ -19,7 +19,7 @@ import Loading from '../../../miscellaneous/loading';
 
 const MINIMUM_IMAGE_COUNT = 3;
 
-class ListingImages extends Component {
+export default class ListingImages extends Component {
   constructor(props) {
     super(props);
 
@@ -72,7 +72,7 @@ class ListingImages extends Component {
     let requiredCount = Math.max(0, MINIMUM_IMAGE_COUNT - this.state.images.length);
 
     if (requiredCount > 0) {
-      return ` (${requiredCount} ${this.props.intl.formatMessage({id: 'listings.images.more_images_required'})})`;
+      return ` (${requiredCount} ${LocalizationService.formatMessage('listings.images.more_images_required')})`;
     }
     else {
       return '';
@@ -205,9 +205,8 @@ class ListingImages extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }
                      listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.images.vehicle_images'}) + this.requiredImagesText() }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.images.vehicle_images') + this.requiredImagesText() }>
             { this.renderImagesCarousel() }
             <button className="listing-form-images-upload-btn btn secondary-color white-text fs-12 ls-dot-five col-xs-12"
                     onClick={ (event) => { event.preventDefault(); this.handleUploadImagesButtonClick() } }>
@@ -226,8 +225,6 @@ class ListingImages extends Component {
     )
   }
 }
-
-export default injectIntl(ListingImages);
 
 ListingImages.propTypes = {
   handleProceedToStepAndAddProperties: PropTypes.func.isRequired,

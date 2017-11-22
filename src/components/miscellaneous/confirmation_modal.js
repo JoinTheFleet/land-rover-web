@@ -72,6 +72,7 @@ ConfirmationModal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   confirmationAction: PropTypes.func.isRequired,
   cancelAction: PropTypes.func,
+  modalName: PropTypes.string,
   title: PropTypes.string,
   confirmationText: PropTypes.string,
   cancelText: PropTypes.string

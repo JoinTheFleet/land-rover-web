@@ -1,10 +1,4 @@
-import React, {
-  Component
-} from 'react';
-
-import {
-  injectIntl
-} from 'react-intl';
+import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -13,12 +7,14 @@ import ListingFormFieldGroup from '../listing_form_field_group';
 import ListingFormField from '../listing_form_field';
 import FormField from '../../../miscellaneous/forms/form_field';
 
+import LocalizationService from '../../../../shared/libraries/localization_service';
+
 import Constants from '../../../../miscellaneous/constants';
 import Helpers from '../../../../miscellaneous/helpers';
 
 const stepDirections = Constants.stepDirections();
 
-class ListingRegistration extends Component {
+export default class ListingRegistration extends Component {
 
   constructor(props) {
     super(props);
@@ -41,7 +37,7 @@ class ListingRegistration extends Component {
       this.props.handleProceedToStepAndAddProperties(stepDirections.next, this.getListingProperties());
     }
     else {
-      let errorMessage = this.props.intl.formatMessage({ id: 'errors.forms.fill_up_all_required_fields' });
+      let errorMessage = LocalizationService.formatMessage('errors.forms.fill_up_all_required_fields');
 
       this.setState((prevState) => ({
         errors: prevState.errors.push(errorMessage)
@@ -96,25 +92,24 @@ class ListingRegistration extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }
                      listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.registration.registration_details'}) }
-                                fieldsDescription={ this.props.intl.formatMessage({id: 'listings.registration.please_enter_car_country'}) }>
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'application.country'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.registration.registration_details') }
+                                fieldsDescription={ LocalizationService.formatMessage('listings.registration.please_enter_car_country') }>
+            <ListingFormField label={ LocalizationService.formatMessage('application.country') }>
               <FormField id="listing_country"
                          type="select"
                          clearable={ false }
                          options={ countries }
                          value={ listing.country }
-                         placeholder={ this.props.intl.formatMessage({id: 'application.country'}) }
+                         placeholder={ LocalizationService.formatMessage('application.country') }
                          handleChange={ this.handleCountrySelect } />
             </ListingFormField>
 
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'application.registration'}) }>
+            <ListingFormField label={ LocalizationService.formatMessage('application.registration') }>
               <FormField id="listing_registration"
                         type="text"
                         value={ listing.license_plate_number }
-                        placeholder={ this.props.intl.formatMessage({id: 'application.registration'}) }
+                        placeholder={ LocalizationService.formatMessage('application.registration') }
                         handleChange={ this.handleLicensePlateChange } />
             </ListingFormField>
 
@@ -124,8 +119,6 @@ class ListingRegistration extends Component {
     )
   }
 }
-
-export default injectIntl(ListingRegistration);
 
 ListingRegistration.propTypes = {
   handleProceedToStepAndAddProperties: PropTypes.func.isRequired,

@@ -10,6 +10,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import Loading from '../miscellaneous/loading';
 import Button from '../miscellaneous/button';
 
+import UsersService from '../../shared/services/users/users_service';
 import ListingQuotationService from '../../shared/services/listings/listing_quotation_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
@@ -26,8 +27,10 @@ class BookNowTile extends Component {
       pricingQuote: {},
       quotation: {},
       loadingRates: false,
+      verificationsNeeded: [],
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
-      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null
+      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null,
+      loading: false
     };
 
     this.addError = this.addError.bind(this);
@@ -35,6 +38,30 @@ class BookNowTile extends Component {
     this.handleWindowResize = this.handleWindowResize.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  componentDidMount() {
+    if (this.props.loggedIn) {
+      this.setState({ loading: true }, () => {
+        UsersService.show('me')
+                    .then(response => {
+                      let meInfo = response.data.data.user;
+                      let verificationsNeeded = this.state.verificationsNeeded;
+
+                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
+                                                               .filter(key => meInfo.verifications_required[key]));
+
+                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
+                                                               .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+
+                      this.setState({
+                        verificationsNeeded: verificationsNeeded,
+                        loading: false
+                      });
+                    })
+                    .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
+      });
+    }
   }
 
   handleWindowResize() {
@@ -148,6 +175,14 @@ class BookNowTile extends Component {
   }
 
   renderBookNowTileContent() {
+    if (this.state.loading) {
+      return (
+        <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
+          <Loading />
+        </div>
+      )
+    }
+
     let bookNowTileContent = (
       <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
         { LocalizationService.formatMessage('bookings.log_in_before_booking') }
@@ -155,7 +190,19 @@ class BookNowTile extends Component {
       </div>
     );
 
-    if ( this.props.loggedIn ) {
+    if (this.state.verificationsNeeded.length > 0) {
+      bookNowTileContent = (
+        <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
+          { LocalizationService.formatMessage('bookings.verify_info_before_booking') }
+          <Link to={ { pathname: '/account', state: { verificationsNeeded: this.state.verificationsNeeded }} }>
+            <Button className="login-to-book-button secondary-color white-text" onClick={ () => {} }>
+              { LocalizationService.formatMessage('bookings.verify_info') }
+            </Button>
+          </Link>
+        </div>
+      );
+    }
+    else if ( this.props.loggedIn ) {
       const startDate = this.state.quotation.start_at ? moment.unix(this.state.quotation.start_at) : null;
       const endDate = this.state.quotation.end_at ? moment.unix(this.state.quotation.end_at) : null;
 

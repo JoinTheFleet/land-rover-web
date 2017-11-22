@@ -21,7 +21,7 @@ export default class UserController extends Component {
     this.refreshData = this.refreshData.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.refreshData();
   }
 

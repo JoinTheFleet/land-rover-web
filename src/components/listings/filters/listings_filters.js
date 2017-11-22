@@ -20,7 +20,6 @@ import Helpers from '../../../miscellaneous/helpers';
 
 import Toggleable from '../../miscellaneous/toggleable';
 import Dropdown from '../../miscellaneous/dropdown';
-import Button from '../../miscellaneous/button';
 
 export default class ListingsFilters extends Component {
   constructor(props) {

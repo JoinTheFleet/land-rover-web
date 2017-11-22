@@ -133,12 +133,11 @@ export default class FormField extends Component {
       )
     }
     else if (this.props.type === 'singleyeardate') {
-      let value = (this.props.value || moment()).format('YYYY-MM-DD');
       let startDate = this.props.startDate ? (this.props.startDate).format('YYYY-MM-DD') : undefined;
       let endDate = this.props.endDate ? (this.props.endDate).format('YYYY-MM-DD') : undefined;
       renderable = (
         <ReactDatez
-          value={ value }
+          value={ this.props.value }
           handleChange={ this.props.handleChange }
           highlightWeekends={ true }
           yearJump={ this.props.yearJump || true }
@@ -147,7 +146,7 @@ export default class FormField extends Component {
           startDate={ startDate }
           endDate={ endDate }
           position={ this.props.position || 'left' }
-          placeholder={ this.props.placeholder}
+          placeholder={ this.props.placeholder }
         />
       )
     }
@@ -188,8 +187,8 @@ export default class FormField extends Component {
                         onChange={ this.props.handleChange }
                         loadOptions={ this.props.loadOptions }
                         isLoading={ this.props.loading }
-                        className={ this.props.className } 
-                        clearable={ this.props.clearable } 
+                        className={ this.props.className }
+                        clearable={ this.props.clearable }
                         promptTextCreator={ this.props.promptTextCreator } />
       );
     }

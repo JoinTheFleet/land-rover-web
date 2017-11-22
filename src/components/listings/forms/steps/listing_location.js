@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Alert from 'react-s-alert';
 
 import PropTypes from 'prop-types';
@@ -9,10 +9,11 @@ import ListingStep from './listing_step';
 import Map from '../../../miscellaneous/map';
 import Loading from '../../../miscellaneous/loading';
 import GeolocationService from '../../../../shared/services/geolocation_service';
+import LocalizationService from '../../../../shared/libraries/localization_service';
 
 import Helpers from '../../../../miscellaneous/helpers';
 
-class ListingLocation extends Component {
+export default class ListingLocation extends Component {
   constructor(props) {
     super(props);
 
@@ -28,11 +29,13 @@ class ListingLocation extends Component {
       selectedAddress: ''
     };
 
-    this.onPlacesChanged = this.onPlacesChanged.bind(this);
-    this.validateFields = this.validateFields.bind(this);
-    this.getListingProperties = this.getListingProperties.bind(this);
-    this.handleMapClick = this.handleMapClick.bind(this);
     this.setLocation = this.setLocation.bind(this);
+    this.fetchLocation = this.fetchLocation.bind(this);
+    this.validateFields = this.validateFields.bind(this);
+    this.onPlacesChanged = this.onPlacesChanged.bind(this);
+    this.getListingProperties = this.getListingProperties.bind(this);
+    this.handleMarkerDragEnd = this.handleMarkerDragEnd.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
   componentWillMount() {
@@ -98,7 +101,15 @@ class ListingLocation extends Component {
     }
   }
 
+  handleMarkerDragEnd(position){
+    this.fetchLocation(position.latLng);
+  }
+
   handleMapClick(position) {
+    this.fetchLocation(position);
+  }
+
+  fetchLocation(position) {
     const latitude = typeof position.lat === 'function' ? position.lat() : position.lat;
     const longitude = typeof position.lng === 'function' ? position.lng() : position.lng;
 
@@ -124,11 +135,7 @@ class ListingLocation extends Component {
   }
 
   render() {
-    let googleMapUrl = this.props.intl.formatMessage({
-      id: 'google.maps.javascript_api_link',
-    }, {
-      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    });
+    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
 
     let selectedPosition;
 
@@ -149,6 +156,7 @@ class ListingLocation extends Component {
                includeSearchBox={ true }
                onPlacesChanged={ this.onPlacesChanged }
                handleMapClick={ this.handleMapClick }
+               handleMarkerDragEnd={ this.handleMarkerDragEnd }
                center={ this.state.center }
                draggableMarkers={ true }
                markers={ selectedPosition ? [{ position: selectedPosition}] : [] } >
@@ -161,13 +169,12 @@ class ListingLocation extends Component {
           <ListingStep validateFields={ this.validateFields }
                        getListingProperties={ this.getListingProperties }
                        handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                       intl={ this.props.intl }
                        listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
             <input type="text"
                    readOnly={ true }
                    id="listing_form_location_selected_address"
                    value={ this.state.selectedAddress }
-                   placeholder={ this.props.intl.formatMessage({ id: 'listings.location.address_location' }) } />
+                   placeholder={ LocalizationService.formatMessage('listings.location.address_location') } />
           </ListingStep>
         </div>
       </div>
@@ -179,5 +186,3 @@ ListingLocation.propTypes = {
   handleProceedToStepAndAddProperties: PropTypes.func.isRequired,
   listing: PropTypes.object.isRequired
 };
-
-export default injectIntl(ListingLocation);

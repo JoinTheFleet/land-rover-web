@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -20,12 +20,13 @@ import Helpers from '../../miscellaneous/helpers';
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
+import LocalizationService from '../../shared/libraries/localization_service';
 import GeolocationService from '../../shared/services/geolocation_service';
 import Placeholder from '../miscellaneous/placeholder';
 
 const MINIMUM_WIDTH_TO_SHOW_ALL = 1200;
 
-class Homefeed extends Component {
+export default class Homefeed extends Component {
   constructor(props) {
     super(props);
 
@@ -271,11 +272,7 @@ class Homefeed extends Component {
   }
 
   renderListingMap() {
-    let googleMapUrl = this.props.intl.formatMessage({
-      id: 'google.maps.javascript_api_link',
-    }, {
-      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-    });
+    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
 
     return (
       <ListingMap googleMapURL={ googleMapUrl }
@@ -362,5 +359,3 @@ Homefeed.propTypes = {
   currentSearch: PropTypes.bool.isRequired,
   customSearch: PropTypes.bool.isRequired
 }
-
-export default injectIntl(Homefeed);

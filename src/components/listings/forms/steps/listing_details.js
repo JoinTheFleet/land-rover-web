@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
 
@@ -9,13 +8,14 @@ import ListingFormField from '../listing_form_field';
 import FormField from '../../../miscellaneous/forms/form_field';
 
 import ListingAmenitiesService from '../../../../shared/services/listings/listing_amenities_service';
+import LocalizationService from '../../../../shared/libraries/localization_service';
 
 import Helpers from '../../../../miscellaneous/helpers';
 import Constants from '../../../../miscellaneous/constants';
 
 const filtersDisplayProperties = Constants.listingFiltersDisplayProperties();
 
-class ListingDetails extends Component {
+export default class ListingDetails extends Component {
 
   constructor(props) {
     super(props);
@@ -113,13 +113,12 @@ class ListingDetails extends Component {
         <ListingStep validateFields={ this.validateFields }
                      getListingProperties={ this.getListingProperties }
                      handleProceedToStepAndAddProperties={ this.props.handleProceedToStepAndAddProperties }
-                     intl={ this.props.intl }
                      listing={ Helpers.extendObject(this.props.listing, this.getListingProperties()) } >
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.vehicle'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.vehicle') }>
             {
               [ 'body', 'make', 'model'].map(param => {
                 return (
-                  <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
+                  <ListingFormField key={ 'listings_vehicle_' + param } label={ LocalizationService.formatMessage(`listings.${param}`) }>
                     <span className="listings-readonly-value text-capitalize">
                       { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
                     </span>
@@ -129,11 +128,11 @@ class ListingDetails extends Component {
             }
           </ListingFormFieldGroup>
 
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.details'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.details') }>
             {
               [ 'engine_fuel', 'transmission', 'seat_count', 'door_count' ].map(param => {
                 return (
-                  <ListingFormField key={ 'listings_vehicle_' + param } label={ this.props.intl.formatMessage({id: 'listings.' + param}) }>
+                  <ListingFormField key={ 'listings_vehicle_' + param } label={ LocalizationService.formatMessage(`listings.${param}`) }>
                     <span className="listings-readonly-value text-capitalize">
                       { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
                     </span>
@@ -143,20 +142,20 @@ class ListingDetails extends Component {
             }
           </ListingFormFieldGroup>
 
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }>
-            <ListingFormField label={ this.props.intl.formatMessage({id: 'listings.odc'}) } hideLabelOnMobile={ true }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.on_demand_collection') }>
+            <ListingFormField label={ LocalizationService.formatMessage('listings.odc') } hideLabelOnMobile={ true }>
               <FormField id="listing_on_demand"
                          type="select"
                          clearable={ false }
                          value={ this.state.selectedParams.on_demand }
-                         options={ [ { value: false, label: this.props.intl.formatMessage({ id: 'application.no' }) },
-                                     { value: true, label: this.props.intl.formatMessage({ id: 'application.yes' }) } ] }
-                         placeholder={ this.props.intl.formatMessage({id: 'listings.on_demand_collection'}) }
+                         options={ [ { value: false, label: LocalizationService.formatMessage('application.no') },
+                                     { value: true, label: LocalizationService.formatMessage('application.yes') } ] }
+                         placeholder={ LocalizationService.formatMessage('listings.on_demand_collection') }
                          handleChange={ (selectedOption) => { this.addSelectedParam('on_demand', selectedOption.value) } } />
             </ListingFormField>
           </ListingFormFieldGroup>
 
-          <ListingFormFieldGroup title={ this.props.intl.formatMessage({id: 'listings.amenities'}) }>
+          <ListingFormFieldGroup title={ LocalizationService.formatMessage('listings.amenities') }>
             {
               (filtersData.amenities || []).map((amenity) => {
                 let checkboxId = 'listings_amenity_' + amenity.id;
@@ -175,8 +174,6 @@ class ListingDetails extends Component {
     )
   }
 }
-
-export default injectIntl(ListingDetails);
 
 ListingDetails.propTypes = {
   handleProceedToStepAndAddProperties: PropTypes.func.isRequired,

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 
 import FormRow from '../../miscellaneous/forms/form_row';
 import FormGroup from '../../miscellaneous/forms/form_group';
@@ -7,14 +6,14 @@ import FormField from '../../miscellaneous/forms/form_field';
 
 import LocalizationService from '../../../shared/libraries/localization_service';
 
-class BusinessInformationForm extends Component {
+export default class BusinessInformationForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       open: false,
       type: undefined
-    }
+    };
 
     this.genderOptions = [
       { value: 'male', label: LocalizationService.formatMessage('user_profile_verified_info.gender.male') },
@@ -80,5 +79,3 @@ class BusinessInformationForm extends Component {
     )
   }
 }
-
-export default injectIntl(BusinessInformationForm)

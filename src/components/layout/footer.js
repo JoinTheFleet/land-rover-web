@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import facebookIcon from '../../assets/images/facebook.png';
 import twitterIcon from '../../assets/images/twitter.png';
 import instagramIcon from '../../assets/images/instagram.png';
 
-class Footer extends Component {
+import LocalizationService from '../../shared/libraries/localization_service';
+
+export default class Footer extends Component {
 
   render() {
     let makeYourCarWorkLink = (
@@ -34,11 +36,11 @@ class Footer extends Component {
               <FormattedMessage id="footer.get_started" />
             </span>
             <p className="footer-links-list">
-              <a href={ this.props.intl.formatMessage({id: 'company_info.ios_app'}) } target="_blank" className="white-text">
+              <a href={ LocalizationService.formatMessage('company_info.ios_app') } target="_blank" className="white-text">
                 <FormattedMessage id="footer.get_iphone_app" />
               </a>
               <br/>
-              <a href={ this.props.intl.formatMessage({id: 'company_info.android_app'}) } target="_blank" className="white-text">
+              <a href={ LocalizationService.formatMessage('company_info.android_app') } target="_blank" className="white-text">
                 <FormattedMessage id="footer.get_android_app" />
               </a>
               <br/>
@@ -108,13 +110,13 @@ class Footer extends Component {
             </span>
             <div className="footer-links-list">
               <div id="footer_social_links">
-                <a href={ this.props.intl.formatMessage({id: 'company_info.facebook'}) } target="_blank">
+                <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
                   <img src={facebookIcon} alt="fleet_facebook" />
                 </a>
-                <a href={ this.props.intl.formatMessage({id: 'company_info.twitter'}) } target="_blank">
+                <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
                   <img src={twitterIcon} alt="fleet_twitter" />
                 </a>
-                <a href={ this.props.intl.formatMessage({id: 'company_info.instagram'}) } target="_blank">
+                <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
                   <img src={instagramIcon} alt="fleet_instagram" />
                 </a>
               </div>
@@ -123,7 +125,7 @@ class Footer extends Component {
                 <FormattedMessage id="footer.read_our_blog" />
               </a>
               <br/>
-              <a href={'mailto:' + this.props.intl.formatMessage({id: 'company_info.info_email'}) } className="white-text">
+              <a href={'mailto:' + LocalizationService.formatMessage('company_info.info_email') } className="white-text">
                 <FormattedMessage id="company_info.info_email" />
               </a>
             </div>
@@ -131,13 +133,13 @@ class Footer extends Component {
 
           <div className="visible-xs text-center">
             <div id="footer_social_links_mobile">
-              <a href={ this.props.intl.formatMessage({id: 'company_info.facebook'}) } target="_blank">
+              <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
                 <img src={facebookIcon} alt="fleet_facebook" />
               </a>
-              <a href={ this.props.intl.formatMessage({id: 'company_info.twitter'}) } target="_blank">
+              <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
                 <img src={twitterIcon} alt="fleet_twitter" />
               </a>
-              <a href={ this.props.intl.formatMessage({id: 'company_info.instagram'}) } target="_blank">
+              <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
                 <img src={instagramIcon} alt="fleet_instagram" />
               </a>
             </div>
@@ -153,5 +155,3 @@ class Footer extends Component {
     )
   }
 }
-
-export default injectIntl(Footer)
