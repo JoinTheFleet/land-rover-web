@@ -393,6 +393,7 @@
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",
     "user_profile_verified_info.payout_method_invalid_account": "Please provide valid account details",
     "user_profile_verified_info.payout_information_updated": "Your payout information has been updated",
+    "user_profile_verified_info.payout_method_enter_country": "Please select a country first.",
     "user_profile_verified_info.payout_method_error": "There was an error processing your payout information, please try again.",
     "user_profile_verified_info.payout_method_success": "Your payout information was processed successfully.",
     "user_profile_verified_info.account_success": "Your account has been updated successfully.",

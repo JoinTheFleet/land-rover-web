@@ -183,6 +183,7 @@ export default class FormField extends Component {
     else if (this.props.type === 'select-create-async') {
       renderable = (
         <AsyncCreatable value={ this.props.value }
+                        cache={ false }
                         disabled={ this.props.disabled }
                         onChange={ this.props.handleChange }
                         loadOptions={ this.props.loadOptions }

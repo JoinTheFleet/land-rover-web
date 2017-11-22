@@ -20,7 +20,6 @@ export default class UserProfileVerifiedInfo extends Component {
 
     this.state = {
       addressUpdated: false,
-      hideAccountType: false,
       user: {
         address: {
           country: {
@@ -34,7 +33,8 @@ export default class UserProfileVerifiedInfo extends Component {
         }
       },
       fieldsToDisable: {
-        countryOfResidence: false
+        countryOfResidence: false,
+        accountType: false
       },
       loading: false
     };
@@ -70,18 +70,21 @@ export default class UserProfileVerifiedInfo extends Component {
       UsersService.show('me')
                   .then(response => {
                     let user = response.data.data.user;
+                    let fieldsToDisable = this.state.fieldsToDisable;
 
                     if (!user.address) {
                       user.address = {};
                     }
 
+                    fieldsToDisable.accountType = !user.owner_verifications_required.account_type;
+                    fieldsToDisable.countryOfResidence = !user.owner_verifications_required.country;
+
                     this.setState(prevState => ({
                       loading: false,
                       user: user,
-                      hideAccountType: !!user.account_type,
-                      fieldsToDisable: {
-                        countryOfResidence: !!(user.country_code || (user.country ? user.country.alpha2 : undefined))
-                      } }));
+                      hideAccountType: user.account_type === 'company',
+                      fieldsToDisable: fieldsToDisable
+                    }));
                   })
                   .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
@@ -99,7 +102,7 @@ export default class UserProfileVerifiedInfo extends Component {
         date_of_birth: user.date_of_birth,
         gender: user.gender,
         email: user.email,
-        country_code: user.country_code || user.country.alpha2,
+        country_code: user.country_code || (user.country ? user.country.alpha2 : ''),
         account_type: user.account_type
       };
 
@@ -138,13 +141,12 @@ export default class UserProfileVerifiedInfo extends Component {
                       user.address = {};
                     }
 
-                    fieldsToDisable.accountType = !!user.account_type;
-                    fieldsToDisable.countryOfResidence = !!(user.country_code || (user.country ? user.country.alpha2 : undefined));
+                    fieldsToDisable.accountType = !user.owner_verifications_required.account_type;
+                    fieldsToDisable.countryOfResidence = !user.owner_verifications_required.country;
 
                     this.setState(prevState => ({
                       loading: false,
                       user: user,
-                      hideAccountType: !!user.account_type,
                       fieldsToDisable: fieldsToDisable
                     }), () => {
                       Alert.success(LocalizationService.formatMessage('application.saved_changes_successfully'));
@@ -411,10 +413,6 @@ export default class UserProfileVerifiedInfo extends Component {
   }
 
   renderAccountType() {
-    if (this.state.hideAccountType) {
-      return '';
-    }
-
     const accountTypeOptions = [
       { label: 'Company', value: 'company' },
       { label: 'Individual', value: 'individual' }
@@ -429,7 +427,7 @@ export default class UserProfileVerifiedInfo extends Component {
           <div className='col-xs-12 form-body'>
             <FormField type="select"
                        disabled={ this.state.fieldsToDisable.accountType }
-                       value={ this.state.user.account_type || 'individual' }
+                       value={ this.state.user.account_type }
                        options={ accountTypeOptions }
                        handleChange={ this.handleAccountTypeChange  }
                        clearable={ false } />
