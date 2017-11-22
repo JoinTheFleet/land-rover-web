@@ -24,7 +24,7 @@ class UserPayoutMethods extends Component {
       accountLoading: false,
       iban: undefined,
       country: undefined
-    }
+    };
 
     this.reloadData = this.reloadData.bind(this);
     this.addPayoutSource = this.addPayoutSource.bind(this);
@@ -78,6 +78,11 @@ class UserPayoutMethods extends Component {
   addPayoutSource(event) {
     if (event) {
       event.preventDefault();
+    }
+
+    if (!this.state.country) {
+      Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_enter_country'));
+      return;
     }
 
     this.setState({

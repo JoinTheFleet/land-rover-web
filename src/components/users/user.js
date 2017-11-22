@@ -13,11 +13,11 @@ export default class User extends Component {
     super(props);
 
     this.state = {
-      reviewSummary: this.props.user.owner_review_summary
-    }
+      reviewSummary: this.props.user ? this.props.user.owner_review_summary : {}
+    };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let location = this.props.location;
 
     if (location && location.state && location.state.view && location.state.view === 'owner') {
@@ -30,6 +30,10 @@ export default class User extends Component {
   render() {
     let reviews  = '';
     let listings = '';
+
+    if (!this.props.user) {
+      return (<div></div>);
+    }
 
     if (this.state.reviewSummary.total_reviews > 0) {
       reviews = (
@@ -60,7 +64,7 @@ export default class User extends Component {
 
               <div className='col-xs-12 user-rating'>
                 <RatingInput disabled={ true } length={ 5 } rating={ this.state.reviewSummary.rating } readonly>
-                  <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews } { LocalizationService.formatMessage('reviews.reviews') }</span>
+                  <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews || 0 } { LocalizationService.formatMessage('reviews.reviews') }</span>
                 </RatingInput>
               </div>
             </div>

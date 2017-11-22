@@ -928,7 +928,7 @@ class BookingForm extends Component {
 
     let messageDiv = '';
 
-    if (this.props.currentUserRole === 'owner' && this.state.booking.status === 'in_progress' && !this.state.booking.survey_confirmed && !this.state.booking.survey_confirmed) {
+    if (this.props.currentUserRole === 'owner' && this.state.booking.status === 'in_progress' && !this.state.booking.survey_confirmed && !this.state.booking.survey_completed) {
       messageDiv = (
         <div className="booking-form-vehicle-survey-check-message fs-14 col-xs-12 no-side-padding">
           <p className="secondary-text-color"> { `*${LocalizationService.formatMessage('bookings.surveys.please_walk_around_the_vehicle')}` } </p>
