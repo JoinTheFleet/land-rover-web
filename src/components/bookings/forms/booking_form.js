@@ -607,7 +607,7 @@ class BookingForm extends Component {
                 <div className="fs-18 secondary-text-color"> { booking.renter.name } </div>
               </Link>
 
-              <RatingInput rating={ booking.renter.renter_review_summary.rating } />
+              <RatingInput rating={ booking.renter.renter_review_summary.rating } readonly={ true } />
               <span className="fs-18"> { LocalizationService.formatMessage('listings.total_reviews', { total_reviews: booking.renter.renter_review_summary.total_reviews }) } </span>
             </div>
           </div>
