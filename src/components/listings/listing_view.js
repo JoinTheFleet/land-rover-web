@@ -420,7 +420,7 @@ export default class ListingView extends Component {
 
       let carousel = '';
 
-      if (listing.gallery.length > 0) {
+      if (images.length > 0) {
         carousel = (
           <div className="listing-view-image-gallery">
             <ImageGallery images={ images } errorSRC={ process.env.REACT_APP_MISSING_LISTING_IMAGE } />
