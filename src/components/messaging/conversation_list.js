@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import ConversationService from '../../shared/services/conversations/conversation_service';
 import ListingConversationsService from '../../shared/services/listings/listing_conversations_service';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 import RenterConversationDetails from './renter_conversation_details';
 import OwnerConversationDetails from './owner_conversation_details';
@@ -94,7 +95,16 @@ export default class ConversationList extends Component {
       return <Loading/>;
     }
     else if (this.state.conversations.length === 0) {
-      return (<Placeholder contentType="messages" />);
+      if (this.props.role === 'owner') {
+        return (
+          <div className="messages-select-vehicle-placeholder text-center col-xs-12 no-side-padding">
+            { LocalizationService.formatMessage('messages.please_select_vehicle') }
+          </div>
+        )
+      }
+      else {
+        return (<Placeholder contentType="messages" />);
+      }
     }
     else {
       return (

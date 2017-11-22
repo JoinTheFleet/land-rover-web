@@ -298,6 +298,12 @@ export default class VerifyDriversLicenseForm extends Component {
               <div className='col-xs-12 col-sm-6'>
                 <FormField id='license-back' type={ 'file' } handleChange={ this.handleBackImageChange } value={ this.state.backImage } />
               </div>
+
+              <div className="drivers-license-image-limit-div col-xs-12">
+                <span className="secondary-text-color">
+                  { `* ${LocalizationService.formatMessage('user_profile_verified_info.drivers_license_image_size_limit')}` }
+                </span>
+              </div>
             </div>
             <div className='col-xs-12 modal-row'>
               <div className='col-xs-12 col-sm-4'>
