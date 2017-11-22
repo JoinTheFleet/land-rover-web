@@ -68,7 +68,7 @@ export default class ListingCard extends Component {
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
 
     if (item.gallery.length > 0) {
-      image = item.gallery[0].images.original_url;
+      image = item.gallery[0].images.medium_url;
     }
 
     return (
