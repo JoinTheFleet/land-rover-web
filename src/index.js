@@ -10,6 +10,7 @@ import enUS from 'antd/lib/locale-provider/en_US';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import {StripeProvider} from 'react-stripe-elements';
+import ReactGA from 'react-ga';
 
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
@@ -38,11 +39,13 @@ WebFont.load({
   }
 });
 
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID); // Initialize Google Analytics
+
 render(
   (<IntlProvider locale={locale} messages={messages}>
     <LocaleProvider locale={enUS}>
       <StripeProvider apiKey={ process.env.REACT_APP_STRIPE_API_KEY }>
-        <Router>
+        <Router onUpdate={ () => { console.log(window.location.hash); ReactGA.pageview(window.location.hash); } }>
           <App />
         </Router>
       </StripeProvider>

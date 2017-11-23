@@ -68,6 +68,7 @@
     "react-dom": "^15.6.2",
     "react-facebook-login": "",
     "react-fontawesome": "",
+    "react-ga": "^2.3.5",
     "react-google-maps": "^9.2.2",
     "react-hot-loader": "",
     "react-intl": "",
