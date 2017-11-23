@@ -712,7 +712,7 @@ class BookingForm extends Component {
         <div className="booking-form-details-row col-xs-12 no-side-padding">
           <div className="pull-left"> { LocalizationService.formatMessage('bookings.message_to_owner') } </div>
           <div className="pull-right">
-            <span className="secondary-text-color" onClick={ () => { this.setState({ showMessageToOwnerTextArea: true }) } }>
+            <span className="booking-form-add-message-to-owner-btn secondary-text-color" onClick={ () => { this.setState({ showMessageToOwnerTextArea: true }) } }>
               { LocalizationService.formatMessage('application.add') }
             </span>
           </div>

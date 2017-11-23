@@ -31,7 +31,6 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 const listingsViews = Constants.listingsViews();
-const userRoles = Constants.userRoles();
 
 export default class ListingView extends Component {
   constructor(props) {

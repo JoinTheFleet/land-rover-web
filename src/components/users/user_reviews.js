@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
@@ -22,7 +23,7 @@ export default class UserReviews extends Component {
       page: 0,
       pages: 1,
       reviews: []
-    }
+    };
 
     this.loadOwnerReviews = this.loadOwnerReviews.bind(this);
     this.loadRenterReviews = this.loadRenterReviews.bind(this);
@@ -36,7 +37,7 @@ export default class UserReviews extends Component {
       offset: this.state.page * LIMIT,
       limit: LIMIT
     })
-    .then(this.storeResponse)
+    .then(this.storeResponse);
   }
 
   loadRenterReviews() {
@@ -44,7 +45,7 @@ export default class UserReviews extends Component {
       offset: this.state.page * LIMIT,
       limit: LIMIT
     })
-    .then(this.storeResponse)
+    .then(this.storeResponse);
   }
 
   storeResponse(response) {
@@ -111,9 +112,9 @@ export default class UserReviews extends Component {
             <RatingInput disabled={ true } length={ 5 } rating={ this.state.metadata.rating } readonly className='reviews-rating' />
           </div>
           {
-            averageRatings.map((rating) => {
+            averageRatings.map((rating, index) => {
               return (
-                <div className='col-xs-12 user-option-rating hidden-xs'>
+                <div key={ `rating_${index + 1}` } className='col-xs-12 user-option-rating hidden-xs'>
                   <RatingInput disabled={ true } length={ 5 } rating={ rating.rating } readonly>
                     <span className='pull-left rating-text'>{ rating.option.description }</span>
                   </RatingInput>
@@ -148,10 +149,14 @@ export default class UserReviews extends Component {
         <div className='user-profile'>
           <div className='col-xs-12'>
             <div className='col-xs-12 no-side-padding user-header'>
-              <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <Link to={ `/users/${this.props.user.id}` }>
+                <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              </Link>
               <div className='col-xs-12 col-sm-8 rating-information'>
                 <div className='col-xs-12 user-name'>
-                  { this.props.user.name }
+                  <Link to={ `/users/${this.props.user.id}` }>
+                    { this.props.user.name }
+                  </Link>
                 </div>
 
                 { this.renderRatings() }
