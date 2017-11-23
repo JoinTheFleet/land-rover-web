@@ -4,10 +4,11 @@ import { IntlProvider } from 'react-intl';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import WebFont from 'webfontloader';
+import createHistory from 'history/createBrowserHistory';
 
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 
 import {StripeProvider} from 'react-stripe-elements';
 import ReactGA from 'react-ga';
@@ -18,7 +19,7 @@ import Cookies from "universal-cookie";
 // Stylesheets
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
-import './assets/stylesheets/application.scss'
+import './assets/stylesheets/application.scss';
 
 // Translated strings
 import localeData from './locales/locales.json';
@@ -32,6 +33,20 @@ const language = cookies.get('userLocale') || ((navigator.languages && navigator
 
 const messages = localeData[language] || localeData.en;
 const locale = acceptLanguage.get(language);
+const history = createHistory();
+
+if (process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID && process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID !== '') {
+  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID); // Initialize Google Analytics
+
+  const historyListener = (location, action) => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
+  };
+
+  history.listen(historyListener);
+
+  historyListener(window.location);
+}
 
 WebFont.load({
   google: {
@@ -39,13 +54,11 @@ WebFont.load({
   }
 });
 
-ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID); // Initialize Google Analytics
-
 render(
   (<IntlProvider locale={locale} messages={messages}>
     <LocaleProvider locale={enUS}>
       <StripeProvider apiKey={ process.env.REACT_APP_STRIPE_API_KEY }>
-        <Router onUpdate={ () => { console.log(window.location.hash); ReactGA.pageview(window.location.hash); } }>
+        <Router history={ history }>
           <App />
         </Router>
       </StripeProvider>
