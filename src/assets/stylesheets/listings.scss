@@ -135,6 +135,14 @@
       height: 38px;
       line-height: 38px;
       background-color: rgba(255, 255, 255, 0.75);
+
+      & > span:first-child {
+        float: left;
+        width: calc(100% - 58px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
 
     .listing-item-liked {
@@ -611,6 +619,10 @@
 
     & + .listing-form-odc-rate-add-new {
       margin-top: 15px;
+    }
+
+    .on-demand-specify-distance-and-rate {
+      margin-top: 10px;
     }
   }
 }

@@ -22,7 +22,7 @@ class ListingStep extends Component {
   }
 
   proceedToNextStep() {
-    if (this.props.validateFields()) {
+    if (this.props.validateFields(true)) {
       if ( this.props.finalStep ) {
         this.props.handleCompleteListing(this.props.getListingProperties());
       }
@@ -84,7 +84,7 @@ class ListingStep extends Component {
 
             <Button className="proceed-to-step-btn secondary-color white-text fs-12"
                     onClick={ this.handleNextEvent }
-                    disabled={ !this.props.validateFields() }>
+                    disabled={ !this.props.validateFields(false) }>
               { nextButtonText }
             </Button>
           </div>

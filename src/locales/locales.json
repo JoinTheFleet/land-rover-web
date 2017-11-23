@@ -218,12 +218,13 @@
     "listings.pricing.prices": "Prices",
     "listings.pricing.daily": "Daily",
     "listings.pricing.cleaning": "Cleaning",
-    "listings.pricing.on_demand_collection": "On Demand Collection (Optional)",
+    "listings.pricing.on_demand_collection": "On Demand Collection",
     "listings.pricing.earn_more_by_offering": "Earn more by offering renters the option to select their own On Demand Collection and Drop off Locations. {terms_and_conditions}",
     "listings.pricing.distance": "Distance",
     "listings.pricing.select_distance": "Select Distance",
     "listings.pricing.distance_km": "{distance} Km",
     "listings.pricing.price": "Price",
+    "listings.pricing.odc_specify_distance_and_price": "Please specify at least one distance value and its respective price (ODC enabled)",
 
     "listings.rules.rules": "Rules",
     "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
@@ -333,6 +334,7 @@
     "reviews.share_your_experience": "Share your experience working with the renter",
 
     "messages.enter_text_here": "Enter text here",
+    "messages.please_select_vehicle": "Please select a vehicle to see associated messages",
 
     "user_profile_menu.profile_details": "Profile Details",
     "user_profile_menu.verified_info": "Verified Info",
@@ -375,6 +377,7 @@
     "user_profile_verified_info.add_account": "Add A New Account",
     "user_profile_verified_info.phone_number": "Phone Number",
     "user_profile_verified_info.drivers_license": "Drivers License",
+    "user_profile_verified_info.drivers_license_image_size_limit": "Max size limit for driving license images: 5 MB",
     "user_profile_verified_info.sent_verification": "We have sent a verification code to ",
     "user_profile_verified_info.enter_verification": "Please enter the verification code",
     "user_profile_verified_info.successfully_verified": "Your phone number has been verified.",

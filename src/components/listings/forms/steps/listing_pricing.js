@@ -24,7 +24,7 @@ export default class ListingPricing extends Component {
     let listing = Helpers.extendObject(this.props.listing, {});
 
     if (listing.on_demand) {
-      listing.on_demand_rates = listing.on_demand_rates || [];
+      listing.on_demand_rates = listing.on_demand_rates || [{}];
     }
 
     if (listing.price) {
@@ -68,7 +68,11 @@ export default class ListingPricing extends Component {
   }
 
   validateFields() {
-    let listing = this.state.listing;
+    const listing = this.state.listing;
+
+    if (listing.on_demand && !listing.on_demand_rates.every(odcRate => odcRate.distance && odcRate.rate && odcRate.distance > 0 && odcRate.rate > 0 )) {
+      return false;
+    }
 
     return listing.price > 0 && listing.cleaning_fee > 0;
   }
@@ -119,9 +123,20 @@ export default class ListingPricing extends Component {
       </a>
     );
 
+    let onDemandMessage = '';
     const fieldsDescription = (
       <FormattedMessage id="listings.pricing.earn_more_by_offering" values={ { terms_and_conditions: termsAndConditions } } />
     )
+
+    if (listing.on_demand && !listing.on_demand_rates.some(odcRate => odcRate.distance && odcRate.rate && odcRate.distance > 0 && odcRate.rate > 0 )) {
+      onDemandMessage = (
+        <div className="on-demand-specify-distance-and-rate secondary-text-color col-xs-12 no-side-padding">
+          <div className="col-xs-8 col-xs-offset-4 col-sm-10 col-sm-offset-2">
+            { LocalizationService.formatMessage('listings.pricing.odc_specify_distance_and_price') }
+          </div>
+        </div>
+      )
+    }
 
     if ( listing.on_demand ) {
       odcFields = (
@@ -166,6 +181,8 @@ export default class ListingPricing extends Component {
                               value={ listing.on_demand_rates[index].rate / 100.0 }
                               handleChange={ (event) => { this.handleRateInsertion(index, 'rate', event.target.value * 100) } } />
                   </ListingFormField>
+
+                  { onDemandMessage }
                 </div>
               )
             })
