@@ -56,7 +56,7 @@ class BookingRow extends Component {
       let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
       let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
 
-      let backgroundImage = `url(${booking.renter.images.length > 0 ? booking.renter.images.medium_url: noImagesPlaceholder})`;
+      let backgroundImage = `url(${Object.keys(booking.renter.images).length > 0 ? booking.renter.images.medium_url : noImagesPlaceholder})`;
 
       return (
         <div className="booking-row-renter-and-dates col-xs-12 no-side-padding">

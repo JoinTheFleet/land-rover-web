@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
@@ -16,7 +17,7 @@ export default class UserListings extends Component {
     super(props);
 
     this.state = {
-      reviewSummary: this.props.user.owner_review_summary,
+      reviewSummary: this.props.user ? this.props.user.owner_review_summary : undefined,
       metadata: undefined,
       loading: false,
       initialLoad: true,
@@ -24,7 +25,7 @@ export default class UserListings extends Component {
       pages: 1,
       count: 1,
       listings: []
-    }
+    };
 
     this.loadData = this.loadData.bind(this);
     this.loadListings = this.loadListings.bind(this);
@@ -37,7 +38,7 @@ export default class UserListings extends Component {
       offset: this.state.page * LIMIT,
       limit: LIMIT
     })
-    .then(this.storeResponse)
+    .then(this.storeResponse);
   }
 
   storeResponse(response) {
@@ -113,10 +114,14 @@ export default class UserListings extends Component {
         <div className='user-profile'>
           <div className='col-xs-12'>
             <div className='col-xs-12 no-side-padding user-header'>
-              <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <Link to={ `/users/${this.props.user.id}` }>
+                <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              </Link>
               <div className='col-xs-12 col-sm-8 rating-information'>
                 <div className='col-xs-12 user-name'>
-                  { this.props.user.name }
+                  <Link to={ `/users/${this.props.user.id}` }>
+                    { this.props.user.name }
+                  </Link>
                 </div>
                 <div className='col-xs-12 user-rating'>
                   <RatingInput disabled={ true } length={ 5 } rating={ this.state.reviewSummary.rating } readonly>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Switch, Route } from "react-router-dom";
 import PropTypes from 'prop-types';
+import Alert from 'react-s-alert';
 
 import ListingsOverview from './listings_overview';
 import ListingView from './listing_view';
@@ -7,9 +9,28 @@ import ListingForm from './forms/listing_form';
 import BookingForm from '../bookings/forms/booking_form';
 import ListingReviews from '../listings/listing_reviews';
 
-import { Switch, Route } from "react-router-dom";
+import UsersService from '../../shared/services/users/users_service'
+import Errors from '../../miscellaneous/errors';
 
 export default class Listings extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedUser: undefined
+    };
+  }
+
+  componentDidMount() {
+    UsersService.show('me')
+                .then(response => {
+                  this.setState({
+                    loggedUser: response.data.data.user
+                  });
+                })
+                .catch(error => Alert.error(Errors.extractErrorMessage(error)));
+  }
+
   render() {
     return (
       <div className="col-xs-12 no-side-padding">
@@ -22,7 +43,7 @@ export default class Listings extends Component {
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
                                 preview={ true }
-                                currentUserRole={ this.props.currentUserRole }
+                                loggedUser={ this.state.loggedUser }
                                 loggedIn={ this.props.loggedIn } />
           } } />
 
@@ -47,8 +68,8 @@ export default class Listings extends Component {
 
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
-                                currentUserRole={ this.props.currentUserRole }
                                 loggedIn={ this.props.loggedIn }
+                                loggedUser={ this.state.loggedUser }
                                 toggleModal={ this.props.toggleModal } />
           }} />
 
