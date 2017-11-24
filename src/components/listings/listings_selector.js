@@ -18,9 +18,9 @@ export default class ListingsSelector extends Component {
     if (this.props.role === 'owner') {
       listingSelector = (
         <div className='text-right pull-right vehicle-select'>
-          <span className="text-uppercase tertiary-text-color placeholder">{ LocalizationService.formatMessage('application.vehicle') }</span>
+          <span className="text-uppercase tertiary-text-color placeholder hidden-xs">{ LocalizationService.formatMessage('application.vehicle') }</span>
           <Dropdown key='listings_selector'
-                    pullRight={ true }
+                    pullRight
                     id='listings_selector'>
 
             <Dropdown.Toggle disabled={ !this.props.loading } className='secondary-color white-text fs-12'>

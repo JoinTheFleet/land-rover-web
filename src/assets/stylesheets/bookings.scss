@@ -398,7 +398,12 @@
   }
 
   .booking-form-terms-and-rules {
+    .booking-form-add-message-to-owner-btn {
+      cursor: pointer;
+    }
+
     #booking_form_message_to_owner {
+      padding-top: 10px;
       height: 150px;
       resize: none;
     }
