@@ -912,7 +912,7 @@ class BookingForm extends Component {
           </div>
         )
       }
-      else if (this.state.booking && this.state.booking.status === 'pending') {
+      else if (this.state.booking && ['pending', 'confirmed'].includes(this.state.booking.status)) {
         actionButtonsDiv = (
           <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
             <button className="booking-form-cancel-booking-button btn tomato white-text fs-18 col-xs-12"
