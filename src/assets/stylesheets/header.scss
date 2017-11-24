@@ -119,20 +119,26 @@ input#location {
       text-decoration: none;
     }
 
-    &.with-divider {
-      padding-right: 16px;
-
-      .header-top-menu-divider {
-        position: absolute;
-        top: 8px;
-        bottom: 8px;
-        right: 0;
-        width: 1px;
-      }
-    }
-
     & + .header-top-menu-item {
       margin-left: 15px;
+    }
+  }
+}
+
+@media screen and (min-width: $screen-sm-min) {
+  #header_top_menu {
+    .header-top-menu-item {
+      &.with-divider {
+        padding-right: 16px;
+
+        .header-top-menu-divider {
+          position: absolute;
+          top: 8px;
+          bottom: 8px;
+          right: 0;
+          width: 1px;
+        }
+      }
     }
   }
 }
@@ -179,5 +185,12 @@ input#location {
         margin-top: 0 !important;
       }
     }
+  }
+
+  #header_top_menu {
+    overflow-x: scroll;
+    white-space: nowrap;
+    border-bottom: solid 1px lightgray;
+    font-size: 16px;
   }
 }

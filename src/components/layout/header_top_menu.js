@@ -51,13 +51,13 @@ export default class HeaderTopMenu extends Component {
       let className = '';
 
       menu = (
-        <div id="header_top_menu" className="white tertiary-text-color hidden-xs">
+        <div id="header_top_menu" className="white tertiary-text-color">
           <div className="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             {
               menuItems.map((menuItem) => {
                 itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
 
-                divider = itemHasDivider ? (<div className="header-top-menu-divider tertiary-color"></div>) : '';
+                divider = itemHasDivider ? (<div className="header-top-menu-divider tertiary-color hidden-xs"></div>) : '';
 
                 className = 'header-top-menu-item';
                 className += itemHasDivider ? ' with-divider' : '';
