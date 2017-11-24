@@ -5,7 +5,7 @@ const navigationSections = Constants.navigationSections();
 export default class Menus {
   static getTopMenuForUserRole(role, user) {
     let menu = [
-      navigationSections.dashboard,
+      navigationSections.profile,
       navigationSections.bookings,
       navigationSections.messages,
       navigationSections.notifications,

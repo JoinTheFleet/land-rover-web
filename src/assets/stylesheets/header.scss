@@ -125,6 +125,56 @@ input#location {
   }
 }
 
+.header-search-form-mobile {
+  .modal-content {
+    & > .title-font-weight {
+      padding-left: 12px;
+    }
+
+    .close-login-modal-btn {
+      margin-right: 10px;
+    }
+  }
+
+  #header_search_form {
+    display: block !important;
+    margin-top: 0;
+
+    .search_inputs {
+      #location,
+      .DateRangePicker  {
+        border: solid 1px $smoke-grey;
+      }
+
+      #location {
+        border-radius: 0;
+        padding-left: 17px;
+      }
+
+      .location-search-results {
+        position: relative;
+        width: calc(100% - 1px);
+        top: -60px;
+        margin-left: 1px;
+
+        .dropdown-menu {
+          width: 100%
+        }
+      }
+
+      & + a {
+        margin: auto;
+
+        button {
+          margin: 10px;
+          color: white !important;
+          background-color: #23a9f6 !important;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (min-width: $screen-sm-min) {
   #header_top_menu {
     .header-top-menu-item {

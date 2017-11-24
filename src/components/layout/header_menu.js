@@ -43,7 +43,7 @@ export default class HeaderMenu extends Component {
     if (this.props.loggedIn) {
       items = [
         navigationSections.home,
-        navigationSections.dashboard,
+        navigationSections.profile,
         navigationSections.bookings,
         navigationSections.messages,
         navigationSections.notifications,
