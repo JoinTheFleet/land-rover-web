@@ -902,13 +902,31 @@ class BookingForm extends Component {
       }
     }
     else {
-      if (!this.state.booking.id) {
+      if (!this.state.booking.id && !this.state.loading) {
         actionButtonsDiv = (
           <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
             <button className="booking-form-request-booking-button btn secondary-color white-text fs-18 col-xs-12"
                     onClick={ this.submitBookingRequest }>
               { LocalizationService.formatMessage('bookings.request_booking') }
             </button>
+          </div>
+        )
+      }
+      else if (this.state.booking && this.state.booking.status === 'pending') {
+        actionButtonsDiv = (
+          <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
+            <button className="booking-form-cancel-booking-button btn tomato white-text fs-18 col-xs-12"
+                    onClick={ () => { this.toggleModal('cancelBooking') } }>
+              { LocalizationService.formatMessage('bookings.cancel_booking') }
+            </button>
+
+            <ConfirmationModal open={ this.state.modalsOpen.cancelBooking }
+                                 toggleModal={ this.toggleModal }
+                                 modalName="cancelBooking"
+                                 title={ LocalizationService.formatMessage('bookings.confirm_cancel_booking') }
+                                 confirmationAction={ this.handleCancelBooking } >
+              <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_cancel_booking_text') } </span>
+            </ConfirmationModal>
           </div>
         )
       }
