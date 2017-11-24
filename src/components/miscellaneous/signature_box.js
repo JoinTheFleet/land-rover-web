@@ -19,6 +19,10 @@ class SignatureBox extends Component {
   }
 
   handleSignatureChange(signature) {
+    if (!signature || signature === '') {
+      return;
+    }
+
     this.setState({
       signature: signature,
       modalOpen: false

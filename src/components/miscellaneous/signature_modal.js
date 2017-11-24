@@ -6,6 +6,7 @@ import SignaturePad from 'react-signature-pad';
 import Modal from './modal';
 
 import LocalizationService from '../../shared/libraries/localization_service';
+import Helpers from '../../miscellaneous/helpers';
 
 class SignatureModal extends Component {
 
@@ -14,11 +15,28 @@ class SignatureModal extends Component {
 
     this.handleClearButtonClick = this.handleClearButtonClick.bind(this);
     this.handleSignatureConfirmed = this.handleSignatureConfirmed.bind(this);
+    this.resizeCanvas = this.resizeCanvas.bind(this);
+
+    window.addEventListener('resize', () => {
+      if (this.props.open) {
+        this.resizeCanvas();
+      }
+    });
   }
 
   componentDidMount() {
+    this.resizeCanvas();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.open && this.props.open) {
+      this.resizeCanvas();
+    }
+  }
+
+  resizeCanvas() {
     let canvas = this.refs.fleetSignature._canvas;
-    canvas.setAttribute('width', 576);
+    canvas.setAttribute('width', Helpers.pageWidth());
     canvas.setAttribute('height', 324);
   }
 
@@ -27,6 +45,11 @@ class SignatureModal extends Component {
   }
 
   handleSignatureConfirmed() {
+    if (this.refs.fleetSignature.isEmpty()) {
+      this.props.toggleModal();
+      return;
+    }
+
     let signature = this.refs.fleetSignature.toDataURL();
     this.props.handleSignatureConfirmed(signature);
   }

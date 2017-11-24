@@ -45,6 +45,10 @@ class BookingFormCheckIn extends Component {
   }
 
   handleSignatureChange(signatureEntity, signature) {
+    if (!signature || signature === '') {
+      return ;
+    }
+
     let signatures = this.state.signatures;
     signatures[signatureEntity] = signature;
 
