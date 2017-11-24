@@ -18,7 +18,7 @@ export default class Constants {
     return {
       home: 'home',
       listings: 'listings',
-      dashboard: 'dashboard',
+      profile: 'profile',
       bookings: 'bookings',
       messages: 'messages',
       account: 'account',

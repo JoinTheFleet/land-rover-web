@@ -36,7 +36,7 @@ export default class Dashboard extends Component {
                     { LocalizationService.formatMessage('dashboard.credits.invite') }
                   </div>
                   <div className='col-xs-12 no-side-padding credit-button'>
-                    <Link to={ '/dashboard/credits' } className='btn btn-inverted col-xs-12 col-sm-2'>
+                    <Link to={ '/profile/credits' } className='btn btn-inverted col-xs-12 col-sm-2'>
                       { LocalizationService.formatMessage('dashboard.credits.view') }
                     </Link>
                   </div>

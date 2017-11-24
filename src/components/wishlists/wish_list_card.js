@@ -19,7 +19,7 @@ export default class WishListCard extends Component {
     return (
       <div className='col-xs-12 no-side-padding wishlist-card'>
         <Link to={{
-          pathname: `/dashboard/wish_lists/${wish_list.id}`,
+          pathname: `/profile/wish_lists/${wish_list.id}`,
           state: {
             wish_list: wish_list
           }

@@ -25,7 +25,7 @@ export default class CreditAwardedNotification extends Notification {
 
   linkData() {
     return {
-      pathname: `/dashboard/credits`
+      pathname: `/profile/credits`
     };
   }
 }

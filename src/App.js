@@ -522,7 +522,7 @@ export default class App extends Component {
                               currentUserRole={ this.state.currentUserRole}
                               changeCurrentUserRole={ this.changeCurrentUserRole } />)
           }} />
-          <Route path='/dashboard' render={ (props) => {
+          <Route path='/profile' render={ (props) => {
             return <DashboardController {...props} configuration={ this.state.configuration } />
           }} />
           <Route path='/notifications' component={ NotificationsController } />
@@ -561,7 +561,7 @@ export default class App extends Component {
                 <Route exact path="/" render={(props) => {
                   if (this.state.accessToken && !this.state.visitedDashboard) {
                     this.setState({ visitedDashboard: true });
-                    return <Redirect to='/dashboard' />
+                    return <Redirect to='/profile' />
                   }
                   else {
                     return <Homescreen {...props}
@@ -586,7 +586,7 @@ export default class App extends Component {
                 <Route path="/referral/:referral_code" render={(props) => {
                   if (this.state.accessToken && !this.state.visitedDashboard) {
                     this.setState({ visitedDashboard: true });
-                    return <Redirect to='/dashboard' />
+                    return <Redirect to='/profile' />
                   }
                   else {
                     return <Homescreen {...props}

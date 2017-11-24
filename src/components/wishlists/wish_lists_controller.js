@@ -9,8 +9,8 @@ export default class WishListsController extends Component {
     return (
       <div className='col-xs-12'>
         <Switch>
-          <Route path='/dashboard/wish_lists/:id' component={ WishList } />
-          <Route exact path='/dashboard/wish_lists' component={ WishListsList } />
+          <Route path='/profile/wish_lists/:id' component={ WishList } />
+          <Route exact path='/profile/wish_lists' component={ WishListsList } />
         </Switch>
       </div>
     );

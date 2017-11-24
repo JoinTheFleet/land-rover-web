@@ -84,7 +84,7 @@ export default class WishListSummary extends Component {
             </span>
             <span>
               <Link to={{
-                      pathname: `/dashboard/wish_lists`,
+                      pathname: `/profile/wish_lists`,
                       state: {
                         wish_lists: this.state.wish_lists
                       }
