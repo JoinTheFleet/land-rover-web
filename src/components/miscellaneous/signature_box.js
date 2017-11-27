@@ -36,7 +36,7 @@ class SignatureBox extends Component {
   }
 
   render() {
-    let signatureBox = (<input type="text" disabled={ true } placeholder={ this.props.placeholder } />);
+    let signatureBox = (<div className="fleet-signature-box-placeholder"> { this.props.placeholder } </div>);
 
     if (this.state.signature) {
       signatureBox = (<img src={ this.state.signature} alt="signature" />);
