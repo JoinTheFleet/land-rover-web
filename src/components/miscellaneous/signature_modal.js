@@ -36,7 +36,9 @@ class SignatureModal extends Component {
 
   resizeCanvas() {
     let canvas = this.refs.fleetSignature._canvas;
-    canvas.setAttribute('width', Helpers.pageWidth());
+    const pageWidth = Helpers.pageWidth();
+
+    canvas.setAttribute('width', pageWidth > 584 ? 584 : (Helpers.pageWidth() - 34));
     canvas.setAttribute('height', 324);
   }
 
