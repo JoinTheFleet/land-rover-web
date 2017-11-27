@@ -22,13 +22,15 @@ export default class Listings extends Component {
   }
 
   componentDidMount() {
-    UsersService.show('me')
-                .then(response => {
-                  this.setState({
-                    loggedUser: response.data.data.user
-                  });
-                })
-                .catch(error => Alert.error(Errors.extractErrorMessage(error)));
+    if (this.props.loggedIn) {
+      UsersService.show('me')
+                  .then(response => {
+                    this.setState({
+                      loggedUser: response.data.data.user
+                    });
+                  })
+                  .catch(error => Alert.error(Errors.extractErrorMessage(error)));
+    }
   }
 
   render() {

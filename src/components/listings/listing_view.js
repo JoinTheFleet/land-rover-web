@@ -307,7 +307,7 @@ export default class ListingView extends Component {
     let bookingDiv = '';
     const listing = this.state.listing;
 
-    if (this.props.loggedUser && this.props.loggedUser.id !== listing.user.id && !this.props.preview) {
+    if (!this.props.loggedUser || (this.props.loggedUser && this.props.loggedUser.id !== listing.user.id && !this.props.preview )) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
           <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
