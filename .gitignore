@@ -4,7 +4,6 @@
 *.DS_Store
 /coverage/*
 /log/*
-/public/*
 
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
