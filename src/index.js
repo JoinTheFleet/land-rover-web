@@ -11,7 +11,6 @@ import enUS from 'antd/lib/locale-provider/en_US';
 import { Router } from 'react-router-dom';
 
 import {StripeProvider} from 'react-stripe-elements';
-import ReactGA from 'react-ga';
 
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
@@ -34,19 +33,6 @@ const language = cookies.get('userLocale') || ((navigator.languages && navigator
 const messages = localeData[language] || localeData.en;
 const locale = acceptLanguage.get(language);
 const history = createHistory();
-
-if (process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID && process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID !== '') {
-  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID); // Initialize Google Analytics
-
-  const historyListener = (location, action) => {
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
-  };
-
-  history.listen(historyListener);
-
-  historyListener(window.location);
-}
 
 WebFont.load({
   google: {

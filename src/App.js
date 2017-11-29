@@ -41,6 +41,7 @@ import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
 
 import ReactFacebookPixel from 'react-facebook-pixel';
+import GoogleTagManager from './shared/external/google_tag_manager';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -541,6 +542,7 @@ export default class App extends Component {
       <Route path="/" render={(props) => {
         return (
           <div className="App">
+            <GoogleTagManager gtmID={ process.env.REACT_APP_GOOGLE_TAG_MANAGER_ID } />
             <Alert {...ALERT_OPTIONS} />
             <Header loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 }
                     currentUserRole={ this.state.currentUserRole }
