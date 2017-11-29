@@ -40,6 +40,7 @@ import WishListsService from './shared/services/wish_lists_service';
 import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
 
+import ReactFacebookPixel from 'react-facebook-pixel';
 
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
@@ -119,6 +120,11 @@ export default class App extends Component {
     this.addedWishListToListing = this.addedWishListToListing.bind(this);
     this.removeWishListFromListing = this.removeWishListFromListing.bind(this);
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
+  }
+
+  componentWillMount() {
+    ReactFacebookPixel.init(process.env.REACT_APP_FACEBOOK_PIXEL_ID);
+    ReactFacebookPixel.pageView();
   }
 
   componentDidMount() {

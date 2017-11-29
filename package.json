@@ -68,6 +68,7 @@
     "react-dev-utils": "^4.2.1",
     "react-dom": "^15.6.2",
     "react-facebook-login": "",
+    "react-facebook-pixel": "",
     "react-fontawesome": "",
     "react-ga": "^2.3.5",
     "react-google-maps": "^9.2.2",
