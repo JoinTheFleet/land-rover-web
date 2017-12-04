@@ -7,7 +7,7 @@ import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
 
 // Images
-import topBanner from '../../assets/images/beach-cars-bmw.jpg';
+import topBanner from '../../assets/images/homescreen_top_banner.jpg';
 import axaLogo from '../../assets/images/axa-logo.png';
 import independentLogo from '../../assets/images/independent-grey.png';
 import newstalkLogo from '../../assets/images/newstalk-grey.png';
