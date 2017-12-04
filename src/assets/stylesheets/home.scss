@@ -101,7 +101,7 @@
 @media screen and (max-width: $screen-xs-max) {
   #homescreen_top_banner {
     #homescreen_top_banner_content {
-      top: 10%;
+      top: 325px;
 
       .title-font-size {
         font-size: 30px;
@@ -115,6 +115,10 @@
     #header_search_form {
       display: block !important;
     }
+  }
+
+  #homescreen_top_banner_bg {
+    object-position: 95%;
   }
 
   #renting_a_car_div,
@@ -135,6 +139,16 @@
         display: block;
         margin: auto;
         margin-top: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  #homescreen_top_banner {
+    #homescreen_top_banner_content {
+      .title-font-size {
+        font-size: 25px;
       }
     }
   }
