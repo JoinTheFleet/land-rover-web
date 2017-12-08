@@ -58,7 +58,7 @@ export default class Credits extends Component {
       if (this.state.referralURL) {
         copyButton = (
           <div className='col-xs-12 no-side-padding credit-button'>
-            <Button onClick={ this.copyReferralURL } className='btn btn-inverted col-xs-12 col-sm-3'>
+            <Button onClick={ this.copyReferralURL } className='btn btn-inverted col-xs-12 col-sm-4'>
               { this.state.buttonText }
             </Button>
           </div>
