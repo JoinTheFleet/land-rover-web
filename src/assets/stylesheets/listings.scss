@@ -594,8 +594,30 @@
     width: 100%;
     height: 350px;
 
+    .slick-dots li button:before {
+      font-size: 12px;
+    }
+
+    img.fleet-image-gallery-remove-icon {
+      width: 35px;
+      height: 35px;
+    }
+
     img:not(.fleet-image-gallery-remove-icon) {
       height: 350px;
+    }
+
+    .slick-arrow {
+      width: 30px;
+      height: 30px;
+
+      &:before {
+        font-size: 30px;
+      }
+
+      &:not(.slick-disabled):before {
+        opacity: 1;
+      }
     }
   }
 
