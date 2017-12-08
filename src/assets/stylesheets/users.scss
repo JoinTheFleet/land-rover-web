@@ -69,6 +69,14 @@
   background-image: linear-gradient(140deg, #1de9b6, #23a9f6) !important;
 }
 
+.platform-avatar,
+.sb-avatar,
+.user-avatar {
+  img {
+    object-fit: cover !important;
+  }
+}
+
 .user-listing {
   padding-top: 15px;
   padding-bottom: 15px;
