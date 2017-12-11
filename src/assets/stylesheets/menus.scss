@@ -6,6 +6,16 @@
   z-index: 10;
   opacity: 0;
 
+  a {
+    color: $tertiary-text-color;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: $tertiary-text-color;
+    }
+  }
+
   .menu-item {
     height: 70px;
     line-height: 70px;
@@ -17,5 +27,30 @@
 
   .menu-divider {
     height: 1px;
+  }
+}
+
+.menu-item {
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 19px;
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
   }
 }

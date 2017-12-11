@@ -1,0 +1,167 @@
+/* Homescreen */
+#homescreen_top_banner {
+  height: 600px;
+  position: relative;
+
+  #homescreen_top_banner_bg {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  #homescreen_top_banner_content {
+    position: absolute;
+    top: 28%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+
+    #header_search_form {
+      margin-top: 20px;
+
+      button {
+        margin-top: -5px;
+      }
+    }
+  }
+
+  #homescreen_top_banner_insurance_div {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  #homescreen_search_form {
+    margin-top: 25px;
+  }
+}
+
+#homescreen_axa_banner {
+  padding: 10px 0;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+#how_it_works_div {
+  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  padding-top: 20px;
+}
+
+#renting_a_car_div,
+#making_car_work_for_you_div {
+  & > p {
+    margin-bottom: 25px;
+  }
+}
+
+#making_car_work_for_you_div {
+  margin-top: 30px;
+}
+
+#featured_in_div {
+  padding: 25px 30px;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+
+  & > span,
+  & > img {
+    & + img {
+      margin-left: 36px;
+    }
+  }
+}
+
+.top-seller-title {
+  margin: 15px 0 0 30px;
+}
+
+/* Homefeed */
+.homefeed-listings-list {
+  &.loading-listings {
+    overflow: hidden;
+  }
+}
+
+.toggle-map-div {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  opacity: 0.8;
+  z-index: 10;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  #homescreen_top_banner {
+    #homescreen_top_banner_content {
+      top: 325px;
+
+      .title-font-size {
+        font-size: 30px;
+      }
+
+      .fs-20 {
+        font-size: 18px;
+      }
+    }
+
+    #header_search_form {
+      display: block !important;
+    }
+  }
+
+  #homescreen_top_banner_bg {
+    object-position: 95%;
+  }
+
+  #renting_a_car_div,
+  #making_car_work_for_you_div {
+    div + div {
+      margin-top: 20px;
+    }
+  }
+
+  #making_car_work_for_you_div {
+    margin-top: 40px;
+  }
+
+  #featured_in_div {
+    & > span,
+    & > img {
+      & + img {
+        display: block;
+        margin: auto;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  #homescreen_top_banner {
+    #homescreen_top_banner_content {
+      .title-font-size {
+        font-size: 25px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen-md-max) {
+  .homefeed-listings-list {
+    height: auto !important;
+  }
+}
+
+@media screen and (min-width: $screen-lg-min) {
+  .homefeed-listings-list {
+    overflow-y: scroll;
+  }
+}

@@ -1,13 +1,63 @@
+// External CSS files
+@import "~antd/dist/antd.css";
+@import "~slick-carousel/slick/slick";
+@import "~slick-carousel/slick/slick-theme";
+@import "~react-chat-elements/dist/main.css";
+@import "~react-dates/lib/css/_datepicker.css";
+@import "~react-datez/dist/css/react-datez.css";
+@import "~react-select/dist/react-select.css";
+@import "~font-awesome/css/font-awesome.min.css";
+@import "~react-s-alert/dist/s-alert-default.css";
+@import "~react-s-alert/dist/s-alert-css-effects/stackslide.css";
+@import "~react-chat-elements/dist/main.css";
+
+// Variables
 @import 'variables';
 @import 'colors';
 @import 'text';
 
+// Miscellaneous Elements
+@import 'alerts';
+@import 'blog_lists';
+@import 'buttons';
+@import 'checkbox';
+@import 'datepickers';
+@import 'dropdown';
+@import 'image_galleries';
+@import 'loading';
+@import 'modals';
+@import 'pagination';
+@import 'panel_form';
+@import 'placeholders';
 @import 'rating_input';
+@import 'rdatez-custom';
+@import 'steppers';
+@import 'signature_box';
+
+// Main Components / Elements
+@import 'bookings';
+@import 'conversations';
+@import 'credits';
+@import 'dashboard';
+@import 'drivers_license';
+@import 'footer';
+@import 'forms';
+@import 'header';
+@import 'home';
+@import 'listings';
+@import 'login';
+@import 'menus';
+@import 'messaging';
+@import 'notifications';
+@import 'payment_sources';
+@import 'reviews';
+@import 'search';
+@import 'users';
+@import 'user_listings';
+@import 'wishlists';
 
 @import 'main';
-@import 'menus';
-@import 'login';
-@import 'header';
-@import 'footer';
-@import 'homescreen';
-@import 'listings';
+
+img {
+  image-orientation: from-image;
+}

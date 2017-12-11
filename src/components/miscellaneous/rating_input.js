@@ -13,11 +13,15 @@ export default class RatingInput extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  handleOnChange(event){
+  handleOnChange(event) {
     let element = event.target;
 
     if (element.checked) {
       this.setState({ currentRating: element.value });
+    }
+
+    if (this.props.handleOnChange) {
+      this.props.handleOnChange(element.value);
     }
   }
 
@@ -27,24 +31,31 @@ export default class RatingInput extends Component {
     let inputName = this.props.inputName || 'rating';
     let inputId = this.props.inputId || 'star';
 
-    let className = 'rating-input';
+    let className = `${this.props.className} rating-input`;
 
     if (this.state.disabled) {
       className += ' disabled';
     }
 
     return (
-      <div className={className}>
+      <div className={ className }>
         {
           Array.from(new Array(ratingLength), (val, index) => index + 1).map((index) => {
             return (
               <div key={inputId + index}>
-                <input type="checkbox" id={inputId + index} name={inputName + '_' + inputNameSufix} disabled={this.state.disabled} value={index} defaultChecked={index <= this.state.currentRating} onChange={this.handleOnChange} />
+                <input type="checkbox"
+                       id={ inputId + index }
+                       name={ inputName + '_' + inputNameSufix }
+                       disabled={ this.state.disabled }
+                       value={ index }
+                       checked={ index <= this.state.currentRating }
+                       onChange={ this.handleOnChange } />
                 <label htmlFor={inputId + index}></label>
               </div>
             )
           })
         }
+        { this.props.children  }
       </div>
     )
   }
@@ -56,5 +67,6 @@ RatingInput.propTypes = {
   readonly: PropTypes.bool,
   inputNameSufix: PropTypes.string,
   inputName: PropTypes.string,
-  inputId: PropTypes.string
+  inputId: PropTypes.string,
+  handleOnChange: PropTypes.func
 }

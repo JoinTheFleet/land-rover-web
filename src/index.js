@@ -4,6 +4,13 @@ import { IntlProvider } from 'react-intl';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import WebFont from 'webfontloader';
+import createHistory from 'history/createBrowserHistory';
+
+import { LocaleProvider } from 'antd';
+import enUS from 'antd/lib/locale-provider/en_US';
+import { Router } from 'react-router-dom';
+
+import {StripeProvider} from 'react-stripe-elements';
 
 import acceptLanguage from 'accept-language';
 import Cookies from "universal-cookie";
@@ -11,7 +18,7 @@ import Cookies from "universal-cookie";
 // Stylesheets
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
-import './assets/stylesheets/application.scss'
+import './assets/stylesheets/application.scss';
 
 // Translated strings
 import localeData from './locales/locales.json';
@@ -25,6 +32,7 @@ const language = cookies.get('userLocale') || ((navigator.languages && navigator
 
 const messages = localeData[language] || localeData.en;
 const locale = acceptLanguage.get(language);
+const history = createHistory();
 
 WebFont.load({
   google: {
@@ -33,9 +41,15 @@ WebFont.load({
 });
 
 render(
-  <IntlProvider locale={locale} messages={messages}>
-    <App />
-  </IntlProvider>,
+  (<IntlProvider locale={locale} messages={messages}>
+    <LocaleProvider locale={enUS}>
+      <StripeProvider apiKey={ process.env.REACT_APP_STRIPE_API_KEY }>
+        <Router history={ history }>
+          <App />
+        </Router>
+      </StripeProvider>
+    </LocaleProvider>
+  </IntlProvider>),
   document.getElementById('root')
 );
 

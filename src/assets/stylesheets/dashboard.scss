@@ -1,0 +1,71 @@
+.user-dashboard {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .user-name {
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $smoke-grey;
+  }
+
+  .credit-information {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .credit-amount {
+    font-size: 20px;
+    color: $secondary-text-color;
+    font-weight: 100;
+  }
+
+  .credit-explanation {
+    font-size: 14px;
+    color: $tertiary-text-color;
+  }
+
+  .credit-button {
+    padding-top: 10px;
+
+    .btn {
+      min-width: 120px;
+    }
+  }
+
+  .dashboard-information-container {
+    min-height: 200px;
+    border-bottom: 1px solid $smoke-grey;
+  }
+
+  .dashboard-information {
+    width: 100%;
+  }
+
+  @media screen and (max-width: $screen-xs-max) {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    .user-header {
+      .user-avatar {
+        display: block !important;
+        margin: auto;
+        float: none;
+      }
+    }
+
+    .dashboard-information-container {
+      .user-name {
+        text-align: center;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  @media screen and (min-width: $screen-sm-min) {
+    .dashboard-information {
+      padding-right: 0;
+      width: calc(100% - 200px);
+    }
+  }
+}

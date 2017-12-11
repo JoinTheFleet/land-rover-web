@@ -5,15 +5,18 @@ $tertiary-color: #9b9b9b;
 
 $smoke-grey: #eeeeee;
 $smoke-grey-two: #e0e0e0;
+$warm-grey: #979797;
 $sun-yellow: #f8e81c;
 $twilight-blue: rgba(16, 49, 132, 0.75);
 $facebook: #4465b4;
+$tomato: #f44336;
 
 // Text Colors
 $main-text-color: black;
 $secondary-text-color: $secondary-color;
 $tertiary-text-color: $tertiary-color;
 $placeholder-text-color: $tertiary-color;
+$inverted-text-color: white;
 
 // Text
 $text-font-family: Roboto;
@@ -25,6 +28,7 @@ $subtitle-font-weight: 500;
 $strong-font-weight: 700;
 $light-font-weight: 100;
 
+$text-main-font-size: 14px;
 $title-font-size: 40px;
 $subtitle-font-size: 20px;
 

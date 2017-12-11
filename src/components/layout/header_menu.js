@@ -1,13 +1,19 @@
-import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
-import Anime from 'react-anime';
-import Helpers from '../miscellaneous/helpers';
-import Constants from '../miscellaneous/constants';
+import React, { Component } from 'react';
+
+import { FormattedMessage } from 'react-intl';
+
+import Toggleable from '../miscellaneous/toggleable';
+
+import Helpers from '../../miscellaneous/helpers';
+import Constants from '../../miscellaneous/constants';
+
+import CloseOnEscape from 'react-close-on-escape';
+
+import { NavLink } from 'react-router-dom';
 
 const navigationSections = Constants.navigationSections();
 
 export default class HeaderMenu extends Component {
-
   constructor(props) {
     super(props);
 
@@ -26,16 +32,30 @@ export default class HeaderMenu extends Component {
 
   renderMenu() {
     let menuItems = [];
-    let items = [navigationSections.home, navigationSections.signup, navigationSections.login];
+    let items = [
+      navigationSections.home,
+      navigationSections.signup,
+      navigationSections.login
+    ];
     let itemsWithDivider = ['home'];
-    let itemsWithModal = ['login'];
+    let itemsWithModal = ['login', 'signup', 'logout'];
 
-    if(this.props.accessToken){
-      items = [navigationSections.home, navigationSections.profile,
-               navigationSections.bookings,navigationSections.messages,
-               navigationSections.listings, navigationSections.account,
-               navigationSections.logout];
-      itemsWithDivider = [navigationSections.home, navigationSections.listings];
+    if (this.props.loggedIn) {
+      items = [
+        navigationSections.home,
+        navigationSections.profile,
+        navigationSections.bookings,
+        navigationSections.messages,
+        navigationSections.notifications,
+        navigationSections.listings,
+        navigationSections.calendar,
+        navigationSections.account,
+        navigationSections.logout
+      ];
+      itemsWithDivider = [
+        navigationSections.home,
+        navigationSections.calendar
+      ];
     }
 
     for(var i = 0; i < items.length; i++) {
@@ -43,14 +63,23 @@ export default class HeaderMenu extends Component {
 
       menuItems.push(
         (<div key={'header_menu_' + item} className="menu-item">
-          <span className={this.props.currentMenuItem === item ? 'secondary-text-color' : ''}
-                onClick={() => {(itemsWithModal.indexOf(item) > -1) ? this.props.toggleModal(item) : this.props.handleMenuItemSelect(item);}} >
+          <NavLink  to={ `/${item}`}
+                    activeClassName={ 'secondary-text-color' }
+                    onClick={ (event) => {
+                      if (itemsWithModal.indexOf(item) > -1) {
+                        event.preventDefault();
+                        this.props.toggleModal(item);
+                      }
+                      else {
+                        this.props.handleMenuItemSelect(item);
+                      }
+                    }} >
             <FormattedMessage id={'menu.' + item} />
-          </span>
+          </NavLink>
         </div>)
       );
 
-      if(itemsWithDivider.indexOf(item) > -1) {
+      if (itemsWithDivider.indexOf(item) > -1) {
         menuItems.push(
           <div key={'header_menu_' + item + '_divider'} className="menu-divider smoke-grey-two"></div>
         );
@@ -66,11 +95,11 @@ export default class HeaderMenu extends Component {
 
   render() {
     return (
-      <Anime easing="easeOutQuart"
-             duration={500}
-             opacity={this.state.open ? 1 : 0}>
-        {this.renderMenu()}
-      </Anime>
+      <CloseOnEscape onEscape={ () =>  {this.props.toggleModal(this.props.currentMenuItem)} }>
+        <Toggleable open={ this.state.open }>
+          { this.renderMenu() }
+        </Toggleable>
+      </CloseOnEscape>
     )
   }
 }

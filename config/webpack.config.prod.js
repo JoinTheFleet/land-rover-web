@@ -12,6 +12,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const Uglify = require("uglifyjs-webpack-plugin");
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -92,7 +93,7 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
+    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.css'],
     alias: {
 
       // Support React Native Web
@@ -143,7 +144,7 @@ module.exports = {
           // use style-loader in development
           fallback: "style-loader"
         })
-      }
+      },
       {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
@@ -233,7 +234,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.sass$/, /\.scss$/]],
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.sass$/, /\.scss$/],
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
@@ -251,6 +252,13 @@ module.exports = {
     // In production, it will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
     new InterpolateHtmlPlugin(env.raw),
+    new webpack.ContextReplacementPlugin(
+      // NOTE: If further languages are included, include their moment locale name here.
+      // The path to directory which should be handled by this plugin
+      /moment[\/\\]locale/,
+      // A regular expression matching files that should be included
+      /(en-gb)\.js/
+    ),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
@@ -273,8 +281,7 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
-    // Minify the code.
-    new webpack.optimize.UglifyJsPlugin({
+    new Uglify({
       compress: {
         warnings: false,
         // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -282,6 +289,10 @@ module.exports = {
         // Pending further investigation:
         // https://github.com/mishoo/UglifyJS2/issues/2011
         comparisons: false,
+        warnings: true,
+        drop_console: true,
+        passes: 2,
+        switches: true
       },
       output: {
         comments: false,
@@ -290,6 +301,7 @@ module.exports = {
         ascii_only: true,
       },
       sourceMap: shouldUseSourceMap,
+      warnings: true
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({

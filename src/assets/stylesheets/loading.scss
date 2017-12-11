@@ -1,0 +1,30 @@
+.loading-div {
+  display: table;
+  width: 100%;
+  z-index: 9999;
+
+  & > div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+}
+
+.full-width-loading {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  background: white;
+  z-index: 20;
+  opacity: 0.9;
+
+  .loading-div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
