@@ -1,0 +1,35 @@
+.alerts-modal {
+  .modal-content {
+    padding: 20px;
+  }
+
+  .alert-modal-row {
+    display: block;
+    padding: 5px;
+    width: 100% !important;
+
+    & > div {
+      display: table-cell;
+      vertical-align: middle;
+
+      &:first-child {
+        width: 70px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
+      &:last-child {
+        img {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    & + .alert-modal-row {
+      border-top: solid 1px $smoke-grey;
+    }
+  }
+}

@@ -1,0 +1,133 @@
+@import "colors";
+
+.panel-form {
+  margin-left: 0;
+  margin-right: 0;
+
+  .form-header {
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: $secondary-color;
+    color: $inverted-text-color;
+  }
+
+  .form-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $smoke-grey-two;
+    border-top-width: 0;
+  }
+
+  .panel-image {
+    margin-bottom: 10px;
+  }
+
+  .form-row {
+    span,
+    input,
+    textarea {
+      font-size: 14px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    input,
+    textarea {
+      border: solid 1px $smoke-grey;
+
+      & + input,
+      & + textarea {
+        margin-top: 3px;
+      }
+
+      & + .Select {
+        input {
+          border: none;
+        }
+
+        .Select-control {
+          top: 3px;
+        }
+      }
+    }
+
+    .Select {
+      .Select-input input {
+        border: none;
+      }
+
+      .Select-control {
+        border: solid 1px $smoke-grey;
+        border-radius: 0;
+        width: calc(100% + 1px);
+      }
+    }
+
+
+    span {
+      display: block;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    margin-bottom: 10px;
+  }
+
+  margin-bottom: 20px;
+
+
+  // Overrides for react-select styles.
+  .Select-multi-value-wrapper {
+    display: inline-block !important;
+    padding: inherit !important;
+  }
+
+  .Select-clear-zone,
+  .Select-arrow-zone {
+    display: table-cell !important;
+    padding: inherit !important;
+  }
+
+  .Select-clear,
+  .Select-arrow {
+    display: inline-block !important;
+    padding: inherit !important;
+  }
+
+  .Select-value-label {
+    padding-top: 0 !important;
+  }
+
+  .form--checkbox-row {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid $smoke-grey;
+
+    input[type="checkbox"] + label {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &::before {
+        left: inherit;
+      }
+
+      &::after {
+        top: 1px;
+        position: relative;
+        left: 3px;
+      }
+    }
+
+    & + .form--checkbox-row {
+      border-top: none;
+    }
+  }
+}

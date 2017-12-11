@@ -2,10 +2,16 @@
   background-image: linear-gradient(94deg, $main-color, $secondary-color);
   padding: 0 20px;
   height: 80px;
-  line-height: 80px;
+  padding-top: 14px;
 
   .header-logo {
     cursor: pointer;
+
+    & + #header_search_form {
+      margin-left: 20px;
+      position: relative;
+      top: 3px;
+    }
   }
 
   #header_list_car_link {
@@ -28,9 +34,218 @@
       margin-right: 18px;
     }
   }
+}
+
+.DateRangePickerInput {
+  padding-left: 3px;
+  border-width: 0;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.DateInput {
+  padding: 0;
+}
+
+.DateInput_displayText__focused {
+  background-color: rgba($secondary-color, 0.3);
+  color: white;
+  color: #565a5c;
+}
+
+.CalendarDay__selected.CalendarDay__selected_span,
+.CalendarDay__selected {
+  border: none;
+  background-color: $secondary-color;
+  color: white;
+}
+
+.CalendarDay__selected_span,
+.CalendarDay__hovered_span {
+  border: none;
+  background-color: rgba($secondary-color, 0.2);
+  color: #565a5c;
+}
+
+.search_inputs {
+  height: 100%;
+  background-color: white;
+  border-radius: 5px;
+  display: inline-flex;
+}
+
+input#location {
+  position: relative;
+  height: 36px;
+  max-height: 37px;
+  font-size: 15px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+
+  color: #565a5c;
+  font-weight: 200;
+
+  padding-left: 20px;
+
+  border-width: 0;
+  border-radius: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+#header_search_form {
+  display: inline-block;
+
+  button {
+    margin-top: -2px;
+  }
+}
+
+#header_top_menu {
+  height: 34px;
+  line-height: 34px;
+
+  .header-top-menu-item {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    color: $tertiary-text-color;
+    text-decoration: none;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: $tertiary-text-color;
+      text-decoration: none;
+    }
+
+    & + .header-top-menu-item {
+      margin-left: 15px;
+    }
+  }
+}
+
+.header-search-form-mobile {
+  .modal-content {
+    & > .title-font-weight {
+      padding-left: 12px;
+    }
+
+    .close-login-modal-btn {
+      margin-right: 10px;
+    }
+  }
 
   #header_search_form {
-    display: inline-block;
-    padding-left: 20px;
+    display: block !important;
+    margin-top: 0;
+
+    .search_inputs {
+      #location,
+      .DateRangePicker  {
+        border: solid 1px $smoke-grey;
+      }
+
+      #location {
+        border-radius: 0;
+        padding-left: 17px;
+        line-height: 30px;
+      }
+
+      .location-search-results {
+        position: relative;
+        width: calc(100% - 1px);
+        top: -60px;
+        margin-left: 1px;
+
+        .dropdown-menu {
+          width: 100%
+        }
+      }
+
+      & + a {
+        margin: auto;
+
+        button {
+          margin: 10px;
+          color: white !important;
+          background-color: #23a9f6 !important;
+        }
+      }
+    }
+
+    .header-search-mobile-icon {
+      padding-top: 10px;
+    }
+  }
+}
+
+@media screen and (min-width: $screen-sm-min) {
+  #header_top_menu {
+    .header-top-menu-item {
+      &.with-divider {
+        padding-right: 16px;
+
+        .header-top-menu-divider {
+          position: absolute;
+          top: 8px;
+          bottom: 8px;
+          right: 0;
+          width: 1px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  #header_search_form {
+    display: block;
+    margin-top: 30px;
+
+    .search_inputs {
+      display: block;
+      margin: 10px;
+    }
+
+    #location {
+      width: calc(100% - 2px);
+      display: block;
+      border-top-right-radius: 5px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-left: 1px;
+    }
+
+    .DateRangePicker {
+      width: 100%;
+
+      .DateRangePickerInput_clearDates {
+        display: none;
+      }
+    }
+
+    .location-search-results {
+      .dropdown-menu {
+        max-width: 100%;
+      }
+    }
+
+    & > a {
+      width: 100%;
+
+      button {
+        width: calc(100% - 20px);
+        margin-left: 0;
+        margin-top: 0 !important;
+      }
+    }
+  }
+
+  #header_top_menu {
+    overflow-x: scroll;
+    white-space: nowrap;
+    border-bottom: solid 1px lightgray;
+    font-size: 16px;
   }
 }

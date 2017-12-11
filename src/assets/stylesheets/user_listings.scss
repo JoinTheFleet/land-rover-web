@@ -1,0 +1,55 @@
+.user-listing {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  & + .user-listing {
+    border-top: 1px solid $smoke-grey;
+  }
+
+  a {
+    color: $main-text-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+      color: $main-text-color;
+    }
+  }
+
+  .header {
+    font-size: 15px;
+    margin-right: 10px;
+  }
+}
+
+.user-listings-title {
+  padding-top: 15px;
+  font-size: 30px;
+
+  .title {
+    font-weight: bold;
+  }
+
+  .count {
+    font-size: 20px;
+    padding-left: 5px;
+  }
+
+  .link {
+    font-size: 20px;
+    font-weight: lighter;
+    text-decoration: none;
+    padding-top: 10px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.listing-container {
+  width: calc(100% - 100px);
+}

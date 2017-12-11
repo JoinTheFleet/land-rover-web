@@ -1,27 +1,54 @@
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
 body {
   font-family: $text-font-family;
   font-weight: $text-main-font-weight;
+  font-size: $text-main-font-size;
   color: $main-text-color;
 }
 
-form {
-  input {
-    &::-webkit-input-placeholder {
-      color: $placeholder-text-color !important;
-    }
+a {
+  color: initial;
+}
 
-    &:-moz-placeholder { /* Firefox 18- */
-      color: $placeholder-text-color !important;
-    }
+textarea,
+input {
+  border: solid 1px $smoke-grey-two;
 
-    &::-moz-placeholder {  /* Firefox 19+ */
-      color: $placeholder-text-color !important;
-    }
-
-    &:-ms-input-placeholder {
-      color: $placeholder-text-color !important;
-    }
+  &::-webkit-input-placeholder {
+    color: $placeholder-text-color !important;
   }
+
+  &:-moz-placeholder { /* Firefox 18- */
+    color: $placeholder-text-color !important;
+  }
+
+  &::-moz-placeholder {  /* Firefox 19+ */
+    color: $placeholder-text-color !important;
+  }
+
+  &:-ms-input-placeholder {
+    color: $placeholder-text-color !important;
+  }
+
+  &.focused {
+    border: solid 1px $secondary-color !important;
+  }
+}
+
+
+#main_container {
+  min-height: calc(100vh - 364px);
+}
+
+.no-side-padding {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .static-link {
@@ -35,7 +62,6 @@ form {
 .global-search-form {
   input {
     padding-left: 15px;
-    width: 230px;
     height: 35px;
 
     &:first-child {
@@ -56,6 +82,67 @@ form {
     & + button {
       margin-left: 10px;
       width: 85px;
+    }
+  }
+}
+
+.DateRangePicker {
+  line-height: 20px;
+
+  .DateRangePickerInput {
+    width: 100%;
+    padding-right: 3px;
+  }
+
+  .DateRangePickerInput_clearDates {
+    &:active,
+    &:hover {
+      background-color: white;
+    }
+
+    &.DateRangePickerInput_clearDates__hide {
+      display: none;
+    }
+  }
+
+  .DateRangePickerInput_clearDates_svg {
+    fill: $secondary-color;
+  }
+
+  .DateInput_input {
+    font-size: 15px;
+  }
+
+  .DateRangePickerInput__disabled,
+  .DateInput_input__disabled {
+    background: white !important;
+  }
+}
+
+.s-alert-wrapper {
+  z-index: 9999;
+
+  & > div {
+    z-index: 9999;
+  }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  #main_container {
+    min-height: calc(100vh - 127px);
+  }
+
+  .DateRangePicker {
+    .DateRangePickerInput {
+      border-bottom-left-radius: 5px;
+
+      .DateInput {
+        width: calc((100% - 24px) / 2);
+      }
+    }
+
+    .DateRangePickerInput_clearDates {
+      display: none;
     }
   }
 }

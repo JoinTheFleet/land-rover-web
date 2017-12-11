@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+
+import { FormattedMessage } from 'react-intl';
+
 import PropTypes from 'prop-types';
-import ListingList from '../listings/listing_list'
-import ListingsHandler from '../../api_handlers/listings_handler'
-import FeaturesList from './features_list';
-import Testimonials from './testimonials';
+import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
 
 // Images
-import topBanner from '../../assets/images/beach-cars-bmw.jpg';
+import topBanner from '../../assets/images/homescreen_top_banner.jpg';
 import axaLogo from '../../assets/images/axa-logo.png';
 import independentLogo from '../../assets/images/independent-grey.png';
 import newstalkLogo from '../../assets/images/newstalk-grey.png';
@@ -16,18 +15,118 @@ import foraLogo from '../../assets/images/fora-grey.png';
 import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
 import irishtimesLogo from '../../assets/images/irish-times-grey.png';
 
-class Homescreen extends Component {
+import TopSellersService from '../../shared/services/listings/top_sellers_service';
+import NearbyListingsService from '../../shared/services/listings/nearby_listings_service';
 
-  handleSearchFormSubmit(event) {
-    event.preventDefault();
+import GeolocationService from '../../shared/services/geolocation_service';
 
-    let location = document.getElementById('global_search_location').value;
-    let dates = document.getElementById('global_search_dates').value;
+import LocationPeriodFilter from '../listings/filters/location_period_filter';
+import momentPropTypes from 'react-moment-proptypes';
 
-    this.props.addSearchParamHandler({ location: location, dates: dates });
+import MediumService from '../../shared/services/medium_service';
+
+import Errors from '../../miscellaneous/errors';
+
+export default class Homescreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      blog: {
+        posts: [],
+        authors: {}
+      },
+      topSellers: [],
+      nearbyListings: [],
+      topSellersLoading: false,
+      nearbyListingsLoading: false,
+      loadingPosts: false
+    };
   }
 
-  render(){
+  componentDidMount() {
+    this.setState({
+      topSellersLoading: true,
+      loadingPosts: true,
+      nearbyListingsLoading: true
+    }, () => {
+      MediumService.show()
+                   .then(response => {
+                     this.setState({
+                       blog: {
+                         posts: response.data.data.posts.payload.posts,
+                         authors: response.data.data.posts.payload.references.User
+                       },
+                       loadingPosts: false
+                     });
+                   })
+                   .catch(error => { this.setState({ loadingPosts: false }, () => { Errors.extractErrorMessage(error); }); });
+
+      TopSellersService.index()
+                       .then(response => {
+                         this.setState({
+                           topSellers: response.data.data.listings,
+                           topSellersLoading: false
+                         });
+                       });
+
+      GeolocationService.getCurrentPosition()
+                        .then(position => {
+                          NearbyListingsService.index({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                          }).then(response => {
+                            this.setState({
+                              nearbyListings: response.data.data.listings,
+                              nearbyListingsLoading: false
+                            });
+                          });
+                        })
+                        .catch((error) => {
+                          NearbyListingsService.index()
+                                                .then(response => {
+                                                  this.setState({
+                                                    nearbyListings: response.data.data.listings,
+                                                    nearbyListingsLoading: false
+                                                  });
+                                                });
+                        });
+    });
+
+    let referralCode = this.props.match.params.referral_code;
+
+    if (referralCode) {
+      this.props.handleReferral(referralCode);
+    }
+  }
+
+  render() {
+    let topSellers = (
+      <div>
+        <p className="top-seller-title strong-font-weight title-font-size">
+          <FormattedMessage id="listings.top_seller" />
+        </p>
+        <ListingList toggleWishListModal={ this.props.toggleWishListModal } listings={ this.state.topSellers } scrollable={ true } loading={ this.state.topSellersLoading } />
+      </div>
+    );
+
+    let nearbyListings = (
+      <div>
+        <p className="top-seller-title strong-font-weight title-font-size">
+          <FormattedMessage id="listings.nearby" />
+        </p>
+        <ListingList toggleWishListModal={ this.props.toggleWishListModal } listings={ this.state.nearbyListings } scrollable={ true } loading={ this.state.nearbyListingsLoading } />
+      </div>
+    );
+
+    if (!this.state.topSellersLoading && this.state.topSellers.length === 0) {
+      topSellers = '';
+    }
+
+    if (!this.state.nearbyListingsLoading && this.state.nearbyListings.length === 0) {
+      nearbyListings = '';
+    }
+
     return (
       <div>
         <div id="homescreen_top_banner">
@@ -38,17 +137,8 @@ class Homescreen extends Component {
                 <FormattedMessage id="homescreen.top_banner_title" />
               </span>
               <br/>
-              <span className="light-font-weight fs-20 ls-dot-five">
-                <FormattedMessage id="homescreen.top_banner_slogan" />
-              </span>
             </p>
-            <form id="homescreen_search_form" className="global-search-form" onSubmit={(event) => { this.handleSearchFormSubmit(event) }}>
-              <input type="text" name="global_search[location]" id="global_search_location" placeholder={this.props.intl.formatMessage({id: 'application.location'})} />
-              <input type="text" name="global_search[dates]" id="global_search_dates" placeholder={this.props.intl.formatMessage({id: 'application.dates'})} />
-              <button className="btn secondary-color white-text">
-                <FormattedMessage id="application.search" />
-              </button>
-            </form>
+            <LocationPeriodFilter {...this.props} />
           </div>
           <div id="homescreen_top_banner_insurance_div" className="twilight-blue fs-20 ls-dot-five white-text text-uppercase">
             <FormattedMessage id="homescreen.insurance_partner" />
@@ -59,18 +149,12 @@ class Homescreen extends Component {
           <img src={axaLogo} alt="homescreen_axa_banner" />
         </div>
 
-        <p className="top-seller-title strong-font-weight title-font-size">
-          <FormattedMessage id="listings.top_seller" />
-        </p>
-        <ListingList accessToken={this.props.accessToken} listingsHandler={ListingsHandler} />
+        { topSellers }
+        { nearbyListings }
 
-        <FeaturesList />
+        <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
-        <Testimonials />
-
-        <BlogList />
-
-        <div id="featured_in_div" className="text-center">
+        <div id="featured_in_div" className="col-xs-12 text-center">
           <span className="tertiary-text-color">
             <FormattedMessage id="homescreen.featured_in" />
           </span>
@@ -85,9 +169,16 @@ class Homescreen extends Component {
   }
 }
 
-export default injectIntl(Homescreen)
-
 Homescreen.propTypes = {
   accessToken: PropTypes.string,
-  addSearchParamHandler: PropTypes.func
+  handleLocationChange: PropTypes.func.isRequired,
+  handleLocationFocus: PropTypes.func.isRequired,
+  handleDatesChange: PropTypes.func.isRequired,
+  handleLocationSelect: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  startDate: momentPropTypes.momentObj,
+  endDate: momentPropTypes.momentObj,
+  locationName: PropTypes.string,
+  searchLocations: PropTypes.array,
+  showSearchButton: PropTypes.bool
 }

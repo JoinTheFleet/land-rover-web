@@ -1,0 +1,51 @@
+.fleet-stepper {
+  height: 50px;
+
+  .fleet-stepper-bar {
+    position: relative;
+    top: 13px;
+    height: 8px;
+
+    .fleet-stepper-bar-progress {
+      width: 0;
+      height: 100%;
+    }
+  }
+
+  .fleet-stepper-steps {
+    .fleet-stepper-step {
+      display: inline-block;
+      position: relative;
+      top: -2px;
+
+      &.active {
+        cursor: pointer;
+      }
+
+      .fleet-stepper-step-number {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        margin-left: -0.5px;
+        margin-top: 0.5px;
+      }
+
+      .fleet-stepper-step-text {
+        display: block;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  .fleet-stepper-steps {
+    .fleet-stepper-step {
+      .fleet-stepper-step-text {
+        width: 40px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+}

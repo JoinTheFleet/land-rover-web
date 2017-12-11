@@ -1,0 +1,46 @@
+.fleet-checkbox {
+  [type=checkbox]:not(:checked),
+  [type=checkbox]:checked {
+    position: absolute;
+    left: -9999px;
+  }
+
+  [type=checkbox]:not(:checked) + label,
+  [type=checkbox]:checked + label {
+    position: relative;
+    padding-left: 1.95em;
+    cursor: pointer;
+  }
+
+  [type=checkbox]:not(:checked) + label:before,
+  [type=checkbox]:checked + label:before {
+    content: '';
+    border-radius: 2px;
+    border: solid 1px $smoke-grey-two;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
+  }
+  [type=checkbox]:not(:checked) + label:after,
+  [type=checkbox]:checked + label:after {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    font-size: 14px;
+    color: $secondary-color;
+    transition: all .2s;
+  }
+
+  [type=checkbox]:not(:checked) + label:after {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  [type=checkbox]:checked + label:after {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

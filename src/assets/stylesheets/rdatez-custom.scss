@@ -1,0 +1,40 @@
+.selected-day {
+  background: none !important;
+  color: white !important;
+  background-color: $secondary-color !important;
+}
+
+.today {
+  color: $secondary-color;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $secondary-color;
+  }
+}
+
+.rdatez-year,
+.rdatez-month,
+.rdatez-calendar-title,
+.rdatez-daysofweek span {
+  color: $secondary-color;
+  background-color: white;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $secondary-color;
+    background-color: white;
+  }
+}
+
+
+.rdatez {
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding-left: 10px;
+  }
+}
