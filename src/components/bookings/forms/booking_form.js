@@ -63,7 +63,8 @@ class BookingForm extends Component {
       bookingCompleted: false,
       showBookingSurvey: false,
       showMessageToOwnerTextArea: false,
-      locationTimeout: null
+      locationTimeout: null,
+      validCriteria: true
     };
 
     this.fetchBooking = this.fetchBooking.bind(this);
@@ -288,7 +289,13 @@ class BookingForm extends Component {
                                this.setState({
                                  pricingQuote: response.data.data.pricing_quote,
                                  loading: false
-                               }, successCallback);
+                               }, () => {
+                                 this.validateCriteria();
+
+                                 if (successCallback) {
+                                   successCallback();
+                                 }
+                               });
                              })
                              .catch(error => {
                                if (errorCallback) {
@@ -312,6 +319,38 @@ class BookingForm extends Component {
 
       this.setState({ modalsOpen: modalsOpen });
     }
+  }
+
+  validateCriteria() {
+    let criteria = this.state.listing.country_configuration.insurance_provider.criteria;
+    let userCriteria = this.state.quotation.insurance_criteria;
+    let errorMessage = undefined;
+    let failedCriteria = false;
+
+    criteria.map(criteria => {
+      let userMatchingCriteria = userCriteria.find(userCriteria => {
+        return userCriteria.id === criteria.id;
+      })
+
+      if (userMatchingCriteria) {
+        if (criteria.type === 'boolean' && (userMatchingCriteria.value !== criteria.min_required_value || userMatchingCriteria.value !== criteria.max_required_value)) {
+          failedCriteria = true;
+          errorMessage = criteria.rejection_message;
+        }
+        else if (criteria.type === 'integer' && (userMatchingCriteria.value < criteria.min_required_value || userMatchingCriteria.value > criteria.max_required_value)) {
+          failedCriteria = true;
+          errorMessage = criteria.rejection_message;
+        }
+      }
+    });
+
+    this.setState({
+      validCriteria: !failedCriteria
+    }, () => {
+      if (errorMessage) {
+        Alert.error(errorMessage);
+      }
+    })
   }
 
   submitBookingRequest(){
@@ -658,7 +697,7 @@ class BookingForm extends Component {
             if (criteria.type === 'boolean') {
               criteriaInput = (
                 <div className="fleet-checkbox">
-                  <input type="checkbox" id={ `booking_form_insurance_criteria_${criteria.id}` } value={ criteriaValue } onChange={ (event) => this.handleInsuranceCriteriaChange(criteria.id, event.target.checked) } />
+                  <input type="checkbox" id={ `booking_form_insurance_criteria_${criteria.id}` } value={ criteriaValue } checked={ criteriaValue } onChange={ (event) => this.handleInsuranceCriteriaChange(criteria.id, event.target.checked) } />
                   <label htmlFor={ `booking_form_insurance_criteria_${criteria.id}` }></label>
                 </div>
               )
@@ -906,7 +945,8 @@ class BookingForm extends Component {
         actionButtonsDiv = (
           <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
             <button className="booking-form-request-booking-button btn secondary-color white-text fs-18 col-xs-12"
-                    onClick={ this.submitBookingRequest }>
+                    onClick={ this.submitBookingRequest }
+                    disabled={ !this.state.validCriteria }>
               { LocalizationService.formatMessage('bookings.request_booking') }
             </button>
           </div>
