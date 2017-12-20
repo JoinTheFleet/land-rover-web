@@ -419,7 +419,7 @@ class BookingForm extends Component {
       this.setState({
         onDemandAddresses: onDemandAddresses,
         quotation: quotation
-      });
+      }, this.fetchQuotation);
     }
     else {
       this.setState({
