@@ -33,7 +33,7 @@ export default class OwnerConversationDetails extends Component {
             <div className='col-xs-7 col-sm-8 col-lg-9 owner-message-information'>
               <div className='col-xs-12 no-side-padding'>
                 <span className='strong-font-weight conversation-header'>
-                  { renter.name }
+                  { renter.first_name }
                 </span>
               </div>
               <div className='col-xs-12 no-side-padding'>

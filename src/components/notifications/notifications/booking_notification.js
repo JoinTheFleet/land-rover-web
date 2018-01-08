@@ -27,7 +27,7 @@ export default class BookingNotification extends Notification {
   sender() {
     let sender = this.state.sender;
 
-    return `${sender.first_name} ${sender.last_name}`;
+    return sender.first_name;
   }
 
   linkData() {

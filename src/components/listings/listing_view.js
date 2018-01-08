@@ -117,7 +117,7 @@ export default class ListingView extends Component {
                     user: listing.user
                   }
                 }} >
-                <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+                <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
               </Link>
             </div>
           </div>
@@ -187,7 +187,7 @@ export default class ListingView extends Component {
             }
           }} >
             <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
-            <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+            <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
           </Link>
         </div>
       </div>
@@ -352,7 +352,7 @@ export default class ListingView extends Component {
           </div>
           <div className="listing-view-review-details pull-left">
             <p>
-              <span className="subtitle-font-weight fs-16"> { review.reviewer.name } </span>
+              <span className="subtitle-font-weight fs-16"> { review.reviewer.first_name } </span>
               <br/>
               <span className="tertiary-text-color"> { moment.utc(moment.unix(review.created_at)).format('DD MMM YYYY') } </span>
             </p>
@@ -422,7 +422,7 @@ export default class ListingView extends Component {
 
       if (images.length > 0) {
         carousel = (
-          <div className="listing-view-image-gallery">
+          <div className="listing-view-image-gallery col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             <ImageGallery images={ images } errorSRC={ process.env.REACT_APP_MISSING_LISTING_IMAGE } />
           </div>
         );
