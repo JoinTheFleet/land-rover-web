@@ -59,7 +59,7 @@ export default class User extends Component {
 
             <div className='col-xs-12 col-sm-8 rating-information'>
               <div className='col-xs-12 user-name'>
-                { this.props.user.name }
+                { this.props.user.first_name }
               </div>
 
               <div className='col-xs-12 user-rating'>

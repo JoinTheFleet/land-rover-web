@@ -18,7 +18,7 @@ export default class Review extends Component {
         <div className='review-feedback col-xs-12'>
           <p>
             <Link to={ `/users/${review.reviewer.id}` } >
-              <span className="subtitle-font-weight fs-20"> { review.reviewer.name } </span>
+              <span className="subtitle-font-weight fs-20"> { review.reviewer.first_name } </span>
             </Link>
             <br/>
             <span className="tertiary-text-color"> { moment.utc(moment.unix(review.created_at)).format('DD MMM YYYY') } </span>

@@ -52,7 +52,7 @@ export default class RenterConversationDetails extends Component {
                 <DateRange start={ start } end={ end } />
               </div>
               <div className='col-xs-12'>
-                { owner.name }
+                { owner.first_name }
               </div>
               <div className={ `col-xs-12 renter-message-text ${messageClassName}` }>
                 { message.text }

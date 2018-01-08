@@ -177,8 +177,7 @@ export default class Conversation extends Component {
       }
 
       return (
-        <FormPanel title={ otherParticpant.name } className='conversation-thread'>
-
+        <FormPanel title={ otherParticpant.first_name } className='conversation-thread'>
           <div className='message-list' onScroll={ this.scroll } ref='messageList'>
             { messageLoader }
             {

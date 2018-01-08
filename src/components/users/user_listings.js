@@ -120,7 +120,7 @@ export default class UserListings extends Component {
               <div className='col-xs-12 col-sm-8 rating-information'>
                 <div className='col-xs-12 user-name'>
                   <Link to={ `/users/${this.props.user.id}` }>
-                    { this.props.user.name }
+                    { this.props.user.first_name }
                   </Link>
                 </div>
                 <div className='col-xs-12 user-rating'>
