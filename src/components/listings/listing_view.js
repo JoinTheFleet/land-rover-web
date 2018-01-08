@@ -422,7 +422,7 @@ export default class ListingView extends Component {
 
       if (images.length > 0) {
         carousel = (
-          <div className="listing-view-image-gallery">
+          <div className="listing-view-image-gallery col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
             <ImageGallery images={ images } errorSRC={ process.env.REACT_APP_MISSING_LISTING_IMAGE } />
           </div>
         );
