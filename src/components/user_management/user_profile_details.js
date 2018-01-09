@@ -57,6 +57,9 @@ export default class UserProfileDetails extends Component {
       if (file.size >= 5000000) {
         Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
       }
+      else if (!file.type.startsWith("image/")) {
+        Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
+      }
       else {
         S3Uploader.upload(file, 'user_avatar')
           .then(response => {
