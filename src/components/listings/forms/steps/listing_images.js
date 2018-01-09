@@ -109,7 +109,7 @@ export default class ListingImages extends Component {
 
   readUploadedImages(files, imagesToAdd, numberOfImagesToAdd) {
     for(let i = 0; i < files.length; i++) {
-      if (files[i].size >= 6331630) {
+      if (files[i].size >= 5000000) {
         this.setState({
           loading: false
         }, () => {
