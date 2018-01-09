@@ -18,6 +18,8 @@ export default class UserProfileVerifiedInfo extends Component {
   constructor(props) {
     super(props);
 
+    this.updateInterval = undefined;
+
     this.state = {
       addressUpdated: false,
       user: {
@@ -97,6 +99,10 @@ export default class UserProfileVerifiedInfo extends Component {
       return;
     }
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({ loading: true}, () => {
       let user_params = {
         date_of_birth: user.date_of_birth,
@@ -121,14 +127,25 @@ export default class UserProfileVerifiedInfo extends Component {
         };
       }
 
-      if (this.state.addressUpdated) {
+      let countryCode = user.address.country_code;
+
+      if (!countryCode && user.address.country) {
+        countryCode = user.address.country.alpha2;
+      }
+
+
+      if (!countryCode && this.state.user.country) {
+        countryCode = this.state.user.country.alpha2;
+      }
+
+      if (this.state.addressUpdated && countryCode) {
         user_params.address = {
           line1: user.address.line1,
           line2: user.address.line2,
           state: user.address.state,
           city: user.address.city,
           postal_code: user.address.postal_code,
-          country_code: user.address.country_code || user.address.country.alpha2
+          country_code: countryCode
         };
       }
 
@@ -165,7 +182,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.account_type = accountType.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleDateChange(date) {
@@ -173,7 +198,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.date_of_birth = moment(date).utc().unix();
 
-    this.setState({user: user});
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleAddressLine1Change(event) {
@@ -185,9 +218,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.line1 = event.target.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -200,9 +239,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.line2 = event.target.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -215,9 +260,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.state = event.target.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -230,9 +281,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.city = event.target.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -245,9 +302,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.postal_code = event.target.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -260,9 +323,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.address.country_code = country.value;
 
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
     this.setState({
       addressUpdated: true,
       user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
     });
   }
 
@@ -278,7 +347,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.line1 = event.target.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessAddressLine2Change(event) {
@@ -293,7 +370,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.line2 = event.target.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessStateChange(event) {
@@ -308,7 +393,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.state = event.target.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessCityChange(event) {
@@ -323,7 +416,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.city = event.target.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessPostCodeChange(event) {
@@ -338,7 +439,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.postal_code = event.target.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleUserCountryChange(country) {
@@ -346,7 +455,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.country_code = country.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessCountryChange(country) {
@@ -361,7 +478,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.address.country_code = country.value;
 
-    this.setState({ user: user });
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleGenderChange(option) {
@@ -369,7 +494,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.gender = option.value;
 
-    this.setState({ user: user })
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleEmailChange(event) {
@@ -378,7 +511,15 @@ export default class UserProfileVerifiedInfo extends Component {
     if (user) {
       user.email = event.target.value;
 
-      this.setState({ user: user })
+      if (this.updateInterval) {
+        clearInterval(this.updateInterval);
+      }
+
+      this.setState({
+        user: user
+      }, () => {
+        this.updateInterval = setInterval(this.updateUser, 1500);
+      });
     }
   }
 
@@ -394,7 +535,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.name = event.target.value;
 
-    this.setState({ user: user })
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleBusinessTaxIDChange(event) {
@@ -409,7 +558,15 @@ export default class UserProfileVerifiedInfo extends Component {
 
     user.business_details.tax_id = event.target.value;
 
-    this.setState({ user: user })
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   renderAccountType() {
