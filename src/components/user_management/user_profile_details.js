@@ -54,13 +54,18 @@ export default class UserProfileDetails extends Component {
     if (event && event.target && event.target.files) {
       let file = event.target.files[0];
 
-      S3Uploader.upload(file, 'user_avatar')
-        .then(response => {
-          this.setState({imageURL: response.Location });
-        })
-        .catch(error => {
-          this.setState({imageURL: undefined});
-        });
+      if (file.size >= 5000000) {
+        Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
+      }
+      else {
+        S3Uploader.upload(file, 'user_avatar')
+          .then(response => {
+            this.setState({imageURL: response.Location });
+          })
+          .catch(error => {
+            this.setState({imageURL: undefined});
+          });
+      }
     }
   }
 
