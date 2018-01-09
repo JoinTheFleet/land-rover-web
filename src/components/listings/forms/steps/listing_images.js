@@ -116,6 +116,13 @@ export default class ListingImages extends Component {
           Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
         });
       }
+      else if (!files[i].type.startsWith("image/")) {
+        this.setState({
+          loading: false
+        }, () => {
+          Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
+        });
+      }
       else {
         S3Uploader.upload(files[i], 'listing_image')
                 .then(response => {
