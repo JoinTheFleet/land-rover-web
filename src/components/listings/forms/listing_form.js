@@ -72,9 +72,6 @@ export default class ListingForm extends Component {
                     let meInfo = response.data.data.user;
                     let verificationsNeeded = this.state.verificationsNeeded;
 
-                    verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
-                                                             .filter(key => meInfo.verifications_required[key]));
-
                     verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
                                                              .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
 
