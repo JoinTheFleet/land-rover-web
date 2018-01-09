@@ -188,6 +188,7 @@
     "listings.successfully_updated": "Listing successfully updated",
     "listings.successfully_created": "Listing successfully created",
     "listings.image_updated": "Listing images updated",
+    "listings.images.maximum_file_size": "Images must be less than 5MB in size, please select a suitable image.",
 
     "listings.sort.distance": "Distance",
     "listings.sort.price": "Price",

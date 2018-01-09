@@ -107,13 +107,22 @@ export default class ListingImages extends Component {
 
   readUploadedImages(files, imagesToAdd, numberOfImagesToAdd) {
     for(let i = 0; i < files.length; i++) {
-      S3Uploader.upload(files[i], 'listing_image')
+      if (files[i].size >= 6331630) {
+        this.setState({
+          loading: false
+        }, () => {
+          Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
+        });
+      }
+      else {
+        S3Uploader.upload(files[i], 'listing_image')
                 .then(response => {
                   this.addUploadedImage(response.Location, imagesToAdd, numberOfImagesToAdd);
                 })
                 .catch(error => {
 
                 });
+      }
     }
   }
 
