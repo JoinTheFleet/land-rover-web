@@ -55,7 +55,6 @@ export default class HeaderTopMenu extends Component {
 
     if (this.props.loggedIn) {
       let menuItems = Menus.getTopMenuForUserRole(this.props.currentUserRole, this.state.user);
-      let menuItemsWithDivider = Menus.getTopMenuDividers();
 
       menu = (
         <div id="header_top_menu" className="white tertiary-text-color">
@@ -63,10 +62,7 @@ export default class HeaderTopMenu extends Component {
             {
               menuItems.map((menuItem) => {
                 let count = '';
-                let divider = '';
-                let itemHasDivider = menuItemsWithDivider.indexOf(menuItem) >= 0;
 
-                divider = itemHasDivider ? (<div className="header-top-menu-divider tertiary-color hidden-xs"></div>) : '';
                 if (menuItem === 'notifications' && this.state.notificationsCount > 0) {
                   count = (
                     <span className='notifications-count'>
@@ -76,7 +72,6 @@ export default class HeaderTopMenu extends Component {
                 }
 
                 let className = 'header-top-menu-item';
-                className += itemHasDivider ? ' with-divider' : '';
 
                 return (
                   <NavLink key={ 'top_bar_menu_item_' + menuItem }
@@ -85,7 +80,6 @@ export default class HeaderTopMenu extends Component {
                            to={ `/${menuItem}`}>
                     <FormattedMessage id={ 'menu.' + menuItem } />
                     { count }
-                    { divider }
                   </NavLink>
                 )
               })
