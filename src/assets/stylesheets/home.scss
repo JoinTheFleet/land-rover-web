@@ -46,9 +46,11 @@
 }
 
 #how_it_works_div {
-  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px -1px 0px 0px;
   margin-top: 10px;
+  margin-bottom: 10px;
   padding-top: 20px;
+  padding-bottom: 30px;
 }
 
 #renting_a_car_div,
