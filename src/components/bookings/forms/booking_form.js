@@ -130,10 +130,10 @@ class BookingForm extends Component {
                             }
 
                             if (typeof quotation.on_demand_location === 'undefined') {
-                            let location = this.state.listing.location || {
-                              latitude: 0,
-                              longitude: 0
-                            };
+                              let location = this.state.listing.location || {
+                                latitude: 0,
+                                longitude: 0
+                              };
 
                               quotation.on_demand_location = {
                                 pick_up_time: this.state.listing.check_in_time,
@@ -479,7 +479,7 @@ class BookingForm extends Component {
                               address: address
                             };
 
-                            this.setState({ loading: false, quotation: quotation, onDemandAddresses: onDemandAddresses });
+                            this.setState({ loading: false, quotation: quotation, onDemandAddresses: onDemandAddresses }, this.fetchQuotation );
                           })
                           .catch(error => this.addError(error));
                         });
