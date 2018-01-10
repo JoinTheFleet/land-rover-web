@@ -61,3 +61,15 @@
 img {
   image-orientation: from-image;
 }
+
+.slick-dots li button {
+  &:before {
+    color: lighten($color: $secondary-color, $amount: 10%) !important;
+  }
+
+  &.slick-active {
+    &::before {
+      color: $secondary-color !important;
+    }
+  }
+}
