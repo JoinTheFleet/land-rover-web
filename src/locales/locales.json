@@ -78,6 +78,7 @@
     "menu.notifications": "Notifications",
 
     "calendar.manage_availability": "Manage Availability",
+    "calendar.description": "This is your vehicle calendar. Choose between your cars using the drop down menu at the top of the page. Use this page to control days that your cars are available or unavailable to avoid rejecting rentals and lowering your acceptance rating. You can also add additional pricing to certain dates - for example holidays or occasions that you require higher rates for your car.",
 
     "header.list_your_car": "List your car",
     "header.log_in": "Log in",
