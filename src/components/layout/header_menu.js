@@ -59,7 +59,7 @@ export default class HeaderMenu extends Component {
         navigationSections.bookings,
         navigationSections.messages,
         navigationSections.notifications,
-        navigationSections.account,
+        navigationSections.settings,
         navigationSections.logout
       ];
       itemsWithDivider = [

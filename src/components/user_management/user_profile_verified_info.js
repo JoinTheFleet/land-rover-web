@@ -656,21 +656,35 @@ export default class UserProfileVerifiedInfo extends Component {
   }
 
   render() {
+    let body = '';
+
     if (this.state.loading) {
-      return (<Loading />)
+      body = <Loading />
+    }
+    else {
+      body = (
+        <div className="col-xs-12 no-side-padding">
+          { this.renderAccountType() }
+          { this.renderUserForm() }
+          { this.renderBusinessInformationForm() }
+          <FormButtonRow>
+            <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
+              <FormattedMessage id="application.update_verified_info" />
+            </btn>
+          </FormButtonRow>
+        </div>
+      )
     }
 
     return (
-      <div className="col-xs-12 no-side-padding">
-        { this.renderAccountType() }
-        { this.renderUserForm() }
-        { this.renderBusinessInformationForm() }
-        <FormButtonRow>
-          <btn className='btn btn-primary text-center col-xs-12 col-sm-3 pull-right no-side-padding' onClick={ this.updateUser }>
-            <FormattedMessage id="application.save" />
-          </btn>
-        </FormButtonRow>
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.verified_info') }
+          </span>
+        </div>
+        { body }
       </div>
-    )
+    );
   }
 }

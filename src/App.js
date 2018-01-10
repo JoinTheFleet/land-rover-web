@@ -529,7 +529,7 @@ export default class App extends Component {
                               currentUserRole={ this.state.currentUserRole }
                               loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
           }} />
-          <Route path="/account" render={(props) => {
+          <Route path="/settings" render={(props) => {
             return (<UserManagement {...props}
                                     currentUserRole={ this.state.currentUserRole} />)
           }} />

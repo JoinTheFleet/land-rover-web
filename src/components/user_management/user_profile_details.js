@@ -175,29 +175,43 @@ export default class UserProfileDetails extends Component {
   }
 
   render() {
+    let body = '';
+
     if (this.state.loading) {
-      return (<Loading />);
+      body = <Loading />;
+    }
+    else {
+      body = (
+        <div className="col-xs-12 no-side-padding">
+          <UserImage handleImageFile={this.handleImageFile}
+                    imageURL={this.state.imageURL} />
+          <form onSubmit={ this.updateUser }>
+            <UserForm user={this.state.user}
+                      handleFirstNameUpdate={this.handleFirstNameUpdate}
+                      handleLastNameUpdate={this.handleLastNameUpdate}
+                      handleDescriptionUpdate={this.handleDescriptionUpdate} />
+
+            <FormButtonRow>
+              <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
+                      spinner={ this.state.accountUpdating }
+                      disabled={ this.state.accountUpdating }
+                      onClick={ this.updateUser } >
+                { LocalizationService.formatMessage('application.update_profile') }
+              </Button>
+            </FormButtonRow>
+          </form>
+        </div>
+      )
     }
 
     return (
-      <div className="col-xs-12 no-side-padding">
-        <UserImage handleImageFile={this.handleImageFile}
-                  imageURL={this.state.imageURL} />
-        <form onSubmit={ this.updateUser }>
-          <UserForm user={this.state.user}
-                    handleFirstNameUpdate={this.handleFirstNameUpdate}
-                    handleLastNameUpdate={this.handleLastNameUpdate}
-                    handleDescriptionUpdate={this.handleDescriptionUpdate} />
-
-          <FormButtonRow>
-            <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
-                    spinner={ this.state.accountUpdating }
-                    disabled={ this.state.accountUpdating }
-                    onClick={ this.updateUser } >
-              { LocalizationService.formatMessage('application.save') }
-            </Button>
-          </FormButtonRow>
-        </form>
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.profile_details') }
+          </span>
+        </div>
+        { body }
       </div>
     )
   }

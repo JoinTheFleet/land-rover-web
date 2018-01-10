@@ -11,7 +11,7 @@ export default class Menus {
       navigationSections.bookings,
       navigationSections.messages,
       navigationSections.notifications,
-      navigationSections.account
+      navigationSections.settings
     ];
 
     if (user && user.listing_count === 0) {

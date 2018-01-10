@@ -48,6 +48,10 @@
     "application.first": "First",
     "application.last": "Last",
     "application.saved_changes_successfully": "Changes saved successfully",
+    "application.add_account": "Add Account",
+    "application.add_card": "Add Card",
+    "application.update_verified_info": "Update Verified Info",
+    "application.update_profile": "Update Profile",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
@@ -69,7 +73,7 @@
     "menu.profile": "Profile",
     "menu.bookings": "Bookings",
     "menu.messages": "Messages",
-    "menu.account": "Settings",
+    "menu.settings": "Settings",
     "menu.listings": "My Cars",
     "menu.calendar": "Calendar",
     "menu.signup": "Sign Up",
@@ -420,6 +424,10 @@
     "dashboard.credits.view": "View Credits",
     "dashboard.credits.copy_url": "Copy Referral Link to Clipboard",
     "dashboard.credits.copied": "Copied!",
+    "dashboard.profile_details": "1. Profile Details",
+    "dashboard.verified_info": "2. Verified Info",
+    "dashboard.payment_methods": "3. Payment Methods",
+    "dashboard.payout_methods": "4. Payout Methods",
 
     "credits.credits": "Credits",
 
