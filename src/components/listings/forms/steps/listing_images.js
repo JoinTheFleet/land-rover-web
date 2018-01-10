@@ -85,9 +85,11 @@ export default class ListingImages extends Component {
       let numberOfImagesToAdd = files.length;
       let imagesToAdd = [];
 
-      this.setState({ loading: true }, () => {
-        this.readUploadedImages(files, imagesToAdd, numberOfImagesToAdd);
-      });
+      if (numberOfImagesToAdd > 0) {
+        this.setState({ loading: true }, () => {
+          this.readUploadedImages(files, imagesToAdd, numberOfImagesToAdd);
+        });
+      }
     }, true);
   }
 
@@ -107,13 +109,29 @@ export default class ListingImages extends Component {
 
   readUploadedImages(files, imagesToAdd, numberOfImagesToAdd) {
     for(let i = 0; i < files.length; i++) {
-      S3Uploader.upload(files[i], 'listing_image')
+      if (files[i].size >= 5000000) {
+        this.setState({
+          loading: false
+        }, () => {
+          Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
+        });
+      }
+      else if (!files[i].type.startsWith("image/")) {
+        this.setState({
+          loading: false
+        }, () => {
+          Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
+        });
+      }
+      else {
+        S3Uploader.upload(files[i], 'listing_image')
                 .then(response => {
                   this.addUploadedImage(response.Location, imagesToAdd, numberOfImagesToAdd);
                 })
                 .catch(error => {
 
                 });
+      }
     }
   }
 

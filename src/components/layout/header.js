@@ -66,13 +66,14 @@ export default class Header extends Component {
 
         { mobileSearchIcon }
 
-        <div className={'pull-right hidden-xs header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
+        <div className={'pull-right header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
           <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
-          <a id="header_login_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
-          <a id="header_register_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
+          <a id="header_login_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
+          <a id="header_register_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
         </div>
 
         <HeaderMenu loggedIn={ this.props.loggedIn }
+                    eventEmitter={ this.props.eventEmitter }
                     menuOpen={ this.state.menuOpen }
                     handleMenuItemSelect={ this.handleMenuItemSelect }
                     toggleModal={ this.toggleModal } />

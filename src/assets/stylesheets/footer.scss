@@ -24,6 +24,16 @@
 
 .footer-links-list {
   margin-top: 25px;
+
+  a {
+    text-decoration: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+    }
+  }
 }
 
 @media screen and (max-width: $screen-xs-max) {

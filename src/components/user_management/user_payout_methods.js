@@ -121,11 +121,12 @@ class UserPayoutMethods extends Component {
   }
 
   render() {
+    let body = '';
     if (this.state.loading) {
-      return <Loading />;
+      body = <Loading />;
     }
     else if (this.state.loadError) {
-      return <Redirect to='/account/verified_info' />
+      return <Redirect to='/dashboard' />
     }
     else {
       let payoutMethods = (<Placeholder />);
@@ -136,7 +137,7 @@ class UserPayoutMethods extends Component {
         })
       }
 
-      return (
+      body = (
         <div className="col-xs-12 no-side-padding">
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.payout_methods') } >
             { payoutMethods }
@@ -146,17 +147,28 @@ class UserPayoutMethods extends Component {
             <PayoutMethodForm iban={ this.state.iban } country={ this.state.country } handleIBANChange={ this.handleIBANChange } handleCountryChange={ this.handleCountryChange }/>
           </FormPanel>
 
-          <div className='col-xs-12 no-side-padding'>
+          <div className='col-xs-12 no-side-padding save-button'>
             <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.accountLoading }
                     disabled={ this.state.accountLoading }
                     onClick={ this.addPayoutSource } >
-              { LocalizationService.formatMessage('application.save') }
+              { LocalizationService.formatMessage('application.add_account') }
             </Button>
           </div>
         </div>
       )
     }
+
+    return (
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.payout_methods') }
+          </span>
+        </div>
+        { body }
+      </div>
+    )
   }
 }
 

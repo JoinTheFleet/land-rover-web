@@ -28,12 +28,20 @@ export default class OwnerConversationDetails extends Component {
         <div className='col-xs-12 conversation-detail' onClick={ this.props.onClick }>
           <div className='row'>
             <div className='col-xs-3 col-sm-2 col-lg-1 no-side-padding'>
-              <Avatar src={ imageURL } round />
+              <Link to={{
+                      pathname: `/users/${renter.id}`,
+                    }} >
+                <Avatar src={ imageURL } round />
+              </Link>
             </div>
             <div className='col-xs-7 col-sm-8 col-lg-9 owner-message-information'>
               <div className='col-xs-12 no-side-padding'>
                 <span className='strong-font-weight conversation-header'>
-                  { renter.first_name }
+                  <Link to={{
+                    pathname: `/users/${renter.id}`,
+                  }} >
+                    { renter.first_name }
+                  </Link>
                 </span>
               </div>
               <div className='col-xs-12 no-side-padding'>

@@ -383,6 +383,10 @@ export default class BookingsCalendar extends Component {
 
         { this.renderTopBar() }
 
+        <div className="bookings-calendar-main-container panel panel-primary text-primary col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+          { LocalizationService.formatMessage("calendar.description") }
+        </div>
+
         <div className="bookings-calendar-main-container col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           <FormField type='calendar'
                      className=''

@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
+import FeaturesList from './features_list';
 
 // Images
 import topBanner from '../../assets/images/homescreen_top_banner.jpg';
@@ -152,6 +153,7 @@ export default class Homescreen extends Component {
         { topSellers }
         { nearbyListings }
 
+        <FeaturesList />
         <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
         <div id="featured_in_div" className="col-xs-12 text-center">
