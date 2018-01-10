@@ -73,6 +73,7 @@ export default class Header extends Component {
         </div>
 
         <HeaderMenu loggedIn={ this.props.loggedIn }
+                    eventEmitter={ this.props.eventEmitter }
                     menuOpen={ this.state.menuOpen }
                     handleMenuItemSelect={ this.handleMenuItemSelect }
                     toggleModal={ this.toggleModal } />

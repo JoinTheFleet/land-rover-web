@@ -36,6 +36,7 @@ import AuthenticationService from './shared/services/authentication_service';
 import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import WishListsService from './shared/services/wish_lists_service';
+import NotificationsService from './shared/services/notifications_service';
 
 import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
@@ -140,6 +141,17 @@ export default class App extends Component {
                           this.setState({ defaultLocation: location, location: location });
                         });
     }, 1000);
+
+    setInterval(() => {
+      NotificationsService.unreadCount()
+                          .then(response => {
+                            if (response && response.data && response.data.data) {
+                              let count = response.data.data.count;
+
+                              this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
+                            }
+                          });
+    }, 2000)
 
     branch.init(process.env.REACT_APP_BRANCH_KEY);
     this.setupEvents();
@@ -307,6 +319,7 @@ export default class App extends Component {
   renderHeaderTopMenu() {
     return (
       <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
+                     eventEmitter={ this.eventEmitter }
                      loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />
     )
   }
@@ -555,6 +568,7 @@ export default class App extends Component {
                     handleSearch={ this.performSearch }
                     startDate={ this.state.startDate }
                     endDate={ this.state.endDate }
+                    eventEmitter={ this.eventEmitter }
                     locationName={ this.state.locationName }
                     hideSearchResults={ this.hideSearchResults }
                     searchLocations={ this.state.searchLocations }

@@ -18,16 +18,26 @@ export default class HeaderMenu extends Component {
     super(props);
 
     this.state = {
+      notificationsCount: 0,
       open: this.props.menuOpen || false
     };
 
     this.renderMenu = this.renderMenu.bind(this);
+    this.updateNotificationCount = this.updateNotificationCount.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       open: nextProps.menuOpen || false
     });
+  }
+
+  componentDidMount() {
+    this.props.eventEmitter.on('UPDATED_NOTIFICATIONS_COUNT', this.updateNotificationCount);
+  }
+
+  updateNotificationCount(count, error) {
+    this.setState({ notificationsCount: count });
   }
 
   renderMenu() {
@@ -60,6 +70,15 @@ export default class HeaderMenu extends Component {
 
     for(var i = 0; i < items.length; i++) {
       let item = items[i];
+      let count = '';
+
+      if (item === navigationSections.notifications && this.state.notificationsCount > 0) {
+        count = (
+          <span className='notifications-count'>
+            ({ this.state.notificationsCount })
+          </span>
+        );
+      }
 
       menuItems.push(
         (<div key={'header_menu_' + item} className="menu-item">
@@ -75,6 +94,7 @@ export default class HeaderMenu extends Component {
                       }
                     }} >
             <FormattedMessage id={'menu.' + item} />
+            { count }
           </NavLink>
         </div>)
       );
