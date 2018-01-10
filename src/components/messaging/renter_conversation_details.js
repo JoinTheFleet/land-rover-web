@@ -51,8 +51,12 @@ export default class RenterConversationDetails extends Component {
                 <br className="visible-xs" />
                 <DateRange start={ start } end={ end } />
               </div>
-              <div className='col-xs-12'>
-                { owner.first_name }
+              <div className='col-xs-12 owner-name'>
+                <Link to={{
+                  pathname: `/users/${owner.id}`,
+                }} >
+                  { owner.first_name }
+                </Link>
               </div>
               <div className={ `col-xs-12 renter-message-text ${messageClassName}` }>
                 { message.text }
