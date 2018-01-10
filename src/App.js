@@ -117,6 +117,7 @@ export default class App extends Component {
     this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
+    this.handlePromotedLocationSelect = this.handlePromotedLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.addedWishListToListing = this.addedWishListToListing.bind(this);
@@ -335,6 +336,18 @@ export default class App extends Component {
         this.performSearch();
       }
     });
+  }
+
+  handlePromotedLocationSelect(location) {
+    this.setState({
+      defaultLocation: location,
+      location: location,
+      locationName: location.address,
+      customSearch: true,
+      pages: 1,
+      page: 0,
+      boundingBox: undefined
+    }, this.performSearch);
   }
 
   handleLocationSelect(location) {
@@ -670,7 +683,7 @@ export default class App extends Component {
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
-            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } />
+            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
 
             <ConfirmationModal open={ this.state.modalName === navigationSections.logout }
                                modalName={ navigationSections.logout }
