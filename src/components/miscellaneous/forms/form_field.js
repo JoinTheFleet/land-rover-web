@@ -9,6 +9,7 @@ import { ReactDatez } from 'react-datez';
 import { TimePicker } from 'antd';
 import { countries } from '../countries';
 import countryCodes from 'country-calling-codes';
+import Cleave from 'cleave.js/react';
 
 import LocalizationService from '../../../shared/libraries/localization_service';
 
@@ -149,6 +150,20 @@ export default class FormField extends Component {
           placeholder={ this.props.placeholder }
         />
       )
+    }
+    else if (this.props.type === 'cleavedate') {
+      renderable = (
+        <Cleave
+          options={{
+            date: true,
+            datePattern: ['d', 'm', 'Y']
+          }}
+          placeholder={ 'DD/MM/YYYY' }
+          className={ this.props.className }
+          id={ this.props.id }
+          value={ this.props.value }
+          onChange={ this.props.handleChange } />
+      );
     }
     else if (this.props.type === 'timepicker') {
       renderable = (

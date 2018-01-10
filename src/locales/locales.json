@@ -393,6 +393,7 @@
     "user_profile_verified_info.iban": "IBAN",
     "user_profile_verified_info.business_name": "Name",
     "user_profile_verified_info.tax_id": "Tax ID",
+    "user_profile_verified_info.previous_date_of_birth": "Your date of birth must be before today.",
 
     "user_profile_verified_info.payment_method_invalid_card": "Please provide valid card details",
     "user_profile_verified_info.payment_information_updated": "Your payment information has been updated",

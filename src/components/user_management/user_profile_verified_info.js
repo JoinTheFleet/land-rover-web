@@ -193,20 +193,28 @@ export default class UserProfileVerifiedInfo extends Component {
     });
   }
 
-  handleDateChange(date) {
+  handleDateChange(event) {
     let user = this.state.user;
+    let date = moment(event.target.value, 'DD/MM/YYYY').utc();
 
-    user.date_of_birth = moment(date).utc().unix();
+    if (event.target.value.length === 10) {
+      if (date.isAfter(moment().startOf('day'))) {
+        Alert.error(LocalizationService.formatMessage('user_profile_verified_info.previous_date_of_birth'));
+      }
+      else {
+        user.date_of_birth = date.unix();
 
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
+        if (this.updateInterval) {
+          clearInterval(this.updateInterval);
+        }
+
+        this.setState({
+          user: user
+        }, () => {
+          this.updateInterval = setInterval(this.updateUser, 1500);
+        });
+      }
     }
-
-    this.setState({
-      user: user
-    }, () => {
-      this.updateInterval = setInterval(this.updateUser, 1500);
-    });
   }
 
   handleAddressLine1Change(event) {
