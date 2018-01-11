@@ -622,6 +622,7 @@ export default class UserProfileVerifiedInfo extends Component {
                       handleCountryChange={ this.handleCountryChange }
                       handleUserCountryChange={ this.handleUserCountryChange }
                       handleEmailChange={ this.handleEmailChange }
+                      configuration={ this.props.configuration }
                       placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
           </div>
         </div>

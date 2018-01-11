@@ -55,7 +55,7 @@ export default class Dashboard extends Component {
             <UserProfileDetails />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileVerifiedInfo />
+            <UserProfileVerifiedInfo {... this.props } />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
             <Elements>
