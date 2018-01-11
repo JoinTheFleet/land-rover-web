@@ -25,6 +25,8 @@ import Helpers from '../../../miscellaneous/helpers';
 import Errors from '../../../miscellaneous/errors';
 import ListingsHelper from '../../../miscellaneous/listings_helper';
 
+import ReactFacebookPixel from 'react-facebook-pixel';
+
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -223,6 +225,8 @@ export default class ListingForm extends Component {
         ListingsService.create({ listing: submissionParams })
                        .then(response => {
                          Alert.success(LocalizationService.formatMessage('listings.successfully_created'))
+                         ReactFacebookPixel.trackCustom('Listing Created', { listing_id: response.data.data.listing.id });
+
                          this.setState({
                            listing: response.data.data.listing,
                            currentStep: 'finished',
