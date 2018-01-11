@@ -64,7 +64,6 @@ export default class UserForm extends Component {
         value: country.alpha2,
         label: country.name
       }));
-      console.log(countries)
     }
 
     return (
