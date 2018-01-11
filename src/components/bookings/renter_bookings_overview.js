@@ -98,7 +98,7 @@ class RenterBookingsOverview extends Component {
   }
 
   renderCurrentList() {
-    if ( this.state.expandedList === 'previous' || this.state.bookings.previous.length === 0 ) {
+    if ( this.state.expandedList === 'previous' ) {
       return '';
     }
 
@@ -128,7 +128,7 @@ class RenterBookingsOverview extends Component {
   }
 
   renderPreviousList() {
-    if ( this.state.expandedList === 'current' || this.state.bookings.current.length === 0  ) {
+    if ( this.state.expandedList === 'current' ) {
       return '';
     }
 

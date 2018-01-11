@@ -350,6 +350,7 @@
     "user_profile_menu.t_and_cs": "T's & C's",
     "user_profile_menu.payment_methods": "Payment Methods",
     "user_profile_menu.payout_methods": "Payout Methods",
+    "user_profile_menu.payout_methods.invalid_region": "Accounts are not supported in that region, please select a different country.",
 
     "user_profile.unable_to_retrieve_account_details": "Unable to retrieve account details",
     "user_profile.profile_photo": "Profile Photo",

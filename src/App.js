@@ -596,7 +596,7 @@ export default class App extends Component {
                 <Route exact path="/" render={(props) => {
                   if (this.state.accessToken && !this.state.visitedDashboard) {
                     this.setState({ visitedDashboard: true });
-                    return <Redirect to='/profile' />
+                    return <Redirect to='/listings' />
                   }
                   else {
                     return <Homescreen {...props}
