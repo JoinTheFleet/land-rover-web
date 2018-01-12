@@ -56,7 +56,7 @@ class OwnerBookingsOverview extends Component {
         if (listings.length > 0) {
           this.setState({
             listings: listings,
-            totalPages: Math.ceil(data.count / LIMIT)
+            totalListingPages: Math.ceil(data.count / LIMIT)
           }, () => {
             let newCurrentListingPage = this.state.currentListingPage + 1;
 
