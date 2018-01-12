@@ -53,19 +53,19 @@ export default class MessagingController extends Component {
             listings: listings,
             totalPages: Math.ceil(data.count / LIMIT)
           }, () => {
-          let newCurrentPage = this.state.currentPage + 1;
+            let newCurrentPage = this.state.currentPage + 1;
 
-          if (this.state.currentPage > this.state.totalPages) {
-            this.setState({
-              currentPage: newCurrentPage,
-              loading: false
-            })
-          }
-          else {
-            this.setState({
-              currentPage: newCurrentPage
-            }, this.refreshData)
-          }
+            if (this.state.currentPage > this.state.totalPages) {
+              this.setState({
+                currentPage: newCurrentPage,
+                loading: false
+              })
+            }
+            else {
+              this.setState({
+                currentPage: newCurrentPage
+              }, this.refreshData)
+            }
           })
         })
         .catch(error => this.setState({ loading: false }));
