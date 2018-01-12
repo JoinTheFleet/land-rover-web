@@ -53,8 +53,7 @@ export default class ListingPricing extends Component {
     ListingPreviewService.create({ listing: listingParams })
                          .then(response => {
                            this.setState({ distanceUnits: response.data.data.listing.country_configuration.distance_units });
-                         })
-                         .catch(error => console.log(error.response.data.message)); // If it fails to retrieve the preview, the distanceUnits will be the default
+                         });
   }
 
   getListingProperties() {
