@@ -144,7 +144,7 @@ export default class ListingPricing extends Component {
           {
             listing.on_demand_rates.map((od_rate, index) => {
               if (od_rate.distance > 0) {
-                odcDistancePlaceholder = LocalizationService.formatMessage('listings.pricing.distance_km', { distance: od_rate.distance / 100.0 });
+                odcDistancePlaceholder = `${od_rate.distance / 100.0} ${Helpers.capitalizeString(this.state.distanceUnits)}`;
               }
 
               return (
