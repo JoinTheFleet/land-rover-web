@@ -33,10 +33,7 @@ export default class MessagingController extends Component {
   }
 
   refreshData(newProps) {
-    if (!newProps || newProps.role === 'renter') {
-      this.setState({ listings: [] });
-    }
-    else {
+    if (!newProps || (this.state.listings && this.state.listings.length === 0)) {
       this.setState({
         loading: true
       }, () => {
@@ -69,7 +66,7 @@ export default class MessagingController extends Component {
           })
         })
         .catch(error => this.setState({ loading: false }));
-      })
+      });
     }
   }
 
