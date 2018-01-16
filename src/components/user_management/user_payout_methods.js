@@ -133,7 +133,7 @@ class UserPayoutMethods extends Component {
       body = <Loading />;
     }
     else {
-      let payoutMethods = (<Placeholder />);
+      let payoutMethods = (<Placeholder contentType='payout_methods' />);
 
       if (this.state.sources.length > 0) {
         payoutMethods = this.state.sources.map((source, index) => {

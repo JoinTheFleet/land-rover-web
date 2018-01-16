@@ -166,7 +166,7 @@ class RenterBookingsOverview extends Component {
   }
 
   render() {
-    let lists = (<Placeholder contentType="bookings" />);
+    let lists = (<Placeholder contentType="renter_bookings" />);
 
     if (this.state.loading) {
       lists = (<Loading />);

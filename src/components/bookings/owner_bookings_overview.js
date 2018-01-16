@@ -128,7 +128,7 @@ class OwnerBookingsOverview extends Component {
   }
 
   render() {
-    let bookingsList = (<Placeholder contentType="bookings" />);
+    let bookingsList = (<Placeholder contentType="owner_bookings" />);
 
     if (this.state.loading) {
       bookingsList = (<Loading />);

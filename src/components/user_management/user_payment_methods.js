@@ -76,7 +76,7 @@ class UserPaymentMethods extends Component {
       body = <Loading />;
     }
     else {
-      let paymentMethods = (<Placeholder />);
+      let paymentMethods = (<Placeholder contentType='payment_methods' />);
 
       if (this.state.sources.length > 0) {
         paymentMethods = this.state.sources.map((source, index) => {

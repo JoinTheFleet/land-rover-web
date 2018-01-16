@@ -58,7 +58,7 @@ export default class NotificationsList extends Component {
       return <Loading />;
     }
     else if (this.state.notifications.length === 0) {
-      return (<Placeholder />);
+      return (<Placeholder contentType={ 'notifications' } />);
     }
     else {
       return (

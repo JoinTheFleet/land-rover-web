@@ -57,7 +57,7 @@ export default class WishListSummary extends Component {
       return <Loading />;
     }
     else {
-      let wishlists = (<Placeholder></Placeholder>)
+      let wishlists = (<Placeholder contentType='wishlists' />);
 
       if (this.state.wish_lists.length > 0) {
         wishlists = (
@@ -70,7 +70,7 @@ export default class WishListSummary extends Component {
               })
             }
           </div>
-        )
+        );
       }
 
       return (
