@@ -47,7 +47,6 @@ class BookingSurvey extends Component {
     }, () => {
       BookingSurveysService.index(this.props.booking.id)
                            .then(response => {
-                             console.log(response);
                              this.setState({ survey: response.data.data.survey, loading: false });
                            })
                            .catch(error => this.addError(Errors.extractErrorMessage(error)));

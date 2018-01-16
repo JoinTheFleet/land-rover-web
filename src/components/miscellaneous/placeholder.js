@@ -17,7 +17,6 @@ import noVehiclesSearchPlaceholder from '../../assets/images/placeholders/no_veh
 
 export default class Placeholder extends Component {
   renderPlaceholder() {
-    console.log(this.props.contentType) 
     switch(this.props.contentType) {
       case 'owner_bookings':
         return (<img src={ noOwnerBookingsPlaceholder } alt="no_content" />);
