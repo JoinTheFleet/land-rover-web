@@ -25,6 +25,8 @@ import Helpers from '../../../miscellaneous/helpers';
 import Errors from '../../../miscellaneous/errors';
 import ListingsHelper from '../../../miscellaneous/listings_helper';
 
+import ReactFacebookPixel from 'react-facebook-pixel';
+
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -51,6 +53,7 @@ export default class ListingForm extends Component {
     this.state = {
       loading: false,
       listing: listing,
+      invalidEdit: false,
       currentStep: currentStep,
       previousStep: previousStep,
       verificationsNeeded: [],
@@ -76,6 +79,7 @@ export default class ListingForm extends Component {
                                                              .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
 
                     this.setState({
+                      currentUser: meInfo,
                       verificationsNeeded: verificationsNeeded,
                       loading: false
                     }, () => {
@@ -108,10 +112,15 @@ export default class ListingForm extends Component {
   }
 
   allowForEdit() {
-    if (this.props.edit && this.state.listing) {
+    if (this.props.edit && this.state.listing && this.state.currentUser && this.state.listing.user.id === this.state.currentUser.id) {
       this.proceedToStepAndAddProperties(stepDirections.next, {
         license_plate_number: this.state.listing.license_plate_number,
         country: this.state.listing.country_configuration.country.alpha2
+      });
+    }
+    else {
+      this.setState({
+        invalidEdit: true
       });
     }
   }
@@ -216,6 +225,8 @@ export default class ListingForm extends Component {
         ListingsService.create({ listing: submissionParams })
                        .then(response => {
                          Alert.success(LocalizationService.formatMessage('listings.successfully_created'))
+                         ReactFacebookPixel.trackCustom('Listing Created', { listing_id: response.data.data.listing.id });
+
                          this.setState({
                            listing: response.data.data.listing,
                            currentStep: 'finished',
@@ -302,7 +313,14 @@ export default class ListingForm extends Component {
   }
 
   render() {
-    if (this.state.currentStep === listingSteps.finished) {
+    if (this.state.invalidEdit) {
+      Alert.error(LocalizationService.formatMessage('listings.invalid_edit'));
+
+      return <Redirect to={{
+        pathname: `/listings/${this.state.listing.id}`
+      }} />;
+    }
+    else if (this.state.currentStep === listingSteps.finished) {
       return <Redirect to={{
         pathname: `/listings/${this.state.listing.id}`,
         state: {

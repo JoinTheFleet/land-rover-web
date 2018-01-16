@@ -70,11 +70,13 @@ class UserPaymentMethods extends Component {
   }
 
   render() {
+    let body = '';
+
     if (this.state.loading) {
-      return <Loading />;
+      body = <Loading />;
     }
     else {
-      let paymentMethods = (<Placeholder />);
+      let paymentMethods = (<Placeholder contentType='payment_methods' />);
 
       if (this.state.sources.length > 0) {
         paymentMethods = this.state.sources.map((source, index) => {
@@ -82,7 +84,7 @@ class UserPaymentMethods extends Component {
         })
       }
 
-      return (
+      body = (
         <div className="col-xs-12 no-side-padding">
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.payment_methods') } >
             { paymentMethods }
@@ -92,17 +94,28 @@ class UserPaymentMethods extends Component {
             <PaymentMethodForm addPaymentSource={ this.addPaymentSource }/>
           </FormPanel>
 
-          <div className='col-xs-12 no-side-padding'>
+          <div className='col-xs-12 no-side-padding save-button'>
             <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.cardLoading }
                     disabled={ this.state.cardLoading }
                     onClick={ this.addPaymentSource } >
-              { LocalizationService.formatMessage('application.save') }
+              { LocalizationService.formatMessage('application.add_card') }
             </Button>
           </div>
         </div>
       )
     }
+
+    return (
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.payment_methods') }
+          </span>
+        </div>
+        { body }
+      </div>
+    )
   }
 }
 

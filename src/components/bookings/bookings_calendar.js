@@ -275,8 +275,7 @@ export default class BookingsCalendar extends Component {
 
   renderTopBar() {
     return (
-      <ListingsSelector listings={ this.state.listings }
-                        role='owner'
+      <ListingsSelector listings={ this.state.listings } role={ 'owner' }
                         hideRoleSelector={true}
                         currentListing={ this.state.currentListing }
                         handleVehicleSelect= { this.handleVehicleSelect } />
@@ -382,6 +381,10 @@ export default class BookingsCalendar extends Component {
       <div className="bookings-calendar">
 
         { this.renderTopBar() }
+
+        <div className="bookings-calendar-main-container panel panel-primary text-primary col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+          { LocalizationService.formatMessage("calendar.description") }
+        </div>
 
         <div className="bookings-calendar-main-container col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
           <FormField type='calendar'

@@ -138,7 +138,8 @@ export default class Login extends Component {
         loading: true
       }, () => {
         UsersService.create({
-          user: user
+          user: user,
+          referral_code: this.props.referralCode
         }).then(response => {
           if (response && response.data && response.data.data) {
             let data = response.data.data;

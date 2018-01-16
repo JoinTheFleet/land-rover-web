@@ -12,8 +12,6 @@ import {injectStripe } from 'react-stripe-elements';
 import PayoutMethod from './payout_methods/payout_method';
 import PayoutMethodForm from './payout_methods/payout_method_form';
 
-import { Redirect } from 'react-router-dom';
-
 class UserPayoutMethods extends Component {
   constructor(props) {
     super(props);
@@ -58,20 +56,27 @@ class UserPayoutMethods extends Component {
       loading: true
     }, () => {
       PayoutMethodsService.index()
-                           .then(response => {
-                             this.setState({
-                               sources: response.data.data.payout_methods,
-                               accountLoading: false,
-                               loading: false
-                             });
-                           })
-                           .catch(error => {
-                             Alert.error(error.response.data.message);
-                             this.setState({
-                               loading: false,
-                               loadError: true
-                             });
-                           });
+                          .then(response => {
+                            this.setState({
+                              sources: response.data.data.payout_methods,
+                              accountLoading: false,
+                              loading: false
+                            });
+                          })
+                          .catch(error => {
+                            let errorMessage = error.response.data.message;
+
+                            if (errorMessage.match(/custom accounts/gi)) {
+                              Alert.error(LocalizationService.formatMessage('user_profile_menu.payout_methods.invalid_region'));
+                            }
+                            else {
+                              Alert.error(errorMessage);
+                            }
+
+                            this.setState({
+                              loading: false
+                            });
+                          });
      });
   }
 
@@ -121,14 +126,12 @@ class UserPayoutMethods extends Component {
   }
 
   render() {
+    let body = '';
     if (this.state.loading) {
-      return <Loading />;
-    }
-    else if (this.state.loadError) {
-      return <Redirect to='/account/verified_info' />
+      body = <Loading />;
     }
     else {
-      let payoutMethods = (<Placeholder />);
+      let payoutMethods = (<Placeholder contentType='payout_methods' />);
 
       if (this.state.sources.length > 0) {
         payoutMethods = this.state.sources.map((source, index) => {
@@ -136,7 +139,7 @@ class UserPayoutMethods extends Component {
         })
       }
 
-      return (
+      body = (
         <div className="col-xs-12 no-side-padding">
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.payout_methods') } >
             { payoutMethods }
@@ -146,17 +149,28 @@ class UserPayoutMethods extends Component {
             <PayoutMethodForm iban={ this.state.iban } country={ this.state.country } handleIBANChange={ this.handleIBANChange } handleCountryChange={ this.handleCountryChange }/>
           </FormPanel>
 
-          <div className='col-xs-12 no-side-padding'>
+          <div className='col-xs-12 no-side-padding save-button'>
             <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
                     spinner={ this.state.accountLoading }
                     disabled={ this.state.accountLoading }
                     onClick={ this.addPayoutSource } >
-              { LocalizationService.formatMessage('application.save') }
+              { LocalizationService.formatMessage('application.add_account') }
             </Button>
           </div>
         </div>
       )
     }
+
+    return (
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.payout_methods') }
+          </span>
+        </div>
+        { body }
+      </div>
+    )
   }
 }
 

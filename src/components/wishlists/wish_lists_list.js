@@ -86,7 +86,7 @@ export default class WishListList extends Component {
       body = <Loading />
     }
     else if (this.state.wish_lists.length === 0) {
-      body = (<Placeholder />);
+      body = (<Placeholder contentType='wishlists' />);
     }
     else {
       body = (

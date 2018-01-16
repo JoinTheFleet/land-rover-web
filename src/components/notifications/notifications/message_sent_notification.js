@@ -14,7 +14,7 @@ export default class MessageSentNotification extends Notification {
 
   sender() {
     let owner = this.state.owner;
-    return `${owner.first_name} ${owner.last_name}`;
+    return owner.first_name;
   }
 
   imageURL() {

@@ -5,6 +5,12 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import Loading from '../miscellaneous/loading';
 import WishListSummary from '../wishlists/wish_list_summary';
 import { Link } from 'react-router-dom';
+import { Elements } from 'react-stripe-elements';
+
+import UserProfileVerifiedInfo from '../user_management/user_profile_verified_info';
+import UserPaymentMethods from '../user_management/user_payment_methods';
+import UserPayoutMethods from '../user_management/user_payout_methods';
+import UserProfileDetails from '../user_management/user_profile_details';
 
 export default class Dashboard extends Component {
   render() {
@@ -44,6 +50,24 @@ export default class Dashboard extends Component {
               </div>
             </div>
           </div>
+
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <UserProfileDetails />
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <UserProfileVerifiedInfo {... this.props } />
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <Elements>
+              <UserPaymentMethods {... this.props} />
+            </Elements>
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <Elements>
+              <UserPayoutMethods {... this.props} />
+            </Elements>
+          </div>
+
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
             <WishListSummary />
           </div>

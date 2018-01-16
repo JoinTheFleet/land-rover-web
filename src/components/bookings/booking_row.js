@@ -21,7 +21,7 @@ class BookingRow extends Component {
       let vehicleMake = listing.variant.make.name;
       let vehicleModel = listing.variant.model.name;
       let vehicleTitle = vehicleMake + ', ' + vehicleModel;
-      let userName = this.props.currentUserRole === userRoles.renter ? listing.user.name : booking.renter.name;
+      let userName = this.props.currentUserRole === userRoles.renter ? listing.user.first_name : booking.renter.first_name;
 
       let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
       let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');
@@ -63,7 +63,7 @@ class BookingRow extends Component {
           <div className="booking-row-renter-image pull-left" style={ { backgroundImage: backgroundImage } }></div>
           <div className="booking-row-renter-and-dates-info pull-left">
             <div className="fs-18">
-              <b> { booking.renter.name } </b>
+              <b> { booking.renter.first_name } </b>
             </div>
             <div> { `${bookingStartDate} - ${bookingEndDate}` } </div>
           </div>

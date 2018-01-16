@@ -6,6 +6,8 @@ import ListingsSelector from '../listings/listings_selector';
 import Loading from '../miscellaneous/loading';
 import { Switch, Route } from "react-router-dom";
 
+const LIMIT = 10;
+
 export default class MessagingController extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,9 @@ export default class MessagingController extends Component {
     this.state = {
       listings: [],
       listing: undefined,
-      loading: false
+      loading: false,
+      totalPages: 1,
+      currentPage: 1
     };
 
     this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
@@ -29,22 +33,40 @@ export default class MessagingController extends Component {
   }
 
   refreshData(newProps) {
-    if (!newProps || newProps.role === 'renter') {
-      this.setState({ listings: [] });
-    }
-    else {
+    if (!newProps || (this.state.listings && this.state.listings.length === 0)) {
       this.setState({
         loading: true
       }, () => {
-        ConversationListingsService.index()
-                                   .then(response => {
-                                     this.setState({
-                                       listings: response.data.data.listings,
-                                       loading: false
-                                     })
-                                   })
-                                   .catch(error => this.setState({ loading: false }));
-      })
+        ConversationListingsService.index({
+          limit: LIMIT,
+          offset: (this.state.currentPage - 1) * LIMIT
+        }).then(response => {
+          let data = response.data.data;
+          let listings = this.state.listings || [];
+
+          listings = listings.concat(data.listings);
+
+          this.setState({
+            listings: listings,
+            totalPages: Math.ceil(data.count / LIMIT)
+          }, () => {
+            let newCurrentPage = this.state.currentPage + 1;
+
+            if (this.state.currentPage > this.state.totalPages) {
+              this.setState({
+                currentPage: newCurrentPage,
+                loading: false
+              })
+            }
+            else {
+              this.setState({
+                currentPage: newCurrentPage
+              }, this.refreshData)
+            }
+          })
+        })
+        .catch(error => this.setState({ loading: false }));
+      });
     }
   }
 

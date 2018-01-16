@@ -16,6 +16,8 @@ import Helpers from '../../miscellaneous/helpers';
 import ListingsService from '../../shared/services/listings/listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
+const LIMIT = 10;
+
 export default class ListingsOverview extends Component {
   constructor(props) {
     super(props);
@@ -49,19 +51,20 @@ export default class ListingsOverview extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentPage !== this.state.currentPage) {
-      this.fetchListings();
-    }
-  }
-
   fetchListings(){
     this.setState({
       loading: true
     }, () => {
-      ListingsService.index()
+      ListingsService.index({
+        limit: LIMIT,
+        offset: (this.state.currentPage - 1) * LIMIT
+      })
       .then((response) => {
-        this.setState({ listings: response.data.data.listings, loading: false });
+        this.setState({ 
+          listings: response.data.data.listings, 
+          loading: false,
+          totalPages: Math.ceil(response.data.data.count / LIMIT)
+        });
       })
       .catch((error) => {
         this.setState({ loading: false }, () => { Alert.error(Errors.extractErrorMessage(error)); });
@@ -119,8 +122,7 @@ export default class ListingsOverview extends Component {
   handlePageChange(page) {
     this.setState({
       currentPage: page,
-      loaded: false
-    });
+    }, this.fetchListings);
   }
 
   renderMainContent() {

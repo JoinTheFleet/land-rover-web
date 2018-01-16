@@ -14,6 +14,7 @@ import ListingsService from '../../shared/services/listings/listings_service';
 import ListingsBookingsService from '../../shared/services/listings/listing_bookings_service';
 
 const BOOKINGS_PER_PAGE = 10;
+const LIMIT = 5;
 
 class OwnerBookingsOverview extends Component {
   constructor(props) {
@@ -25,7 +26,9 @@ class OwnerBookingsOverview extends Component {
       currentListing: null,
       currentPage: 1,
       totalPages: 1,
-      loading: false
+      loading: false,
+      currentListingPage: 1,
+      totalListingPages: 1
     };
 
     this.addError = this.addError.bind(this);
@@ -43,21 +46,39 @@ class OwnerBookingsOverview extends Component {
     this.setState({
       loading: true
     }, () => {
-      ListingsService.index()
-                     .then(response => {
-                       let listings = response.data.data.listings;
+      ListingsService.index({
+        limit: LIMIT,
+        offset: (this.state.currentListingPage - 1) * LIMIT
+      }).then(response => {
+        let data = response.data.data;
+        let listings = (this.state.listings || []).concat(data.listings);
 
-                       if (listings.length > 0) {
-                         this.setState({
-                           listings: listings,
-                           currentListing: listings[0]
-                         }, this.fetchBookings);
-                       }
-                       else {
-                         this.setState({ loading: false });
-                       }
-                     })
-                     .catch(error => this.addError(error));
+        if (listings.length > 0) {
+          this.setState({
+            listings: listings,
+            totalListingPages: Math.ceil(data.count / LIMIT)
+          }, () => {
+            let newCurrentListingPage = this.state.currentListingPage + 1;
+
+            if (this.state.currentListingPage > this.state.totalListingPages) {
+              this.setState({
+                currentListingPage: newCurrentListingPage,
+                loading: false,
+                currentListing: listings[0]
+              }, this.fetchBookings);
+            }
+            else {
+              this.setState({
+                currentListingPage: newCurrentListingPage
+              }, this.fetchListings)
+            }
+          });
+        }
+        else {
+          this.setState({ loading: false });
+        }
+      })
+      .catch(error => this.addError(error));
     });
   }
 
@@ -107,7 +128,7 @@ class OwnerBookingsOverview extends Component {
   }
 
   render() {
-    let bookingsList = (<Placeholder contentType="bookings" />);
+    let bookingsList = (<Placeholder contentType="owner_bookings" />);
 
     if (this.state.loading) {
       bookingsList = (<Loading />);

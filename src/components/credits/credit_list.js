@@ -64,10 +64,10 @@ export default class CreditList extends Component {
     let body = '';
 
     if (this.state.initialLoad) {
-      body = <Loading />
+      body = <Loading />;
     }
     else if (this.state.credits.length === 0) {
-      body = <Placeholder />
+      body = <Placeholder contentType='credits' />;
     }
     else {
       body = (
@@ -84,7 +84,7 @@ export default class CreditList extends Component {
             </div>
           </div>
         </Pageable>
-      )
+      );
     }
 
     return (
@@ -98,6 +98,6 @@ export default class CreditList extends Component {
           { body }
         </div>
       </div>
-    )
+    );
   }
 }

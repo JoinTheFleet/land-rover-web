@@ -36,6 +36,7 @@ import AuthenticationService from './shared/services/authentication_service';
 import LocationsService from './shared/services/locations_service';
 import SearchService from './shared/services/search_service';
 import WishListsService from './shared/services/wish_lists_service';
+import NotificationsService from './shared/services/notifications_service';
 
 import client from './shared/libraries/client';
 import LocalizationService from './shared/libraries/localization_service';
@@ -116,6 +117,7 @@ export default class App extends Component {
     this.handleLocationFocus = this.handleLocationFocus.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleLocationSelect = this.handleLocationSelect.bind(this);
+    this.handlePromotedLocationSelect = this.handlePromotedLocationSelect.bind(this);
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.changeCurrentUserRole = this.changeCurrentUserRole.bind(this);
     this.addedWishListToListing = this.addedWishListToListing.bind(this);
@@ -140,6 +142,17 @@ export default class App extends Component {
                           this.setState({ defaultLocation: location, location: location });
                         });
     }, 1000);
+
+    setInterval(() => {
+      NotificationsService.unreadCount()
+                          .then(response => {
+                            if (response && response.data && response.data.data) {
+                              let count = response.data.data.count;
+
+                              this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
+                            }
+                          });
+    }, 2000)
 
     branch.init(process.env.REACT_APP_BRANCH_KEY);
     this.setupEvents();
@@ -307,6 +320,7 @@ export default class App extends Component {
   renderHeaderTopMenu() {
     return (
       <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
+                     eventEmitter={ this.eventEmitter }
                      loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />
     )
   }
@@ -322,6 +336,18 @@ export default class App extends Component {
         this.performSearch();
       }
     });
+  }
+
+  handlePromotedLocationSelect(location) {
+    this.setState({
+      defaultLocation: location,
+      location: location,
+      locationName: location.address,
+      customSearch: true,
+      pages: 1,
+      page: 0,
+      boundingBox: undefined
+    }, this.performSearch);
   }
 
   handleLocationSelect(location) {
@@ -516,7 +542,7 @@ export default class App extends Component {
                               currentUserRole={ this.state.currentUserRole }
                               loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
           }} />
-          <Route path="/account" render={(props) => {
+          <Route path="/settings" render={(props) => {
             return (<UserManagement {...props}
                                     currentUserRole={ this.state.currentUserRole} />)
           }} />
@@ -555,6 +581,7 @@ export default class App extends Component {
                     handleSearch={ this.performSearch }
                     startDate={ this.state.startDate }
                     endDate={ this.state.endDate }
+                    eventEmitter={ this.eventEmitter }
                     locationName={ this.state.locationName }
                     hideSearchResults={ this.hideSearchResults }
                     searchLocations={ this.state.searchLocations }
@@ -569,7 +596,7 @@ export default class App extends Component {
                 <Route exact path="/" render={(props) => {
                   if (this.state.accessToken && !this.state.visitedDashboard) {
                     this.setState({ visitedDashboard: true });
-                    return <Redirect to='/profile' />
+                    return <Redirect to='/listings' />
                   }
                   else {
                     return <Homescreen {...props}
@@ -656,7 +683,7 @@ export default class App extends Component {
             </div>
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
-            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } />
+            <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
 
             <ConfirmationModal open={ this.state.modalName === navigationSections.logout }
                                modalName={ navigationSections.logout }

@@ -48,6 +48,14 @@
 .conversation-header {
   font-size: 19px;
   margin-right: 10px;
+
+  a {
+    color: black;
+  }
+}
+
+.owner-name a {
+  color: black;
 }
 
 .owner-message-information {

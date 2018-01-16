@@ -6,21 +6,18 @@ export default class Menus {
   static getTopMenuForUserRole(role, user) {
     let menu = [
       navigationSections.profile,
+      navigationSections.listings,
+      navigationSections.calendar,
       navigationSections.bookings,
       navigationSections.messages,
       navigationSections.notifications,
-      navigationSections.account,
-      navigationSections.listings
+      navigationSections.settings
     ];
 
-    if (user && user.listing_count > 0) {
-      menu.push(navigationSections.calendar);
+    if (user && user.listing_count === 0) {
+      menu.splice(2, 1);
     }
 
     return menu;
-  }
-
-  static getTopMenuDividers() {
-    return [ navigationSections.account ];
   }
 }

@@ -15,6 +15,8 @@ export default class UserProfileDetails extends Component {
   constructor(props) {
     super(props);
 
+    this.updateInterval = undefined;
+
     this.state = {
       imageURL: undefined,
       user: {
@@ -54,13 +56,29 @@ export default class UserProfileDetails extends Component {
     if (event && event.target && event.target.files) {
       let file = event.target.files[0];
 
-      S3Uploader.upload(file, 'user_avatar')
-        .then(response => {
-          this.setState({imageURL: response.Location });
-        })
-        .catch(error => {
-          this.setState({imageURL: undefined});
-        });
+      if (file.size >= 5000000) {
+        Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
+      }
+      else if (!file.type.startsWith("image/")) {
+        Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
+      }
+      else {
+        S3Uploader.upload(file, 'user_avatar')
+          .then(response => {
+            if (this.updateInterval) {
+              clearInterval(this.updateInterval);
+            }
+
+            this.setState({
+              imageURL: response.Location
+            }, () => {
+              this.updateInterval = setInterval(this.updateUser, 1500);
+            });
+          })
+          .catch(error => {
+            this.setState({imageURL: undefined});
+          });
+      }
     }
   }
 
@@ -69,7 +87,15 @@ export default class UserProfileDetails extends Component {
 
     user.first_name = event.target.value;
 
-    this.setUser(user);
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleLastNameUpdate(event) {
@@ -77,7 +103,15 @@ export default class UserProfileDetails extends Component {
 
     user.last_name = event.target.value;
 
-    this.setUser(user);
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   handleDescriptionUpdate(event) {
@@ -85,17 +119,28 @@ export default class UserProfileDetails extends Component {
 
     user.description = event.target.value;
 
-    this.setUser(user);
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    this.setState({
+      user: user
+    }, () => {
+      this.updateInterval = setInterval(this.updateUser, 1500);
+    });
   }
 
   setUser(user) {
     this.setState({ user: user })
   }
 
-
   updateUser(event) {
     if (event) {
       event.preventDefault();
+    }
+
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
     }
 
     let user = this.state.user;
@@ -129,31 +174,44 @@ export default class UserProfileDetails extends Component {
     }
   }
 
-
   render() {
+    let body = '';
+
     if (this.state.loading) {
-      return (<Loading />);
+      body = <Loading />;
+    }
+    else {
+      body = (
+        <div className="col-xs-12 no-side-padding">
+          <UserImage handleImageFile={this.handleImageFile}
+                    imageURL={this.state.imageURL} />
+          <form onSubmit={ this.updateUser }>
+            <UserForm user={this.state.user}
+                      handleFirstNameUpdate={this.handleFirstNameUpdate}
+                      handleLastNameUpdate={this.handleLastNameUpdate}
+                      handleDescriptionUpdate={this.handleDescriptionUpdate} />
+
+            <FormButtonRow>
+              <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
+                      spinner={ this.state.accountUpdating }
+                      disabled={ this.state.accountUpdating }
+                      onClick={ this.updateUser } >
+                { LocalizationService.formatMessage('application.update_profile') }
+              </Button>
+            </FormButtonRow>
+          </form>
+        </div>
+      )
     }
 
     return (
-      <div className="col-xs-12 no-side-padding">
-        <UserImage handleImageFile={this.handleImageFile}
-                  imageURL={this.state.imageURL} />
-        <form onSubmit={ this.updateUser }>
-          <UserForm user={this.state.user}
-                    handleFirstNameUpdate={this.handleFirstNameUpdate}
-                    handleLastNameUpdate={this.handleLastNameUpdate}
-                    handleDescriptionUpdate={this.handleDescriptionUpdate} />
-
-          <FormButtonRow>
-            <Button className="btn btn-primary text-center col-xs-12 col-sm-3 pull-right"
-                    spinner={ this.state.accountUpdating }
-                    disabled={ this.state.accountUpdating }
-                    onClick={ this.updateUser } >
-              { LocalizationService.formatMessage('application.save') }
-            </Button>
-          </FormButtonRow>
-        </form>
+      <div className='dashboard-section'>
+        <div className='col-xs-12 no-side-padding review-title'>
+          <span className='main-text-color title'>
+            { LocalizationService.formatMessage('dashboard.profile_details') }
+          </span>
+        </div>
+        { body }
       </div>
     )
   }

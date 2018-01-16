@@ -21,7 +21,7 @@ export default class Constants {
       profile: 'profile',
       bookings: 'bookings',
       messages: 'messages',
-      account: 'account',
+      settings: 'settings',
       notifications: 'notifications',
       logout: 'logout',
       login: 'login',
@@ -58,29 +58,9 @@ export default class Constants {
 
   static userManagementViews() {
     return {
-      profile_details: {
-        key: 'profile_details',
-        path: '/account',
-        display: 'Profile Details'
-      },
-      verified_info: {
-        key: 'verified_info',
-        path: '/account/verified_info',
-        display: 'Verified Info'
-      },
-      payment_methods: {
-        key: 'payment_methods',
-        path: '/account/payment_methods',
-        display: 'Payment Details'
-      },
-      payout_methods: {
-        key: 'payout_methods',
-        path: '/account/payout_methods',
-        display: 'Payout Details'
-      },
       settings: {
         key: 'settings',
-        path: '/account/notification_settings',
+        path: '/settings',
         display: 'Settings'
       },
       support: {

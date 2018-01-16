@@ -219,7 +219,7 @@ export default class Homefeed extends Component {
 
     if ((this.props.customSearch || this.props.currentSearch || (this.state.collections.length === 0 && this.state.nearby.length === 0)) && this.props.listings) {
       if (this.props.listings.length === 0) {
-        return <Placeholder contentType="vehicles_renter" />
+        return <Placeholder contentType="search_vehicles" />
       }
 
       return (
@@ -236,7 +236,7 @@ export default class Homefeed extends Component {
     }
     else {
       if ((collections.length === 0 || collections.every((collection) => { return collection.object_type === 'Advertisement' })) && (!nearbyListings || nearbyListings.length === 0)) {
-        return <Placeholder contentType='vehicles_renter' />;
+        return <Placeholder contentType='search_vehicles' />;
       }
       else {
         return (

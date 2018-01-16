@@ -11,6 +11,8 @@ import LocalizationService from '../../shared/libraries/localization_service';
 export default class Footer extends Component {
 
   render() {
+    let promotedLocations = [];
+
     let makeYourCarWorkLink = (
       <a className="white-text" onClick={ () => { this.props.toggleModal('login') }}>
         <FormattedMessage id="footer.make_your_car" />
@@ -25,6 +27,28 @@ export default class Footer extends Component {
           </span>
         </Link>
       )
+    }
+
+    for (let i = 1; i <= 4; i++) {
+      let promotedLocation = (
+        <div>
+          <Link to="/search"
+                onClick={ () => {
+                  this.props.search({
+                    locationName: process.env[`REACT_APP_LOCATION_${i}_NAME`],
+                    latitude: parseFloat(process.env[`REACT_APP_LOCATION_${i}_LAT`]),
+                    longitude: parseFloat(process.env[`REACT_APP_LOCATION_${i}_LNG`])
+                  });
+                }} >
+            <span className="white-text">
+              { process.env[`REACT_APP_LOCATION_${i}_NAME`] }
+            </span>
+          </Link>
+          <br />
+        </div>
+      );
+
+      promotedLocations.push(promotedLocation);
     }
 
     return (
@@ -78,29 +102,7 @@ export default class Footer extends Component {
               <FormattedMessage id="footer.top_destinations" />
             </span>
             <p className="footer-links-list">
-              <Link to="/search">
-                <span className="white-text">
-                  <FormattedMessage id="locations.dublin" />
-                </span>
-              </Link>
-              <br/>
-              <Link to="/search">
-                <span className="white-text">
-                  <FormattedMessage id="locations.galway" />
-                </span>
-              </Link>
-              <br/>
-              <Link to="/search">
-                <span className="white-text">
-                  <FormattedMessage id="locations.cork" />
-                </span>
-              </Link>
-              <br/>
-              <Link to="/search">
-                <span className="white-text">
-                  <FormattedMessage id="locations.wicklow" />
-                </span>
-              </Link>
+              { promotedLocations }
             </p>
           </div>
 

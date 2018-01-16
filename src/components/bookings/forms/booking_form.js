@@ -130,10 +130,10 @@ class BookingForm extends Component {
                             }
 
                             if (typeof quotation.on_demand_location === 'undefined') {
-                            let location = this.state.listing.location || {
-                              latitude: 0,
-                              longitude: 0
-                            };
+                              let location = this.state.listing.location || {
+                                latitude: 0,
+                                longitude: 0
+                              };
 
                               quotation.on_demand_location = {
                                 pick_up_time: this.state.listing.check_in_time,
@@ -342,6 +342,8 @@ class BookingForm extends Component {
           errorMessage = criteria.rejection_message;
         }
       }
+
+      return undefined;
     });
 
     this.setState({
@@ -479,7 +481,7 @@ class BookingForm extends Component {
                               address: address
                             };
 
-                            this.setState({ loading: false, quotation: quotation, onDemandAddresses: onDemandAddresses });
+                            this.setState({ loading: false, quotation: quotation, onDemandAddresses: onDemandAddresses }, this.fetchQuotation );
                           })
                           .catch(error => this.addError(error));
                         });
@@ -594,7 +596,7 @@ class BookingForm extends Component {
           <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
 
           <Link to={`/users/${listing.user.id}`}>
-            <span className="secondary-text-color fs-18">{ listing.user.first_name + ' ' + listing.user.last_name }</span>
+            <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
           </Link>
         </div>
       );
@@ -643,7 +645,7 @@ class BookingForm extends Component {
             <div className="booking-form-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
             <div className="booking-form-renter-name-and-rating pull-left">
               <Link to={`/users/${booking.renter.id}`}>
-                <div className="fs-18 secondary-text-color"> { booking.renter.name } </div>
+                <div className="fs-18 secondary-text-color"> { booking.renter.first_name } </div>
               </Link>
 
               <RatingInput rating={ booking.renter.renter_review_summary.rating } readonly={ true } />

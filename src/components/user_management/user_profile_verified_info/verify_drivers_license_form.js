@@ -60,9 +60,11 @@ export default class VerifyDriversLicenseForm extends Component {
     this.setState({ licenseNumber: event.target.value });
   }
 
-  handleIssueDateChange(date) {
-    if (date) {
-      this.setState({ issueDate: moment(date).utc() });
+  handleIssueDateChange(event) {
+    let date = moment(event.target.value, 'DD/MM/YYYY');
+
+    if (event.target.value.length === 10) {
+      this.setState({ issueDate: date });
     }
   }
 
@@ -280,7 +282,7 @@ export default class VerifyDriversLicenseForm extends Component {
                 { LocalizationService.formatMessage('user_profile_verified_info.issue_date') }
               </div>
               <div className='col-xs-12 col-sm-6'>
-                <FormField id='license-issue' type={ 'singleyeardate' } handleChange={ this.handleIssueDateChange } value={ this.state.issueDate } />
+                <FormField id='license-issue' type={ 'cleavedate' } handleChange={ this.handleIssueDateChange } value={ this.state.issueDate ? this.state.issueDate.format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
               </div>
             </div>
             <div className='col-xs-12 modal-row'>
