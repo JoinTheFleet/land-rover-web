@@ -15,7 +15,7 @@ export default class ReviewList extends Component {
       body = <Loading hiddenText />
     }
     else if (this.props.reviews.length === 0) {
-      body = <Placeholder />
+      body = <Placeholder contentType='reviews' />
     }
     else {
       body = (

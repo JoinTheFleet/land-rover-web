@@ -63,7 +63,7 @@ export default class ReviewSummary extends Component {
   }
 
   render() {
-    let reviews = (<Placeholder />)
+    let reviews = (<Placeholder contentType='reviews' />)
 
     if (this.state.reviews.length > 0) {
       reviews = (

@@ -275,8 +275,7 @@ export default class BookingsCalendar extends Component {
 
   renderTopBar() {
     return (
-      <ListingsSelector listings={ this.state.listings }
-                        role='owner'
+      <ListingsSelector listings={ this.state.listings } role={ 'owner' }
                         hideRoleSelector={true}
                         currentListing={ this.state.currentListing }
                         handleVehicleSelect= { this.handleVehicleSelect } />

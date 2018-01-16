@@ -70,7 +70,7 @@ export default class UserForm extends Component {
       <div className="user-form">
         <FormRow type='cleavedate' id='user-dateofbirth' handleChange={ this.props.handleDateChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
         <FormRow type='select' id='user-gender' clearable={ false } handleChange={ this.props.handleGenderChange } value={ this.props.user.gender } options={ this.genderOptions } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.gender') } />
-        <FormRow type='select' id='user-country' clearable={ false } disabled={ this.props.fieldsToDisable.countryOfResidence } clearable={ false } options={ countries } handleChange={ this.props.handleUserCountryChange } value={ this.props.user.country_code || (this.props.user && this.props.user.country ? this.props.user.country.alpha2 : 'Select a date') } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.country_of_residence')} />
+        <FormRow type='select' id='user-country' clearable={ false } disabled={ this.props.fieldsToDisable.countryOfResidence } options={ countries } handleChange={ this.props.handleUserCountryChange } value={ this.props.user.country_code || (this.props.user && this.props.user.country ? this.props.user.country.alpha2 : 'Select a date') } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.country_of_residence')} />
 
         <FormGroup placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address') }>
           <div className="col-xs-12 no-side-padding">

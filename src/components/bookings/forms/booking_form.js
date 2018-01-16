@@ -342,6 +342,8 @@ class BookingForm extends Component {
           errorMessage = criteria.rejection_message;
         }
       }
+
+      return undefined;
     });
 
     this.setState({

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { locale } from 'moment';
 
-class GoogleTagManager extends React.Component {
+class GoogleTagManager extends Component {
   constructor(props) {
     super(props);
 
