@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import ConversationService from '../../shared/services/conversations/conversation_service';
 import ListingConversationsService from '../../shared/services/listings/listing_conversations_service';
-import LocalizationService from '../../shared/libraries/localization_service';
 
 import RenterConversationDetails from './renter_conversation_details';
 import OwnerConversationDetails from './owner_conversation_details';

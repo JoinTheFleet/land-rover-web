@@ -12,8 +12,6 @@ import {injectStripe } from 'react-stripe-elements';
 import PayoutMethod from './payout_methods/payout_method';
 import PayoutMethodForm from './payout_methods/payout_method_form';
 
-import { Redirect } from 'react-router-dom';
-
 class UserPayoutMethods extends Component {
   constructor(props) {
     super(props);
