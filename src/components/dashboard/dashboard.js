@@ -7,12 +7,31 @@ import WishListSummary from '../wishlists/wish_list_summary';
 import { Link } from 'react-router-dom';
 import { Elements } from 'react-stripe-elements';
 
+import Alert from 'react-s-alert';
+
 import UserProfileVerifiedInfo from '../user_management/user_profile_verified_info';
 import UserPaymentMethods from '../user_management/user_payment_methods';
 import UserPayoutMethods from '../user_management/user_payout_methods';
 import UserProfileDetails from '../user_management/user_profile_details';
 
 export default class Dashboard extends Component {
+  componentDidMount() {
+    if (this.props.location && this.props.location.state) {
+      let verificationsNeeded = this.props.location.state.verificationsNeeded;
+
+      if (verificationsNeeded && verificationsNeeded.length > 0) {
+        let localisedIdentifier = 'user_profile.verified_info.need_to_complete_verifications_rental';
+
+        if (this.props.location.state.listingVerifications) {
+          localisedIdentifier = 'user_profile.verified_info.need_to_complete_verifications_listing';
+        }
+
+        Alert.error(LocalizationService.formatMessage(localisedIdentifier,
+                                                      { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ') }));
+      }
+    }
+  }
+
   render() {
     if (!this.props.user) {
       return <Loading />;
