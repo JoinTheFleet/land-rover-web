@@ -40,8 +40,6 @@ export default class DashboardController extends Component {
 
         Alert.error(LocalizationService.formatMessage(localisedIdentifier,
                                                       { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ').replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }) }));
-
-        this.setState({ verificationAlertShown: true });
       }
     }
   }
