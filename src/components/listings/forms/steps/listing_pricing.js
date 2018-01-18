@@ -144,7 +144,7 @@ export default class ListingPricing extends Component {
           {
             listing.on_demand_rates.map((od_rate, index) => {
               if (od_rate.distance > 0) {
-                odcDistancePlaceholder = `${od_rate.distance / 100.0} ${Helpers.capitalizeString(this.state.distanceUnits)}`;
+                odcDistancePlaceholder = `${od_rate.distance} ${Helpers.capitalizeString(this.state.distanceUnits)}`;
               }
 
               return (
@@ -164,7 +164,7 @@ export default class ListingPricing extends Component {
                               <MenuItem key={`listing_odc_distance_selector_${index}_${distance}`}
                                         eventKey={`${index}_${distance}`}
                                         active={ od_rate.distance === distance }
-                                        onClick={ () => { this.handleRateInsertion(index, 'distance', distance * 100) } }>
+                                        onClick={ () => { this.handleRateInsertion(index, 'distance', distance) } }>
                                 { `${distance} ${Helpers.capitalizeString(this.state.distanceUnits)}` }
                               </MenuItem>
                             )

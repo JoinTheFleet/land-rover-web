@@ -194,7 +194,7 @@ class BookNowTile extends Component {
       bookNowTileContent = (
         <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
           { LocalizationService.formatMessage('bookings.verify_info_before_booking') }
-          <Link to={ { pathname: '/account', state: { verificationsNeeded: this.state.verificationsNeeded }} }>
+          <Link to={ { pathname: '/profile', state: { verificationsNeeded: this.state.verificationsNeeded }} }>
             <Button className="login-to-book-button secondary-color white-text" onClick={ () => {} }>
               { LocalizationService.formatMessage('bookings.verify_info') }
             </Button>
