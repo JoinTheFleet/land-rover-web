@@ -235,7 +235,9 @@ export default class App extends Component {
   }
 
   setAccessToken(accessToken) {
-    cookies.remove('accessToken');
+    cookies.remove('accessToken', {
+      path: '/'
+    });
 
     if (accessToken.length > 0) {
       let newState = {
@@ -255,7 +257,9 @@ export default class App extends Component {
         client.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
       }
       else {
-        cookies.remove('accessToken');
+        cookies.remove('accessToken', {
+          path: '/'
+        });
         delete client.defaults.headers.common['Authorization'];
       }
 
@@ -290,6 +294,7 @@ export default class App extends Component {
     AuthenticationService.logout()
                          .then(() => { this.setAccessToken(''); })
                          .catch(() => { this.setAccessToken(''); });
+                         this.setAccessToken('');
   }
 
   toggleModal(modal) {
@@ -615,6 +620,22 @@ export default class App extends Component {
                                        showSearchButton={ true }
                                        disableSearchButton={ disableSearchButton }
                                        toggleWishListModal={ this.toggleWishListModal } />
+                  }
+                }} />
+
+                <Route exact path='/listings/new' render={(props) => {
+                  if (!this.state.accessToken) {
+                    let alertInterval = undefined;
+
+                    alertInterval = setInterval(() => {
+                      Alert.error(LocalizationService.formatMessage('application.must_be_logged_in'));
+                      clearInterval(alertInterval);
+                    }, 1000);
+
+                    return <Redirect to='/' />;
+                  }
+                  else {
+                    return mainRouter;
                   }
                 }} />
 

@@ -52,6 +52,7 @@
     "application.add_card": "Add Card",
     "application.update_verified_info": "Update Verified Info",
     "application.update_profile": "Update Profile",
+    "application.must_be_logged_in": "You must be logged in to do that, please log in if you already have an account or register if you do not.",
 
     "company_info.info_email": "info@jointhefleet.com",
     "company_info.facebook": "https://www.facebook.com/jointhefleet/",
