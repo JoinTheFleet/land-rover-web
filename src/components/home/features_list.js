@@ -37,10 +37,6 @@ export default class FeaturesList extends Component {
 
         <div id="making_car_work_for_you_div" className="col-xs-12 text-center">
           <p>
-            <span className="title-font-size strong-font-weight text-uppercase">
-              <FormattedMessage id="homescreen.how_it_works" />
-            </span>
-            <br/>
             <span className="subtitle-font-size">
               <FormattedMessage id="homescreen.making_car_work_for_you" />
             </span>
