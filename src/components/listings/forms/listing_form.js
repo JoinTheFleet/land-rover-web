@@ -118,7 +118,7 @@ export default class ListingForm extends Component {
         country: this.state.listing.country_configuration.country.alpha2
       });
     }
-    else {
+    else if (this.state.listing.id) {
       this.setState({
         invalidEdit: true
       });

@@ -389,7 +389,11 @@ export default class ListingView extends Component {
   renderGoBackButton() {
     if (this.props.location && this.props.location.state && this.props.location.state.previousPage) {
       return (
-        <Link to={ this.props.location.state.previousPage }>
+        <Link to={ this.props.location.state.previousPage }
+              state={{
+                finalStep: true,
+                listing: this.state.listing
+              }} >
           <Button className="tomato white-text">
             { LocalizationService.formatMessage('application.go_back') }
           </Button>
