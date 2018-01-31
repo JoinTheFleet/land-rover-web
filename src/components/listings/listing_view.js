@@ -401,6 +401,29 @@ export default class ListingView extends Component {
     }
   }
 
+  renderOwnerDescriptionTile() {
+    let listing = this.state.listing;
+
+    if (listing && listing.user && listing.user.description) {
+      let user = listing.user;
+
+      return (
+        <div className="listing-view-reviews col-xs-12 no-side-padding">
+          <div className="listing-view-reviews-title fs-18 subtitle-font-weight col-xs-12 no-side-padding">
+            { LocalizationService.formatMessage('application.about_object', { object: user.name }) }
+
+            <div className='col-xs-12 no-side-padding user-description'>
+              { user.description }
+            </div>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return '';
+    }
+  }
+
   render() {
     let listing = this.state.listing;
 
@@ -442,6 +465,8 @@ export default class ListingView extends Component {
             { this.renderAmenities() }
 
             { this.renderReviewsTile() }
+
+            { this.renderOwnerDescriptionTile() }
 
             { this.renderBookingTile() }
 

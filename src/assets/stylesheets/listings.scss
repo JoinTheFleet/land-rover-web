@@ -677,6 +677,12 @@
 
 /* Listing View */
 .listing-view-div {
+  .user-description {
+    font-weight: 100;
+    font-size: 16px;
+    padding-top: 10px;
+  }
+
   .listing-view-acceptance-rate {
     color: $secondary-color;
   }
