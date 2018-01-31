@@ -6,6 +6,7 @@ import Loading from '../miscellaneous/loading';
 import WishListSummary from '../wishlists/wish_list_summary';
 import { Link } from 'react-router-dom';
 import { Elements } from 'react-stripe-elements';
+import { Prompt } from 'react-router';
 
 import UserProfileVerifiedInfo from '../user_management/user_profile_verified_info';
 import UserPaymentMethods from '../user_management/user_payment_methods';
@@ -13,6 +14,25 @@ import UserPayoutMethods from '../user_management/user_payout_methods';
 import UserProfileDetails from '../user_management/user_profile_details';
 
 export default class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dirty: false
+    };
+
+    this.setDirty = this.setDirty.bind(this);
+    this.setClean = this.setClean.bind(this);
+  }
+
+  setClean() {
+    this.setState({ dirty: false })
+  }
+
+  setDirty() {
+    this.setState({ dirty: true })
+  }
+
   render() {
     if (!this.props.user) {
       return <Loading />;
@@ -20,13 +40,16 @@ export default class Dashboard extends Component {
     else {
       let image;
 
-
       if (this.props.user.images && Object.keys(this.props.user.images).length > 0) {
         image = this.props.user.images.large_url;
       }
 
       return (
         <div className='col-xs-12 user-dashboard'>
+          <Prompt
+            when={ this.state.dirty }
+            message={ LocalizationService.formatMessage('application.unsaved') }
+          />
           <div className='col-xs-12 no-side-padding user-header'>
             <Avatar src={ image } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
             <div className='col-xs-12 col-sm-8 dashboard-information'>
@@ -52,10 +75,10 @@ export default class Dashboard extends Component {
           </div>
 
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileDetails />
+            <UserProfileDetails setDirty={ this.setDirty } setClean={ this.setClean } />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileVerifiedInfo {... this.props } />
+            <UserProfileVerifiedInfo {... this.props } setDirty={ this.setDirty } setClean={ this.setClean } />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
             <Elements>
