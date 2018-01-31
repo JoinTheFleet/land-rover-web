@@ -15,8 +15,6 @@ export default class UserProfileDetails extends Component {
   constructor(props) {
     super(props);
 
-    this.updateInterval = undefined;
-
     this.state = {
       imageURL: undefined,
       user: {
@@ -30,7 +28,6 @@ export default class UserProfileDetails extends Component {
     this.handleFirstNameUpdate = this.handleFirstNameUpdate.bind(this);
     this.handleLastNameUpdate = this.handleLastNameUpdate.bind(this);
     this.handleDescriptionUpdate = this.handleDescriptionUpdate.bind(this);
-    this.setUser = this.setUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
   }
 
@@ -65,15 +62,10 @@ export default class UserProfileDetails extends Component {
       else {
         S3Uploader.upload(file, 'user_avatar')
           .then(response => {
-            if (this.updateInterval) {
-              clearInterval(this.updateInterval);
-            }
 
             this.setState({
               imageURL: response.Location
-            }, () => {
-              this.updateInterval = setInterval(this.updateUser, 1500);
-            });
+            }, this.props.setDirty);
           })
           .catch(error => {
             this.setState({imageURL: undefined});
@@ -87,15 +79,9 @@ export default class UserProfileDetails extends Component {
 
     user.first_name = event.target.value;
 
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
-    }
-
     this.setState({
       user: user
-    }, () => {
-      this.updateInterval = setInterval(this.updateUser, 1500);
-    });
+    }, this.props.setDirty);
   }
 
   handleLastNameUpdate(event) {
@@ -103,15 +89,9 @@ export default class UserProfileDetails extends Component {
 
     user.last_name = event.target.value;
 
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
-    }
-
     this.setState({
       user: user
-    }, () => {
-      this.updateInterval = setInterval(this.updateUser, 1500);
-    });
+    }, this.props.setDirty);
   }
 
   handleDescriptionUpdate(event) {
@@ -119,28 +99,14 @@ export default class UserProfileDetails extends Component {
 
     user.description = event.target.value;
 
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
-    }
-
     this.setState({
       user: user
-    }, () => {
-      this.updateInterval = setInterval(this.updateUser, 1500);
-    });
-  }
-
-  setUser(user) {
-    this.setState({ user: user })
+    }, this.props.setDirty);
   }
 
   updateUser(event) {
     if (event) {
       event.preventDefault();
-    }
-
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
     }
 
     let user = this.state.user;
@@ -165,7 +131,7 @@ export default class UserProfileDetails extends Component {
           this.setState({
             user: response.data.data.user,
             accountUpdating: false
-          });
+          }, this.props.setClean);
         }).catch(error => {
           this.setState({ accountUpdating: false });
           Alert.error(error.response.data.message);

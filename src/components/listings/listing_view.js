@@ -307,7 +307,7 @@ export default class ListingView extends Component {
     let bookingDiv = '';
     const listing = this.state.listing;
 
-    if (!this.props.loggedUser || (this.props.loggedUser && this.props.loggedUser.id !== listing.user.id && !this.props.preview )) {
+    if ((!Object.keys(listing).includes("active") || listing.active) && (!this.props.loggedUser || (this.props.loggedUser && this.props.loggedUser.id !== listing.user.id && !this.props.preview))) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
           <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
@@ -389,11 +389,38 @@ export default class ListingView extends Component {
   renderGoBackButton() {
     if (this.props.location && this.props.location.state && this.props.location.state.previousPage) {
       return (
-        <Link to={ this.props.location.state.previousPage }>
+        <Link to={ this.props.location.state.previousPage }
+              state={{
+                finalStep: true,
+                listing: this.state.listing
+              }} >
           <Button className="tomato white-text">
             { LocalizationService.formatMessage('application.go_back') }
           </Button>
         </Link>
+      )
+    }
+    else {
+      return '';
+    }
+  }
+
+  renderOwnerDescriptionTile() {
+    let listing = this.state.listing;
+
+    if (listing && listing.user && listing.user.description) {
+      let user = listing.user;
+
+      return (
+        <div className="listing-view-reviews col-xs-12 no-side-padding">
+          <div className="listing-view-reviews-title fs-18 subtitle-font-weight col-xs-12 no-side-padding">
+            { LocalizationService.formatMessage('application.about_object', { object: user.name }) }
+
+            <div className='col-xs-12 no-side-padding user-description'>
+              { user.description }
+            </div>
+          </div>
+        </div>
       )
     }
     else {
@@ -442,6 +469,8 @@ export default class ListingView extends Component {
             { this.renderAmenities() }
 
             { this.renderReviewsTile() }
+
+            { this.renderOwnerDescriptionTile() }
 
             { this.renderBookingTile() }
 
