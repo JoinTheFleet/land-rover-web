@@ -53,7 +53,7 @@ const ALERT_OPTIONS = {
   timeout: 10000,
   effect: 'stackslide',
   stack: {
-    limit: 1
+    limit: 2
   }
 };
 
