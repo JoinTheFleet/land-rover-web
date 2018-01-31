@@ -44,10 +44,12 @@ export default class HeaderTopMenu extends Component {
   }
 
   fetchUser() {
-    UsersService.show('me')
-                .then(response => {
-                  this.setState({ user: response.data.data.user });
-                });
+    setInterval(() => {
+      UsersService.show('me')
+                  .then(response => {
+                    this.setState({ user: response.data.data.user });
+                  });
+    }, 3000);
   }
 
   render() {
