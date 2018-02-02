@@ -429,10 +429,10 @@
     "dashboard.credits.view": "View Credits",
     "dashboard.credits.copy_url": "Copy Referral Link to Clipboard",
     "dashboard.credits.copied": "Copied!",
-    "dashboard.profile_details": "1. Profile Details",
-    "dashboard.verified_info": "2. Verified Info",
-    "dashboard.payment_methods": "3. Payment Methods",
-    "dashboard.payout_methods": "4. Payout Methods",
+    "dashboard.profile_details": "Profile Details",
+    "dashboard.verified_info": "Verified Info",
+    "dashboard.payment_methods": "Payment Methods",
+    "dashboard.payout_methods": "Payout Methods",
 
     "credits.credits": "Credits",
 
