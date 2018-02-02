@@ -52,7 +52,7 @@ export default class Header extends Component {
 
     if ( !this.props.hideSearchForm ) {
       mobileSearchIcon = (
-        <div className="header-search-mobile-icon hidden-md pull-right">
+        <div className="header-search-mobile-icon visible-xs visible-sm pull-right">
           <img src={searchIcon} alt="search" onClick={ this.toggleSearchModal } />
         </div>
       )
@@ -61,7 +61,7 @@ export default class Header extends Component {
     return (
       <div>
         <Modal open={ this.state.showSearchModal }
-              modalClass="header-search-form-mobile hidden-md custom-modal"
+              modalClass="header-search-form-mobile hidden-md hidden-lg custom-modal"
               toggleModal={ this.toggleSearchModal }>
 
             <div class='row'>
