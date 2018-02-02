@@ -365,6 +365,8 @@
     "user_profile.description": "Description",
     "user_profile.date_of_birth": "Date of Birth",
 
+    "user_profile.verified_info.verification_email_sent": "A verification e-mail has been sent to your e-mail address. Please check your e-mail and follow its instructions.",
+    "user_profile.verified_info.need_to_verify_email": "You must verify your e-mail address to rent or list a car. Please check your e-mail for a verification e-mail or click here to re-send the verification e-mail.",
     "user_profile.verified_info.need_to_complete_verifications_listing": "You must provide the following information in order to list a car: {info_to_verify}.",
     "user_profile.verified_info.need_to_complete_verifications_rental": "You must provide the following information in order to rent a car: {info_to_verify}.",
     "user_profile_verified_info.account_type": "Account Type",
