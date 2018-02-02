@@ -52,43 +52,46 @@ export default class Header extends Component {
 
     if ( !this.props.hideSearchForm ) {
       mobileSearchIcon = (
-        <div className="header-search-mobile-icon visible-xs pull-right">
+        <div className="header-search-mobile-icon hidden-md pull-right">
           <img src={searchIcon} alt="search" onClick={ this.toggleSearchModal } />
         </div>
       )
     }
 
     return (
-      <div className="app-header">
-        <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
-
-        <LocationPeriodFilter {...this.props} hideSearchForm={ this.props.hideSearchForm } closeMenu={ this.closeMenu }/>
-
-        { mobileSearchIcon }
-
-        <div className={'pull-right header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
-          <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
-          <a id="header_login_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
-          <a id="header_register_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
-        </div>
-
-        <HeaderMenu loggedIn={ this.props.loggedIn }
-                    eventEmitter={ this.props.eventEmitter }
-                    menuOpen={ this.state.menuOpen }
-                    handleMenuItemSelect={ this.handleMenuItemSelect }
-                    toggleModal={ this.toggleModal } />
-
+      <div>
         <Modal open={ this.state.showSearchModal }
-               title="Search"
-               closeButtonPosition="right"
-               modalClass="header-search-form-mobile"
-               toggleModal={ this.toggleSearchModal }>
+              modalClass="header-search-form-mobile hidden-md custom-modal"
+              toggleModal={ this.toggleSearchModal }>
 
-          <LocationPeriodFilter {...this.props}
-                                handleSearch={ () => { this.toggleSearchModal(); this.props.handleSearch(); } }
-                                hideSearchForm={ this.props.hideSearchForm }
-                                closeMenu={ this.closeMenu }/>
-        </Modal>
+            <div class='row'>
+              <div class='listing-form-field-group col-xs-12 no-side-padding'>
+                <LocationPeriodFilter {...this.props}
+                                      handleSearch={ () => { this.toggleSearchModal(); this.props.handleSearch(); } }
+                                      hideSearchForm={ this.props.hideSearchForm }
+                                      closeMenu={ this.closeMenu }/>
+              </div>
+            </div>
+          </Modal>
+          <div className="app-header">
+            <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
+
+            <LocationPeriodFilter {...this.props} hideSearchForm={ this.props.hideSearchForm } closeMenu={ this.closeMenu }/>
+
+            { mobileSearchIcon }
+
+            <div className={'pull-right header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
+              <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
+              <a id="header_login_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
+              <a id="header_register_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
+            </div>
+
+            <HeaderMenu loggedIn={ this.props.loggedIn }
+                        eventEmitter={ this.props.eventEmitter }
+                        menuOpen={ this.state.menuOpen }
+                        handleMenuItemSelect={ this.handleMenuItemSelect }
+                        toggleModal={ this.toggleModal } />
+        </div>
       </div>
     );
   }

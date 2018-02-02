@@ -64,7 +64,7 @@ export default class ListingPeriodFilter extends Component {
     }
 
     return (
-      <div id="header_search_form" className={ 'hidden-xs hidden-sm global-search-form' + (this.props.hideSearchForm ? ' hide' : '') }>
+      <div id="header_search_form" className={ 'global-search-form ' + (this.props.hideSearchForm ? 'hide ' : '') + (this.props.homescreen ? '' : 'hidden-xs hidden-sm ') }>
         <div className='search_inputs'>
           <FormField type='text'
                      className=''
@@ -129,5 +129,6 @@ ListingPeriodFilter.propTypes = {
   locationName: PropTypes.string,
   searchLocations: PropTypes.array.isRequired,
   showSearchButton: PropTypes.bool,
-  disableSearchButton: PropTypes.bool
+  disableSearchButton: PropTypes.bool,
+  homescreen: PropTypes.bool
 }
