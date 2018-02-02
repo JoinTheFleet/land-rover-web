@@ -108,6 +108,7 @@
 
     "authentication.log_in_to_continue": "Log in to continue",
     "authentication.log_in_with_facebook": "Log in with Facebook",
+    "authentication.register_facebook": "Register with Facebook",
     "authentication.log_in_with_email": "Log in with Email",
     "authentication.log_in": "Login",
     "authentication.or_continue_with": "or",
