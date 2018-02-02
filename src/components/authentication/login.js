@@ -258,6 +258,21 @@ export default class Login extends Component {
                   disabled={ this.state.loading } >
             { LocalizationService.formatMessage('authentication.register') }
           </Button>
+
+          <div className="divider">
+            <div className="divider-line tertiary-color"></div>
+          </div>
+
+          <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
+            { LocalizationService.formatMessage('authentication.already_have_account') }
+            <br className="visible-xs" />
+            <a>
+              <span className="secondary-text-color subtitle-font-weight"
+                    onClick={ () =>  {this.props.toggleModal('login') }}>
+                { ` ${LocalizationService.formatMessage('menu.login')}` }
+              </span>
+            </a>
+          </div>
         </Anime>
       </form>
     );
