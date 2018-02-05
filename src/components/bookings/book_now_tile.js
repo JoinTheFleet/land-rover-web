@@ -36,11 +36,12 @@ class BookNowTile extends Component {
     this.addError = this.addError.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleWindowResize = this.handleWindowResize.bind(this);
+    this.updateUser = this.updateUser.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
   }
 
-  componentDidMount() {
+  updateUser() {
     if (this.props.loggedIn) {
       this.setState({ loading: true }, () => {
         UsersService.show('me')
@@ -61,6 +62,19 @@ class BookNowTile extends Component {
                     })
                     .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
       });
+    }
+  }
+
+  componentDidMount() {
+    this.updateUser()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.loggedIn !== prevProps.loggedIn) {
+      this.setState({
+        pricingQuote: {},
+        verificationsNeeded: []
+      }, this.updateUser);
     }
   }
 
@@ -222,7 +236,6 @@ class BookNowTile extends Component {
           <DateRangePicker startDate={ startDate }
                           endDate={ endDate }
                           minimumNights={ 0 }
-                          //  daySize={ this.state.daySize } TODO: This is incorrect
                           numberOfMonths={ this.state.numberOfMonthsToShow }
                           focusedInput={this.state.focusedInput}
                           onDatesChange={ this.handleDatesChange }
