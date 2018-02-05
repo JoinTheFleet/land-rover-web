@@ -108,6 +108,7 @@
 
     "authentication.log_in_to_continue": "Log in to continue",
     "authentication.log_in_with_facebook": "Log in with Facebook",
+    "authentication.register_facebook": "Register with Facebook",
     "authentication.log_in_with_email": "Log in with Email",
     "authentication.log_in": "Login",
     "authentication.or_continue_with": "or",
@@ -364,6 +365,8 @@
     "user_profile.description": "Description",
     "user_profile.date_of_birth": "Date of Birth",
 
+    "user_profile.verified_info.verification_email_sent": "A verification e-mail has been sent to your e-mail address. Please check your e-mail and follow its instructions.",
+    "user_profile.verified_info.need_to_verify_email": "You must verify your e-mail address to rent or list a car. Please check your e-mail for a verification e-mail or click here to re-send the verification e-mail.",
     "user_profile.verified_info.need_to_complete_verifications_listing": "You must provide the following information in order to list a car: {info_to_verify}.",
     "user_profile.verified_info.need_to_complete_verifications_rental": "You must provide the following information in order to rent a car: {info_to_verify}.",
     "user_profile_verified_info.account_type": "Account Type",
@@ -429,10 +432,10 @@
     "dashboard.credits.view": "View Credits",
     "dashboard.credits.copy_url": "Copy Referral Link to Clipboard",
     "dashboard.credits.copied": "Copied!",
-    "dashboard.profile_details": "1. Profile Details",
-    "dashboard.verified_info": "2. Verified Info",
-    "dashboard.payment_methods": "3. Payment Methods",
-    "dashboard.payout_methods": "4. Payout Methods",
+    "dashboard.profile_details": "Profile Details",
+    "dashboard.verified_info": "Verified Info",
+    "dashboard.payment_methods": "Payment Methods",
+    "dashboard.payout_methods": "Payout Methods",
 
     "credits.credits": "Credits",
 

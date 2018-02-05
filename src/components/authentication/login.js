@@ -258,6 +258,37 @@ export default class Login extends Component {
                   disabled={ this.state.loading } >
             { LocalizationService.formatMessage('authentication.register') }
           </Button>
+
+          <div className="divider with-text">
+            <div className="divider-line tertiary-color"></div>
+            <div className="divider-text white tertiary-text-color text-secondary-font-weight ls-dot-two text-center">
+              <FormattedMessage id="authentication.or_continue_with" />
+            </div>
+          </div>
+
+          <FacebookLogin appId={facebookAppID}
+                       autoLoad={false}
+                       fields="name,email,picture"
+                       icon="fa-facebook"
+                       cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
+                       textButton={ LocalizationService.formatMessage('authentication.register_facebook') }
+                       callback={ this.handleFacebookLogin }
+                       onClick={ () => { this.props.toggleModal('registration') } } />
+
+          <div className="divider">
+            <div className="divider-line tertiary-color"></div>
+          </div>
+
+          <div id="dont_have_account_message" className="text-center tertiary-text-color text-secondary-font-weight fs-18">
+            { LocalizationService.formatMessage('authentication.already_have_account') }
+            <br className="visible-xs" />
+            <a>
+              <span className="secondary-text-color subtitle-font-weight"
+                    onClick={ () =>  {this.props.toggleModal('login') }}>
+                { ` ${LocalizationService.formatMessage('menu.login')}` }
+              </span>
+            </a>
+          </div>
         </Anime>
       </form>
     );

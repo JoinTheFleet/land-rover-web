@@ -8,6 +8,8 @@ import VerifiedInfoModal from './verified_info_modal';
 import moment from 'moment';
 
 import LocalizationService from '../../../shared/libraries/localization_service';
+import UserService from '../../../shared/services/users/users_service';
+import Alert from 'react-s-alert';
 
 export default class UserForm extends Component {
   constructor(props) {
@@ -49,6 +51,13 @@ export default class UserForm extends Component {
     });
   }
 
+  sendVerificationEmail() {
+    UserService.sendVerificationEmail()
+               .then(response => {
+                 Alert.success(LocalizationService.formatMessage('user_profile.verified_info.verification_email_sent'));
+               });
+  }
+
 
   render() {
     let country = this.props.user.address.country_code;
@@ -64,6 +73,18 @@ export default class UserForm extends Component {
         value: country.alpha2,
         label: country.name
       }));
+    }
+
+    let emailUnverified = '';
+
+    if ((this.props.user.verifications_required && this.props.user.verifications_required.email) || (this.props.user.owner_verifications_required && this.props.user.owner_verifications_required.email)) {
+      emailUnverified = (
+        <div className='col-xs-12 no-side-padding text-danger'>
+          <div className='col-xs-12 col-sm-10 col-sm-offset-2 verified-email-alert' onClick={ this.sendVerificationEmail }>
+            { LocalizationService.formatMessage('user_profile.verified_info.need_to_verify_email') }
+          </div>
+        </div>
+      )
     }
 
     return (
@@ -86,6 +107,7 @@ export default class UserForm extends Component {
         </FormGroup>
 
         <FormRow type='text' id='user-email' handleChange={ this.props.handleEmailChange } value={ this.props.user.email } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.email') } />
+        { emailUnverified }
         <FormRow type='button' id='user-phone' handleChange={ this.showPhoneDialog } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.phone_number') } value={ LocalizationService.formatMessage('application.manage') } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
         <FormRow type='button' id='user-license' handleChange={ this.showLicenseDialog } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.drivers_license') } value={ LocalizationService.formatMessage('application.manage') } className={ 'btn btn-primary text-center col-xs-12 col-sm-3 no-side-padding' } />
 

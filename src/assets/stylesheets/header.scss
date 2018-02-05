@@ -209,7 +209,7 @@ input#location {
     }
 
     #location {
-      width: calc(100% - 2px);
+      width: 100%;
       display: block;
       border-top-right-radius: 5px;
       border-bottom-left-radius: 0;
@@ -247,5 +247,40 @@ input#location {
     white-space: nowrap;
     border-bottom: solid 1px lightgray;
     font-size: 16px;
+  }
+}
+
+.modal {
+  .search_inputs,
+  #location,
+  .DateRangePicker {
+    width: 100%;
+    min-width: 100%;
+    float: left;
+    display: block;
+  }
+
+  #location,
+  .DateRangePicker {
+    border-radius: 5px !important;
+  }
+
+  .DateRangePicker {
+    margin-top: 10px;
+  }
+
+  #header_search_form .search_inputs {
+    margin: 0;
+  }
+
+  #header_search_form {
+    .search_inputs {
+      & + a {
+        button {
+          width: 100%;
+          margin: 10px auto !important;
+        }
+      }
+    }
   }
 }
