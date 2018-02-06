@@ -19,7 +19,7 @@ export default class UserManagement extends Component {
           <UserProfileMenu {...this.props} />
         </div>
         <div className='col-xs-12 col-sm-9'>
-          <UserNotificationSettings {...this.props} />>
+          <UserNotificationSettings {...this.props} />
         </div>
       </div>
     )
