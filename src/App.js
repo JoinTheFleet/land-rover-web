@@ -123,6 +123,7 @@ export default class App extends Component {
     this.addedWishListToListing = this.addedWishListToListing.bind(this);
     this.removeWishListFromListing = this.removeWishListFromListing.bind(this);
     this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   componentWillMount() {
@@ -162,6 +163,10 @@ export default class App extends Component {
                           this.setState({ configuration: response.data.data.configuration });
                         })
                         .catch(error => { Alert.error(LocalizationService.formatMessage('configurations.could_not_fetch')); });
+  }
+
+  clearFilters() {
+    this.setState({ filters: undefined });
   }
 
   setupEvents() {
@@ -612,6 +617,7 @@ export default class App extends Component {
                                        handleDatesChange={ this.handleDatesChange }
                                        handleLocationSelect={ this.handleLocationSelect }
                                        handleSearch={ this.performSearch }
+                                       clearFilters={ this.clearFilters }
                                        startDate={ this.state.startDate }
                                        endDate={ this.state.endDate }
                                        locationName={ this.state.locationName }
@@ -653,6 +659,7 @@ export default class App extends Component {
                                        handleDatesChange={ this.handleDatesChange }
                                        handleLocationSelect={ this.handleLocationSelect }
                                        handleSearch={ this.performSearch }
+                                       clearFilters={ this.clearFilters }
                                        startDate={ this.state.startDate }
                                        endDate={ this.state.endDate }
                                        locationName={ this.state.locationName }
