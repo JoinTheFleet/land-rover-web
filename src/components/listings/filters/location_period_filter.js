@@ -45,6 +45,10 @@ export default class ListingPeriodFilter extends Component {
                   if (this.props.hideSearchResults) {
                     this.props.hideSearchResults();
                   }
+                  if (this.props.shouldClearFilters) {
+                    this.props.clearFilters();
+                  }
+
                   this.props.handleSearch();
                 }}>
           <FormattedMessage id="application.search" />

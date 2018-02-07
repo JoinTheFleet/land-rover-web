@@ -139,7 +139,7 @@ export default class Homescreen extends Component {
               </span>
               <br/>
             </p>
-            <LocationPeriodFilter {...this.props} homescreen={ true } />
+            <LocationPeriodFilter {...this.props} homescreen={ true } shouldClearFilters={true} />
           </div>
           <div id="homescreen_top_banner_insurance_div" className="twilight-blue fs-20 ls-dot-five white-text text-uppercase">
             <FormattedMessage id="homescreen.insurance_partner" />
