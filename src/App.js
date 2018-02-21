@@ -89,7 +89,6 @@ export default class App extends Component {
       boundingBox: undefined,
       sort: 'distance',
       viewsProps: {},
-      visitedDashboard: false,
       wishListModalOpen: false,
       limit: 20,
       page: 0,
@@ -246,7 +245,6 @@ export default class App extends Component {
 
     if (accessToken.length > 0) {
       let newState = {
-        visitedDashboard: this.state.accessToken,
         accessToken: accessToken,
         showAlerts: true,
         modalName: undefined
@@ -604,29 +602,23 @@ export default class App extends Component {
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
                 <Route exact path="/" render={(props) => {
-                  if (this.state.accessToken && !this.state.visitedDashboard) {
-                    this.setState({ visitedDashboard: true });
-                    return <Redirect to='/listings' />
-                  }
-                  else {
-                    return <Homescreen {...props}
-                                       handleReferral={ this.handleReferral }
-                                       currentUserRole={ this.state.currentUserRole }
-                                       handleLocationChange={ this.handleLocationChange }
-                                       handleLocationFocus={ this.handleLocationFocus }
-                                       handleDatesChange={ this.handleDatesChange }
-                                       handleLocationSelect={ this.handleLocationSelect }
-                                       handleSearch={ this.performSearch }
-                                       clearFilters={ this.clearFilters }
-                                       startDate={ this.state.startDate }
-                                       endDate={ this.state.endDate }
-                                       locationName={ this.state.locationName }
-                                       hideSearchResults={ this.hideSearchResults }
-                                       searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true }
-                                       disableSearchButton={ disableSearchButton }
-                                       toggleWishListModal={ this.toggleWishListModal } />
-                  }
+                  return <Homescreen {...props}
+                                      handleReferral={ this.handleReferral }
+                                      currentUserRole={ this.state.currentUserRole }
+                                      handleLocationChange={ this.handleLocationChange }
+                                      handleLocationFocus={ this.handleLocationFocus }
+                                      handleDatesChange={ this.handleDatesChange }
+                                      handleLocationSelect={ this.handleLocationSelect }
+                                      handleSearch={ this.performSearch }
+                                      clearFilters={ this.clearFilters }
+                                      startDate={ this.state.startDate }
+                                      endDate={ this.state.endDate }
+                                      locationName={ this.state.locationName }
+                                      hideSearchResults={ this.hideSearchResults }
+                                      searchLocations={ this.state.searchLocations }
+                                      showSearchButton={ true }
+                                      disableSearchButton={ disableSearchButton }
+                                      toggleWishListModal={ this.toggleWishListModal } />
                 }} />
 
                 <Route exact path='/listings/new' render={(props) => {
@@ -646,29 +638,23 @@ export default class App extends Component {
                 }} />
 
                 <Route path="/referral/:referral_code" render={(props) => {
-                  if (this.state.accessToken && !this.state.visitedDashboard) {
-                    this.setState({ visitedDashboard: true });
-                    return <Redirect to='/profile' />
-                  }
-                  else {
-                    return <Homescreen {...props}
-                                       handleReferral={ this.handleReferral }
-                                       currentUserRole={ this.state.currentUserRole }
-                                       handleLocationChange={ this.handleLocationChange }
-                                       handleLocationFocus={ this.handleLocationFocus }
-                                       handleDatesChange={ this.handleDatesChange }
-                                       handleLocationSelect={ this.handleLocationSelect }
-                                       handleSearch={ this.performSearch }
-                                       clearFilters={ this.clearFilters }
-                                       startDate={ this.state.startDate }
-                                       endDate={ this.state.endDate }
-                                       locationName={ this.state.locationName }
-                                       hideSearchResults={ this.hideSearchResults }
-                                       searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true }
-                                       disableSearchButton={ disableSearchButton }
-                                       toggleWishListModal={ this.toggleWishListModal } />
-                  }
+                  return <Homescreen {...props}
+                                    handleReferral={ this.handleReferral }
+                                    currentUserRole={ this.state.currentUserRole }
+                                    handleLocationChange={ this.handleLocationChange }
+                                    handleLocationFocus={ this.handleLocationFocus }
+                                    handleDatesChange={ this.handleDatesChange }
+                                    handleLocationSelect={ this.handleLocationSelect }
+                                    handleSearch={ this.performSearch }
+                                    clearFilters={ this.clearFilters }
+                                    startDate={ this.state.startDate }
+                                    endDate={ this.state.endDate }
+                                    locationName={ this.state.locationName }
+                                    hideSearchResults={ this.hideSearchResults }
+                                    searchLocations={ this.state.searchLocations }
+                                    showSearchButton={ true }
+                                    disableSearchButton={ disableSearchButton }
+                                    toggleWishListModal={ this.toggleWishListModal } />
                 }} />
 
                 <Route path="/listings/:id" render={(props) => {
