@@ -11,7 +11,6 @@ import fleetAXA from '../../assets/images/fleet-axa.png';
 import fleetKey from '../../assets/images/fleet-key.png';
 import fleetSquares from '../../assets/images/fleet-squares.png';
 
-
 export default class OwnerInformation extends Component {
   render() {
     return (
@@ -20,10 +19,10 @@ export default class OwnerInformation extends Component {
           <div className='col-xs-12 col-xs-offset-0 col-sm-4 col-sm-offset-2 hero-panel'>
             <div className='cta'>
               <div className='header'>
-                List on fleet
+                { LocalizationService.formatMessage('owner_information.title') }
               </div>
               <div className='text'>
-                Earn money as a Fleet owner
+              { LocalizationService.formatMessage('owner_information.subtitle') }
               </div>
             </div>
           </div>
@@ -31,17 +30,17 @@ export default class OwnerInformation extends Component {
             <div className='start-cta-holder'>
               <div className='start-cta'>
                 <div className='text-left header'>
-                  PUT YOUR CAR TO WORK
+                { LocalizationService.formatMessage('owner_information.prompt_1') }
                 </div>
                 <div className='text-left subheader'>
-                  Earn upto €1000 per month
+                { LocalizationService.formatMessage('owner_information.prompt_2') }
                 </div>
                 <div className='text-left text'>
                   <ul>
-                    <li>Free to list</li>
-                    <li>Keep 95% of the fee you set</li>
-                    <li>Comprehensive insurace from AXA</li>
-                    <li>Add your car in less than 20 minutes</li>
+                    <li>{ LocalizationService.formatMessage('owner_information.point_1') }</li>
+                    <li>{ LocalizationService.formatMessage('owner_information.point_2') }</li>
+                    <li>{ LocalizationService.formatMessage('owner_information.point_3') }</li>
+                    <li>{ LocalizationService.formatMessage('owner_information.point_4') }</li>
                   </ul>
                 </div>
               </div>
@@ -54,10 +53,10 @@ export default class OwnerInformation extends Component {
                   <img src={ fleetKey } alt='Key' />
                 </div>
                 <div className='header'>
-                  Why join Fleet?
+                  { LocalizationService.formatMessage('owner_information.card_1_title') }
                 </div>
                 <div className='text'>
-                  Fleet is the easy and safe way to earn money with your car as and when you want. For every car - whether it's fun, affordable, or exotic - we'll help you find a driver! 
+                  { LocalizationService.formatMessage('owner_information.card_1_text') }
                 </div>
               </div>
               <div className='col-xs-4 card'>
@@ -65,10 +64,10 @@ export default class OwnerInformation extends Component {
                   <img src={ fleetSquares } alt='Squares' />
                 </div>
                 <div className='header'>
-                  You call the shots
+                  { LocalizationService.formatMessage('owner_information.card_2_title') }
                 </div>
                 <div className='text'>
-                  Owners get final say on any request. Set your own rules and price, mark availability on the calendar, and meet the driver face-to-face.
+                    { LocalizationService.formatMessage('owner_information.card_2_text') }
                 </div>
               </div>
               <div className='col-xs-4 card'>
@@ -76,10 +75,10 @@ export default class OwnerInformation extends Component {
                   <img src={ fleetAXA } alt='AXA' />
                 </div>
                 <div className='header'>
-                  Guaranteed protection
+                  { LocalizationService.formatMessage('owner_information.card_3_title') }
                 </div>
                 <div className='text'>
-                  You’re covered: every rental is fully insured by AXA with 24-hour breakdown assistance. Peer-review and driver vetting ensure a quality community and peace of mind for your car.
+                  { LocalizationService.formatMessage('owner_information.card_3_text') }
                 </div>
               </div>
             </div>
@@ -91,10 +90,10 @@ export default class OwnerInformation extends Component {
               <img src={ fleetKey } alt='Key' />
             </div>
             <div className='header'>
-              Why join Fleet?
+              { LocalizationService.formatMessage('owner_information.card_1_title') }
             </div>
             <div className='text'>
-              Fleet is the easy and safe way to earn money with your car as and when you want. For every car - whether it's fun, affordable, or exotic - we'll help you find a driver! 
+              { LocalizationService.formatMessage('owner_information.card_1_text') }
             </div>
           </div>
           <div className='col-xs-12 card'>
@@ -102,10 +101,10 @@ export default class OwnerInformation extends Component {
               <img src={ fleetSquares } alt='Squares' />
             </div>
             <div className='header'>
-              You call the shots
+              { LocalizationService.formatMessage('owner_information.card_2_title') }
             </div>
             <div className='text'>
-              Owners get final say on any request. Set your own rules and price, mark availability on the calendar, and meet the driver face-to-face.
+                { LocalizationService.formatMessage('owner_information.card_2_text') }
             </div>
           </div>
           <div className='col-xs-12 card'>
@@ -113,10 +112,10 @@ export default class OwnerInformation extends Component {
               <img src={ fleetAXA } alt='AXA' />
             </div>
             <div className='header'>
-              Guaranteed protection
+              { LocalizationService.formatMessage('owner_information.card_3_title') }
             </div>
             <div className='text'>
-              You’re covered: every rental is fully insured by AXA with 24-hour breakdown assistance. Peer-review and driver vetting ensure a quality community and peace of mind for your car.
+              { LocalizationService.formatMessage('owner_information.card_3_text') }
             </div>
           </div>
         </div>
