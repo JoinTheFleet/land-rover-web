@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import FeaturedIn from './featured_in';
+import Card from './card';
 
 import fleetAXA from '../../assets/images/fleet-axa.png';
 import fleetKey from '../../assets/images/fleet-key.png';
@@ -44,76 +45,40 @@ export default class OwnerInformation extends Component {
           </div>
           <div className='col-xs-12 no-side-padding card-overlay hidden-xs'>
             <div className='col-xs-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 cards'>
-              <div className='col-xs-4 card'>
-                <div className='image'>
-                  <img src={ fleetKey } alt='Key' />
-                </div>
-                <div className='header'>
-                  { LocalizationService.formatMessage('owner_information.card_1_title') }
-                </div>
-                <div className='text'>
-                  { LocalizationService.formatMessage('owner_information.card_1_text') }
-                </div>
-              </div>
-              <div className='col-xs-4 card'>
-                <div className='image'>
-                  <img src={ fleetSquares } alt='Squares' />
-                </div>
-                <div className='header'>
-                  { LocalizationService.formatMessage('owner_information.card_2_title') }
-                </div>
-                <div className='text'>
-                    { LocalizationService.formatMessage('owner_information.card_2_text') }
-                </div>
-              </div>
-              <div className='col-xs-4 card'>
-                <div className='image'>
-                  <img src={ fleetAXA } alt='AXA' />
-                </div>
-                <div className='header'>
-                  { LocalizationService.formatMessage('owner_information.card_3_title') }
-                </div>
-                <div className='text'>
-                  { LocalizationService.formatMessage('owner_information.card_3_text') }
-                </div>
-              </div>
+              <Card className='col-xs-4'
+                    alt='Key'
+                    title={ LocalizationService.formatMessage('owner_information.card_1_title') }
+                    text={ LocalizationService.formatMessage('owner_information.card_1_text') }
+                    img={ fleetKey } />
+              <Card className='col-xs-4'
+                    alt='Squares'
+                    title={ LocalizationService.formatMessage('owner_information.card_2_title') }
+                    text={ LocalizationService.formatMessage('owner_information.card_2_text') }
+                    img={ fleetSquares } />
+              <Card className='col-xs-4'
+                    alt='AXA'
+                    title={ LocalizationService.formatMessage('owner_information.card_2_title') }
+                    text={ LocalizationService.formatMessage('owner_information.card_2_text') }
+                    img={ fleetAXA } />
             </div>
           </div>
         </div>
         <div className='col-xs-12 visible-xs cards'>
-          <div className='col-xs-12 card'>
-            <div className='image'>
-              <img src={ fleetKey } alt='Key' />
-            </div>
-            <div className='header'>
-              { LocalizationService.formatMessage('owner_information.card_1_title') }
-            </div>
-            <div className='text'>
-              { LocalizationService.formatMessage('owner_information.card_1_text') }
-            </div>
-          </div>
-          <div className='col-xs-12 card'>
-            <div className='image'>
-              <img src={ fleetSquares } alt='Squares' />
-            </div>
-            <div className='header'>
-              { LocalizationService.formatMessage('owner_information.card_2_title') }
-            </div>
-            <div className='text'>
-                { LocalizationService.formatMessage('owner_information.card_2_text') }
-            </div>
-          </div>
-          <div className='col-xs-12 card'>
-            <div className='image'>
-              <img src={ fleetAXA } alt='AXA' />
-            </div>
-            <div className='header'>
-              { LocalizationService.formatMessage('owner_information.card_3_title') }
-            </div>
-            <div className='text'>
-              { LocalizationService.formatMessage('owner_information.card_3_text') }
-            </div>
-          </div>
+          <Card className='col-xs-12'
+                alt='Key'
+                title={ LocalizationService.formatMessage('owner_information.card_1_title') }
+                text={ LocalizationService.formatMessage('owner_information.card_1_text') }
+                img={ fleetKey } />
+          <Card className='col-xs-12'
+                alt='Squares'
+                title={ LocalizationService.formatMessage('owner_information.card_2_title') }
+                text={ LocalizationService.formatMessage('owner_information.card_2_text') }
+                img={ fleetSquares } />
+          <Card className='col-xs-12'
+                alt='AXA'
+                title={ LocalizationService.formatMessage('owner_information.card_2_title') }
+                text={ LocalizationService.formatMessage('owner_information.card_2_text') }
+                img={ fleetAXA } />
         </div>
         <FeaturedIn />
         <div className='col-xs-12 no-side-padding faqs'>
