@@ -20,7 +20,7 @@ export default class OwnerInformation extends Component {
                 { LocalizationService.formatMessage('owner_information.title') }
               </div>
               <div className='text'>
-              { LocalizationService.formatMessage('owner_information.subtitle') }
+                { LocalizationService.formatMessage('owner_information.subtitle') }
               </div>
             </div>
           </div>
@@ -28,10 +28,10 @@ export default class OwnerInformation extends Component {
             <div className='start-cta-holder'>
               <div className='start-cta'>
                 <div className='text-left header'>
-                { LocalizationService.formatMessage('owner_information.prompt_1') }
+                  { LocalizationService.formatMessage('owner_information.prompt_1') }
                 </div>
                 <div className='text-left subheader'>
-                { LocalizationService.formatMessage('owner_information.prompt_2') }
+                  { LocalizationService.formatMessage('owner_information.prompt_2') }
                 </div>
                 <div className='text-left text'>
                   <ul>
@@ -40,6 +40,9 @@ export default class OwnerInformation extends Component {
                     <li>{ LocalizationService.formatMessage('owner_information.point_3') }</li>
                     <li>{ LocalizationService.formatMessage('owner_information.point_4') }</li>
                   </ul>
+                </div>
+                <div className='btn btn-join' onClick={() => { this.props.toggleModal('registration') }} >
+                  { LocalizationService.formatMessage('owner_information.join_free') }
                 </div>
               </div>
             </div>
