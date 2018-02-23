@@ -88,7 +88,18 @@ export default class OwnerInformation extends Component {
         <FAQ title={ LocalizationService.formatMessage('owner_information.faq') }
              faqPrefix='owner_information.faq_'
              faqCount={ 5 } />
-        <div className='col-xs-12 no-side-padding know-more'>
+        <div className='col-xs-12 no-side-padding subhero owner'>
+          <div className='col-xs-12 know-more text-center'>
+            <div className='header'>
+              { LocalizationService.formatMessage('owner_information.know_more') }
+            </div>
+            <div className='subheader'>
+            { LocalizationService.formatMessage('owner_information.help_guide') }
+            </div>
+            <a className='btn btn-join' href={ process.env.REACT_APP_OWNER_HELP }>
+              { LocalizationService.formatMessage('owner_information.learn_more') }
+            </a>
+          </div>
         </div>
         <div className='col-xs-12 no-side-padding on-your-phone'>
         </div>

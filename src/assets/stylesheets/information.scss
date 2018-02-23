@@ -186,6 +186,40 @@
       background-color: rgba(255, 255, 255, 0.9);
     }
   }
+
+  .subhero {
+    min-height: 350px;
+    background-size: cover;
+
+    &.owner {
+      background-position: center 55%;
+      background-image: url(../images/owner-subhero.jpg);
+    }
+  }
+
+  .know-more {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: auto;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+
+    .header {
+      font-weight: bold;
+      font-size: 32px;
+      text-transform: uppercase;
+      padding-bottom: 5px;
+    }
+
+    .subheader {
+      font-size: 19px;
+      padding-bottom: 20px;
+    }
+  }
 }
 
 .faq {
