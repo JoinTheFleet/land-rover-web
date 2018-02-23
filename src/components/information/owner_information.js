@@ -3,6 +3,7 @@ import LocalizationService from '../../shared/libraries/localization_service';
 
 import FeaturedIn from './featured_in';
 import Card from './card';
+import FAQ from './faq';
 
 import fleetAXA from '../../assets/images/fleet-axa.png';
 import fleetKey from '../../assets/images/fleet-key.png';
@@ -81,8 +82,9 @@ export default class OwnerInformation extends Component {
                 img={ fleetAXA } />
         </div>
         <FeaturedIn />
-        <div className='col-xs-12 no-side-padding faqs'>
-        </div>
+        <FAQ title={ LocalizationService.formatMessage('owner_information.faq') }
+             faqPrefix='owner_information.faq_'
+             faqCount={ 5 } />
         <div className='col-xs-12 no-side-padding know-more'>
         </div>
         <div className='col-xs-12 no-side-padding on-your-phone'>

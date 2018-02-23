@@ -1,4 +1,20 @@
 .information {
+  .faq {
+    padding-top: 50px;
+
+    .title {
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .faqs {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+
   .card {
     margin-top: 20px;
     margin-bottom: 10px;
@@ -149,6 +165,42 @@
       bottom: 0;
       height: 40%;
       background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+.faq {
+  .panel {
+    .caret {
+      margin-top: 5px;
+    }
+
+    & + .panel {
+      margin-top: 0;
+    }
+
+    border-radius: 0;
+    border-color: $secondary-color;
+
+    .panel-heading {
+      border-radius: 0;
+      cursor: pointer;
+      background-color: $secondary-color;
+      color: white;
+    }
+
+    .panel-body {
+      a {
+        color: $secondary-color;
+        text-decoration: underline;
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: $secondary-color;
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
