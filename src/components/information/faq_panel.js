@@ -22,7 +22,7 @@ export default class FAQPanel extends Component {
         <div className="panel-heading" role="tab" onClick={ this.toggle }>
           <h4 className="panel-title">
             { LocalizationService.formatMessage(`${this.props.faqPrefix}${this.props.id}_title`) }
-            <span className='pull-right caret' />
+            <span className={ `pull-right caret ${this.state.open ? '' : 'caret-left'}` } />
           </h4>
         </div>
         <div className={ `panel-collapse ${this.state.open ? '' : 'collapse'} `}>
