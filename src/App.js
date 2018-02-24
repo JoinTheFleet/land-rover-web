@@ -21,6 +21,10 @@ import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
 import Bookings from './components/bookings/bookings';
+
+import RenterInformation from './components/information/renter_information';
+import OwnerInformation from './components/information/owner_information';
+
 import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
@@ -606,7 +610,7 @@ export default class App extends Component {
                 <Route exact path="/" render={(props) => {
                   if (this.state.accessToken && !this.state.visitedDashboard) {
                     this.setState({ visitedDashboard: true });
-                    return <Redirect to='/listings' />
+                    return <Redirect to='/profile' />
                   }
                   else {
                     return <Homescreen {...props}
@@ -628,6 +632,13 @@ export default class App extends Component {
                                        toggleWishListModal={ this.toggleWishListModal } />
                   }
                 }} />
+
+                <Route exact path='/renters' render={(props) => {
+                  return <RenterInformation {...props} toggleModal={ this.toggleModal } />
+                }  } />
+                <Route exact path='/owners' render={(props) => {
+                  return <OwnerInformation {...props} toggleModal={ this.toggleModal } />
+                }  } />
 
                 <Route exact path='/listings/new' render={(props) => {
                   if (!this.state.accessToken) {

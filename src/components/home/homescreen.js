@@ -6,15 +6,11 @@ import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
 import FeaturesList from './features_list';
+import FeaturedIn from '../information/featured_in';
 
 // Images
 import topBanner from '../../assets/images/homescreen_top_banner.jpg';
 import axaLogo from '../../assets/images/axa-logo.png';
-import independentLogo from '../../assets/images/independent-grey.png';
-import newstalkLogo from '../../assets/images/newstalk-grey.png';
-import foraLogo from '../../assets/images/fora-grey.png';
-import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
-import irishtimesLogo from '../../assets/images/irish-times-grey.png';
 
 import TopSellersService from '../../shared/services/listings/top_sellers_service';
 import NearbyListingsService from '../../shared/services/listings/nearby_listings_service';
@@ -156,16 +152,7 @@ export default class Homescreen extends Component {
         <FeaturesList />
         <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
-        <div id="featured_in_div" className="col-xs-12 text-center">
-          <span className="tertiary-text-color">
-            <FormattedMessage id="homescreen.featured_in" />
-          </span>
-          <img src={independentLogo} alt="Independent logo" />
-          <img src={newstalkLogo} alt="Newstalk logo" />
-          <img src={foraLogo} alt="Fora logo" />
-          <img src={rteradioLogo} alt="RTE Radio logo" />
-          <img src={irishtimesLogo} alt="Irish Times logo" />
-        </div>
+        <FeaturedIn />
       </div>
     )
   }
