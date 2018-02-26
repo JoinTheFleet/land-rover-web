@@ -1,4 +1,95 @@
 .information {
+  .app-preview {
+    max-height: 400px;
+    width: auto;
+    max-width: 100%;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+
+    @media screen and (min-width: 768px) {
+      position: absolute;
+      padding: 5%;
+    }
+  }
+
+  .buttons {
+    padding-top: 20px;
+    text-align: center;
+
+    @media screen and (min-width: 768px) {
+      text-align: inherit;
+    }
+
+    .ios,
+    .android {
+      display: inline-block;
+    }
+
+    img {
+      width: 170px;
+      padding-right: 10px;
+      padding-bottom: 10px;
+    }
+  }
+
+  .on-your-phone {
+    .container {
+      min-height: 400px;
+      height: 100%;
+    }
+
+    .get-fleet {
+      height: 100%;
+
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 15px;
+      padding-right: 15px;
+
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+
+      @media screen and (min-width: 768px) {
+        padding-left: 30px;
+        padding-right: 30px;
+        position: absolute;
+        width: 100%;
+      }
+
+      @media screen and (min-width: 1500px) {
+        height: auto;
+      }
+
+      .header {
+        font-size: 32px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .subheader {
+        font-size: 19px;
+        margin-bottom: 30px;
+      }
+
+      .text {
+        font-size: 17px;
+        font-weight: lighter;
+
+        ul {
+          padding-left: 15px;
+        }
+
+        li {
+          list-style-type: circle;
+        }
+      }
+    }
+  }
+
   .btn-join {
     font-size: 19px;
     padding-top: 10px;
@@ -106,6 +197,10 @@
         @media screen and (min-width: 768px) {
           width: auto;
           text-align: left;
+        }
+
+        @media screen and (min-width: 992px) {
+          padding-left: 25px;
         }
 
         position: relative;
