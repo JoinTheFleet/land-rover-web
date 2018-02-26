@@ -15,7 +15,7 @@ export default class FAQ extends Component {
           { this.props.title }
         </div>
         <div className='faqs col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2'>
-          <div className="panel-group">
+          <div className="col-xs-12 panel-group">
             { faqs }
           </div>
         </div>
