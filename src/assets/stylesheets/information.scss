@@ -169,6 +169,11 @@
       background-image: url(../images/owner-hero.jpg);
     }
 
+    &.renter {
+      background-position: center 49%;
+      background-image: url(../images/renter-hero.jpg);
+    }
+
     .cta-panel {
       top: 50%;
 
@@ -290,6 +295,25 @@
       background-position: center 55%;
       background-image: url(../images/owner-subhero.jpg);
     }
+
+    &.renter {
+      background-position: center 49%;
+      background-image: url(../images/renter-subhero.jpg);
+    }
+  }
+
+  &.renter {
+    .hero {
+      @media screen and (min-width: 768px) {
+        .hero-panel {
+          height: 55%;
+        }
+      }
+
+      .card-overlay {
+        height: 45%;
+      }
+    }
   }
 
   .know-more {
@@ -349,6 +373,23 @@
           text-decoration: underline;
         }
       }
+    }
+  }
+}
+
+.faq-cta {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 19px;
+
+  a {
+    color: $secondary-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: $secondary-color;
+      text-decoration: none;
     }
   }
 }
