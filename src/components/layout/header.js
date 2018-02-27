@@ -10,6 +10,9 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import logo from '../../assets/images/menu_logo.png';
 import searchIcon from '../../assets/images/search_icon.png';
 
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 export default class Header extends Component {
   constructor(props) {
     super(props);
@@ -82,6 +85,22 @@ export default class Header extends Component {
 
             <div className={'pull-right header-right-options' + (this.props.loggedIn ? ' hide' : '') }>
               <a id="header_list_car_link" className="header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.list_your_car') } </a>
+              <DropdownButton title={ LocalizationService.formatMessage('learn_more.learn_more') } bsStyle='primary' className='hidden-xs' noCaret pullRight>
+                <MenuItem eventKey="1">
+                  <Link to='/owners'>{ LocalizationService.formatMessage('learn_more.earn_money') }</Link>
+                </MenuItem>
+                <MenuItem eventKey="2">
+                  <Link to='/renters'>{ LocalizationService.formatMessage('learn_more.drive_on_fleet') }</Link>
+                </MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey="3" href={ process.env.REACT_APP_FLEET_SUPPORT_URL }>
+                  { LocalizationService.formatMessage('learn_more.get_help') }
+                </MenuItem>
+                <MenuItem eventKey="4" href={ process.env.REACT_APP_MEDIUM_URL }>
+                  { LocalizationService.formatMessage('learn_more.blog') }
+                </MenuItem>
+              </DropdownButton>
+
               <a id="header_login_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
               <a id="header_register_link" className="hidden-xs header-right-option static-link white-text" onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
             </div>
