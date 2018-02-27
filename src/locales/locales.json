@@ -82,7 +82,17 @@
     "menu.signup": "Sign Up",
     "menu.login": "Log In",
     "menu.logout": "Log Out",
+    "menu.renters": "Drive on Fleet",
+    "menu.owners": "Earn Money",
+    "menu.get_help": "Get Help",
+    "menu.blog": "Blog",
     "menu.notifications": "Notifications",
+
+    "learn_more.learn_more": "Learn More",
+    "learn_more.drive_on_fleet": "Drive on Fleet",
+    "learn_more.earn_money": "Earn Money",
+    "learn_more.get_help": "Get Help",
+    "learn_more.blog": "Blog",
 
     "calendar.manage_availability": "Manage Availability",
     "calendar.description": "This is your vehicle calendar. Choose between your cars using the drop down menu at the top of the page. Use this page to control days that your cars are available or unavailable to avoid rejecting rentals and lowering your acceptance rating. You can also add additional pricing to certain dates - for example holidays or occasions that you require higher rates for your car.",

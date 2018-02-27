@@ -9,7 +9,7 @@ import Constants from '../../miscellaneous/constants';
 
 import CloseOnEscape from 'react-close-on-escape';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 const navigationSections = Constants.navigationSections();
 
@@ -45,9 +45,13 @@ export default class HeaderMenu extends Component {
     let items = [
       navigationSections.home,
       navigationSections.signup,
-      navigationSections.login
+      navigationSections.login,
+      navigationSections.earn_money,
+      navigationSections.drive_on_fleet,
+      navigationSections.get_help,
+      navigationSections.blog
     ];
-    let itemsWithDivider = ['home'];
+    let itemsWithDivider = [navigationSections.home, navigationSections.login];
     let itemsWithModal = ['login', 'signup', 'logout'];
 
     if (this.props.loggedIn) {
@@ -80,24 +84,39 @@ export default class HeaderMenu extends Component {
         );
       }
 
-      menuItems.push(
-        (<div key={'header_menu_' + item} className="menu-item">
-          <NavLink  to={ `/${item}`}
-                    activeClassName={ 'secondary-text-color' }
-                    onClick={ (event) => {
-                      if (itemsWithModal.indexOf(item) > -1) {
-                        event.preventDefault();
-                        this.props.toggleModal(item);
-                      }
-                      else {
-                        this.props.handleMenuItemSelect(item);
-                      }
-                    }} >
-            <FormattedMessage id={'menu.' + item} />
-            { count }
-          </NavLink>
-        </div>)
-      );
+      if (item === navigationSections.get_help || item === navigationSections.blog) {
+        let link = process.env.REACT_APP_MEDIUM_URL;
+
+        if (item === navigationSections.get_help) {
+          link = process.env.REACT_APP_FLEET_SUPPORT_URL;
+        }
+
+        menuItems.push(
+          <div key={'header_menu_' + item} className="menu-item">
+            <a href={ link }><FormattedMessage id={'menu.' + item} /></a>
+          </div>
+        )
+      }
+      else {
+        menuItems.push(
+          (<div key={'header_menu_' + item} className="menu-item">
+            <NavLink  to={ `/${item}`}
+                      activeClassName={ 'secondary-text-color' }
+                      onClick={ (event) => {
+                        if (itemsWithModal.indexOf(item) > -1) {
+                          event.preventDefault();
+                          this.props.toggleModal(item);
+                        }
+                        else {
+                          this.props.handleMenuItemSelect(item);
+                        }
+                      }} >
+              <FormattedMessage id={'menu.' + item} />
+              { count }
+            </NavLink>
+          </div>)
+        );
+      }
 
       if (itemsWithDivider.indexOf(item) > -1) {
         menuItems.push(

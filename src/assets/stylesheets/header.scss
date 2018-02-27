@@ -4,13 +4,44 @@
   height: 80px;
   padding-top: 14px;
 
+  .header-search-mobile-icon {
+    position: relative;
+    top: 5px;
+  }
+
+  #learn-more {
+    display: none;
+
+    @media screen and (min-width: 1100px) {
+      display: inline-block;
+    }
+  }
+
+  .header-right-options {
+    display: none;
+
+    @media screen and (min-width: 992px) {
+      display: inherit;
+    }
+
+    position: relative;
+    top: 15px;
+
+    @media screen and (min-width: 1100px) {
+      top: 10px;
+    }
+
+    @media screen and (min-width: 1200px) {
+      top: 7px;
+    }
+  }
+
   .header-logo {
     cursor: pointer;
 
     & + #header_search_form {
-      margin-left: 20px;
       position: relative;
-      top: 3px;
+      top: 5px;
     }
   }
 
@@ -19,6 +50,12 @@
     border: solid 1px white;
     height: 38px;
     line-height: 38px;
+
+    display: none;
+
+    @media screen and (min-width: 1200px) {
+      display: inline-block;
+    }
   }
 
   .header-right-option {
@@ -32,6 +69,45 @@
 
     &:last-child {
       margin-right: 18px;
+    }
+  }
+
+  .dropdown {
+    display: inline-block;
+
+    .dropdown-menu {
+      margin-right: 10px;
+      margin-top: 10px;
+
+      a {
+        color: $secondary-color;
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: white;
+          background-color: $secondary-color;
+        }
+      }
+    }
+
+    button.dropdown-toggle {
+      background-color: transparent;
+      box-shadow: none;
+      color: white;
+      border-width: 0;
+      margin-left: 10px;
+      margin-right: 10px;
+
+      &:active,
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        box-shadow: none;
+        text-decoration: none;
+        color: white;
+        border-width: 0;
+      }
     }
   }
 }
@@ -97,7 +173,7 @@ input#location {
   display: inline-block;
 
   button {
-    margin-top: -2px;
+    margin-top: -3px;
   }
 }
 
