@@ -82,6 +82,10 @@
     "menu.signup": "Sign Up",
     "menu.login": "Log In",
     "menu.logout": "Log Out",
+    "menu.renters": "Drive on Fleet",
+    "menu.owners": "Earn Money",
+    "menu.get_help": "Get Help",
+    "menu.blog": "Blog",
     "menu.notifications": "Notifications",
 
     "learn_more.learn_more": "Learn More",
