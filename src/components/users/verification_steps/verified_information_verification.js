@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 
 export default class VerifiedInformationVerification extends Component {
   verified() {
-    return false;
+    return true;
+  }
+
+  title() {
+    return 'Verified Information';
   }
 
   render() {

@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 
 export default class ProfileInformationVerification extends Component {
   verified() {
-    return false;
+    return true;
+  }
+
+  title() {
+    return 'Profile Information';
   }
 
   render() {

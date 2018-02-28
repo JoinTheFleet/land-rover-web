@@ -6,11 +6,14 @@ import Modal from '../miscellaneous/modal';
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
 
+import UsersService from '../../shared/services/users/users_service';
+
 export default class UserVerificationModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      user: undefined,
       currentStepNumber: 1,
       verificationSteps: [],
       componentUpdated: undefined
@@ -21,6 +24,7 @@ export default class UserVerificationModal extends Component {
     this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
   showRenterVerifications() {
@@ -33,13 +37,20 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    this.buildVerifications();
+    this.updateUser();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.user !== this.props.user) {
-      this.buildVerifications();
-    }
+  updateUser(skipBuildVerifications) {
+    UsersService.show('me')
+                .then(response => {
+                  this.setState({
+                    user: response.data.data.user
+                  }, () => {
+                    if (!skipBuildVerifications) {
+                      this.buildVerifications();
+                    }
+                  });
+                });
   }
 
   buildVerifications() {
@@ -77,7 +88,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep ref={ this.setVerificationComponent } />;
+      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } />;
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
