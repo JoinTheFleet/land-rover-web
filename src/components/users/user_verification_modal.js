@@ -26,6 +26,16 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
+    this.buildVerifications();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      this.buildVerifications();
+    }
+  }
+
+  buildVerifications() {
     if (this.showRenterVerifications()) {
       this.buildRenterVerificationSteps();
     }
