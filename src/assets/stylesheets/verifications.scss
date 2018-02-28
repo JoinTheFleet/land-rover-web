@@ -4,6 +4,31 @@
     border-radius: 0;
     border-width: 0;
     background-color: white;
+
+    .close-login-modal-btn,
+    .title-font-weight {
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .title-font-weight {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .title-row {
+      background-color: $secondary-color;
+      color: white;
+
+      i {
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: -4px;
+        vertical-align: middle;
+        font-size: 16px;
+      }
+    }
     
 
     .button,
@@ -15,10 +40,32 @@
       line-height: 1.5;
     }
 
-    .button {
+    .button, 
+    .step-number {
+      text-align: center;
       background-color: $secondary-color;
       border-radius: 0;
       border-width: 0;
+      box-shadow: none;
+
+      &:hover,
+      &:active,
+      &:focus {
+        box-shadow: none;
+      }
+
+      padding-left: 0;
+      padding-right: 0;
+
+      font-size: 11px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+
+      @media screen and (min-width: 768px) {
+        font-size: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
     }
 
     .steps {
@@ -26,9 +73,7 @@
     }
 
     .step-number {
-      background-color: #23a9f6;
       opacity: 0.65;
-      text-align: center;
     }
 
     .steps {
