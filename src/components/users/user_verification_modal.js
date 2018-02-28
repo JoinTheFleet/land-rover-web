@@ -18,6 +18,7 @@ export default class UserVerificationModal extends Component {
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
     this.buildRenterVerificationSteps = this.buildRenterVerificationSteps.bind(this);
     this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
 
   showRenterVerifications() {
@@ -30,6 +31,12 @@ export default class UserVerificationModal extends Component {
     }
     else {
       this.buildOwnerVerificationSteps();
+    }
+  }
+
+  nextStep() {
+    if (this.state.currentStepNumber < this.state.verificationSteps.length) {
+      this.setState({ currentStepNumber: this.state.currentStepNumber + 1 })
     }
   }
 
@@ -59,7 +66,7 @@ export default class UserVerificationModal extends Component {
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
 
       return (
-        <Modal open={ this.props.open } modalClass='user-verification' hideCloseButton>
+        <Modal {...this.props} modalClass='user-verification' hideCloseButton>
           <div className='row'>
             <div className='col-xs-12 verification'>
               { currentVerificationStep }
@@ -96,8 +103,8 @@ export default class UserVerificationModal extends Component {
                   }
                 </ul>
               </div>
-              <button type='button' className='col-xs-2 btn button text-center' disabled={ disabledNext } >
-                Button
+              <button type='button' className='col-xs-2 btn button text-center' onClick={ this.nextStep } disabled={ false } >
+                Next
               </button>
             </div>
           </div>
