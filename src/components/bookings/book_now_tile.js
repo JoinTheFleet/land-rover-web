@@ -40,13 +40,13 @@ class BookNowTile extends Component {
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.updateUser = this.updateUser.bind(this);
-    this.showUserVerificationModal = this.showUserVerificationModal.bind(this);
+    this.toggleUserVerificationModal = this.toggleUserVerificationModal.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
   }
 
-  showUserVerificationModal() {
-    this.setState({ showUserVerificationModal: true });
+  toggleUserVerificationModal() {
+    this.setState({ showUserVerificationModal: !this.state.showUserVerificationModal });
   }
 
   updateUser() {
@@ -217,7 +217,7 @@ class BookNowTile extends Component {
       bookNowTileContent = (
         <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
           { LocalizationService.formatMessage('bookings.verify_info_before_booking') }
-          <Button className="login-to-book-button secondary-color white-text" onClick={ this.showUserVerificationModal }>
+          <Button className="login-to-book-button secondary-color white-text" onClick={ this.toggleUserVerificationModal }>
             { LocalizationService.formatMessage('bookings.verify_info') }
           </Button>
         </div>
@@ -276,7 +276,7 @@ class BookNowTile extends Component {
 
         { this.renderBookNowTileContent() }
 
-        <UserVerificationModal open={ this.state.showUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
+        <UserVerificationModal open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
       </div>
     );
   }
