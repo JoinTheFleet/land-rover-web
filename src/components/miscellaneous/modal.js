@@ -38,7 +38,7 @@ export default class Modal extends Component {
     return (
       <CloseOnEscape onEscape={ this.handleCloseOnEscape }>
         <Toggleable open={ this.props.open }>
-          <div className={`${this.props.modalClass || 'custom-modal'} modal`} role="dialog">
+          <div className={`${this.props.modalClass || 'custom-modal'} modal`} onClick={ this.handleCloseOnEscape } role="dialog">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className='col-xs-12 no-side-padding title-row'>
