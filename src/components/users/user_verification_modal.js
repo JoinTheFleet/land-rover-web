@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+import Modal from '../miscellaneous/modal';
+
+import ProfileInformationVerification from './verification_steps/profile_information_verification';
+import VerifiedInformationVerification from './verification_steps/verified_information_verification';
+
+export default class UserVerificationModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentStepNumber: 1,
+      verificationSteps: []
+    }
+    
+    this.showRenterVerifications = this.showRenterVerifications.bind(this);
+    this.buildRenterVerificationSteps = this.buildRenterVerificationSteps.bind(this);
+    this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
+  }
+
+  showRenterVerifications() {
+    return this.props.scope === 'renter';
+  }
+
+  componentWillMount() {
+    if (this.showRenterVerifications()) {
+      this.buildRenterVerificationSteps();
+    }
+    else {
+      this.buildOwnerVerificationSteps();
+    }
+  }
+
+  buildRenterVerificationSteps() {
+    let verificationSteps = [];
+
+    verificationSteps.push(ProfileInformationVerification)
+    verificationSteps.push(VerifiedInformationVerification)
+    verificationSteps.push(ProfileInformationVerification)
+    verificationSteps.push(VerifiedInformationVerification)
+
+    this.setState({ verificationSteps: verificationSteps });
+  }
+
+  buildOwnerVerificationSteps() {
+    let verificationSteps = [];
+
+    this.setState({ verificationSteps: verificationSteps });
+  }
+
+  render() {
+    if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
+      let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
+      let currentVerificationStep = <CurrentVerificationStep ref='currentVerificationStep' />;
+      let disabledNext = !this.refs.currentVerificationStep || !this.refs.currentVerificationStep.verified();
+      let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
+      let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
+
+      return (
+        <Modal open={ this.props.open } modalClass='user-verification' hideCloseButton>
+          <div className='row'>
+            <div className='col-xs-12 verification'>
+              { currentVerificationStep }
+            </div>
+            <div className='col-xs-12 footer'>
+              <div className='col-xs-2 step-number'>
+                { `Step ${this.state.currentStepNumber}` }
+              </div>
+              <div className='col-xs-8 steps'>
+                <ul className={ ulClass }>
+                  {
+                    this.state.verificationSteps.map((verificationStep, index) => {
+                      let className = 'step';
+                      let leftMargin = `calc(${index * stepWidth}% - 6px)`;
+
+                      if (index === (this.state.verificationSteps.length - 1)) {
+                        leftMargin = `calc(100% - 12px)`;
+                      }
+
+                      if (this.state.verificationSteps.length === 1) {
+                        leftMargin = `calc(50% - 12px)`;
+                      }
+
+                      if (index === 0) {
+                        leftMargin = '0%';
+                      }
+
+                      if (index <= (this.state.currentStepNumber - 1)) {
+                        className += ' filled';
+                      }
+
+                      return <li className={ className } style={{ marginLeft: leftMargin }} />
+                    })
+                  }
+                </ul>
+              </div>
+              <button type='button' className='col-xs-2 btn button text-center' disabled={ disabledNext } >
+                Button
+              </button>
+            </div>
+          </div>
+        </Modal>
+      );
+    }
+    else {
+      return <div />;
+    }
+  }
+}
