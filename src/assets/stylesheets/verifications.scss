@@ -1,6 +1,28 @@
 .user-verification.modal {
   background-color: rgba(0, 0, 0, 0.5);
 
+  .form-label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .form-field {
+    input,
+    textarea {
+      padding: 5px 10px;
+      line-height: 1.5;
+    }
+  }
+
+  .form-element {
+    &:first-of-type {
+      margin-top: 10px;
+    }
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
+  }
+
   .modal-content {
     box-shadow: none;
     border-radius: 0;
