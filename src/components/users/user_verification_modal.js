@@ -34,7 +34,7 @@ export default class UserVerificationModal extends Component {
 
     if (!user) {
       user = {}
-  }
+    }
 
     user[field] = value;
 
@@ -92,12 +92,20 @@ export default class UserVerificationModal extends Component {
   buildRenterVerificationSteps() {
     let verificationSteps = [];
 
-    verificationSteps.push(ProfileInformationVerification)
-    verificationSteps.push(VerifiedInformationVerification)
+    if (this.profileInformationMissing()) {
+      verificationSteps.push(ProfileInformationVerification);
+    }
+
     verificationSteps.push(ProfileInformationVerification)
     verificationSteps.push(VerifiedInformationVerification)
 
     this.setState({ verificationSteps: verificationSteps });
+  }
+
+  profileInformationMissing() {
+    let user = this.state.user;
+
+    return !user || !user.first_name || !user.last_name || !user.gender;
   }
 
   buildOwnerVerificationSteps() {
@@ -109,7 +117,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } />;
+      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
