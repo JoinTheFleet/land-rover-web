@@ -5,6 +5,7 @@ import Modal from '../miscellaneous/modal';
 
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
+import ContactDetailsVerification from './verification_steps/contact_details_verification';
 
 import UsersService from '../../shared/services/users/users_service';
 
@@ -183,6 +184,10 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(VerifiedInformationVerification);
     }
 
+    if (this.contactDetailsMissing()) {
+      verificationSteps.push(ContactDetailsVerification);
+    }
+
     this.setState({ verificationSteps: verificationSteps });
   }
 
@@ -195,6 +200,10 @@ export default class UserVerificationModal extends Component {
 
     if (this.verifiedInformationMissing()) {
       verificationSteps.push(VerifiedInformationVerification);
+    }
+
+    if (this.contactDetailsMissing()) {
+      verificationSteps.push(ContactDetailsVerification);
     }
 
     this.setState({ verificationSteps: verificationSteps });
@@ -250,6 +259,14 @@ export default class UserVerificationModal extends Component {
     }
 
     return addressInformationMissing || companyInformationMissing || companyAddressInformationMissing;
+  }
+
+  contactDetailsMissing() {
+    let user = this.props.user;
+
+    return !user ||
+           !user.owner_verifications_required.phone_number || !user.verifications_required.phone_number ||
+           !user.owner_verifications_required.email || !user.verifications_required.email;
   }
 
   render() {
