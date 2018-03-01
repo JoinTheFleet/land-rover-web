@@ -116,7 +116,8 @@ export default class UserVerificationModal extends Component {
       gender: user.gender,
       description: user.description,
       account_type: user.account_type,
-      country_code: user.country_code
+      country_code: user.country_code,
+      date_of_birth: user.date_of_birth
     };
 
     if (user.account_type === 'company' && user.business_details) {
@@ -187,7 +188,7 @@ export default class UserVerificationModal extends Component {
   profileInformationMissing() {
     let user = this.state.user;
 
-    return !user || !user.first_name || !user.last_name || !user.gender || !user.description;
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth;
   }
 
   buildOwnerVerificationSteps() {
