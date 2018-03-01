@@ -183,8 +183,19 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(VerifiedInformationVerification);
     }
 
-    verificationSteps.push(ProfileInformationVerification)
-    verificationSteps.push(VerifiedInformationVerification)
+    this.setState({ verificationSteps: verificationSteps });
+  }
+
+  buildOwnerVerificationSteps() {
+    let verificationSteps = [];
+
+    if (this.profileInformationMissing()) {
+      verificationSteps.push(ProfileInformationVerification);
+    }
+
+    if (this.verifiedInformationMissing()) {
+      verificationSteps.push(VerifiedInformationVerification);
+    }
 
     this.setState({ verificationSteps: verificationSteps });
   }
@@ -239,12 +250,6 @@ export default class UserVerificationModal extends Component {
     }
 
     return addressInformationMissing || companyInformationMissing || companyAddressInformationMissing;
-  }
-
-  buildOwnerVerificationSteps() {
-    let verificationSteps = [];
-
-    this.setState({ verificationSteps: verificationSteps });
   }
 
   render() {
