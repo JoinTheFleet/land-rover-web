@@ -17,7 +17,7 @@ export default class ProfileInformationVerification extends Component {
   }
 
   title() {
-    return 'Profile Information';
+    return LocalizationService.formatMessage("user_verification.profile_information");
   }
 
   render() {

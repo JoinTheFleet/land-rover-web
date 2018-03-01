@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LocalizationService from '../../../shared/libraries/localization_service';
 
 
 export default class VerifiedInformationVerification extends Component {
@@ -7,7 +8,7 @@ export default class VerifiedInformationVerification extends Component {
   }
 
   title() {
-    return 'Verified Information';
+    return LocalizationService.formatMessage('user_verification.verified_information');
   }
 
   render() {
