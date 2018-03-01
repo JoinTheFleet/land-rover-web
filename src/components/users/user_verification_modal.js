@@ -26,6 +26,19 @@ export default class UserVerificationModal extends Component {
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.updateUserField = this.updateUserField.bind(this);
+  }
+
+  updateUserField(field, value) {
+    let user = this.state.user;
+
+    if (!user) {
+      user = {}
+  }
+
+    user[field] = value;
+
+    this.setState({ user: user })
   }
 
   showRenterVerifications() {
