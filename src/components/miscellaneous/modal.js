@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Toggleable from '../miscellaneous/toggleable';
-import closeGreyIcon from '../../assets/images/close-grey.png';
 import CloseOnEscape from 'react-close-on-escape';
 
 export default class Modal extends Component {
@@ -31,7 +30,7 @@ export default class Modal extends Component {
         <a className={`close-login-modal-btn ${this.props.closeButtonPosition === 'right' ? 'pull-right' : ''}`}
            data-dismiss="modal"
            onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
-          <img src={closeGreyIcon} alt="close-modal-icon" />
+          <i className='fa fa-times' />
         </a>
       );
     }
@@ -42,8 +41,10 @@ export default class Modal extends Component {
           <div className={`${this.props.modalClass || 'custom-modal'} modal`} role="dialog">
             <div className="modal-dialog">
               <div className="modal-content">
-                { closeBtn }
-                { title }
+                <div className='col-xs-12 no-side-padding title-row'>
+                  { closeBtn }
+                  { title }
+                </div>
                 { this.props.children }
               </div>
             </div>

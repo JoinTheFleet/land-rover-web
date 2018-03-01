@@ -208,6 +208,14 @@ input#location {
     }
 
     .close-login-modal-btn {
+      color: #666;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: #666;
+        transition: none;
+      }
       margin-right: 10px;
     }
   }

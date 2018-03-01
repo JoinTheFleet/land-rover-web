@@ -17,6 +17,8 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import Errors from '../../miscellaneous/errors';
 import Helpers from '../../miscellaneous/helpers';
 
+import UserVerificationModal from '../users/user_verification_modal';
+
 class BookNowTile extends Component {
   constructor(props) {
     super(props);
@@ -30,15 +32,21 @@ class BookNowTile extends Component {
       verificationsNeeded: [],
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
       daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null,
-      loading: false
+      loading: false,
+      showUserVerificationModal: false
     };
 
     this.addError = this.addError.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.toggleUserVerificationModal = this.toggleUserVerificationModal.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  toggleUserVerificationModal() {
+    this.setState({ showUserVerificationModal: !this.state.showUserVerificationModal });
   }
 
   updateUser() {
@@ -56,6 +64,7 @@ class BookNowTile extends Component {
                                                                .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
 
                       this.setState({
+                        user: meInfo,
                         verificationsNeeded: verificationsNeeded,
                         loading: false
                       });
@@ -208,11 +217,9 @@ class BookNowTile extends Component {
       bookNowTileContent = (
         <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
           { LocalizationService.formatMessage('bookings.verify_info_before_booking') }
-          <Link to={ { pathname: '/profile', state: { verificationsNeeded: this.state.verificationsNeeded }} }>
-            <Button className="login-to-book-button secondary-color white-text" onClick={ () => {} }>
-              { LocalizationService.formatMessage('bookings.verify_info') }
-            </Button>
-          </Link>
+          <Button className="login-to-book-button secondary-color white-text" onClick={ this.toggleUserVerificationModal }>
+            { LocalizationService.formatMessage('bookings.verify_info') }
+          </Button>
         </div>
       );
     }
@@ -268,6 +275,8 @@ class BookNowTile extends Component {
         </div>
 
         { this.renderBookNowTileContent() }
+
+        <UserVerificationModal open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
       </div>
     );
   }
