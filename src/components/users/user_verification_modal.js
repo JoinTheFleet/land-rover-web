@@ -119,7 +119,7 @@ export default class UserVerificationModal extends Component {
   profileInformationMissing() {
     let user = this.state.user;
 
-    return !user || !user.first_name || !user.last_name || !user.gender;
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.description;
   }
 
   buildOwnerVerificationSteps() {
