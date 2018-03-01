@@ -17,7 +17,8 @@ export default class UserVerificationModal extends Component {
       originalUser: {},
       currentStepNumber: 1,
       verificationSteps: [],
-      componentUpdated: undefined
+      componentUpdated: undefined,
+      saving: false
     }
     
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
@@ -26,9 +27,10 @@ export default class UserVerificationModal extends Component {
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.progressToNextStep = this.progressToNextStep.bind(this);
-    this.saveUser = this.saveUser.bind(this);
-    this.updateUser = this.updateUser.bind(this);
     this.updateUserField = this.updateUserField.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.saveUser = this.saveUser.bind(this);
+    this.extractUserParams = this.extractUserParams.bind(this);
   }
 
   updateUserField(field, value) {
@@ -53,7 +55,10 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    this.updateUser();
+    UsersService.show('me')
+                .then(response => {
+                  this.setUser(response.data.data.user, false, false);
+                });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -62,24 +67,57 @@ export default class UserVerificationModal extends Component {
     }
   }
 
-  updateUser(skipBuildVerifications) {
-    UsersService.show('me')
-                .then(response => {
-                  this.setState({
-                    user: response.data.data.user,
-                    originalUser: Object.assign({}, response.data.data.user)
-                  }, () => {
-                    if (!skipBuildVerifications) {
-                      this.buildVerifications();
-                    }
-                  });
-                });
+  setUser(user, skipBuildVerifications, progressToNextStep) {
+    if (user) {
+      if (!user.address) {
+        user.address = {};
+      }
+
+      this.setState({
+        saving: false,
+        user: user,
+        originalUser: Object.assign({}, user)
+      }, () => {
+        if (!skipBuildVerifications) {
+          this.buildVerifications();
+        }
+        else if (progressToNextStep) {
+          this.progressToNextStep();
+        }
+      });
+    }
   }
 
   saveUser(progressToNextStep) {
-    if (progressToNextStep) {
-      this.progressToNextStep();
+    let userParams = this.extractUserParams();
+
+    if (!userParams) {
+      return;
     }
+
+    this.setState({ saving: true }, () => {
+      UsersService.update('me', { user: userParams })
+                  .then(response => {
+                    this.setUser(response.data.data.user, true, true);
+                  });
+    });    
+  }
+
+  extractUserParams() {
+    let user = this.state.user;
+
+    if (!user) {
+      return;
+    }
+
+    let userParams = {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      gender: user.gender,
+      description: user.description
+    };
+
+    return userParams;
   }
 
   buildVerifications() {
