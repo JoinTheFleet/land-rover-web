@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import FormField from '../../miscellaneous/forms/form_field';
 
-export default class FormRow extends Component {
+export default class FormGroup extends Component {
   render() {
     let hiddenClassName = this.props.hidden ? 'hide' : '';
     return (
@@ -10,8 +9,8 @@ export default class FormRow extends Component {
           <div className='col-xs-12 text-left form-label'>
             <span>{ this.props.placeholder }</span>
           </div>
-          <div className='col-xs-12 form-field'>
-            <FormField {...this.props } />
+          <div className='col-xs-12 form-group'>
+            { this.props.children }
           </div>
         </div>
       </div>
