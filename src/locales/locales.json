@@ -449,6 +449,14 @@
 
     "user_verification.profile_information": "Profile Information",
     "user_verification.verified_information": "Verified Information",
+    "user_verification.contact_details": "Contact Details",
+    "user_verification.phone_number": "Verify Phone Number",
+    "user_verification.email": "Verify Email",
+    "user_verification.add_phone_number": "Add Phone Number",
+    "user_verification.verify": "Verify",
+    "user_verification.confirm": "Confirm",
+    "user_verification.confirmed": "Confirmed!",
+    "user_verification.confirmation_code": "Confirmation Code",
 
     "user_profile.verified_info.verification_email_sent": "A verification e-mail has been sent to your e-mail address. Please check your e-mail and follow its instructions.",
     "user_profile.verified_info.need_to_verify_email": "You must verify your e-mail address to rent or list a car. Please check your e-mail for a verification e-mail or click here to re-send the verification e-mail.",
