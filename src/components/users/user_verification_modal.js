@@ -25,6 +25,8 @@ export default class UserVerificationModal extends Component {
     this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.progressToNextStep = this.progressToNextStep.bind(this);
+    this.saveUser = this.saveUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.updateUserField = this.updateUserField.bind(this);
   }
@@ -74,6 +76,12 @@ export default class UserVerificationModal extends Component {
                 });
   }
 
+  saveUser(progressToNextStep) {
+    if (progressToNextStep) {
+      this.progressToNextStep();
+    }
+  }
+
   buildVerifications() {
     if (this.showRenterVerifications()) {
       this.buildRenterVerificationSteps();
@@ -84,6 +92,12 @@ export default class UserVerificationModal extends Component {
   }
 
   nextStep() {
+    if (this.verificationComponent && this.verificationComponent.verified()) {
+      this.saveUser(true);
+    }
+  }
+
+  progressToNextStep() {
     if (this.state.currentStepNumber < this.state.verificationSteps.length) {
       this.setState({ currentStepNumber: this.state.currentStepNumber + 1 })
     }
