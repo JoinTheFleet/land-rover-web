@@ -13,10 +13,12 @@ export default class UserVerificationModal extends Component {
     super(props);
 
     this.state = {
-      user: undefined,
+      user: {},
+      originalUser: {},
       currentStepNumber: 1,
       verificationSteps: [],
-      componentUpdated: undefined
+      componentUpdated: undefined,
+      saving: false
     }
     
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
@@ -24,7 +26,23 @@ export default class UserVerificationModal extends Component {
     this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
-    this.updateUser = this.updateUser.bind(this);
+    this.progressToNextStep = this.progressToNextStep.bind(this);
+    this.updateUserField = this.updateUserField.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.saveUser = this.saveUser.bind(this);
+    this.extractUserParams = this.extractUserParams.bind(this);
+  }
+
+  updateUserField(field, value) {
+    let user = this.state.user;
+
+    if (!user) {
+      user = {}
+    }
+
+    user[field] = value;
+
+    this.setState({ user: user })
   }
 
   showRenterVerifications() {
@@ -37,20 +55,69 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    this.updateUser();
-  }
-
-  updateUser(skipBuildVerifications) {
     UsersService.show('me')
                 .then(response => {
-                  this.setState({
-                    user: response.data.data.user
-                  }, () => {
-                    if (!skipBuildVerifications) {
-                      this.buildVerifications();
-                    }
-                  });
+                  this.setUser(response.data.data.user, false, false);
                 });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.open && !prevProps.open) {
+      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
+    }
+  }
+
+  setUser(user, skipBuildVerifications, progressToNextStep) {
+    if (user) {
+      if (!user.address) {
+        user.address = {};
+      }
+
+      this.setState({
+        saving: false,
+        user: user,
+        originalUser: Object.assign({}, user)
+      }, () => {
+        if (!skipBuildVerifications) {
+          this.buildVerifications();
+        }
+        else if (progressToNextStep) {
+          this.progressToNextStep();
+        }
+      });
+    }
+  }
+
+  saveUser(progressToNextStep) {
+    let userParams = this.extractUserParams();
+
+    if (!userParams) {
+      return;
+    }
+
+    this.setState({ saving: true }, () => {
+      UsersService.update('me', { user: userParams })
+                  .then(response => {
+                    this.setUser(response.data.data.user, true, true);
+                  });
+    });    
+  }
+
+  extractUserParams() {
+    let user = this.state.user;
+
+    if (!user) {
+      return;
+    }
+
+    let userParams = {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      gender: user.gender,
+      description: user.description
+    };
+
+    return userParams;
   }
 
   buildVerifications() {
@@ -63,6 +130,12 @@ export default class UserVerificationModal extends Component {
   }
 
   nextStep() {
+    if (this.verificationComponent && this.verificationComponent.verified()) {
+      this.saveUser(true);
+    }
+  }
+
+  progressToNextStep() {
     if (this.state.currentStepNumber < this.state.verificationSteps.length) {
       this.setState({ currentStepNumber: this.state.currentStepNumber + 1 })
     }
@@ -71,12 +144,20 @@ export default class UserVerificationModal extends Component {
   buildRenterVerificationSteps() {
     let verificationSteps = [];
 
-    verificationSteps.push(ProfileInformationVerification)
-    verificationSteps.push(VerifiedInformationVerification)
+    if (this.profileInformationMissing()) {
+      verificationSteps.push(ProfileInformationVerification);
+    }
+
     verificationSteps.push(ProfileInformationVerification)
     verificationSteps.push(VerifiedInformationVerification)
 
     this.setState({ verificationSteps: verificationSteps });
+  }
+
+  profileInformationMissing() {
+    let user = this.state.user;
+
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.description;
   }
 
   buildOwnerVerificationSteps() {
@@ -88,7 +169,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } />;
+      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';

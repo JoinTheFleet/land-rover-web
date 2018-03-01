@@ -447,6 +447,9 @@
     "renter_information.app_point_2": "Keep in touch with owner through in-app Messages",
     "renter_information.app_point_3": "Chat directly with Fleet support",
 
+    "user_verification.profile_information": "Profile Information",
+    "user_verification.verified_information": "Verified Information",
+
     "user_profile.verified_info.verification_email_sent": "A verification e-mail has been sent to your e-mail address. Please check your e-mail and follow its instructions.",
     "user_profile.verified_info.need_to_verify_email": "You must verify your e-mail address to rent or list a car. Please check your e-mail for a verification e-mail or click here to re-send the verification e-mail.",
     "user_profile.verified_info.need_to_complete_verifications_listing": "You must provide the following information in order to list a car: {info_to_verify}.",
