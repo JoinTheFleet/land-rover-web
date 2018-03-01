@@ -114,8 +114,38 @@ export default class UserVerificationModal extends Component {
       first_name: user.first_name,
       last_name: user.last_name,
       gender: user.gender,
-      description: user.description
+      description: user.description,
+      account_type: user.account_type,
+      country_code: user.country_code
     };
+
+    if (user.account_type === 'company' && user.business_details) {
+      let business_details = user.business_details;
+
+      if (business_details.address && (business_details.address.country_code || business_details.address.country.alpha2)) {
+        userParams.business = {
+          name: business_details.name,
+          tax_id: business_details.tax_id,
+          line1: business_details.address.line1,
+          line2: business_details.address.line2,
+          city: business_details.address.city,
+          state: business_details.address.state,
+          postal_code: business_details.address.postal_code,
+          country_code: business_details.address.country_code || business_details.address.country.alpha2
+        };
+      }
+    }
+
+    if (user.address && user.address.country_code) {
+      userParams.address = {
+        line1: user.address.line1,
+        line2: user.address.line2,
+        state: user.address.state,
+        city: user.address.city,
+        postal_code: user.address.postal_code,
+        country_code: user.address.country_code
+      };
+    }
 
     return userParams;
   }
@@ -169,7 +199,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep {...this.props} user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+      let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';

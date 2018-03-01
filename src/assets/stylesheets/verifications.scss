@@ -1,8 +1,13 @@
 .user-verification.modal {
   background-color: rgba(0, 0, 0, 0.5);
 
-  .Select input {
-    padding-left: 0 !important;
+  .Select {
+    display: inline-block;
+    width: 100%;
+
+    input {
+      padding-left: 0 !important;
+    }
   }
 
   .form-label {
@@ -10,11 +15,19 @@
     padding-bottom: 5px;
   }
 
-  .form-field {
+  .form-field,
+  .form-group {
     input,
     textarea {
       padding: 5px 10px;
       line-height: 1.5;
+    }
+  }
+
+  .form-group {
+    input,
+    textarea {
+      margin-bottom: 5px;
     }
   }
 

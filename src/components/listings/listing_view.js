@@ -310,7 +310,7 @@ export default class ListingView extends Component {
     if ((!Object.keys(listing).includes("active") || listing.active) && (!this.props.loggedUser || (this.props.loggedUser && this.props.loggedUser.id !== listing.user.id && !this.props.preview))) {
       bookingDiv = (
         <div className="listing-view-booking-div col-xs-12 no-side-padding">
-          <BookNowTile listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
+          <BookNowTile configurations={ this.props.configurations } listing={ this.state.listing } loggedIn={ this.props.loggedIn } toggleModal={ this.props.toggleModal } handleBookButtonClick={ this.handleBookButtonClick } />
         </div>
       );
     }

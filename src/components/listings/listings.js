@@ -44,6 +44,7 @@ export default class Listings extends Component {
 
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
+                                {...this.props}
                                 preview={ true }
                                 loggedUser={ this.state.loggedUser }
                                 loggedIn={ this.props.loggedIn } />
@@ -70,6 +71,7 @@ export default class Listings extends Component {
 
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
+                                {...this.props}
                                 loggedIn={ this.props.loggedIn }
                                 loggedUser={ this.state.loggedUser }
                                 toggleModal={ this.props.toggleModal } />

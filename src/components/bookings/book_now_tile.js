@@ -263,7 +263,7 @@ class BookNowTile extends Component {
     let pricePerDay = LocalizationService.formatMessage('listings.price_per_day',
                                                         { currency_symbol: listing.country_configuration.country.currency_symbol,
                                                           price: listing.price / 100 }
-                                                       );
+                                                        );
 
     return (
       <div className="book-now-tile">
@@ -276,7 +276,7 @@ class BookNowTile extends Component {
 
         { this.renderBookNowTileContent() }
 
-        <UserVerificationModal open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
+        <UserVerificationModal configurations={ this.props.configurations } open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
       </div>
     );
   }
