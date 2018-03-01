@@ -20,7 +20,7 @@ export default class ProfileInformationVerification extends Component {
     if (user) {
       return user.first_name && user.first_name.length > 0 &&
              user.last_name && user.last_name.length > 0 &&
-             user.gender && user.gender.length > 0
+             user.gender && user.gender.length > 0;
     }
 
     return false;
