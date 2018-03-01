@@ -13,7 +13,8 @@ export default class UserVerificationModal extends Component {
     super(props);
 
     this.state = {
-      user: undefined,
+      user: {},
+      originalUser: {},
       currentStepNumber: 1,
       verificationSteps: [],
       componentUpdated: undefined
@@ -40,11 +41,18 @@ export default class UserVerificationModal extends Component {
     this.updateUser();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.open && !prevProps.open) {
+      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
+    }
+  }
+
   updateUser(skipBuildVerifications) {
     UsersService.show('me')
                 .then(response => {
                   this.setState({
-                    user: response.data.data.user
+                    user: response.data.data.user,
+                    originalUser: Object.assign({}, response.data.data.user)
                   }, () => {
                     if (!skipBuildVerifications) {
                       this.buildVerifications();
