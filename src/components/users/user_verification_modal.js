@@ -179,8 +179,23 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(ProfileInformationVerification);
     }
 
-    verificationSteps.push(ProfileInformationVerification)
-    verificationSteps.push(VerifiedInformationVerification)
+    if (this.verifiedInformationMissing()) {
+      verificationSteps.push(VerifiedInformationVerification);
+    }
+
+    this.setState({ verificationSteps: verificationSteps });
+  }
+
+  buildOwnerVerificationSteps() {
+    let verificationSteps = [];
+
+    if (this.profileInformationMissing()) {
+      verificationSteps.push(ProfileInformationVerification);
+    }
+
+    if (this.verifiedInformationMissing()) {
+      verificationSteps.push(VerifiedInformationVerification);
+    }
 
     this.setState({ verificationSteps: verificationSteps });
   }
@@ -191,10 +206,50 @@ export default class UserVerificationModal extends Component {
     return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth;
   }
 
-  buildOwnerVerificationSteps() {
-    let verificationSteps = [];
+  verifiedInformationMissing() {
+    let user = this.props.user;
 
-    this.setState({ verificationSteps: verificationSteps });
+    let addressInformationMissing = false;
+    let companyInformationMissing = false;
+    let companyAddressInformationMissing = false;
+
+    if (!user) {
+      return true;
+    }
+
+    if (user.account_type === 'company') { 
+      let business = user.business_details;
+
+      if (business) {
+        companyInformationMissing = !business || !business.name || !business.tax_id;        
+
+        if (business.address) {
+          let businessAddress = business.address;
+
+          companyAddressInformationMissing = !businessAddress ||
+                                             !businessAddress.line1 ||
+                                             !businessAddress.line2 ||
+                                             !businessAddress.city ||
+                                             !businessAddress.state ||
+                                             !businessAddress.postal_code ||
+                                             !(businessAddress.country_code || businessAddress.country);
+        }
+      }
+    }
+
+    if (user.address) {
+      let address = user.address;
+
+      addressInformationMissing = !address ||
+                                  !address.line1 ||
+                                  !address.line2 ||
+                                  !address.city ||
+                                  !address.state ||
+                                  !address.postal_code ||
+                                  !(address.country_code || address.country)
+    }
+
+    return addressInformationMissing || companyInformationMissing || companyAddressInformationMissing;
   }
 
   render() {
