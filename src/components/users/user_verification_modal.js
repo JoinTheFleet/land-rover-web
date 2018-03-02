@@ -214,7 +214,7 @@ export default class UserVerificationModal extends Component {
   profileInformationMissing() {
     let user = this.state.user;
 
-    return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth || (user.verifications_required.profile_image && !user.imageURL);
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.date_of_birth || (user.verifications_required.profile_image && !user.imageURL);
   }
 
   verifiedInformationMissing() {
@@ -246,6 +246,10 @@ export default class UserVerificationModal extends Component {
                                              !(businessAddress.country_code || businessAddress.country);
         }
       }
+    }
+    else {
+      companyInformationMissing = false;
+      companyAddressInformationMissing = false;
     }
 
     if (user.address) {
