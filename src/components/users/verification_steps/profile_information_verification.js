@@ -30,7 +30,7 @@ export default class ProfileInformationVerification extends Component {
       return user.first_name && user.first_name.length > 0 &&
              user.last_name && user.last_name.length > 0 &&
              user.gender && user.gender.length > 0 &&
-             user.imageURL && user.imageURL.length > 0 &&
+             ((user.verifications_required && !user.verifications_required.profile_image) || (user.imageURL && user.imageURL.length > 0)) &&
              user.date_of_birth;
     }
 
@@ -77,7 +77,7 @@ export default class ProfileInformationVerification extends Component {
   render() {
     let image = <i className='fa fa-user-circle' />;
 
-    if (this.state.imageURL || !this.props.user.verifications_required.profile_image) {
+    if (this.state.imageURL || (this.props.user && this.props.user.verifications_required && !this.props.user.verifications_required.profile_image)) {
       image = <img src={ this.state.imageURL || this.props.user.images.medium_url } alt='user' />
     }
 
