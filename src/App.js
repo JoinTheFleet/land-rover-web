@@ -96,7 +96,8 @@ export default class App extends Component {
       wishListModalOpen: false,
       limit: 20,
       page: 0,
-      pages: 1
+      pages: 1,
+      pendingNotificationRequest: false
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -148,15 +149,29 @@ export default class App extends Component {
     }, 1000);
 
     setInterval(() => {
-      NotificationsService.unreadCount()
-                          .then(response => {
-                            if (response && response.data && response.data.data) {
-                              let count = response.data.data.count;
+      let token = cookies.get('accessToken');
 
-                              this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
-                            }
-                          });
-    }, 2000)
+      if (token && !this.state.pendingNotificationRequest) {
+        this.setState({
+          pendingNotificationRequest: true
+        }, () => {
+          NotificationsService.unreadCount()
+                              .then(response => {
+                                if (response && response.data && response.data.data) {
+                                  let count = response.data.data.count;
+
+                                  this.setState({ pendingNotificationRequest: false})
+
+                                  this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
+                                }
+                              })
+                              .catch(() => {
+                                this.setState({ pendingNotificationRequest: false})
+                              });
+        });
+      }
+      
+    }, 5000)
 
     branch.init(process.env.REACT_APP_BRANCH_KEY);
     this.setupEvents();
