@@ -27,8 +27,7 @@ export default class UserVerificationModal extends Component {
     }
     
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
-    this.buildRenterVerificationSteps = this.buildRenterVerificationSteps.bind(this);
-    this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
+    this.buildVerifications = this.buildVerifications.bind(this);
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.progressToNextStep = this.progressToNextStep.bind(this);
@@ -170,27 +169,6 @@ export default class UserVerificationModal extends Component {
   }
 
   buildVerifications() {
-    if (this.showRenterVerifications()) {
-      this.buildRenterVerificationSteps();
-    }
-    else {
-      this.buildOwnerVerificationSteps();
-    }
-  }
-
-  nextStep() {
-    if (this.verificationComponent && this.verificationComponent.verified()) {
-      this.saveUser();
-    }
-  }
-
-  progressToNextStep() {
-    if (this.state.currentStepNumber < this.state.verificationSteps.length) {
-      this.setState({ currentStepNumber: this.state.currentStepNumber + 1 })
-    }
-  }
-
-  buildRenterVerificationSteps() {
     let verificationSteps = [];
 
     if (this.profileInformationMissing()) {
@@ -211,28 +189,21 @@ export default class UserVerificationModal extends Component {
 
     if (this.showRenterVerifications() && this.paymentDetailsMissing()) {
       verificationSteps.push(PaymentMethodVerification);
-  }
-
-  buildOwnerVerificationSteps() {
-    let verificationSteps = [];
-
-    if (this.profileInformationMissing()) {
-      verificationSteps.push(ProfileInformationVerification);
-    }
-
-    if (this.verifiedInformationMissing()) {
-      verificationSteps.push(VerifiedInformationVerification);
-    }
-
-    if (this.contactDetailsMissing()) {
-      verificationSteps.push(ContactDetailsVerification);
-    }
-
-    if (this.identificationDetailsMissing()) {
-      verificationSteps.push(DriversLicenseVerification);
     }
 
     this.setState({ verificationSteps: verificationSteps });
+  }
+
+  nextStep() {
+    if (this.verificationComponent && this.verificationComponent.verified()) {
+      this.saveUser();
+    }
+  }
+
+  progressToNextStep() {
+    if (this.state.currentStepNumber < this.state.verificationSteps.length) {
+      this.setState({ currentStepNumber: this.state.currentStepNumber + 1 })
+    }
   }
 
   profileInformationMissing() {
@@ -322,7 +293,7 @@ export default class UserVerificationModal extends Component {
           <div className='row'>
             <div className='col-xs-12 verification'>
               <Elements>
-              { currentVerificationStep }
+                { currentVerificationStep }
               </Elements>
             </div>
             <div className='col-xs-12 footer'>
