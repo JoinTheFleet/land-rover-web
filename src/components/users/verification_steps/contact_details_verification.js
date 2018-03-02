@@ -112,6 +112,13 @@ export default class ContactDetailsVerification extends Component {
           </div>
         </div>
 
+        <div className='col-xs-12 no-side-padding text-left verified-sent' hidden={ !this.state.phoneNumberValidationPending || this.state.phoneNumberConfirmed }>
+          { LocalizationService.formatMessage('user_verification.confirmation_code_sent') }
+        </div>
+        <div className='col-xs-12 no-side-padding text-left verified-phone-number' hidden={ !this.state.phoneNumberValidationPending || this.state.phoneNumberConfirmed }>
+          +{ this.state.countryCode }{ this.state.phoneNumber }
+        </div>
+
         <div hidden={ this.state.phoneNumberValidationPending || this.state.phoneNumberConfirmed } className='col-xs-12 no-side-padding phone-details'>
           <FormRow id='user-phone-country' handleChange={ this.handleCountryChange } type='country-code' value={ this.state.countryCode } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.select_country') }/>
           <div className='col-xs-12 no-side-padding text-left form-label'>
