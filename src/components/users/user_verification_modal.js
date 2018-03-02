@@ -218,9 +218,9 @@ export default class UserVerificationModal extends Component {
   verifiedInformationMissing() {
     let user = this.props.user;
 
-    let addressInformationMissing = false;
-    let companyInformationMissing = false;
-    let companyAddressInformationMissing = false;
+    let addressInformationMissing = true;
+    let companyInformationMissing = true;
+    let companyAddressInformationMissing = true;
 
     if (!user) {
       return true;
@@ -265,8 +265,8 @@ export default class UserVerificationModal extends Component {
     let user = this.props.user;
 
     return !user ||
-           !user.owner_verifications_required.phone_number || !user.verifications_required.phone_number ||
-           !user.owner_verifications_required.email || !user.verifications_required.email;
+           user.owner_verifications_required.phone_number || user.verifications_required.phone_number ||
+           user.owner_verifications_required.email || user.verifications_required.email;
   }
 
   render() {
