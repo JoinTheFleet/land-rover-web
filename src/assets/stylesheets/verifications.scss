@@ -1,6 +1,29 @@
 .user-verification.modal {
   background-color: rgba(0, 0, 0, 0.5);
 
+  .stripe {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .stripe-logo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    img {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 150px;
+    }
+  }
+
+  .payment-form {
+    button.form-button.success {
+      margin-top: 15px;
+    }
+  }
+
   .image {
     margin-top: 20px;
     margin-bottom: 20px;

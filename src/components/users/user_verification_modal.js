@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 
 import Modal from '../miscellaneous/modal';
 
+import { Elements } from 'react-stripe-elements';
+
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
 import ContactDetailsVerification from './verification_steps/contact_details_verification';
 import DriversLicenseVerification from './verification_steps/drivers_license_verification';
+import PaymentMethodVerification from './verification_steps/payment_methods_verification';
 
 import UsersService from '../../shared/services/users/users_service';
 
@@ -206,7 +209,8 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(DriversLicenseVerification);
     }
 
-    this.setState({ verificationSteps: verificationSteps });
+    if (this.showRenterVerifications() && this.paymentDetailsMissing()) {
+      verificationSteps.push(PaymentMethodVerification);
   }
 
   buildOwnerVerificationSteps() {
@@ -297,10 +301,17 @@ export default class UserVerificationModal extends Component {
     return !user || user.owner_verifications_required.identification || user.verifications_required.identification;
   }
 
+  paymentDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.payment_method || user.verifications_required.payment_method;
+  }
+
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
       let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
@@ -310,7 +321,9 @@ export default class UserVerificationModal extends Component {
         <Modal {...this.props} modalClass='user-verification' title={ modalTitle }>
           <div className='row'>
             <div className='col-xs-12 verification'>
+              <Elements>
               { currentVerificationStep }
+              </Elements>
             </div>
             <div className='col-xs-12 footer'>
               <div className='col-xs-2 step-number'>
