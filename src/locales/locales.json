@@ -461,6 +461,13 @@
     "user_verification.check_verification": "Check Verification",
     "user_verification.resend_verification_email": "Resend Verification Email",
     "user_verification.update_email": "Update Email",
+    "user_verification.drivers_license": "Drivers License",
+    "user_verification.select_license_type": "Select License Type",
+    "user_verification.license_number": "License Number",
+    "user_verification.license_issue_date": "Issue Date",
+    "user_verification.front_of_license": "Front of Driving License",
+    "user_verification.back_of_license": "Back of Driving License",
+    "user_verification.future_issue_date": "Your license issue date must be before today",
     
     "user_profile.verified_info.phone_number": "Phone Number",
     "user_profile.verified_info.verification_email_sent": "A verification e-mail has been sent to your e-mail address. Please check your e-mail and follow its instructions.",

@@ -6,6 +6,7 @@ import Modal from '../miscellaneous/modal';
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
 import ContactDetailsVerification from './verification_steps/contact_details_verification';
+import DriversLicenseVerification from './verification_steps/drivers_license_verification';
 
 import UsersService from '../../shared/services/users/users_service';
 
@@ -84,9 +85,7 @@ export default class UserVerificationModal extends Component {
         }
         else if (progressToNextStep) {
           if (this.verificationComponent && this.verificationComponent.beforeTransition) {
-            this.verificationComponent.beforeTransition(() => {
-              this.progressToNextStep();
-            })
+            this.verificationComponent.beforeTransition(this.progressToNextStep);
           }
           else {
           this.progressToNextStep();
@@ -199,6 +198,10 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(ContactDetailsVerification);
     }
 
+    if (this.identificationDetailsMissing()) {
+      verificationSteps.push(DriversLicenseVerification);
+    }
+
     this.setState({ verificationSteps: verificationSteps });
   }
 
@@ -215,6 +218,10 @@ export default class UserVerificationModal extends Component {
 
     if (this.contactDetailsMissing()) {
       verificationSteps.push(ContactDetailsVerification);
+    }
+
+    if (this.identificationDetailsMissing()) {
+      verificationSteps.push(DriversLicenseVerification);
     }
 
     this.setState({ verificationSteps: verificationSteps });
@@ -278,6 +285,12 @@ export default class UserVerificationModal extends Component {
     return !user ||
            user.owner_verifications_required.phone_number || user.verifications_required.phone_number ||
            user.owner_verifications_required.email || user.verifications_required.email;
+  }
+
+  identificationDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.identification || user.verifications_required.identification;
   }
 
   render() {
