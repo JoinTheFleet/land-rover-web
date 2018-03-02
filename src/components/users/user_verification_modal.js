@@ -10,6 +10,7 @@ import VerifiedInformationVerification from './verification_steps/verified_infor
 import ContactDetailsVerification from './verification_steps/contact_details_verification';
 import DriversLicenseVerification from './verification_steps/drivers_license_verification';
 import PaymentMethodVerification from './verification_steps/payment_methods_verification';
+import PayoutMethodVerification from './verification_steps/payout_methods_verification';
 
 import UsersService from '../../shared/services/users/users_service';
 
@@ -191,6 +192,10 @@ export default class UserVerificationModal extends Component {
       verificationSteps.push(PaymentMethodVerification);
     }
 
+    if (!this.showRenterVerifications() && this.payoutDetailsMissing()) {
+      verificationSteps.push(PayoutMethodVerification);
+    }
+
     this.setState({ verificationSteps: verificationSteps });
   }
 
@@ -276,6 +281,12 @@ export default class UserVerificationModal extends Component {
     let user = this.props.user;
 
     return !user || user.owner_verifications_required.payment_method || user.verifications_required.payment_method;
+  }
+
+  payoutDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.bank_account || user.verifications_required.bank_account;
   }
 
   render() {
