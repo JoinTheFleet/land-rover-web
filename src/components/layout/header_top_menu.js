@@ -7,6 +7,9 @@ import { NavLink } from 'react-router-dom'
 import Menus from '../../miscellaneous/menus';
 
 import UsersService from '../../shared/services/users/users_service';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class HeaderTopMenu extends Component {
   constructor(props) {
@@ -15,7 +18,8 @@ export default class HeaderTopMenu extends Component {
     this.state = {
       notificationsCount: 0,
       user: {
-        listing_count: 0
+        listing_count: 0,
+        pendingProfileRequest: false,
       }
     };
 
@@ -45,11 +49,24 @@ export default class HeaderTopMenu extends Component {
 
   fetchUser() {
     setInterval(() => {
-      UsersService.show('me')
-                  .then(response => {
-                    this.setState({ user: response.data.data.user });
-                  });
-    }, 3000);
+      let token = cookies.get('accessToken');
+      if (token && !this.state.pendingProfileRequest) {
+        this.setState({
+          pendingProfileRequest: true
+        }, () => {
+          UsersService.show('me')
+                      .then(response => {
+                        this.setState({ 
+                          user: response.data.data.user,
+                          pendingProfileRequest: false 
+                        });
+                      })
+                      .catch(() => {
+                        this.setState({ pendingProfileRequest: false})
+                      })
+        });
+      }
+    }, 5000);
   }
 
   render() {
