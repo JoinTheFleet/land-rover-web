@@ -453,6 +453,7 @@
     "user_verification.phone_number": "Verify Phone Number",
     "user_verification.email": "Verify Email",
     "user_verification.add_phone_number": "Add Phone Number",
+    "user_verification.add_profile_photo": "Add or Update Profile Photo",
     "user_verification.verify": "Verify",
     "user_verification.confirm": "Confirm",
     "user_verification.confirmed": "Confirmed!",

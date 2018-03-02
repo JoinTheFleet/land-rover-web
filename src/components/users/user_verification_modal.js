@@ -88,8 +88,8 @@ export default class UserVerificationModal extends Component {
             this.verificationComponent.beforeTransition(this.progressToNextStep);
           }
           else {
-          this.progressToNextStep();
-        }
+            this.progressToNextStep();
+          }
         }
       });
     }
@@ -129,6 +129,10 @@ export default class UserVerificationModal extends Component {
 
     if (user.emailUpdated) {
       userParams.email = user.email
+    }
+
+    if (user.imageURL) {
+      userParams.image_url = user.imageURL;
     }
 
     if (user.account_type === 'company' && user.business_details) {
@@ -230,7 +234,7 @@ export default class UserVerificationModal extends Component {
   profileInformationMissing() {
     let user = this.state.user;
 
-    return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth;
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth || (user.verifications_required.profile_image && !user.imageURL);
   }
 
   verifiedInformationMissing() {
