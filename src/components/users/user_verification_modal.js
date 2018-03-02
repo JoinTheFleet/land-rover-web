@@ -83,13 +83,20 @@ export default class UserVerificationModal extends Component {
           this.buildVerifications();
         }
         else if (progressToNextStep) {
+          if (this.verificationComponent && this.verificationComponent.beforeTransition) {
+            this.verificationComponent.beforeTransition(() => {
+              this.progressToNextStep();
+            })
+          }
+          else {
           this.progressToNextStep();
+        }
         }
       });
     }
   }
 
-  saveUser(progressToNextStep) {
+  saveUser() {
     let userParams = this.extractUserParams();
 
     if (!userParams) {
@@ -167,7 +174,7 @@ export default class UserVerificationModal extends Component {
 
   nextStep() {
     if (this.verificationComponent && this.verificationComponent.verified()) {
-      this.saveUser(true);
+      this.saveUser();
     }
   }
 
