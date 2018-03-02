@@ -63,7 +63,7 @@ export default class ContactDetailsVerification extends Component {
         let phone_number = response.data.data.phone_number;
 
         if (phone_number.confirmed) {
-          this.props.saveUser();
+          this.props.saveUser(true);
         }
         else {
           this.setState({
@@ -78,7 +78,9 @@ export default class ContactDetailsVerification extends Component {
   submitVerificationCode() {
     if (this.state.verificationCode && this.state.verificationID) {
       UserPhoneNumbersService.confirm(this.state.verificationID, this.state.verificationCode)
-                             .then(this.props.saveUser);
+                             .then(() => {
+                               this.props.saveUser(true)
+                             });
     }
   }
 
@@ -146,7 +148,7 @@ export default class ContactDetailsVerification extends Component {
 
           <div className='col-xs-12 email-section'>
             <FormRow id='user-email' handleChange={ this.handleEmailChange } type='text' disabled={ !this.props.user.verifications_required.email } value={ this.state.updatedEmail || this.props.user.email } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.email') }/>
-            <button className='btn button round form-button no-side-padding col-xs-12 email-button' hidden={ !this.props.user.verifications_required.email && !this.props.user.emailUpdated } onClick={ this.props.saveUser }>
+            <button className='btn button round form-button no-side-padding col-xs-12 email-button' hidden={ !this.props.user.verifications_required.email && !this.props.user.emailUpdated } onClick={ () => this.props.saveUser(true) }>
               { this.props.user.emailUpdated ? LocalizationService.formatMessage('user_verification.update_email') : LocalizationService.formatMessage('user_verification.check_verification') }
             </button>
             <button className='btn button round form-button no-side-padding col-xs-12' hidden={ !this.props.user.verifications_required.email || this.props.user.emailUpdated } onClick={ this.sendVerificationEmail }>

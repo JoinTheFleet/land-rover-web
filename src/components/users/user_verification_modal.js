@@ -95,7 +95,7 @@ export default class UserVerificationModal extends Component {
     }
   }
 
-  saveUser() {
+  saveUser(preventProgressToNextStep) {
     let userParams = this.extractUserParams();
 
     if (!userParams) {
@@ -105,7 +105,7 @@ export default class UserVerificationModal extends Component {
     this.setState({ saving: true }, () => {
       UsersService.update('me', { user: userParams })
                   .then(response => {
-                    this.setUser(response.data.data.user, true, true);
+                    this.setUser(response.data.data.user, true, !preventProgressToNextStep);
                   });
     });    
   }
