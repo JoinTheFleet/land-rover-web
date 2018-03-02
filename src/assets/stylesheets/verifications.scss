@@ -108,11 +108,19 @@
 
       &.success {
         background-color: #5cb85c;
+        margin-top: 0;
       }
     }
 
     .button.round {
       border-radius: 3px;
+    }
+
+    .email-section {
+      button {
+        margin-top: 0px;
+        margin-bottom: 20px;
+      }
     }
 
     .button,

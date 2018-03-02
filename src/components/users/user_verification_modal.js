@@ -118,8 +118,12 @@ export default class UserVerificationModal extends Component {
       description: user.description,
       account_type: user.account_type,
       country_code: user.country_code,
-      date_of_birth: user.date_of_birth
+      date_of_birth: user.date_of_birth,
     };
+
+    if (user.emailUpdated) {
+      userParams.email = user.email
+    }
 
     if (user.account_type === 'company' && user.business_details) {
       let business_details = user.business_details;
@@ -272,7 +276,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+      let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
@@ -292,26 +296,31 @@ export default class UserVerificationModal extends Component {
                 <ul className={ ulClass }>
                   {
                     this.state.verificationSteps.map((verificationStep, index) => {
-                      let className = 'step';
-                      let leftMargin = `calc(${index * stepWidth}% - 6px)`;
+                      if (this.state.verificationSteps.length > 1) {
+                        let className = 'step';
+                        let leftMargin = `calc(${index * stepWidth}% - 6px)`;
 
-                      if (index === (this.state.verificationSteps.length - 1)) {
-                        leftMargin = `calc(100% - 12px)`;
+                        if (index === (this.state.verificationSteps.length - 1)) {
+                          leftMargin = `calc(100% - 12px)`;
+                        }
+
+                        if (this.state.verificationSteps.length === 1) {
+                          leftMargin = `calc(50% - 12px)`;
+                        }
+
+                        if (index === 0) {
+                          leftMargin = '0%';
+                        }
+
+                        if (index <= (this.state.currentStepNumber - 1)) {
+                          className += ' filled';
+                        }
+
+                        return <li className={ className } style={{ marginLeft: leftMargin }} />
                       }
-
-                      if (this.state.verificationSteps.length === 1) {
-                        leftMargin = `calc(50% - 12px)`;
+                      else {
+                        return <div />;
                       }
-
-                      if (index === 0) {
-                        leftMargin = '0%';
-                      }
-
-                      if (index <= (this.state.currentStepNumber - 1)) {
-                        className += ' filled';
-                      }
-
-                      return <li className={ className } style={{ marginLeft: leftMargin }} />
                     })
                   }
                 </ul>
