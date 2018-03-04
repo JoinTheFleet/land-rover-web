@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 
 import Modal from '../miscellaneous/modal';
 
+import { Elements } from 'react-stripe-elements';
+
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
 import ContactDetailsVerification from './verification_steps/contact_details_verification';
+import DriversLicenseVerification from './verification_steps/drivers_license_verification';
+import PaymentMethodVerification from './verification_steps/payment_methods_verification';
+import PayoutMethodVerification from './verification_steps/payout_methods_verification';
 
 import UsersService from '../../shared/services/users/users_service';
 
@@ -23,8 +28,7 @@ export default class UserVerificationModal extends Component {
     }
     
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
-    this.buildRenterVerificationSteps = this.buildRenterVerificationSteps.bind(this);
-    this.buildOwnerVerificationSteps = this.buildOwnerVerificationSteps.bind(this);
+    this.buildVerifications = this.buildVerifications.bind(this);
     this.setVerificationComponent = this.setVerificationComponent.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.progressToNextStep = this.progressToNextStep.bind(this);
@@ -83,13 +87,18 @@ export default class UserVerificationModal extends Component {
           this.buildVerifications();
         }
         else if (progressToNextStep) {
-          this.progressToNextStep();
+          if (this.verificationComponent && this.verificationComponent.beforeTransition) {
+            this.verificationComponent.beforeTransition(this.progressToNextStep);
+          }
+          else {
+            this.progressToNextStep();
+          }
         }
       });
     }
   }
 
-  saveUser(progressToNextStep) {
+  saveUser(preventProgressToNextStep) {
     let userParams = this.extractUserParams();
 
     if (!userParams) {
@@ -99,7 +108,7 @@ export default class UserVerificationModal extends Component {
     this.setState({ saving: true }, () => {
       UsersService.update('me', { user: userParams })
                   .then(response => {
-                    this.setUser(response.data.data.user, true, true);
+                    this.setUser(response.data.data.user, true, !preventProgressToNextStep);
                   });
     });    
   }
@@ -123,6 +132,10 @@ export default class UserVerificationModal extends Component {
 
     if (user.emailUpdated) {
       userParams.email = user.email
+    }
+
+    if (user.imageURL) {
+      userParams.image_url = user.imageURL;
     }
 
     if (user.account_type === 'company' && user.business_details) {
@@ -157,17 +170,38 @@ export default class UserVerificationModal extends Component {
   }
 
   buildVerifications() {
-    if (this.showRenterVerifications()) {
-      this.buildRenterVerificationSteps();
+    let verificationSteps = [];
+
+    if (this.profileInformationMissing()) {
+      verificationSteps.push(ProfileInformationVerification);
     }
-    else {
-      this.buildOwnerVerificationSteps();
+
+    if (this.verifiedInformationMissing()) {
+      verificationSteps.push(VerifiedInformationVerification);
     }
+
+    if (this.contactDetailsMissing()) {
+      verificationSteps.push(ContactDetailsVerification);
+    }
+
+    if (this.identificationDetailsMissing()) {
+      verificationSteps.push(DriversLicenseVerification);
+    }
+
+    if (this.showRenterVerifications() && this.paymentDetailsMissing()) {
+      verificationSteps.push(PaymentMethodVerification);
+    }
+
+    if (!this.showRenterVerifications() && this.payoutDetailsMissing()) {
+      verificationSteps.push(PayoutMethodVerification);
+    }
+
+    this.setState({ verificationSteps: verificationSteps });
   }
 
   nextStep() {
     if (this.verificationComponent && this.verificationComponent.verified()) {
-      this.saveUser(true);
+      this.saveUser();
     }
   }
 
@@ -177,46 +211,10 @@ export default class UserVerificationModal extends Component {
     }
   }
 
-  buildRenterVerificationSteps() {
-    let verificationSteps = [];
-
-    if (this.profileInformationMissing()) {
-      verificationSteps.push(ProfileInformationVerification);
-    }
-
-    if (this.verifiedInformationMissing()) {
-      verificationSteps.push(VerifiedInformationVerification);
-    }
-
-    if (this.contactDetailsMissing()) {
-      verificationSteps.push(ContactDetailsVerification);
-    }
-
-    this.setState({ verificationSteps: verificationSteps });
-  }
-
-  buildOwnerVerificationSteps() {
-    let verificationSteps = [];
-
-    if (this.profileInformationMissing()) {
-      verificationSteps.push(ProfileInformationVerification);
-    }
-
-    if (this.verifiedInformationMissing()) {
-      verificationSteps.push(VerifiedInformationVerification);
-    }
-
-    if (this.contactDetailsMissing()) {
-      verificationSteps.push(ContactDetailsVerification);
-    }
-
-    this.setState({ verificationSteps: verificationSteps });
-  }
-
   profileInformationMissing() {
     let user = this.state.user;
 
-    return !user || !user.first_name || !user.last_name || !user.gender || !user.description || !user.date_of_birth;
+    return !user || !user.first_name || !user.last_name || !user.gender || !user.date_of_birth || (user.verifications_required.profile_image && !user.imageURL);
   }
 
   verifiedInformationMissing() {
@@ -249,6 +247,10 @@ export default class UserVerificationModal extends Component {
         }
       }
     }
+    else {
+      companyInformationMissing = false;
+      companyAddressInformationMissing = false;
+    }
 
     if (user.address) {
       let address = user.address;
@@ -273,10 +275,29 @@ export default class UserVerificationModal extends Component {
            user.owner_verifications_required.email || user.verifications_required.email;
   }
 
+  identificationDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.identification || user.verifications_required.identification;
+  }
+
+  paymentDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.payment_method || user.verifications_required.payment_method;
+  }
+
+  payoutDetailsMissing() {
+    let user = this.props.user;
+
+    return !user || user.owner_verifications_required.bank_account || user.verifications_required.bank_account;
+  }
+
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
       let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
@@ -286,7 +307,9 @@ export default class UserVerificationModal extends Component {
         <Modal {...this.props} modalClass='user-verification' title={ modalTitle }>
           <div className='row'>
             <div className='col-xs-12 verification'>
-              { currentVerificationStep }
+              <Elements>
+                { currentVerificationStep }
+              </Elements>
             </div>
             <div className='col-xs-12 footer'>
               <div className='col-xs-2 step-number'>
