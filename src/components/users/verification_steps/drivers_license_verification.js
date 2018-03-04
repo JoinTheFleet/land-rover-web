@@ -64,18 +64,24 @@ export default class DriversLicenseVerification extends Component {
       state[side + 'Image'] = event.target.value
 
       this.setState(state, () => {
-        S3Uploader.upload(file, 'driver_license_direct_upload')
-                  .then(response => {
-                    state[side + 'ImageURL'] = response.Location;
-                    this.setState(state);
-                  })
-                  .catch(error => {
-                    Alert.error(LocalizationService.formatMessage('application.image_failed'));
+        this.props.loading(true, () => {
+          S3Uploader.upload(file, 'driver_license_direct_upload')
+                    .then(response => {
+                      state[side + 'ImageURL'] = response.Location;
+                      this.setState(state, () => {
+                        this.props.loading(false);
+                      });
+                    })
+                    .catch(error => {
+                      Alert.error(LocalizationService.formatMessage('application.image_failed'));
 
-                    state[side + 'ImageURL'] = undefined;
-                    state[side + 'Image'] = undefined;
-                    this.setState(state);
-                  });
+                      state[side + 'ImageURL'] = undefined;
+                      state[side + 'Image'] = undefined;
+                      this.setState(state, () => {
+                        this.props.loading(false);
+                      });
+                    });
+        });
       });
     }
   }
@@ -103,31 +109,35 @@ export default class DriversLicenseVerification extends Component {
       }
     }
 
-    IdentificationsService.create(
-      this.state.licenseNumber,
-      date.month(),
-      date.year(),
-      this.state.licenseType,
-      country,
-      this.state.frontImageURL,
-      this.state.backImageURL
-    )
-    .then(response => {
-      Alert.success(LocalizationService.formatMessage('user_profile_verified_info.license_pending'));
+    this.props.loading(true, () => {
+      IdentificationsService.create(
+        this.state.licenseNumber,
+        date.month(),
+        date.year(),
+        this.state.licenseType,
+        country,
+        this.state.frontImageURL,
+        this.state.backImageURL
+      )
+      .then(response => {
+        Alert.success(LocalizationService.formatMessage('user_profile_verified_info.license_pending'));
 
-      this.setState({
-        licenseUploaded: true
-      }, () => { 
-        if (callback) {
-          callback();
-        }
+        this.setState({
+          licenseUploaded: true
+        }, () => {
+          this.props.loading(false);
+          if (callback) {
+            callback();
+          }
+        })
       })
+      .catch(error => {
+        this.props.loading(false);
+        if (error.response) {
+          Alert.error(error.response.data.message)
+        }
+      });
     })
-    .catch(error => {
-      if (error.response) {
-        Alert.error(error.response.data.message)
-      }
-    });
   }
 
   beforeTransition(callback) {

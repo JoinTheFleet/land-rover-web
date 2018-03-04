@@ -24,22 +24,31 @@ class PaymentForm extends Component {
       event.preventDefault();
     }
 
-    this.props.stripe.createToken({ type: 'card' })
-                     .then(({token}) => {
-                       if (token.id) {
-                         PaymentMethodsService.create({ payment_method: { token: token.id } })
-                                              .then(() => {
-                                                this.setState({
-                                                  paymentDetailsAdded: true
-                                                }, () => {
-                                                  this.props.saveUser(true)
-                                                });
-                         });
-                       }
-                     })
-                     .catch(() => {
-                       Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payment_method_invalid_card'));
-                     });
+    this.props.loading(true, () => {
+      this.props.stripe.createToken({ type: 'card' })
+                      .then(({token}) => {
+                        if (!token) {
+                          this.props.loading(false);
+                        }
+                        else if (token.id) {
+                          PaymentMethodsService.create({ payment_method: { token: token.id } })
+                                               .then(() => {
+                                                 this.setState({
+                                                   paymentDetailsAdded: true
+                                                 }, () => {
+                                                   this.props.saveUser(true)
+                                                 });
+                                               })
+                                               .catch(() => {
+                                                 this.props.loading(false);
+                                               });
+                        }
+                      })
+                      .catch(() => {
+                        this.props.loading(false);
+                        Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payment_method_invalid_card'));
+                      });
+    });
   }
 
   render() {

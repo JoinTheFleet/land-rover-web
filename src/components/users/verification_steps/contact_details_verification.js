@@ -26,6 +26,7 @@ export default class ContactDetailsVerification extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.sendPhoneNumberVerification = this.sendPhoneNumberVerification.bind(this);
     this.submitVerificationCode = this.submitVerificationCode.bind(this);
+    this.sendVerificationEmail = this.sendVerificationEmail.bind(this);
   }
 
   verified() {
@@ -55,32 +56,46 @@ export default class ContactDetailsVerification extends Component {
 
   sendPhoneNumberVerification() {
     if (this.state.phoneNumber && this.state.countryCode) {
-      UserPhoneNumbersService.create({
-        phone_number: {
-          phone_number: `+${this.state.countryCode}${this.state.phoneNumber}`
-        }
-      }).then(response => {
-        let phone_number = response.data.data.phone_number;
+      this.props.loading(true, () => {
+        UserPhoneNumbersService.create({
+          phone_number: {
+            phone_number: `+${this.state.countryCode}${this.state.phoneNumber}`
+          }
+        }).then(response => {
+          let phone_number = response.data.data.phone_number;
 
-        if (phone_number.confirmed) {
-          this.props.saveUser(true);
-        }
-        else {
-          this.setState({
-            phoneNumberValidationPending: true,
-            verificationID: phone_number.id
-          });
-        }
-      });
+          if (!phone_number) {
+            this.props.loading(false);
+          }
+          else if (phone_number.confirmed) {
+            this.props.saveUser(true);
+          }
+          else {
+            this.setState({
+              phoneNumberValidationPending: true,
+              verificationID: phone_number.id
+            }, () => {
+              this.props.loading(false);
+            });
+          }
+        }).catch(() => {
+          this.props.loading(false);
+        })
+      })
     }
   }
 
   submitVerificationCode() {
     if (this.state.verificationCode && this.state.verificationID) {
-      UserPhoneNumbersService.confirm(this.state.verificationID, this.state.verificationCode)
-                             .then(() => {
-                               this.props.saveUser(true)
-                             });
+      this.props.loading(true, () => {
+        UserPhoneNumbersService.confirm(this.state.verificationID, this.state.verificationCode)
+                                .then(() => {
+                                  this.props.saveUser(true)
+                                })
+                                .catch(() => {
+                                  this.loading(false);
+                                })
+      });
     }
   }
 
@@ -94,7 +109,15 @@ export default class ContactDetailsVerification extends Component {
   }
 
   sendVerificationEmail() {
-    UsersService.sendVerificationEmail();
+    this.props.loading(true, () => {
+      UsersService.sendVerificationEmail()
+                  .then(() => {
+                    this.props.loading(false);
+                  })
+                  .catch(() => {
+                    this.props.loading(false);
+                  })
+    })
   }
 
   render() {

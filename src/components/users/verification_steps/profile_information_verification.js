@@ -65,11 +65,20 @@ export default class ProfileInformationVerification extends Component {
         Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
       }
       else {
-        S3Uploader.upload(file, 'user_avatar')
-                  .then(response => {
-                    this.props.updateUserField('imageURL', response.Location);
-                    this.setState({ imageURL: response.Location });
-                  });
+        this.props.loading(true, () => {
+          S3Uploader.upload(file, 'user_avatar')
+                    .then(response => {
+                      this.props.updateUserField('imageURL', response.Location);
+                      this.setState({
+                        imageURL: response.Location
+                      }, () => {
+                        this.props.loading(false);
+                      });
+                    })
+                    .catch(() => {
+                      this.props.loading(false);
+                    });
+        })
       }
     }
   }
