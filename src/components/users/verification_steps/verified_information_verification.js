@@ -114,14 +114,16 @@ export default class VerifiedInformationVerification extends Component {
     let user = this.props.user;
     let address = user.address || {};
 
-    if (event.target) {
-      address[field] = event.target.value;
+    if (event) {
+      if (event.target) {
+        address[field] = event.target.value;
+      }
+      else if (event.value) {
+        address[field] = event.value;
+      }
+  
+      this.props.updateUserField('address', address);
     }
-    else if (event.value) {
-      address[field] = event.value;
-    }
-
-    this.props.updateUserField('address', address);
   }
 
   modifyBusiness(field, event) {
