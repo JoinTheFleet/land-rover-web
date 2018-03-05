@@ -59,30 +59,38 @@ export default class DriversLicenseVerification extends Component {
     if (event && event.target && event.target.files) {
       let file = event.target.files[0];
 
-      let state = {};
+      if (file.size >= 5000000) {
+        Alert.error(LocalizationService.formatMessage('listings.images.maximum_file_size'));
+      }
+      else if (!file.type.startsWith("image/")) {
+        Alert.error(LocalizationService.formatMessage('listings.images.invalid_type'));
+      }
+      else {
+        let state = {};
 
-      state[side + 'Image'] = event.target.value
+        state[side + 'Image'] = event.target.value;
 
-      this.setState(state, () => {
-        this.props.loading(true, () => {
-          S3Uploader.upload(file, 'driver_license_direct_upload')
-                    .then(response => {
-                      state[side + 'ImageURL'] = response.Location;
-                      this.setState(state, () => {
-                        this.props.loading(false);
+        this.setState(state, () => {
+          this.props.loading(true, () => {
+            S3Uploader.upload(file, 'driver_license_direct_upload')
+                      .then(response => {
+                        state[side + 'ImageURL'] = response.Location;
+                        this.setState(state, () => {
+                          this.props.loading(false);
+                        });
+                      })
+                      .catch(error => {
+                        Alert.error(LocalizationService.formatMessage('application.image_failed'));
+
+                        state[side + 'ImageURL'] = undefined;
+                        state[side + 'Image'] = undefined;
+                        this.setState(state, () => {
+                          this.props.loading(false);
+                        });
                       });
-                    })
-                    .catch(error => {
-                      Alert.error(LocalizationService.formatMessage('application.image_failed'));
-
-                      state[side + 'ImageURL'] = undefined;
-                      state[side + 'Image'] = undefined;
-                      this.setState(state, () => {
-                        this.props.loading(false);
-                      });
-                    });
+          });
         });
-      });
+      }
     }
   }
 
