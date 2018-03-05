@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
 import FacebookLogin from 'react-facebook-login';
 import Anime from 'react-anime';
@@ -150,7 +151,8 @@ export default class Login extends Component {
 
             this.setState({
               user: user,
-              loading: false
+              loading: false,
+              userCreated: true
             });
           }
         }).catch(this.handleModalError);
@@ -435,6 +437,36 @@ export default class Login extends Component {
 
   render() {
     let loginModalBody = '';
+
+    if (this.state.userCreated) {
+      if (this.props.scope) {
+        if (this.props.scope === 'owner') {
+          return <Redirect to={{
+            pathname: '/listings/new',
+            state: {
+              onboarding: true
+            }
+          }} />;
+        }
+        else {
+          return <Redirect to={{
+            pathname: '/profile',
+            state: {
+              onboarding: true
+            }
+          }} />;
+        }
+      }
+      else {
+        return <Redirect to={{
+          pathname: '/profile',
+          state: {
+            onboarding: true,
+            natural: true
+          }
+        }} />;
+      }
+    }
 
     switch (this.props.modalName) {
       case 'registration':

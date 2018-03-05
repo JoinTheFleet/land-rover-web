@@ -319,12 +319,12 @@ export default class App extends Component {
                          this.setAccessToken('');
   }
 
-  toggleModal(modal) {
+  toggleModal(modal, scope) {
     if (this.state.modalName === modal) {
       this.setState({ modalName: undefined });
     }
     else {
-      this.setState({ modalName: modal });
+      this.setState({ modalName: modal, modalScope: scope });
     }
   }
 
@@ -565,6 +565,7 @@ export default class App extends Component {
           }} />
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
+                              toggleModal={ this.toggleModal }
                               configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole }
                               loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
@@ -721,7 +722,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
-            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
+            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } scope={ this.state.modalScope } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
 
