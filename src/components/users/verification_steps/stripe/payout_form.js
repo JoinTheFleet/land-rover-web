@@ -42,30 +42,39 @@ class PayoutForm extends Component {
 
     let currency = this.state.country === 'US' ? 'USD' : 'EUR';
 
-    this.props.stripe.createToken('bank_account', {
-      country: this.state.country,
-      account_number: this.state.iban,
-      currency: currency
-    })
-    .then((token) => {
-      if (token.error) {
-        Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_invalid_account'));
-      }
-      else if (token.token.id) {
-        PayoutMethodsService.create({
-          payout_method: {
-            token: token.token.id
-          }
-        }).then(response => {
-          Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payout_method_success'));
-          this.setState({ 
-            payoutDetailsAdded: true
-          }, () => { this.props.saveUser(true) })
-        });
-      }
-    })
-    .catch((error) => {
-      Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_error'));
+    this.props.loading(true, () => {
+      this.props.stripe.createToken('bank_account', {
+        country: this.state.country,
+        account_number: this.state.iban,
+        currency: currency
+      })
+      .then((token) => {
+        if (!token) {
+          this.props.loading(false);
+        }
+        else if (token.error) {
+          this.props.loading(false);
+          Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_invalid_account'));
+        }
+        else if (token.token.id) {
+          PayoutMethodsService.create({
+            payout_method: {
+              token: token.token.id
+            }
+          }).then(response => {
+            Alert.success(LocalizationService.formatMessage('user_profile_verified_info.payout_method_success'));
+            this.setState({
+              payoutDetailsAdded: true
+            }, () => { this.props.saveUser(true) })
+          }).catch(() => {
+            this.props.loading(false);
+          });
+        }
+      })
+      .catch((error) => {
+        this.props.loading(false);
+        Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_error'));
+      });
     });
   }
 

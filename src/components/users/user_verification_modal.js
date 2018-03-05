@@ -14,6 +14,8 @@ import PayoutMethodVerification from './verification_steps/payout_methods_verifi
 
 import UsersService from '../../shared/services/users/users_service';
 
+import Button from '../miscellaneous/button';
+
 export default class UserVerificationModal extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ export default class UserVerificationModal extends Component {
       currentStepNumber: 1,
       verificationSteps: [],
       componentUpdated: undefined,
-      saving: false
+      loading: false
     }
     
     this.showRenterVerifications = this.showRenterVerifications.bind(this);
@@ -36,6 +38,7 @@ export default class UserVerificationModal extends Component {
     this.setUser = this.setUser.bind(this);
     this.saveUser = this.saveUser.bind(this);
     this.extractUserParams = this.extractUserParams.bind(this);
+    this.loading = this.loading.bind(this);
   }
 
   updateUserField(field, value) {
@@ -60,10 +63,14 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    UsersService.show('me')
-                .then(response => {
-                  this.setUser(response.data.data.user, false, false);
-                });
+    this.setState({
+      loading: true
+    }, () => {
+      UsersService.show('me')
+                  .then(response => {
+                    this.setUser(response.data.data.user, false, false);
+                  });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -79,7 +86,7 @@ export default class UserVerificationModal extends Component {
       }
 
       this.setState({
-        saving: false,
+        loading: false,
         user: user,
         originalUser: Object.assign({}, user)
       }, () => {
@@ -105,10 +112,14 @@ export default class UserVerificationModal extends Component {
       return;
     }
 
-    this.setState({ saving: true }, () => {
+    this.setState({ loading: true }, () => {
       UsersService.update('me', { user: userParams })
                   .then(response => {
-                    this.setUser(response.data.data.user, true, !preventProgressToNextStep);
+                    this.setState({
+                      loading: false
+                    }, () => {
+                      this.setUser(response.data.data.user, true, !preventProgressToNextStep);
+                    })
                   });
     });    
   }
@@ -293,10 +304,14 @@ export default class UserVerificationModal extends Component {
     return !user || user.owner_verifications_required.bank_account || user.verifications_required.bank_account;
   }
 
+  loading(loading, callback) {
+    this.setState({ loading: loading }, callback)
+  }
+
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+      let currentVerificationStep = <CurrentVerificationStep loading={ this.loading }configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
 
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
@@ -348,9 +363,9 @@ export default class UserVerificationModal extends Component {
                   }
                 </ul>
               </div>
-              <button type='button' className='col-xs-2 btn button text-center' onClick={ this.nextStep } disabled={ disabledNext } >
-                Next
-              </button>
+              <Button type='button' className='col-xs-2 button text-center' onClick={ this.nextStep } disabled={ disabledNext || this.state.loading } spinner={ this.state.loading}>
+                { this.state.loading ? '' : 'Next' }
+              </Button>
             </div>
           </div>
         </Modal>

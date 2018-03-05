@@ -169,7 +169,7 @@ export default class VerifiedInformationVerification extends Component {
 
     return (
       <div className='col-xs-12 verification-form'>
-        <FormRow type='select' id='user-company' disabled={ this.accountTypeDisabled() } clearable={ false } value={ user.account_type } handleChange={ (value) => { this.props.updateUserField('account_type', value.value) } } options={ this.accountTypeOptions } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.account_type') } />
+        <FormRow type='select' id='user-company' disabled={ this.accountTypeDisabled() } clearable={ false } value={ user.account_type } handleChange={ this.modifyAccountType } options={ this.accountTypeOptions } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.account_type') } />
         <FormRow type='select' id='user-country' disabled={ this.countryOfResidenceDisabled() } clearable={ false } value={ user.country_code || (user && user.country ? user.country.alpha2 : '') } handleChange={ this.modifyCountryOfResidence } options={ this.countries } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.country_of_residence') } />
         <FormGroup id='user-address' placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address') }>
           <FormField id='user-address-line1' handleChange={ (event) => { this.modifyAddress('line1', event) } } type='text' value={ user.address.line1 } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.address_line_1')}/>
