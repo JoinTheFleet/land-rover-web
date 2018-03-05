@@ -47,7 +47,7 @@ export default class RenterInformation extends Component {
                     <li>{ LocalizationService.formatMessage('renter_information.point_5') }</li>
                   </ul>
                 </div>
-                <div className='btn btn-join' onClick={() => { this.props.toggleModal('registration') }} >
+                <div className='btn btn-join' onClick={() => { this.props.toggleModal('registration', 'renter') }} >
                   { LocalizationService.formatMessage('renter_information.join_free') }
                 </div>
               </div>

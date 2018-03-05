@@ -6,8 +6,7 @@ import Loading from '../miscellaneous/loading';
 
 import Dashboard from './dashboard';
 import Credits from '../credits/credits';
-import WishListsController from '../wishlists/wish_lists_controller';
-import LocalizationService from '../../shared/libraries/localization_service';
+import WishListsController from '../wishlists/wish_lists_controller'
 
 import { Switch, Route } from 'react-router-dom';
 
@@ -17,7 +16,7 @@ export default class DashboardController extends Component {
 
     this.state = {
       user: {},
-      loading: false,
+      loading: false
     };
 
     this.refreshData = this.refreshData.bind(this);
@@ -25,23 +24,6 @@ export default class DashboardController extends Component {
 
   componentDidMount() {
     this.refreshData();
-  }
-
-  componentWillMount() {
-    if (this.props.location && this.props.location.state) {
-      let verificationsNeeded = this.props.location.state.verificationsNeeded;
-
-      if (verificationsNeeded && verificationsNeeded.length > 0) {
-        let localisedIdentifier = 'user_profile.verified_info.need_to_complete_verifications_rental';
-
-        if (this.props.location.state.listingVerifications) {
-          localisedIdentifier = 'user_profile.verified_info.need_to_complete_verifications_listing';
-        }
-
-        Alert.error(LocalizationService.formatMessage(localisedIdentifier,
-                                                      { info_to_verify: verificationsNeeded.map(verification => verification.replace(/_/g, ' ')).join(', ').replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); }) }));
-      }
-    }
   }
 
   refreshData() {
@@ -82,7 +64,7 @@ export default class DashboardController extends Component {
               return <WishListsController {...props} {...this.props} />
             }} />
             <Route exact path='/profile' render={ (props) => {
-              return <Dashboard user={ this.state.user } {...props} {...this.props} />
+              return <Dashboard user={ this.state.user } reloadUser={ this.refreshData } {...props} {...this.props} />
             }} />
           </Switch>
         </div>

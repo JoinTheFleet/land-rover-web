@@ -69,7 +69,7 @@ class UserPayoutMethods extends Component {
                             if (errorMessage.match(/custom accounts/gi)) {
                               Alert.error(LocalizationService.formatMessage('user_profile_menu.payout_methods.invalid_region'));
                             }
-                            else {
+                            else if (!this.props.onboarding) {
                               Alert.error(errorMessage);
                             }
 

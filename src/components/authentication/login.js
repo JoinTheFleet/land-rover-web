@@ -450,7 +450,7 @@ export default class Login extends Component {
         }
         else {
           return <Redirect to={{
-            pathname: '/dashboard',
+            pathname: '/profile',
             state: {
               onboarding: true
             }
@@ -459,7 +459,7 @@ export default class Login extends Component {
       }
       else {
         return <Redirect to={{
-          pathname: '/dashboard',
+          pathname: '/profile',
           state: {
             onboarding: true,
             natural: true

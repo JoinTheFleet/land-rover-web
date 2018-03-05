@@ -12,17 +12,32 @@ import UserProfileVerifiedInfo from '../user_management/user_profile_verified_in
 import UserPaymentMethods from '../user_management/user_payment_methods';
 import UserPayoutMethods from '../user_management/user_payout_methods';
 import UserProfileDetails from '../user_management/user_profile_details';
+import UserVerificationModal from '../users/user_verification_modal';
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      dirty: false
+      dirty: false,
+      showVerificationModal: false
     };
 
     this.setDirty = this.setDirty.bind(this);
     this.setClean = this.setClean.bind(this);
+    this.closeVerificationModal = this.closeVerificationModal.bind(this);
+  }
+
+  componentWillMount() {
+    if (this.props.location && this.props.location.state) {
+      let state = this.props.location.state;
+
+      if (state.onboarding) {
+        if (!state.natural) {
+          this.setState({ showVerificationModal: true });
+        }
+      }
+    }
   }
 
   setClean() {
@@ -31,6 +46,43 @@ export default class Dashboard extends Component {
 
   setDirty() {
     this.setState({ dirty: true })
+  }
+
+  closeVerificationModal() {
+    this.setState({ showVerificationModal: false })
+  }
+
+  renderProfileDetails() {
+    if (!this.state.showVerificationModal) {
+      return (
+        <div>
+          <Prompt
+            when={ this.state.dirty }
+            message={ LocalizationService.formatMessage('application.unsaved') }
+          />
+
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <UserProfileDetails setDirty={ this.setDirty } setClean={ this.setClean } />
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <UserProfileVerifiedInfo {... this.props } setDirty={ this.setDirty } setClean={ this.setClean } />
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <Elements>
+              <UserPaymentMethods {... this.props} />
+            </Elements>
+          </div>
+          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
+            <Elements>
+              <UserPayoutMethods {... this.props} onboarding={ this.props.showVerificationModal } />
+            </Elements>
+          </div>
+        </div>
+      )
+    }
+    else {
+      return <div />;
+    }
   }
 
   render() {
@@ -46,10 +98,8 @@ export default class Dashboard extends Component {
 
       return (
         <div className='col-xs-12 user-dashboard'>
-          <Prompt
-            when={ this.state.dirty }
-            message={ LocalizationService.formatMessage('application.unsaved') }
-          />
+          <UserVerificationModal {...this.props} open={ this.state.showVerificationModal } scope={ 'renter' } closeModal={ this.closeVerificationModal } user={ this.props.user } updateUser={ this.props.reloadUser } configurations={ this.props.configuration } />
+
           <div className='col-xs-12 no-side-padding user-header'>
             <Avatar src={ image } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' />
             <div className='col-xs-12 col-sm-8 dashboard-information'>
@@ -74,22 +124,7 @@ export default class Dashboard extends Component {
             </div>
           </div>
 
-          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileDetails setDirty={ this.setDirty } setClean={ this.setClean } />
-          </div>
-          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileVerifiedInfo {... this.props } setDirty={ this.setDirty } setClean={ this.setClean } />
-          </div>
-          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <Elements>
-              <UserPaymentMethods {... this.props} />
-            </Elements>
-          </div>
-          <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <Elements>
-              <UserPayoutMethods {... this.props} />
-            </Elements>
-          </div>
+          { this.renderProfileDetails() }
 
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
             <WishListSummary />
