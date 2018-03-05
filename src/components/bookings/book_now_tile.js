@@ -41,6 +41,8 @@ class BookNowTile extends Component {
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.toggleUserVerificationModal = this.toggleUserVerificationModal.bind(this);
+    this.afterVerificationAction = this.afterVerificationAction.bind(this);
+    this.closeVerificationModal = this.closeVerificationModal.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
   }
@@ -49,7 +51,7 @@ class BookNowTile extends Component {
     this.setState({ showUserVerificationModal: !this.state.showUserVerificationModal });
   }
 
-  updateUser() {
+  updateUser(callback) {
     if (this.props.loggedIn) {
       this.setState({ loading: true }, () => {
         UsersService.show('me')
@@ -67,7 +69,7 @@ class BookNowTile extends Component {
                         user: meInfo,
                         verificationsNeeded: verificationsNeeded,
                         loading: false
-                      });
+                      }, callback);
                     })
                     .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
       });
@@ -85,6 +87,14 @@ class BookNowTile extends Component {
         verificationsNeeded: []
       }, this.updateUser);
     }
+  }
+
+  closeVerificationModal() {
+    this.setState({ showUserVerificationModal: false });
+  }
+
+  afterVerificationAction(callback) {
+    this.updateUser(this.closeVerificationModal)
   }
 
   handleWindowResize() {
@@ -276,7 +286,7 @@ class BookNowTile extends Component {
 
         { this.renderBookNowTileContent() }
 
-        <UserVerificationModal configurations={ this.props.configurations } open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
+        <UserVerificationModal finishAction={ this.afterVerificationAction } closeModal={ this.closeVerificationModal } configurations={ this.props.configurations } open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
       </div>
     );
   }
