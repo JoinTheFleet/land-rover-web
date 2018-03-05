@@ -1,6 +1,10 @@
 .user-verification.modal {
   background-color: rgba(0, 0, 0, 0.5);
 
+  .verification-prompt {
+    padding: 15px;
+  }
+
   .payout-form {
     button.form-button {
       margin-top: 0;
@@ -263,6 +267,25 @@
       .filled {
         background: white;
       }
+    }
+  }
+
+  .verification-buttons {
+    button {
+      border-radius: 5px !important;
+    }
+  }
+
+  .verification-continue {
+    button {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 14px;
+      background-color: white;
+      border: 1px solid $secondary-color;
+      color: $secondary-color;
     }
   }
 }
