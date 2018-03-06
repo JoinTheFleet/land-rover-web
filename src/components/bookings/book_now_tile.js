@@ -18,6 +18,9 @@ import Errors from '../../miscellaneous/errors';
 import Helpers from '../../miscellaneous/helpers';
 
 import UserVerificationModal from '../users/user_verification_modal';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class BookNowTile extends Component {
   constructor(props) {
@@ -52,12 +55,14 @@ class BookNowTile extends Component {
   }
 
   updateUser(callback) {
-    if (this.props.loggedIn) {
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
       this.setState({ loading: true }, () => {
         UsersService.show('me')
                     .then(response => {
                       let meInfo = response.data.data.user;
-                      let verificationsNeeded = this.state.verificationsNeeded;
+                      let verificationsNeeded = [];
 
                       verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
                                                                .filter(key => meInfo.verifications_required[key]));
