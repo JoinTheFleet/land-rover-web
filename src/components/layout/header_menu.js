@@ -9,7 +9,7 @@ import Constants from '../../miscellaneous/constants';
 
 import CloseOnEscape from 'react-close-on-escape';
 
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const navigationSections = Constants.navigationSections();
 

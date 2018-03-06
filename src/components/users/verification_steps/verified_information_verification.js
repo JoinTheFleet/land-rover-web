@@ -107,7 +107,7 @@ export default class VerifiedInformationVerification extends Component {
   countryOfResidenceDisabled() {
     let user = this.props.user;
 
-    return (user.country_code || (user.country && user.country.alpha2) && !user.country_modified)
+    return !user.country_modified && (user.country_code || (user.country && user.country.alpha2));
   }
 
   modifyAddress(field, event) {

@@ -14,7 +14,6 @@ import Helpers from './miscellaneous/helpers';
 
 import Alerts from './components/alerts/alerts';
 import Header from './components/layout/header';
-import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
@@ -166,7 +165,9 @@ export default class App extends Component {
                                 }
                               })
                               .catch(() => {
-                                this.setState({ pendingNotificationRequest: false})
+                                this.setState({ pendingNotificationRequest: false});
+
+                                this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', 0);
                               });
         });
       }
@@ -342,14 +343,6 @@ export default class App extends Component {
     else {
       this.setState({ wishListModalOpen: false, wishListListing: undefined });
     }
-  }
-
-  renderHeaderTopMenu() {
-    return (
-      <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
-                     eventEmitter={ this.eventEmitter }
-                     loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />
-    )
   }
 
   handleDatesChange({startDate, endDate}) {
@@ -616,8 +609,6 @@ export default class App extends Component {
                     hideSearchForm={ props.location.pathname === '/' }
                     disableSearchButton={ disableSearchButton }
                     showSearchButton={ true } />
-
-            { this.renderHeaderTopMenu() }
 
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>

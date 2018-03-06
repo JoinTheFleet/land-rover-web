@@ -39,8 +39,11 @@ class PaymentForm extends Component {
                                                    this.props.saveUser(true)
                                                  });
                                                })
-                                               .catch(() => {
+                                               .catch((error) => {
                                                  this.props.loading(false);
+                                                 if (error.response) {
+                                                   Alert.error(error.response.data.message);
+                                                 }
                                                });
                         }
                       })
@@ -63,7 +66,7 @@ class PaymentForm extends Component {
         <button className='btn button round form-button col-xs-12' hidden={ this.state.paymentDetailsAdded } onClick={ this.addPaymentSource }>
           { LocalizationService.formatMessage('user_verification.verify') }
         </button>
-        <button className='btn button round form-button success col-xs-12' disabled={ true } hidden={ this.props.user && this.props.user.verifications_required.payment_method && !this.props.paymentDetailsAdded }>
+        <button className='btn button round form-button success col-xs-12' disabled={ true } hidden={ !this.state.paymentDetailsAdded }>
           { LocalizationService.formatMessage('user_verification.confirmed') }
         </button>
 

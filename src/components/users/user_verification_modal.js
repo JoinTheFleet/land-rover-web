@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import Modal from '../miscellaneous/modal';
 
 import { Elements } from 'react-stripe-elements';
+
+import Alert from 'react-s-alert';
 
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
@@ -15,6 +16,11 @@ import PayoutMethodVerification from './verification_steps/payout_methods_verifi
 import UsersService from '../../shared/services/users/users_service';
 
 import Button from '../miscellaneous/button';
+import LocalizationService from '../../shared/libraries/localization_service';
+
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class UserVerificationModal extends Component {
   constructor(props) {
@@ -39,6 +45,7 @@ export default class UserVerificationModal extends Component {
     this.saveUser = this.saveUser.bind(this);
     this.extractUserParams = this.extractUserParams.bind(this);
     this.loading = this.loading.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
   }
 
   updateUserField(field, value) {
@@ -63,19 +70,37 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      loading: true
-    }, () => {
-      UsersService.show('me')
-                  .then(response => {
-                    this.setUser(response.data.data.user, false, false);
-                  });
-    });
+    this.reloadUser();
+  }
+
+  reloadUser() {
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
+      this.setState({
+        loading: true
+      }, () => {
+        UsersService.show('me')
+                    .then(response => {
+                      this.setUser(response.data.data.user, false, false);
+                    })
+                    .catch((error) => {
+                      this.setState({ loading: false }, () => {
+                        if (error.response) {
+                          Alert.error(error.response.data.message);
+                        }
+                      });
+                    });
+      });
+    }
+    else {
+      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.open && !prevProps.open) {
-      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
+      this.reloadUser();
     }
   }
 
@@ -120,6 +145,13 @@ export default class UserVerificationModal extends Component {
                     }, () => {
                       this.setUser(response.data.data.user, true, !preventProgressToNextStep);
                     })
+                  })
+                  .catch((error) => {
+                    this.setState({ loading: false }, () => {
+                      if (error.response) {
+                        Alert.error(error.response.data.message);
+                      }
+                    });
                   });
     });    
   }
@@ -378,7 +410,7 @@ export default class UserVerificationModal extends Component {
                 </ul>
               </div>
               <Button type='button' className='col-xs-2 button text-center' onClick={ this.nextStep } disabled={ disabledNext || this.state.loading } spinner={ this.state.loading}>
-                { this.state.loading ? '' : 'Next' }
+                { this.state.loading ? '' : (this.state.currentStepNumber === this.state.verificationSteps.length ? LocalizationService.formatMessage('user_verification.finish') : LocalizationService.formatMessage('user_verification.next')) }
               </Button>
             </div>
           </div>
