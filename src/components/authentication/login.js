@@ -275,7 +275,7 @@ export default class Login extends Component {
                        cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
                        textButton={ LocalizationService.formatMessage('authentication.register_facebook') }
                        callback={ this.handleFacebookLogin }
-                       onClick={ () => { this.props.toggleModal('registration') } } />
+                       onClick={ () => { this.props.toggleModal('registration', this.props.scope) } } />
 
           <div className="divider">
             <div className="divider-line tertiary-color"></div>
@@ -286,7 +286,7 @@ export default class Login extends Component {
             <br className="visible-xs" />
             <a>
               <span className="secondary-text-color subtitle-font-weight"
-                    onClick={ () =>  {this.props.toggleModal('login') }}>
+                    onClick={ () =>  {this.props.toggleModal('login', this.props.scope) }}>
                 { ` ${LocalizationService.formatMessage('menu.login')}` }
               </span>
             </a>
@@ -350,7 +350,7 @@ export default class Login extends Component {
 
     let email = (
       <Button className="secondary-color white-text text-secondary-font-weight fs-18"
-              onClick={ () => { this.props.toggleModal('email') }}
+              onClick={ () => { this.props.toggleModal('email', this.props.scope) }}
               accessory={ emailAccessory }>
         { loginMessage }
       </Button>
@@ -384,7 +384,7 @@ export default class Login extends Component {
                { loginMessage }
              </Button>
              <div className='row'>
-               <div className='col-xs-12 modal_link text-center secondary-text-color subtitle-font-weight' onClick={ () => { this.props.toggleModal('forgotten-password'); }}>
+               <div className='col-xs-12 modal_link text-center secondary-text-color subtitle-font-weight' onClick={ () => { this.props.toggleModal('forgotten-password', this.props.scope); }}>
                  { LocalizationService.formatMessage('authentication.forgot_password') }
                </div>
              </div>
@@ -402,7 +402,7 @@ export default class Login extends Component {
                        cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
                        textButton={ LocalizationService.formatMessage('authentication.log_in_with_facebook') }
                        callback={ this.handleFacebookLogin }
-                       onClick={ () => { this.props.toggleModal('facebook') } } />
+                       onClick={ () => { this.props.toggleModal('facebook', this.props.scope) } } />
 
         <div className="divider with-text">
           <div className="divider-line tertiary-color"></div>
@@ -424,7 +424,7 @@ export default class Login extends Component {
             { (message) => (
               <a>
                 <span className="secondary-text-color subtitle-font-weight"
-                      onClick={ () =>  {this.props.toggleModal('registration') }}>
+                      onClick={ () =>  {this.props.toggleModal('registration', this.props.scope) }}>
                   {` ${message}`}
                 </span>
               </a>
@@ -448,7 +448,7 @@ export default class Login extends Component {
             }
           }} />;
         }
-        else {
+        else if (!this.props.scope === 'inline') {
           return <Redirect to={{
             pathname: '/profile',
             state: {

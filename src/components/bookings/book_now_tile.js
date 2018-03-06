@@ -219,7 +219,7 @@ class BookNowTile extends Component {
     let bookNowTileContent = (
       <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
         { LocalizationService.formatMessage('bookings.log_in_before_booking') }
-        <Button className="login-to-book-button secondary-color white-text" onClick={ () => { this.props.toggleModal('login') } }> { LocalizationService.formatMessage('authentication.log_in') } </Button>
+        <Button className="login-to-book-button secondary-color white-text" onClick={ () => { this.props.toggleModal('login', 'inline') } }> { LocalizationService.formatMessage('authentication.log_in') } </Button>
       </div>
     );
 
