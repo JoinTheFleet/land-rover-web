@@ -39,8 +39,11 @@ class PaymentForm extends Component {
                                                    this.props.saveUser(true)
                                                  });
                                                })
-                                               .catch(() => {
+                                               .catch((error) => {
                                                  this.props.loading(false);
+                                                 if (error.response) {
+                                                   Alert.error(error.response.data.message);
+                                                 }
                                                });
                         }
                       })

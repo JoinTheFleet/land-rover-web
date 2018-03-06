@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
 
 import FormRow from './form_row';
 import FormField from '../../miscellaneous/forms/form_field';
@@ -78,8 +79,11 @@ export default class ContactDetailsVerification extends Component {
               this.props.loading(false);
             });
           }
-        }).catch(() => {
+        }).catch((error) => {
           this.props.loading(false);
+          if (error.response) {
+            Alert.error(error.response.data.message);
+          }
         })
       })
     }
@@ -92,8 +96,11 @@ export default class ContactDetailsVerification extends Component {
                                 .then(() => {
                                   this.props.saveUser(true)
                                 })
-                                .catch(() => {
+                                .catch((error) => {
                                   this.loading(false);
+                                  if (error.response) {
+                                    Alert.error(error.response.data.message);
+                                  }
                                 })
       });
     }
@@ -114,8 +121,11 @@ export default class ContactDetailsVerification extends Component {
                   .then(() => {
                     this.props.loading(false);
                   })
-                  .catch(() => {
+                  .catch((error) => {
                     this.props.loading(false);
+                    if (error.response) {
+                      Alert.error(error.response.data.message);
+                    }
                   })
     })
   }

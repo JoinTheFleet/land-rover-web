@@ -66,12 +66,15 @@ class PayoutForm extends Component {
             this.setState({
               payoutDetailsAdded: true
             }, () => { this.props.saveUser(true) })
-          }).catch(() => {
+          }).catch((error) => {
             this.props.loading(false);
+            if (error.response) {
+              Alert.error(error.response.data.message);
+            }
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.props.loading(false);
         Alert.error(LocalizationService.formatMessage('user_profile_verified_info.payout_method_error'));
       });

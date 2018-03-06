@@ -5,6 +5,8 @@ import Modal from '../miscellaneous/modal';
 
 import { Elements } from 'react-stripe-elements';
 
+import Alert from 'react-s-alert';
+
 import ProfileInformationVerification from './verification_steps/profile_information_verification';
 import VerifiedInformationVerification from './verification_steps/verified_information_verification';
 import ContactDetailsVerification from './verification_steps/contact_details_verification';
@@ -69,6 +71,13 @@ export default class UserVerificationModal extends Component {
       UsersService.show('me')
                   .then(response => {
                     this.setUser(response.data.data.user, false, false);
+                  })
+                  .catch((error) => {
+                    this.setState({ loading: false }, () => {
+                      if (error.response) {
+                        Alert.error(error.response.data.message);
+                      }
+                    });
                   });
     });
   }
@@ -120,6 +129,13 @@ export default class UserVerificationModal extends Component {
                     }, () => {
                       this.setUser(response.data.data.user, true, !preventProgressToNextStep);
                     })
+                  })
+                  .catch((error) => {
+                    this.setState({ loading: false }, () => {
+                      if (error.response) {
+                        Alert.error(error.response.data.message);
+                      }
+                    });
                   });
     });    
   }

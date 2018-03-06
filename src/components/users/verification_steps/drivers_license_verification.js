@@ -142,7 +142,7 @@ export default class DriversLicenseVerification extends Component {
       .catch(error => {
         this.props.loading(false);
         if (error.response) {
-          Alert.error(error.response.data.message)
+          Alert.error(error.response.data.message);
         }
       });
     })
