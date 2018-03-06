@@ -855,7 +855,7 @@ class BookingForm extends Component {
         <span className="tertiary-text-color"> { listing.address } </span>
         <a href={ MAP_URL.replace('LATITUDE', location.latitude).replace('LONGITUDE', location.longitude) }
            target="_blank"
-           className="secondary-text-color">
+           className="secondary-text-color text-right">
            { LocalizationService.formatMessage('bookings.get_directions') }
         </a>
       </div>
