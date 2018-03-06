@@ -18,6 +18,10 @@ import UsersService from '../../shared/services/users/users_service';
 
 import Button from '../miscellaneous/button';
 
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
 export default class UserVerificationModal extends Component {
   constructor(props) {
     super(props);
@@ -70,7 +74,9 @@ export default class UserVerificationModal extends Component {
   }
 
   reloadUser() {
-    if (this.props.loggedIn) {
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
       this.setState({
         loading: true
       }, () => {
@@ -87,16 +93,16 @@ export default class UserVerificationModal extends Component {
                     });
       });
     }
+    else {
+      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
+  }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.loggedIn && this.props.loggedIn !== prevProps.loggedIn) {
+    if (this.props.open && !prevProps.open) {
       this.reloadUser();
     }
-    else if (this.props.open && !prevProps.open) {
-      this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
     }
-  }
 
   setUser(user, skipBuildVerifications, progressToNextStep) {
     if (user) {
