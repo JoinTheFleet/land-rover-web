@@ -41,6 +41,7 @@ export default class UserVerificationModal extends Component {
     this.saveUser = this.saveUser.bind(this);
     this.extractUserParams = this.extractUserParams.bind(this);
     this.loading = this.loading.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
   }
 
   updateUserField(field, value) {
@@ -65,25 +66,34 @@ export default class UserVerificationModal extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      loading: true
-    }, () => {
-      UsersService.show('me')
-                  .then(response => {
-                    this.setUser(response.data.data.user, false, false);
-                  })
-                  .catch((error) => {
-                    this.setState({ loading: false }, () => {
-                      if (error.response) {
-                        Alert.error(error.response.data.message);
-                      }
+    this.reloadUser();
+  }
+
+  reloadUser() {
+    if (this.props.loggedIn) {
+      this.setState({
+        loading: true
+      }, () => {
+        UsersService.show('me')
+                    .then(response => {
+                      this.setUser(response.data.data.user, false, false);
+                    })
+                    .catch((error) => {
+                      this.setState({ loading: false }, () => {
+                        if (error.response) {
+                          Alert.error(error.response.data.message);
+                        }
+                      });
                     });
-                  });
-    });
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.open && !prevProps.open) {
+    if (this.props.loggedIn && this.props.loggedIn !== prevProps.loggedIn) {
+      this.reloadUser();
+    }
+    else if (this.props.open && !prevProps.open) {
       this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
     }
   }
