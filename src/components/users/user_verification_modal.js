@@ -17,6 +17,7 @@ import PayoutMethodVerification from './verification_steps/payout_methods_verifi
 import UsersService from '../../shared/services/users/users_service';
 
 import Button from '../miscellaneous/button';
+import LocalizationService from '../../shared/libraries/localization_service';
 
 import Cookies from 'universal-cookie';
 
@@ -95,14 +96,14 @@ export default class UserVerificationModal extends Component {
     }
     else {
       this.setState({ user: Object.assign({}, this.state.originalUser) }, this.buildVerifications)
-  }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.open && !prevProps.open) {
       this.reloadUser();
     }
-    }
+  }
 
   setUser(user, skipBuildVerifications, progressToNextStep) {
     if (user) {
@@ -410,7 +411,7 @@ export default class UserVerificationModal extends Component {
                 </ul>
               </div>
               <Button type='button' className='col-xs-2 button text-center' onClick={ this.nextStep } disabled={ disabledNext || this.state.loading } spinner={ this.state.loading}>
-                { this.state.loading ? '' : 'Next' }
+                { this.state.loading ? '' : (this.state.currentStepNumber === this.state.verificationSteps.length ? LocalizationService.formatMessage('user_verification.finish') : LocalizationService.formatMessage('user_verification.next')) }
               </Button>
             </div>
           </div>
