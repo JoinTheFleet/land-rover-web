@@ -8,12 +8,12 @@ import {
 
 import FeatureTile from './feature_tile';
 
-import searchIcon from '../../assets/images/search.png';
-import bookIcon from '../../assets/images/book.png';
-import chatIcon from '../../assets/images/chat.png';
-import accountIcon from '../../assets/images/account.png';
-import calendarIcon from '../../assets/images/calendar.png';
-import groupIcon from '../../assets/images/group.png';
+import availableCars from '../../assets/images/available-cars-large.png';
+import bookRental from '../../assets/images/book-for-rental-large.png';
+import collectCar from '../../assets/images/collect-the-car-large.png';
+import listCar from '../../assets/images/list-car-for-rent-large.png';
+import rentalBooking from '../../assets/images/rental-booking-large.png';
+import meetRenter from '../../assets/images/meet-the-renter-large.png';
 
 export default class FeaturesList extends Component {
   render() {
@@ -30,9 +30,9 @@ export default class FeaturesList extends Component {
             </span>
           </p>
 
-          <FeatureTile icon={searchIcon} titleMessageId="homescreen.pick_a_car" textMessageId="homescreen.pick_a_car_text" />
-          <FeatureTile icon={bookIcon} titleMessageId="homescreen.book_a_car" textMessageId="homescreen.book_a_car_text" />
-          <FeatureTile icon={chatIcon} titleMessageId="homescreen.meet_the_owner" textMessageId="homescreen.meet_the_owner_text" />
+          <FeatureTile icon={availableCars} titleMessageId="homescreen.pick_a_car" textMessageId="homescreen.pick_a_car_text" />
+          <FeatureTile icon={bookRental} titleMessageId="homescreen.book_a_car" textMessageId="homescreen.book_a_car_text" />
+          <FeatureTile icon={collectCar} titleMessageId="homescreen.meet_the_owner" textMessageId="homescreen.meet_the_owner_text" />
         </div>
 
         <div id="making_car_work_for_you_div" className="col-xs-12 text-center">
@@ -42,9 +42,9 @@ export default class FeaturesList extends Component {
             </span>
           </p>
 
-          <FeatureTile icon={accountIcon} titleMessageId="homescreen.create_profile" textMessageId="homescreen.create_profile_text" />
-          <FeatureTile icon={calendarIcon} titleMessageId="homescreen.receive_bookings" textMessageId="homescreen.receive_bookings_text" />
-          <FeatureTile icon={groupIcon} titleMessageId="homescreen.meet_the_driver" textMessageId="homescreen.meet_the_driver_text" />
+          <FeatureTile icon={listCar} titleMessageId="homescreen.create_profile" textMessageId="homescreen.create_profile_text" />
+          <FeatureTile icon={rentalBooking} titleMessageId="homescreen.receive_bookings" textMessageId="homescreen.receive_bookings_text" />
+          <FeatureTile icon={meetRenter} titleMessageId="homescreen.meet_the_driver" textMessageId="homescreen.meet_the_driver_text" />
         </div>
       </div>
     )
