@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import PayoutMethodForm from '../../../user_management/payout_methods/payout_method_form';
-
 import FormRow from '../form_row';
 import stripeImage from '../../../../assets/images/stripe.png';
 import LocalizationService from '../../../../shared/libraries/localization_service';
@@ -88,10 +86,10 @@ class PayoutForm extends Component {
           <FormRow type='country' className='iban-country' disabled={ this.state.payoutDetailsAdded } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country') } value={ this.state.country } handleChange={ this.handleCountryChange } />
           <FormRow type='text' className='iban-number' disabled={ this.state.payoutDetailsAdded } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.iban') } value={ this.state.iban } handleChange={ this.handleIBANChange } />
         </div>
-        <button className='btn button round form-button col-xs-12' hidden={ (this.props.user && !this.props.user.owner_verifications_required.bank_account) || this.state.payoutDetailsAdded } onClick={ this.addPaymentSource }>
+        <button className='btn button round form-button col-xs-12' hidden={ this.state.payoutDetailsAdded } onClick={ this.addPaymentSource }>
           { LocalizationService.formatMessage('user_verification.verify') }
         </button>
-        <button className='btn button round form-button success col-xs-12' disabled={ true } hidden={ this.props.user && this.props.user.owner_verifications_required.bank_account && !this.props.payoutDetailsAdded }>
+        <button className='btn button round form-button success col-xs-12' disabled={ true } hidden={ !this.state.payoutDetailsAdded }>
           { LocalizationService.formatMessage('user_verification.confirmed') }
         </button>
 
