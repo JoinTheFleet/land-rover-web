@@ -165,7 +165,9 @@ export default class App extends Component {
                                 }
                               })
                               .catch(() => {
-                                this.setState({ pendingNotificationRequest: false})
+                                this.setState({ pendingNotificationRequest: false});
+
+                                this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', 0);
                               });
         });
       }
