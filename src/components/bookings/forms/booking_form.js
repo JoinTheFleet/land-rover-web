@@ -89,8 +89,6 @@ class BookingForm extends Component {
     this.handleOnDemandLocationChange = this.handleOnDemandLocationChange.bind(this);
     this.handleInsuranceCriteriaChange = this.handleInsuranceCriteriaChange.bind(this);
     this.handlePickUpDropOffTimeSelect = this.handlePickUpDropOffTimeSelect.bind(this);
-
-    window.addEventListener('resize', this.handleWindowResize);
   }
 
   componentDidMount() {
