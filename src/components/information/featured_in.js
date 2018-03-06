@@ -6,6 +6,7 @@ import newstalkLogo from '../../assets/images/newstalk-grey.png';
 import foraLogo from '../../assets/images/fora-grey.png';
 import rteradioLogo from '../../assets/images/rte-radio-1-grey.png';
 import irishtimesLogo from '../../assets/images/irish-times-grey.png';
+import farmersJournalLogo from '../../assets/images/farmers-journal.png';
 
 export default class FeaturedIn extends Component {
   render() {
@@ -19,6 +20,7 @@ export default class FeaturedIn extends Component {
         <img src={foraLogo} alt="Fora logo" />
         <img src={rteradioLogo} alt="RTE Radio logo" />
         <img src={irishtimesLogo} alt="Irish Times logo" />
+        <img src={farmersJournalLogo} alt="Farmers Journal" />
       </div>
     );
   }
