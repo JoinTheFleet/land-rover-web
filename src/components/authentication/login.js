@@ -448,7 +448,7 @@ export default class Login extends Component {
             }
           }} />;
         }
-        else if (!this.props.scope === 'inline') {
+        else if (this.props.scope !== 'inline') {
           return <Redirect to={{
             pathname: '/profile',
             state: {
