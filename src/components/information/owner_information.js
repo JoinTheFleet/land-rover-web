@@ -44,7 +44,7 @@ export default class OwnerInformation extends Component {
                     <li>{ LocalizationService.formatMessage('owner_information.point_4') }</li>
                   </ul>
                 </div>
-                <div className='btn btn-join' onClick={() => { this.props.toggleModal('registration', 'owner') }} >
+                <div className='btn btn-join' hidden={ this.props.accessToken } onClick={() => { this.props.toggleModal('registration', 'owner') }} >
                   { LocalizationService.formatMessage('owner_information.join_free') }
                 </div>
               </div>

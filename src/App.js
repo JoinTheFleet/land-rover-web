@@ -633,10 +633,10 @@ export default class App extends Component {
                 }} />
 
                 <Route exact path='/renters' render={(props) => {
-                  return <RenterInformation {...props} toggleModal={ this.toggleModal } />
+                  return <RenterInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
                 }  } />
                 <Route exact path='/owners' render={(props) => {
-                  return <OwnerInformation {...props} toggleModal={ this.toggleModal } />
+                  return <OwnerInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
                 }  } />
 
                 <Route exact path='/listings/new' render={(props) => {
