@@ -155,7 +155,7 @@ export default class DriversLicenseVerification extends Component {
   render() {
     return (
       <div className='col-xs-12 verification-form'>
-        <FormRow id='license-type' type='select' handleChange={ (event) => { this.setState({ licenseType: event.value }) } } options={ this.driversLicenseOptions } value={ this.state.licenseType } placeholder={ LocalizationService.formatMessage('user_verification.select_license_type') } />
+        <FormRow id='license-type' type='select' clearable={ false } handleChange={ (event) => { this.setState({ licenseType: event.value }) } } options={ this.driversLicenseOptions } value={ this.state.licenseType } placeholder={ LocalizationService.formatMessage('user_verification.select_license_type') } />
         <FormRow type='text' id='license-number' value={ this.state.licenseNumber } handleChange={ (event) => { this.setState({ licenseNumber: event.target.value }) } } placeholder={ LocalizationService.formatMessage('user_verification.license_number') } />
         <FormRow type='cleavedate' id='license-issue-date' handleChange={ this.handleIssueDateChange } value={ this.state.issueDate ? moment.unix(this.state.issueDate).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_verification.license_issue_date') } />
         <FormRow id='license-front' type={ 'file' } handleChange={ (event) => { this.handleImageChange('front', event) } } value={ this.state.frontImage } placeholder={ LocalizationService.formatMessage('user_verification.front_of_license') } />
