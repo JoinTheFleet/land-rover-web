@@ -95,7 +95,7 @@ export default class Header extends Component {
 
             <div className={'pull-right header-right-options'}>
               <Link id='header_list_car_link' className="header-right-option static-link white-text" to={ this.props.loggedIn ? '/listings/new' : '/owners' }>{ LocalizationService.formatMessage('header.list_your_car') }</Link>
-              <DropdownButton id='learn-more' title={ LocalizationService.formatMessage('learn_more.learn_more') } bsStyle='primary' className={ `hidden-xs` } noCaret pullRight>
+              <DropdownButton id='learn-more' title={ LocalizationService.formatMessage('learn_more.learn_more') } bsStyle='primary' className={ `hidden-xs` } pullRight>
                 <MenuItem eventKey="1" className={ this.props.loggedIn ? 'hide' : '' }>
                   <Link to='/owners'>{ LocalizationService.formatMessage('learn_more.earn_money') }</Link>
                 </MenuItem>

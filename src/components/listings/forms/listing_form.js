@@ -58,7 +58,6 @@ export default class ListingForm extends Component {
       invalidEdit: false,
       currentStep: currentStep,
       previousStep: previousStep,
-      verificationsNeeded: [],
       showVerificationModal: false
     };
 
@@ -83,18 +82,18 @@ export default class ListingForm extends Component {
       UsersService.show('me')
                   .then(response => {
                     let meInfo = response.data.data.user;
-                    let verificationsNeeded = [];
+                    let showVerificationModal = false;
 
-                    verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
-                                                             .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+                    for (var key in meInfo.owner_verifications_required) {
+                      showVerificationModal = showVerificationModal || meInfo.owner_verifications_required[key];
+                    }
 
                     this.setState({
                       currentUser: meInfo,
                       loading: false,
-                      verificationsNeeded: verificationsNeeded,
-                      showVerificationModal: verificationsNeeded.length > 0
+                      showVerificationModal: showVerificationModal
                     }, () => {
-                      if (verificationsNeeded.length === 0) {
+                      if (showVerificationModal) {
                         let location = this.props.location;
 
                         if (location && location.state && location.state.listing) {

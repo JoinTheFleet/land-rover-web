@@ -55,6 +55,28 @@ export default class DriversLicenseVerification extends Component {
     }
   }
 
+  renderCountrySelector() {
+    if (this.driversLicenseTypes && this.state.licenseType) {
+      let license = this.driversLicenseTypes.find((licenseType) => {
+        return licenseType.id === this.state.licenseType;
+      });
+
+      if (license && license.shows_nested_countries && license.countries.length > 0) {
+        let options = license.countries.map((country) => {
+          return {
+            label: country.name,
+            value: country.id
+          }
+        });
+
+        return (
+          <FormRow id='license-country' type='select' clearable={ false } handleChange={ (event) => { this.setState({ country: event.value }) } } options={ options } value={ this.state.country } placeholder={ LocalizationService.formatMessage('user_verification.select_country') } />
+        )
+      }
+    }
+    return '';
+  }
+
   handleImageChange(side, event) {
     if (event && event.target && event.target.files) {
       let file = event.target.files[0];
@@ -156,6 +178,7 @@ export default class DriversLicenseVerification extends Component {
     return (
       <div className='col-xs-12 verification-form'>
         <FormRow id='license-type' type='select' clearable={ false } handleChange={ (event) => { this.setState({ licenseType: event.value }) } } options={ this.driversLicenseOptions } value={ this.state.licenseType } placeholder={ LocalizationService.formatMessage('user_verification.select_license_type') } />
+        { this.renderCountrySelector() }
         <FormRow type='text' id='license-number' value={ this.state.licenseNumber } handleChange={ (event) => { this.setState({ licenseNumber: event.target.value }) } } placeholder={ LocalizationService.formatMessage('user_verification.license_number') } />
         <FormRow type='cleavedate' id='license-issue-date' handleChange={ this.handleIssueDateChange } value={ this.state.issueDate ? moment.unix(this.state.issueDate).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_verification.license_issue_date') } />
         <FormRow id='license-front' type={ 'file' } handleChange={ (event) => { this.handleImageChange('front', event) } } value={ this.state.frontImage } placeholder={ LocalizationService.formatMessage('user_verification.front_of_license') } />

@@ -32,7 +32,7 @@ class BookNowTile extends Component {
       pricingQuote: {},
       quotation: {},
       loadingRates: false,
-      verificationsNeeded: [],
+      verificationsNeeded: false,
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
       daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null,
       loading: false,
@@ -62,13 +62,11 @@ class BookNowTile extends Component {
         UsersService.show('me')
                     .then(response => {
                       let meInfo = response.data.data.user;
-                      let verificationsNeeded = [];
+                      let verificationsNeeded = false;
 
-                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
-                                                               .filter(key => meInfo.verifications_required[key]));
-
-                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
-                                                               .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+                      for (var key in meInfo.verifications_required) {
+                        verificationsNeeded = verificationsNeeded || meInfo.verifications_required[key];
+                      }
 
                       this.setState({
                         user: meInfo,
@@ -89,7 +87,7 @@ class BookNowTile extends Component {
     if (this.props.loggedIn !== prevProps.loggedIn) {
       this.setState({
         pricingQuote: {},
-        verificationsNeeded: []
+        verificationsNeeded: false
       }, this.updateUser);
     }
   }
@@ -228,7 +226,7 @@ class BookNowTile extends Component {
       </div>
     );
 
-    if (this.state.verificationsNeeded.length > 0) {
+    if (this.state.verificationsNeeded) {
       bookNowTileContent = (
         <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
           { LocalizationService.formatMessage('bookings.verify_info_before_booking') }

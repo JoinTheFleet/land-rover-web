@@ -10,7 +10,7 @@ export default class FormRow extends Component {
             <span>{ this.props.placeholder }</span>
           </div>
           <div className='col-xs-12 form-field'>
-            <FormField {...this.props } />
+            <FormField {...this.props } placeholder={ this.props.fieldPlaceholder || this.props.placeholder } />
           </div>
         </div>
       </div>
