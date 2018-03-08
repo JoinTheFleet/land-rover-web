@@ -357,7 +357,7 @@ export default class UserVerificationModal extends Component {
   render() {
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
-      let currentVerificationStep = <CurrentVerificationStep loading={ this.loading } configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
+      let currentVerificationStep = <CurrentVerificationStep loading={ this.loading } scope={ this.props.scope } configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
 
       let disabledNext = !this.verificationComponent || !this.verificationComponent.verified();
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
