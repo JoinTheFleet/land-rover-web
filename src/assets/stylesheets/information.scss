@@ -127,6 +127,12 @@
     .faqs {
       padding-top: 20px;
       padding-bottom: 20px;
+
+      ol, ul {
+        list-style-type: normal;
+
+        padding-left: 15px;
+      }
     }
   }
 
