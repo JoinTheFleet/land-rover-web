@@ -94,10 +94,10 @@ export default class ContactDetailsVerification extends Component {
       this.props.loading(true, () => {
         UserPhoneNumbersService.confirm(this.state.verificationID, this.state.verificationCode)
                                 .then(() => {
-                                  this.props.saveUser(true)
+                                  this.props.saveUser(true);
                                 })
                                 .catch((error) => {
-                                  this.loading(false);
+                                  this.props.loading(false);
                                   if (error.response) {
                                     Alert.error(error.response.data.message);
                                   }

@@ -44,6 +44,15 @@ export default class Login extends Component {
     this.setSelectedLoginMode();
   }
 
+  componentDidUpdate(oldProps, oldState) {
+    if (this.props.modalName && this.props.modalName.length > 0 && !oldProps.modalName) {
+      this.setState({
+        userCreated: false,
+        user: {}
+      });
+    }
+  }
+
   setSelectedLoginMode() {
     if (this.props.modalName === 'login') {
       this.setState({
