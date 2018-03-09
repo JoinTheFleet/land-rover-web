@@ -60,6 +60,11 @@
 
 @import 'main';
 
+.fixed-body {
+  position: fixed;
+  width: 100%;
+}
+
 img {
   image-orientation: from-image;
 }

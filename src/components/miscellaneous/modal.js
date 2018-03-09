@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Toggleable from '../miscellaneous/toggleable';
 import CloseOnEscape from 'react-close-on-escape';
+import MobileDetect from 'mobile-detect';
 
 export default class Modal extends Component {
   constructor(props) {
@@ -34,6 +35,11 @@ export default class Modal extends Component {
         </a>
       );
     }
+
+    let md = new MobileDetect(navigator.userAgent);
+    let iOSVersion = md.version('iOS');
+
+    document.body.classList.toggle('fixed-body', iOSVersion && iOSVersion >= 11.0 && this.props.open);
 
     return (
       <CloseOnEscape onEscape={ this.handleCloseOnEscape }>
