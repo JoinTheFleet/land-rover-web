@@ -55,8 +55,19 @@
 @import 'users';
 @import 'user_listings';
 @import 'wishlists';
+@import 'information';
+@import 'verifications';
 
 @import 'main';
+
+.zopim {
+  left: 0 !important;
+}
+
+.fixed-body {
+  position: fixed;
+  width: 100%;
+}
 
 img {
   image-orientation: from-image;
@@ -72,4 +83,10 @@ img {
       color: $secondary-color !important;
     }
   }
+}
+
+.caret-left {
+  border-right: 4px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
 }

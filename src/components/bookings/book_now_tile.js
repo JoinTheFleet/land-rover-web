@@ -17,6 +17,11 @@ import LocalizationService from '../../shared/libraries/localization_service';
 import Errors from '../../miscellaneous/errors';
 import Helpers from '../../miscellaneous/helpers';
 
+import UserVerificationModal from '../users/user_verification_modal';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
 class BookNowTile extends Component {
   constructor(props) {
     super(props);
@@ -27,41 +32,72 @@ class BookNowTile extends Component {
       pricingQuote: {},
       quotation: {},
       loadingRates: false,
-      verificationsNeeded: [],
+      verificationsNeeded: false,
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
       daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null,
-      loading: false
+      loading: false,
+      showUserVerificationModal: false
     };
 
     this.addError = this.addError.bind(this);
     this.handleDatesChange = this.handleDatesChange.bind(this);
     this.handleWindowResize = this.handleWindowResize.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+    this.toggleUserVerificationModal = this.toggleUserVerificationModal.bind(this);
+    this.afterVerificationAction = this.afterVerificationAction.bind(this);
+    this.closeVerificationModal = this.closeVerificationModal.bind(this);
 
     window.addEventListener('resize', this.handleWindowResize);
   }
 
-  componentDidMount() {
-    if (this.props.loggedIn) {
+  toggleUserVerificationModal() {
+    this.setState({ showUserVerificationModal: !this.state.showUserVerificationModal });
+  }
+
+  updateUser(callback) {
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
       this.setState({ loading: true }, () => {
         UsersService.show('me')
                     .then(response => {
                       let meInfo = response.data.data.user;
-                      let verificationsNeeded = this.state.verificationsNeeded;
+                      let verificationsNeeded = false;
 
-                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.verifications_required)
-                                                               .filter(key => meInfo.verifications_required[key]));
-
-                      verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
-                                                               .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+                      for (var key in meInfo.verifications_required) {
+                        verificationsNeeded = verificationsNeeded || meInfo.verifications_required[key];
+                      }
 
                       this.setState({
+                        user: meInfo,
                         verificationsNeeded: verificationsNeeded,
                         loading: false
-                      });
+                      }, callback);
                     })
                     .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
       });
     }
+  }
+
+  componentDidMount() {
+    this.updateUser()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.loggedIn !== prevProps.loggedIn) {
+      this.setState({
+        pricingQuote: {},
+        verificationsNeeded: false
+      }, this.updateUser);
+    }
+  }
+
+  closeVerificationModal() {
+    this.setState({ showUserVerificationModal: false });
+  }
+
+  afterVerificationAction(callback) {
+    this.updateUser(this.closeVerificationModal)
   }
 
   handleWindowResize() {
@@ -186,19 +222,17 @@ class BookNowTile extends Component {
     let bookNowTileContent = (
       <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
         { LocalizationService.formatMessage('bookings.log_in_before_booking') }
-        <Button className="login-to-book-button secondary-color white-text" onClick={ () => { this.props.toggleModal('login') } }> { LocalizationService.formatMessage('authentication.log_in') } </Button>
+        <Button className="login-to-book-button secondary-color white-text" onClick={ () => { this.props.toggleModal('login', 'inline') } }> { LocalizationService.formatMessage('authentication.log_in') } </Button>
       </div>
     );
 
-    if (this.state.verificationsNeeded.length > 0) {
+    if (this.state.verificationsNeeded) {
       bookNowTileContent = (
         <div className="book-now-tile-details tertiary-text-color col-xs-12 no-side-padding">
           { LocalizationService.formatMessage('bookings.verify_info_before_booking') }
-          <Link to={ { pathname: '/profile', state: { verificationsNeeded: this.state.verificationsNeeded }} }>
-            <Button className="login-to-book-button secondary-color white-text" onClick={ () => {} }>
-              { LocalizationService.formatMessage('bookings.verify_info') }
-            </Button>
-          </Link>
+          <Button className="login-to-book-button secondary-color white-text" onClick={ this.toggleUserVerificationModal }>
+            { LocalizationService.formatMessage('bookings.verify_info') }
+          </Button>
         </div>
       );
     }
@@ -222,7 +256,6 @@ class BookNowTile extends Component {
           <DateRangePicker startDate={ startDate }
                           endDate={ endDate }
                           minimumNights={ 0 }
-                          //  daySize={ this.state.daySize } TODO: This is incorrect
                           numberOfMonths={ this.state.numberOfMonthsToShow }
                           focusedInput={this.state.focusedInput}
                           onDatesChange={ this.handleDatesChange }
@@ -243,7 +276,7 @@ class BookNowTile extends Component {
     let pricePerDay = LocalizationService.formatMessage('listings.price_per_day',
                                                         { currency_symbol: listing.country_configuration.country.currency_symbol,
                                                           price: listing.price / 100 }
-                                                       );
+                                                        );
 
     return (
       <div className="book-now-tile">
@@ -255,6 +288,8 @@ class BookNowTile extends Component {
         </div>
 
         { this.renderBookNowTileContent() }
+
+        <UserVerificationModal finishAction={ this.afterVerificationAction } closeModal={ this.closeVerificationModal } configurations={ this.props.configurations } open={ this.state.showUserVerificationModal } toggleModal={ this.toggleUserVerificationModal } scope={ 'renter' } user={ this.state.user } />
       </div>
     );
   }

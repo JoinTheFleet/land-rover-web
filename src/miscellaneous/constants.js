@@ -26,7 +26,11 @@ export default class Constants {
       logout: 'logout',
       login: 'login',
       signup: 'signup',
-      calendar: 'calendar'
+      calendar: 'calendar',
+      drive_on_fleet: 'renters',
+      earn_money: 'owners',
+      get_help: 'get_help',
+      blog: 'blog'
     };
   }
 

@@ -216,8 +216,14 @@ class ListingMap extends Component {
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
             language: 'EN'
           }}
-          options={{
-            fullscreenControl: false
+          options={(map) => {
+            return {
+              fullscreenControl: false,
+              zoomControl: true,
+              zoomControlOptions: {
+                  position: map.ControlPosition.TOP_RIGHT
+              }
+            }
           }}
           onClick={this.onClick}
           bounds={ bounds }
@@ -225,10 +231,6 @@ class ListingMap extends Component {
           draggable={true}
           onChange={this.onPositionChange}
           onDrag={this.mapDragged}
-          onZoomAnimationEnd={() => { this.onPositionChange({
-            bounds: this.map.props.bounds,
-            center: this.map.props.center
-          })}}
           resetBoundsOnResize={true}
           center={ center }
           ref={(ref) => {this.map = ref}}

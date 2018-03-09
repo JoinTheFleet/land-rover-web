@@ -1,0 +1,296 @@
+.resend {
+  margin-bottom: 0 !important;
+}
+
+.user-verification.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .verification-prompt {
+    padding: 15px;
+  }
+
+  .payout-form {
+    button.form-button {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+  }
+
+  .stripe {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .stripe-logo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    img {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 150px;
+    }
+  }
+
+  .payment-form,
+  .payout-form {
+    button.form-button.success {
+      margin-top: 15px;
+    }
+  }
+
+  .iban-number {
+    padding: 5px 10px;
+  }
+
+  .image {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: $secondary-color;
+    cursor: pointer;
+
+    i,
+    img {
+      left: 50%;
+      position: relative;
+      transform: translateX(-50%);
+      margin-bottom: 20px;
+    }
+
+    i {
+      font-size: 80px;
+    }
+
+    img {
+      height: 80px;
+    }
+  }
+
+  .verified-sent {
+    font-size: 14px;
+  }
+
+  .verified-phone-number {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .country-code,
+  .phone-number {
+    border-radius: 0;
+    border-color: #e0e0e0;
+  }
+
+  .country-code {
+    color: #aaa;
+  }
+
+  .verification-section-header {
+    background-color: #eee;
+    padding: 10px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  .Select {
+    display: inline-block;
+    width: 100%;
+
+    input {
+      padding-left: 0 !important;
+    }
+  }
+
+  .form-label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .form-field,
+  .form-group {
+    input,
+    textarea {
+      padding: 5px 10px;
+      line-height: 1.5;
+      width: 100%;
+    }
+  }
+
+  .form-group {
+    input,
+    textarea {
+      margin-bottom: 5px;
+    }
+  }
+
+  .form-element {
+    &:first-of-type {
+      margin-top: 10px;
+    }
+    &:last-of-type {
+      margin-bottom: 20px;
+    }
+  }
+
+  .modal-content {
+    box-shadow: none;
+    border-radius: 0;
+    border-width: 0;
+    background-color: white;
+
+    .close-login-modal-btn,
+    .title-font-weight {
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .title-font-weight {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .title-row {
+      background-color: $secondary-color;
+      color: white;
+
+      i {
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: -4px;
+        vertical-align: middle;
+        font-size: 16px;
+      }
+    }
+
+    .form-button {
+      margin-top: 15px;
+      margin-bottom: 15px;
+
+      &.success {
+        background-color: #5cb85c;
+        margin-top: 0;
+      }
+    }
+
+    .button.round {
+      border-radius: 3px;
+    }
+
+    .email-section {
+      button {
+        margin-top: 0px;
+        margin-bottom: 20px;
+      }
+    }
+
+    .button,
+    .step-number,
+    .steps {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      color: white;
+      line-height: 1.5;
+      height: 41px;
+    }
+
+    .button, 
+    .step-number {
+      text-align: center;
+      background-color: $secondary-color;
+      border-radius: 0;
+      border-width: 0;
+      box-shadow: none;
+
+      &:hover,
+      &:active,
+      &:focus {
+        box-shadow: none;
+      }
+
+      padding-left: 0;
+      padding-right: 0;
+
+      font-size: 11px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+
+      @media screen and (min-width: 768px) {
+        font-size: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+
+    .steps {
+      background-color: #9b9b9b;
+    }
+
+    .step-number {
+      opacity: 0.65;
+    }
+
+    .steps {
+      ul {
+        border-top: 1px solid white;
+        margin: 10px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        position: relative;
+        height: 1px;
+
+        &.single {
+          border-width: 0;
+        }
+      }
+      
+      .line:after {
+        right: 0;
+      }
+
+      li {
+        width: 12px;
+        height: 12px;
+        text-align: center;
+        line-height: 1.5;
+        border-radius: 50%;
+        background: #9b9b9b;
+        display: inline-block;
+        color: transparent;
+        position: absolute;
+        border: 1px solid white;
+        top: -7px;
+      }
+
+      .filled {
+        background: white;
+      }
+    }
+  }
+
+  .verification-buttons {
+    button {
+      border-radius: 5px !important;
+    }
+  }
+
+  .verification-continue {
+    button {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 14px;
+      background-color: white;
+      border: 1px solid $secondary-color;
+      color: $secondary-color;
+    }
+  }
+}

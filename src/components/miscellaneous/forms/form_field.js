@@ -178,6 +178,7 @@ export default class FormField extends Component {
         <Select value={ this.props.value }
                 options={ this.props.options }
                 disabled={ this.props.disabled }
+                scrollMenuIntoView={ false }
                 onChange={ this.props.handleChange }
                 className={ this.props.className }
                 clearable={ this.props.clearable } />
@@ -212,6 +213,7 @@ export default class FormField extends Component {
       renderable = (
         <Select value={ this.props.value }
                 options={ COUNTRIES }
+                scrollMenuIntoView={ false }
                 disabled={ this.props.disabled }
                 onChange={ this.props.handleChange }
                 className={ this.props.className }
