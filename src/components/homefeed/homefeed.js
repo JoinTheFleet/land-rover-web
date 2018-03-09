@@ -58,6 +58,7 @@ export default class Homefeed extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     if (this.props.accessToken) {
       this.setState({
         loading: true

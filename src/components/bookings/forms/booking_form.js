@@ -89,8 +89,6 @@ class BookingForm extends Component {
     this.handleOnDemandLocationChange = this.handleOnDemandLocationChange.bind(this);
     this.handleInsuranceCriteriaChange = this.handleInsuranceCriteriaChange.bind(this);
     this.handlePickUpDropOffTimeSelect = this.handlePickUpDropOffTimeSelect.bind(this);
-
-    window.addEventListener('resize', this.handleWindowResize);
   }
 
   componentDidMount() {
@@ -857,7 +855,7 @@ class BookingForm extends Component {
         <span className="tertiary-text-color"> { listing.address } </span>
         <a href={ MAP_URL.replace('LATITUDE', location.latitude).replace('LONGITUDE', location.longitude) }
            target="_blank"
-           className="secondary-text-color">
+           className="secondary-text-color text-right">
            { LocalizationService.formatMessage('bookings.get_directions') }
         </a>
       </div>

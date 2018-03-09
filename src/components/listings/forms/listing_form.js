@@ -27,6 +27,8 @@ import ListingsHelper from '../../../miscellaneous/listings_helper';
 
 import ReactFacebookPixel from 'react-facebook-pixel';
 
+import UserVerificationModal from '../../users/user_verification_modal';
+
 const listingSteps = Constants.listingSteps();
 const stepDirections = Constants.stepDirections();
 const steps = Object.keys(listingSteps);
@@ -56,7 +58,7 @@ export default class ListingForm extends Component {
       invalidEdit: false,
       currentStep: currentStep,
       previousStep: previousStep,
-      verificationsNeeded: [],
+      showVerificationModal: false
     };
 
     this.addError = this.addError.bind(this);
@@ -66,45 +68,81 @@ export default class ListingForm extends Component {
     this.handleCompleteListing = this.handleCompleteListing.bind(this);
     this.proceedToStepAndAddProperties = this.proceedToStepAndAddProperties.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
+    this.closeVerificationModal = this.closeVerificationModal.bind(this);
+    this.afterVerificationAction = this.afterVerificationAction.bind(this);
   }
 
   componentDidMount() {
+    this.reloadUser();
+  }
+
+  reloadUser(callback) {
     this.setState({ loading: true }, () => {
       UsersService.show('me')
                   .then(response => {
                     let meInfo = response.data.data.user;
-                    let verificationsNeeded = this.state.verificationsNeeded;
+                    let showVerificationModal = false;
 
-                    verificationsNeeded = verificationsNeeded.concat(Object.keys(meInfo.owner_verifications_required)
-                                                             .filter(key => meInfo.verifications_required[key] && verificationsNeeded.indexOf(key) === -1));
+                    for (var key in meInfo.owner_verifications_required) {
+                      showVerificationModal = showVerificationModal || meInfo.owner_verifications_required[key];
+                    }
 
                     this.setState({
                       currentUser: meInfo,
-                      verificationsNeeded: verificationsNeeded,
-                      loading: false
+                      loading: false,
+                      showVerificationModal: showVerificationModal
                     }, () => {
-                      if (verificationsNeeded.length === 0) {
+                      if (showVerificationModal) {
                         let location = this.props.location;
 
                         if (location && location.state && location.state.listing) {
-                          this.setState({ listing: location.state.listing }, this.allowForEdit);
-                        }
-                        else if (this.props.match.params.id) {
-                          this.setState({ loading: true }, () => {
-                            ListingsService.show(this.props.match.params.id)
-                                          .then(response => {
-                                            this.setState({
-                                              listing: response.data.data.listing,
-                                              loading: false
-                                            }, this.allowForEdit);
-                                          });
+                          this.setState({ listing: location.state.listing, loading: false }, () => {
+                            this.allowForEdit();
+                            if (callback) {
+                              callback();
+                            }
                           });
                         }
+                        else if (this.props.match.params.id) {
+                          ListingsService.show(this.props.match.params.id)
+                                         .then(response => {
+                                           this.setState({
+                                             listing: response.data.data.listing,
+                                             loading: false
+                                           }, () => {
+                                             if (callback) {
+                                               callback();
+                                             }
+                                           });
+                                         })
+                                         .catch(() => {
+                                           this.setState({ loading: false });
+                                         });
+                        }
+                      }
+                      else {
+                        this.setState({ loading: false }, () => {
+                          if (callback) {
+                            callback();
+                          }
+                        });
                       }
                     });
                   })
-                  .catch(error => { this.addError(Errors.extractErrorMessage(error)); });
+                  .catch((error) => { 
+                    this.addError(Errors.extractErrorMessage(error));
+                    this.setState({ loading: false }) 
+                  });
     });
+  }
+
+  closeVerificationModal() {
+    this.setState({ showVerificationModal: false });
+  }
+
+  afterVerificationAction(callback) {
+    this.reloadUser(callback);
   }
 
   addError(error) {
@@ -266,10 +304,6 @@ export default class ListingForm extends Component {
   renderStep(step) {
     let renderedStep;
 
-    if ( this.state.verificationsNeeded.length > 0 ) {
-      return (<Redirect to={ { pathname: "/profile", state: { verificationsNeeded: this.state.verificationsNeeded, listingVerifications: true } }} />)
-    }
-
     if ( this.state.loading ) {
       renderedStep = (<Loading />)
     }
@@ -277,29 +311,35 @@ export default class ListingForm extends Component {
       switch(step) {
         case listingSteps.details:
           renderedStep = (<ListingDetails listing={ this.state.listing }
+                                          disabled={ this.props.showVerificationModal }
                                           handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.location:
           renderedStep = (<ListingLocation listing={ this.state.listing }
+                                           disabled={ this.props.showVerificationModal }
                                            handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.images:
           renderedStep = (<ListingImages listing={ this.state.listing }
                                          edit={ this.props.edit }
+                                         disabled={ this.props.showVerificationModal }
                                          handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.pricing:
           renderedStep = (<ListingPricing listing={ this.state.listing }
+                                          disabled={ this.props.showVerificationModal }
                                           handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.rules:
           renderedStep = (<ListingRules listing={ this.state.listing }
                                         finalStep={ true }
+                                        disabled={ this.props.showVerificationModal }
                                         handleCompleteListing={ this.handleCompleteListing } />)
           break;
         default:
           renderedStep = (<ListingRegistration listing={ this.state.listing }
                                                firstStep={ true }
+                                               disabled={ this.props.showVerificationModal }
                                                handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties }
                                                configurations={ this.props.configurations } />);
       }
@@ -307,6 +347,7 @@ export default class ListingForm extends Component {
 
     return (
       <div className="listing-form-current-step col-xs-12">
+        <UserVerificationModal {...this.props} open={ this.state.showVerificationModal } scope={ 'owner' } finishAction={ this.afterVerificationAction } closeModal={ this.closeVerificationModal } user={ this.state.currentUser } updateUser={ this.reloadUser } configurations={ this.props.configurations } />
         { renderedStep }
       </div>
     );

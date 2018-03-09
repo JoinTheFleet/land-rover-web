@@ -14,13 +14,16 @@ import Helpers from './miscellaneous/helpers';
 
 import Alerts from './components/alerts/alerts';
 import Header from './components/layout/header';
-import HeaderTopMenu from './components/layout/header_top_menu';
 import Footer from './components/layout/footer';
 import Homescreen from './components/home/homescreen';
 import Homefeed from './components/homefeed/homefeed';
 import Login from './components/authentication/login';
 import Listings from './components/listings/listings';
 import Bookings from './components/bookings/bookings';
+
+import RenterInformation from './components/information/renter_information';
+import OwnerInformation from './components/information/owner_information';
+
 import UserManagement from './components/user_management/user_management';
 import BookingsCalendar from './components/bookings/bookings_calendar';
 import MessagingController from './components/messaging/messaging_controller';
@@ -89,11 +92,11 @@ export default class App extends Component {
       boundingBox: undefined,
       sort: 'distance',
       viewsProps: {},
-      visitedDashboard: false,
       wishListModalOpen: false,
       limit: 20,
       page: 0,
-      pages: 1
+      pages: 1,
+      pendingNotificationRequest: false
     };
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -145,15 +148,31 @@ export default class App extends Component {
     }, 1000);
 
     setInterval(() => {
-      NotificationsService.unreadCount()
-                          .then(response => {
-                            if (response && response.data && response.data.data) {
-                              let count = response.data.data.count;
+      let token = cookies.get('accessToken');
 
-                              this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
-                            }
-                          });
-    }, 2000)
+      if (token && !this.state.pendingNotificationRequest) {
+        this.setState({
+          pendingNotificationRequest: true
+        }, () => {
+          NotificationsService.unreadCount()
+                              .then(response => {
+                                if (response && response.data && response.data.data) {
+                                  let count = response.data.data.count;
+
+                                  this.setState({ pendingNotificationRequest: false})
+
+                                  this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', count);
+                                }
+                              })
+                              .catch(() => {
+                                this.setState({ pendingNotificationRequest: false});
+
+                                this.eventEmitter.emit('UPDATED_NOTIFICATIONS_COUNT', 0);
+                              });
+        });
+      }
+      
+    }, 5000)
 
     branch.init(process.env.REACT_APP_BRANCH_KEY);
     this.setupEvents();
@@ -246,7 +265,6 @@ export default class App extends Component {
 
     if (accessToken.length > 0) {
       let newState = {
-        visitedDashboard: this.state.accessToken,
         accessToken: accessToken,
         showAlerts: true,
         modalName: undefined
@@ -302,12 +320,12 @@ export default class App extends Component {
                          this.setAccessToken('');
   }
 
-  toggleModal(modal) {
+  toggleModal(modal, scope) {
     if (this.state.modalName === modal) {
       this.setState({ modalName: undefined });
     }
     else {
-      this.setState({ modalName: modal });
+      this.setState({ modalName: modal, modalScope: scope });
     }
   }
 
@@ -325,14 +343,6 @@ export default class App extends Component {
     else {
       this.setState({ wishListModalOpen: false, wishListListing: undefined });
     }
-  }
-
-  renderHeaderTopMenu() {
-    return (
-      <HeaderTopMenu currentUserRole={ this.state.currentUserRole }
-                     eventEmitter={ this.eventEmitter }
-                     loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />
-    )
   }
 
   handleDatesChange({startDate, endDate}) {
@@ -548,6 +558,7 @@ export default class App extends Component {
           }} />
           <Route path="/listings" render={(props) => {
             return (<Listings {...props}
+                              toggleModal={ this.toggleModal }
                               configurations={ this.state.configuration }
                               currentUserRole={ this.state.currentUserRole }
                               loggedIn={ typeof this.state.accessToken !== 'undefined' && this.state.accessToken.length > 0 } />)
@@ -599,35 +610,34 @@ export default class App extends Component {
                     disableSearchButton={ disableSearchButton }
                     showSearchButton={ true } />
 
-            { this.renderHeaderTopMenu() }
-
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
                 <Route exact path="/" render={(props) => {
-                  if (this.state.accessToken && !this.state.visitedDashboard) {
-                    this.setState({ visitedDashboard: true });
-                    return <Redirect to='/listings' />
-                  }
-                  else {
-                    return <Homescreen {...props}
-                                       handleReferral={ this.handleReferral }
-                                       currentUserRole={ this.state.currentUserRole }
-                                       handleLocationChange={ this.handleLocationChange }
-                                       handleLocationFocus={ this.handleLocationFocus }
-                                       handleDatesChange={ this.handleDatesChange }
-                                       handleLocationSelect={ this.handleLocationSelect }
-                                       handleSearch={ this.performSearch }
-                                       clearFilters={ this.clearFilters }
-                                       startDate={ this.state.startDate }
-                                       endDate={ this.state.endDate }
-                                       locationName={ this.state.locationName }
-                                       hideSearchResults={ this.hideSearchResults }
-                                       searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true }
-                                       disableSearchButton={ disableSearchButton }
-                                       toggleWishListModal={ this.toggleWishListModal } />
-                  }
+                  return <Homescreen {...props}
+                                      handleReferral={ this.handleReferral }
+                                      currentUserRole={ this.state.currentUserRole }
+                                      handleLocationChange={ this.handleLocationChange }
+                                      handleLocationFocus={ this.handleLocationFocus }
+                                      handleDatesChange={ this.handleDatesChange }
+                                      handleLocationSelect={ this.handleLocationSelect }
+                                      handleSearch={ this.performSearch }
+                                      clearFilters={ this.clearFilters }
+                                      startDate={ this.state.startDate }
+                                      endDate={ this.state.endDate }
+                                      locationName={ this.state.locationName }
+                                      hideSearchResults={ this.hideSearchResults }
+                                      searchLocations={ this.state.searchLocations }
+                                      showSearchButton={ true }
+                                      disableSearchButton={ disableSearchButton }
+                                      toggleWishListModal={ this.toggleWishListModal } />
                 }} />
+
+                <Route exact path='/renters' render={(props) => {
+                  return <RenterInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
+                }  } />
+                <Route exact path='/owners' render={(props) => {
+                  return <OwnerInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
+                }  } />
 
                 <Route exact path='/listings/new' render={(props) => {
                   if (!this.state.accessToken) {
@@ -646,29 +656,23 @@ export default class App extends Component {
                 }} />
 
                 <Route path="/referral/:referral_code" render={(props) => {
-                  if (this.state.accessToken && !this.state.visitedDashboard) {
-                    this.setState({ visitedDashboard: true });
-                    return <Redirect to='/profile' />
-                  }
-                  else {
-                    return <Homescreen {...props}
-                                       handleReferral={ this.handleReferral }
-                                       currentUserRole={ this.state.currentUserRole }
-                                       handleLocationChange={ this.handleLocationChange }
-                                       handleLocationFocus={ this.handleLocationFocus }
-                                       handleDatesChange={ this.handleDatesChange }
-                                       handleLocationSelect={ this.handleLocationSelect }
-                                       handleSearch={ this.performSearch }
-                                       clearFilters={ this.clearFilters }
-                                       startDate={ this.state.startDate }
-                                       endDate={ this.state.endDate }
-                                       locationName={ this.state.locationName }
-                                       hideSearchResults={ this.hideSearchResults }
-                                       searchLocations={ this.state.searchLocations }
-                                       showSearchButton={ true }
-                                       disableSearchButton={ disableSearchButton }
-                                       toggleWishListModal={ this.toggleWishListModal } />
-                  }
+                  return <Homescreen {...props}
+                                      handleReferral={ this.handleReferral }
+                                      currentUserRole={ this.state.currentUserRole }
+                                      handleLocationChange={ this.handleLocationChange }
+                                      handleLocationFocus={ this.handleLocationFocus }
+                                      handleDatesChange={ this.handleDatesChange }
+                                      handleLocationSelect={ this.handleLocationSelect }
+                                      handleSearch={ this.performSearch }
+                                      clearFilters={ this.clearFilters }
+                                      startDate={ this.state.startDate }
+                                      endDate={ this.state.endDate }
+                                      locationName={ this.state.locationName }
+                                      hideSearchResults={ this.hideSearchResults }
+                                      searchLocations={ this.state.searchLocations }
+                                      showSearchButton={ true }
+                                      disableSearchButton={ disableSearchButton }
+                                      toggleWishListModal={ this.toggleWishListModal } />
                 }} />
 
                 <Route path="/listings/:id" render={(props) => {
@@ -709,7 +713,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
-            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
+            <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } scope={ this.state.modalScope } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
 

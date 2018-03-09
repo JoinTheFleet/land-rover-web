@@ -39,14 +39,15 @@ export default class Listings extends Component {
         <Switch>
           <Route path="/listings/new" render={(props) => {
             return (<ListingForm {...props}
+                                 {...this.props}
                                  configurations={ this.props.configurations } />)
           }} />
 
           <Route path="/listings/preview" render={(props) => {
             return <ListingView {...props}
+                                {...this.props}
                                 preview={ true }
-                                loggedUser={ this.state.loggedUser }
-                                loggedIn={ this.props.loggedIn } />
+                                loggedUser={ this.state.loggedUser } />
           } } />
 
           <Route path="/listings/:listing_id/bookings/new" render={(props) => {
@@ -70,9 +71,8 @@ export default class Listings extends Component {
 
           <Route path="/listings/:id" render={(props) => {
             return <ListingView {...props}
-                                loggedIn={ this.props.loggedIn }
-                                loggedUser={ this.state.loggedUser }
-                                toggleModal={ this.props.toggleModal } />
+                                {...this.props}
+                                loggedUser={ this.state.loggedUser } />
           }} />
 
           <Route path="/listings" component={ ListingsOverview } />
