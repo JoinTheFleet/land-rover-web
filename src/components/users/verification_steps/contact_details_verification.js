@@ -167,6 +167,9 @@ export default class ContactDetailsVerification extends Component {
         <div hidden={ !this.state.phoneNumberValidationPending && !(this.props.user.phone_number && this.props.user.phone_number.phone_number) } className='col-xs-12 no-side-padding phone-details'>
           <FormRow id='user-phone-confirmation' hidden={ this.props.user.phone_number && this.props.user.phone_number.phone_number } handleChange={ (event) => {  this.setState({ verificationCode: event.target.value })} } type='text' value={ this.state.verificationCode } placeholder={ LocalizationService.formatMessage('user_verification.confirmation_code') }/>
           <FormRow id='user-phone-number' hidden={ !(this.props.user.phone_number && this.props.user.phone_number.phone_number) } value={ this.props.user.phone_number && this.props.user.phone_number.phone_number ? this.props.user.phone_number.phone_number : '' } type='text' disabled={ true } placeholder={ LocalizationService.formatMessage('user_profile.verified_info.phone_number') } />
+          <button className='btn button round form-button resend col-xs-12' hidden={ !this.props.user.verifications_required.phone_number } disabled={ !this.state.phoneNumber } onClick={ this.sendPhoneNumberVerification }>
+            { LocalizationService.formatMessage('user_verification.resend_verification_sms') }
+          </button>
           <button className='btn button round form-button col-xs-12' disabled={ !this.state.verificationCode } hidden={ this.props.user.phone_number && this.props.user.phone_number.phone_number } onClick={ this.submitVerificationCode }>
             { LocalizationService.formatMessage('user_verification.confirm') }
           </button>

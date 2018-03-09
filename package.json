@@ -49,6 +49,7 @@
     "jshint": "^2.9.5",
     "less": "^2.7.3",
     "less-loader": "",
+    "mobile-detect": "^1.4.1",
     "moment": "",
     "node-sass": "^4.6.0",
     "object-assign": "4.1.1",

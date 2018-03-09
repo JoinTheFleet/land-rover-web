@@ -117,6 +117,7 @@ export default class BookingQuotation extends Component {
                     drop_off_location: { latitude: 0, longitude: 0, address: '' }
                   }
                   let map = '';
+                  let locationDiv = '';
 
                   if (isOnDemand) {
                     let on_demand_location = this.props.quotation.on_demand_location || this.props.booking.on_demand_details;
@@ -158,33 +159,32 @@ export default class BookingQuotation extends Component {
                         </div>
                       );
                     }
-                  }
 
-                  let locationDiv = '';
-
-                  if (isOnDemand) {
                     locationDiv = (
-                      <div className="booking-form-quotation-on-demand-locations col-xs-12 no-side-padding">
-                        {
-                          ['pick_up_location', 'drop_off_location'].map(type => {
-                            return (
-                              <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
-                                <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
+                      <div>
+                        <div className="booking-form-quotation-on-demand-locations col-xs-12 no-side-padding">
+                          {
+                            ['pick_up_location', 'drop_off_location'].map(type => {
+                              return (
+                                <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
+                                  <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
 
-                                <input type="hidden" id={`booking_form_quotation_${type}_latitude`} value={ onDemandDetailsValues[type].latitude } />
-                                <input type="hidden" id={`booking_form_quotation_${type}_longitude`} value={ onDemandDetailsValues[type].longitude } />
+                                  <input type="hidden" id={`booking_form_quotation_${type}_latitude`} value={ onDemandDetailsValues[type].latitude } />
+                                  <input type="hidden" id={`booking_form_quotation_${type}_longitude`} value={ onDemandDetailsValues[type].longitude } />
 
-                                <FormField type="text"
-                                            id={ `booking_form_quotation_${type}_location` }
-                                            value={ this.props.onDemandAddresses[type] }
-                                            disabled={ disableInputs }
-                                            className={ `col-xs-12 ${!disableInputs && this.state.focusedLocationInput === type ? 'focused' : '' }`}
-                                            handleFocusChange={ () => this.setState({ focusedLocationInput: type }) } />
+                                  <FormField type="text"
+                                              id={ `booking_form_quotation_${type}_location` }
+                                              value={ this.props.onDemandAddresses[type] }
+                                              disabled={ disableInputs }
+                                              className={ `col-xs-12 ${!disableInputs && this.state.focusedLocationInput === type ? 'focused' : '' }`}
+                                              handleFocusChange={ () => this.setState({ focusedLocationInput: type }) } />
 
-                              </div>
-                            )
-                          })
-                        }
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                        { map }
                       </div>
                     );
                   }

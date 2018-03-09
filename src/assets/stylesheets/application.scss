@@ -60,6 +60,15 @@
 
 @import 'main';
 
+.zopim {
+  left: 0 !important;
+}
+
+.fixed-body {
+  position: fixed;
+  width: 100%;
+}
+
 img {
   image-orientation: from-image;
 }

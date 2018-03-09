@@ -461,6 +461,7 @@
     "user_verification.confirmation_code_sent": "We have sent a verification code to:",
     "user_verification.check_verification": "Check Verification",
     "user_verification.resend_verification_email": "Resend Verification Email",
+    "user_verification.resend_verification_sms": "Resend Verification SMS",
     "user_verification.update_email": "Update Email",
     "user_verification.drivers_license": "Drivers License",
     "user_verification.select_license_type": "Select License Type",
