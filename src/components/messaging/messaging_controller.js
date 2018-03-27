@@ -17,7 +17,8 @@ export default class MessagingController extends Component {
       listing: undefined,
       loading: false,
       totalPages: 1,
-      currentPage: 1
+      currentPage: 1,
+      listingsAttempted: false
     };
 
     this.handleVehicleSelect = this.handleVehicleSelect.bind(this);
@@ -33,7 +34,7 @@ export default class MessagingController extends Component {
   }
 
   refreshData(newProps) {
-    if (!newProps || (this.state.listings && this.state.listings.length === 0)) {
+    if ((!newProps || ((this.state.listings && this.state.listings.length === 0)) && !this.state.listingsAttempted)) {
       this.setState({
         loading: true
       }, () => {
@@ -48,7 +49,8 @@ export default class MessagingController extends Component {
 
           this.setState({
             listings: listings,
-            totalPages: Math.ceil(data.count / LIMIT)
+            totalPages: Math.ceil(data.count / LIMIT),
+            listingsAttempted: data.count === 0
           }, () => {
             let newCurrentPage = this.state.currentPage + 1;
 
