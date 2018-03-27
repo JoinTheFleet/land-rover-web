@@ -43,9 +43,6 @@ export default class ConversationList extends Component {
         this.forceDataRefresh(this.state.currentPage);
       });
     }
-    else {
-      this.setState({ conversations: [] });
-    }
   }
 
   handlePageChange(pageNumber) {
