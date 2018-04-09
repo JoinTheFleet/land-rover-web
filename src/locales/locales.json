@@ -1,6 +1,7 @@
 {
   "en": {
     "application.add": "Add",
+    "application.date_format_prompt": "Required format: DD/MM/YYYY",
     "application.agree": "Agree",
     "application.blog": "Blog",
     "application.cancel": "Cancel",
