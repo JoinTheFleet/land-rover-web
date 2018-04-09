@@ -204,7 +204,7 @@ class ListingMap extends Component {
 
   render() {
     let listings = this.props.listings;
-    let center = this.state.center || { lat: 0, lng: 0 };
+    let center = this.state.center || { lat: parseFloat(process.env.REACT_APP_LOCATION_1_LAT), lng: parseFloat(process.env.REACT_APP_LOCATION_1_LNG) };
     let bounds = this.state.bounds;
     let zoom = this.state.zoom || 10;
 
