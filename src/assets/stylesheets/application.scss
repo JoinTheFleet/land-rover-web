@@ -60,6 +60,12 @@
 
 @import 'main';
 
+.survey-buttons {
+  button + button {
+    margin-left: 10px;
+  }
+}
+
 .zopim {
   left: 50% !important;
   transform: translateX(-50%);
