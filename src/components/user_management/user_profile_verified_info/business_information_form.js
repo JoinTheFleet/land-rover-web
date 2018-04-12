@@ -59,6 +59,12 @@ export default class BusinessInformationForm extends Component {
       }
     }
 
+    let country = this.props.user.country_code;
+
+    if (!country && this.props.user.country && this.props.user.country.alpha2) {
+      country = this.props.user.country.alpha2;
+    }
+
     return (
       <div className="business-form">
         <FormRow type='text' id='business-name' handleChange={ this.props.handleNameChange } value={ businessDetails.name } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.business_name') } />
@@ -72,7 +78,7 @@ export default class BusinessInformationForm extends Component {
           <FormField id='business-address-postcode' handleChange={ this.props.handlePostCodeChange } type='text' value={ address.postal_code } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.post_code')}/>
 
           <div className="col-xs-12 no-side-padding">
-            <FormField id='business-address-country' handleChange={ this.props.handleCountryChange } type='country' value={ address.country_code || address.country.alpha2 } clearable={ false } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
+            <FormField id='business-address-country' disabled={ true } type='select' options={ this.props.paymentCountries } value={ country } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
           </div>
         </FormGroup>
       </div>

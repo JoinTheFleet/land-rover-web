@@ -137,7 +137,7 @@ class BookingSurvey extends Component {
   }
 
   renderRaiseIssueTile() {
-    if (this.props.confirmSurvey) {
+    if (this.props.confirmSurvey && !this.state.raiseAnIssue) {
       return '';
     }
 
@@ -230,10 +230,18 @@ class BookingSurvey extends Component {
     if (this.props.confirmSurvey && (!this.state.survey.issues || (this.state.survey.issues && this.state.survey.issues.length === 0))) {
       saveSurveyDiv = '';
       confirmNoIssuesDiv = (
-        <div className="col-xs-12 text-center no-side-padding">
+        <div className="col-xs-12 text-center no-side-padding survey-buttons">
+          <Button className="tomato white-text text-center fs-16"
+                  hidden={ this.state.raiseAnIssue }
+                  disabled={ this.state.survey && Object.keys(this.state.currentIssue).length > 0 }
+                  onClick={ () => { this.setState({ raiseAnIssue: true }) } }>
+            { LocalizationService.formatMessage('bookings.surveys.raise_an_issue') }
+          </Button>
+
           <Button className="secondary-color white-text text-center fs-16"
+                  disabled={ this.state.survey && Object.keys(this.state.currentIssue).length > 0 }
                   onClick={ () => { this.setState({ showConfirmNoIssuesModal: true }) } }>
-            { LocalizationService.formatMessage('bookings.surveys.confirm_no_issues') }
+            { this.state.raiseAnIssue ? LocalizationService.formatMessage('application.confirm') : LocalizationService.formatMessage('bookings.surveys.confirm_no_issues') }
           </Button>
 
           <ConfirmationModal open={ this.state.showConfirmNoIssuesModal }

@@ -68,6 +68,7 @@
     "react-dates": "",
     "react-datez": "",
     "react-dev-utils": "^4.2.1",
+    "react-document-meta": "^3.0.0-beta.2",
     "react-dom": "^15.6.2",
     "react-facebook-login": "3.7.2",
     "react-facebook-pixel": "",

@@ -146,7 +146,7 @@ class UserPayoutMethods extends Component {
           </FormPanel>
 
           <FormPanel title={ LocalizationService.formatMessage('user_profile_verified_info.add_account') } >
-            <PayoutMethodForm iban={ this.state.iban } country={ this.state.country } handleIBANChange={ this.handleIBANChange } handleCountryChange={ this.handleCountryChange }/>
+            <PayoutMethodForm configuration={ this.props.configuration } iban={ this.state.iban } country={ this.state.country } handleIBANChange={ this.handleIBANChange } handleCountryChange={ this.handleCountryChange }/>
           </FormPanel>
 
           <div className='col-xs-12 no-side-padding save-button'>

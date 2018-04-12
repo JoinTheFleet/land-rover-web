@@ -30,6 +30,8 @@ import LocalizationService from '../../shared/libraries/localization_service';
 
 import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
+import DocumentMeta from 'react-document-meta';
+
 const listingsViews = Constants.listingsViews();
 
 export default class ListingView extends Component {
@@ -439,6 +441,30 @@ export default class ListingView extends Component {
       return <Loading />;
     }
     else if (listing) {
+      let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
+      let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
+      let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+
+      let currency_symbol = listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol;
+      let price = listing.price / 100;
+      let meta = {
+        meta: {
+          property: {
+            'og:title': vehicleTitle,
+            'og:type': 'article',
+            'og:site_name': 'Fleet',
+            'og:price:amount': price,
+            'og:price:currency': currency_symbol
+          },
+          name: {
+            'twitter:title': vehicleTitle,
+            'twitter:site': '@fleetapp_',
+            'twitter:card': 'summary',
+            'twitter:creator': '@fleetapp_'
+          }
+        }
+      }
+
       let images =  listing.gallery.map(galleryImage => galleryImage.images.original_url);
 
       if (this.props.preview && this.props.location && this.props.location.state && this.props.location.state.listing) {
@@ -453,32 +479,36 @@ export default class ListingView extends Component {
             <ImageGallery images={ images } errorSRC={ process.env.REACT_APP_MISSING_LISTING_IMAGE } />
           </div>
         );
+        meta['meta']['property']['og:image'] = images[0];
+        meta['meta']['property']['twitter:image'] = images[0];
       }
 
       return (
-        <div className="listing-view-div col-xs-12 no-side-padding">
-          { carousel }
+        <DocumentMeta {...meta}>
+          <div className="listing-view-div col-xs-12 no-side-padding">
+            { carousel }
 
-          <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-            { this.renderListingOverview() }
+            <div className="listing-view-main-content col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+              { this.renderListingOverview() }
 
-            { this.renderSpecs() }
+              { this.renderSpecs() }
 
-            { this.renderListingOwnerDetailsMobile() }
+              { this.renderListingOwnerDetailsMobile() }
 
-            { this.renderAmenities() }
+              { this.renderAmenities() }
 
-            { this.renderReviewsTile() }
+              { this.renderReviewsTile() }
 
-            { this.renderOwnerDescriptionTile() }
+              { this.renderOwnerDescriptionTile() }
 
-            { this.renderBookingTile() }
+              { this.renderBookingTile() }
 
-            { this.renderMap() }
+              { this.renderMap() }
 
-            { this.renderButtons() }
+              { this.renderButtons() }
+            </div>
           </div>
-        </div>
+        </DocumentMeta>
       );
     }
     else {

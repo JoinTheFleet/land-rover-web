@@ -50,7 +50,11 @@ export default class ProfileInformationVerification extends Component {
       }
       else {
         this.props.updateUserField('date_of_birth', date.unix());
+        this.setState({ showDatePrompt: false });
       }
+    }
+    else {
+      this.setState({ showDatePrompt: true });
     }
   }
 
@@ -106,6 +110,7 @@ export default class ProfileInformationVerification extends Component {
         <FormRow type='text' id='user-last-name' value={ this.props.user.last_name } handleChange={ (event) => { this.props.updateUserField('last_name', event.target.value) } } placeholder={ LocalizationService.formatMessage('user_profile.last_name') } />
         <FormRow type='select' id='user-gender' clearable={ false } value={ this.props.user.gender } handleChange={ (value) => { this.props.updateUserField('gender', value.value) } } options={ this.genderOptions } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.gender') } />
         <FormRow type='cleavedate' id='user-dateofbirth' handleChange={ this.handleDateOfBirthChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
+        <div className='col-xs-12 no-side-padding text-danger' hidden={ !this.state.showDatePrompt }>{ LocalizationService.formatMessage('application.date_format_prompt') }</div>
         <FormRow type='textarea' id='user-description' value={ this.props.user.description ? this.props.user.description : '' } handleChange={ (event) => { this.props.updateUserField('description', event.target.value) } } placeholder={ LocalizationService.formatMessage('user_profile.description') } fieldPlaceholder={ this.props.scope === 'renter' ? LocalizationService.formatMessage('user_verification.renter_description') : LocalizationService.formatMessage('user_verification.owner_description') } />
       </div>
     );

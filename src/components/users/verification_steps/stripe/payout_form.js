@@ -18,6 +18,33 @@ class PayoutForm extends Component {
     this.addPaymentSource = this.addPaymentSource.bind(this);
     this.handleIBANChange = this.handleIBANChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+
+    this.setCountries = this.setCountries.bind(this);
+
+    this.setCountries(props);
+  }
+
+  componentDidUpdate() {
+    this.setCountries();
+  }
+
+  setCountries(props) {
+    if (!props) {
+      props = this.props;
+    }
+
+    if (!this.payment_countries) {
+      this.payment_countries = [];
+    }
+
+    if (props.configurations) {
+      if (props.configurations.payment_countries) {
+        this.payment_countries = props.configurations.payment_countries.map(country => ({
+          value: country.alpha2,
+          label: country.name
+        }));
+      }
+    }
   }
 
   handleIBANChange(event) {
@@ -83,7 +110,7 @@ class PayoutForm extends Component {
     return (
       <div className='payout-form'>
         <div className='col-xs-12 no-side-padding'>
-          <FormRow type='country' className='iban-country' disabled={ this.state.payoutDetailsAdded } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country') } value={ this.state.country } handleChange={ this.handleCountryChange } />
+          <FormRow type='select' className='iban-country' clearable={ false } value={ this.state.country } handleChange={ this.handleCountryChange } options={ this.payment_countries } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country') } />
           <FormRow type='text' className='iban-number' disabled={ this.state.payoutDetailsAdded } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.iban') } value={ this.state.iban } handleChange={ this.handleIBANChange } />
         </div>
         <button className='btn button round form-button col-xs-12' hidden={ this.state.payoutDetailsAdded } onClick={ this.addPaymentSource }>

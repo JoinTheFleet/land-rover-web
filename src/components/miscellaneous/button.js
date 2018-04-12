@@ -15,6 +15,7 @@ export default class Button extends Component {
 
     return (
       <button className={ `${this.props.className} btn-icon btn` }
+              hidden={ this.props.hidden }
               onClick={ this.props.onClick }
               disabled={ this.props.disabled }>
         { accessory }
@@ -25,6 +26,7 @@ export default class Button extends Component {
 }
 
 Button.propTypes = {
+  hidden: PropTypes.bool,
   disabled: PropTypes.bool,
   spinner: PropTypes.bool,
   spinnerClass: PropTypes.string,

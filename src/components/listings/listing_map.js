@@ -127,14 +127,6 @@ class ListingMap extends Component {
     };
   }
 
-  boundingBoxIsDefault(boundingBox) {
-    return boundingBox &&
-           Math.floor(Math.abs(boundingBox.top)) === 0 &&
-           Math.floor(Math.abs(boundingBox.bottom)) === 0 &&
-           Math.floor(Math.abs(boundingBox.left)) === 0 &&
-           Math.floor(Math.abs(boundingBox.right)) === 0;
-  }
-
   componentDidUpdate(props, state) {
     if (this.map) {
       let center = { lat: this.props.location.latitude, lng: this.props.location.longitude};
@@ -144,9 +136,7 @@ class ListingMap extends Component {
       let mapCenter = this.map.props.center;
 
       if (mapCenter && (!center || (mapCenter.lat !== center.lat && mapCenter.lng !== center.lng))) {
-        // NOTE: If the map has previously be centered somewhere else, we need to recalculate the bounds.
-
-        if (boundingBox && !this.boundingBoxIsDefault(boundingBox)) {
+        if (boundingBox && !(mapCenter.lat.toFixed(4) === parseFloat(process.env.REACT_APP_LOCATION_1_LAT).toFixed(4) && mapCenter.lng.toFixed(4) === parseFloat(process.env.REACT_APP_LOCATION_1_LNG).toFixed(4))) {
           // No point recalculating if we're square on coords 0,0
           bounds = {
             nw: {
@@ -204,7 +194,7 @@ class ListingMap extends Component {
 
   render() {
     let listings = this.props.listings;
-    let center = this.state.center || { lat: 0, lng: 0 };
+    let center = this.state.center || { lat: parseFloat(process.env.REACT_APP_LOCATION_1_LAT), lng: parseFloat(process.env.REACT_APP_LOCATION_1_LNG) };
     let bounds = this.state.bounds;
     let zoom = this.state.zoom || 10;
 

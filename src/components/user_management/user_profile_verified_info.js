@@ -63,6 +63,10 @@ export default class UserProfileVerifiedInfo extends Component {
     this.handleBusinessPostCodeChange = this.handleBusinessPostCodeChange.bind(this);
     this.handleBusinessAddressLine1Change = this.handleBusinessAddressLine1Change.bind(this);
     this.handleBusinessAddressLine2Change = this.handleBusinessAddressLine2Change.bind(this);
+
+    this.setCountries = this.setCountries.bind(this);
+
+    this.setCountries(props);
   }
 
   componentDidMount() {
@@ -88,6 +92,40 @@ export default class UserProfileVerifiedInfo extends Component {
                   })
                   .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
+  }
+
+  componentDidUpdate() {
+    this.setCountries();
+  }
+
+  setCountries(props) {
+    if (!props) {
+      props = this.props;
+    }
+
+    if (!this.countries) {
+      this.countries = [];
+    }
+
+    if (!this.payment_countries) {
+      this.payment_countries = [];
+    }
+
+    if (props.configuration) {
+      if (props.configuration.payment_countries) {
+        this.payment_countries = props.configuration.payment_countries.map(country => ({
+          value: country.alpha2,
+          label: country.name
+        }));
+      }
+
+      if (props.configuration.all_countries) {
+        this.countries = props.configuration.all_countries.map(country => ({
+          value: country.alpha2,
+          label: country.name
+        }));
+      }
+    }
   }
 
   updateUser() {
@@ -493,6 +531,8 @@ export default class UserProfileVerifiedInfo extends Component {
           </div>
           <div className='col-xs-12 form-body'>
             <UserForm user={ this.state.user }
+                      paymentCountries={ this.payment_countries }
+                      countries={ this.countries }
                       fieldsToDisable={ this.state.fieldsToDisable }
                       handleDateChange={ this.handleDateChange }
                       handleGenderChange={ this.handleGenderChange }
@@ -524,6 +564,7 @@ export default class UserProfileVerifiedInfo extends Component {
         </div>
         <div className='col-xs-12 form-body'>
           <BusinessInformationForm user={ this.state.user }
+                                   paymentCountries={ this.payment_countries }
                                    handleNameChange={ this.handleBusinessNameChange }
                                    handleTaxIDChange={ this.handleBusinessTaxIDChange }
                                    handleCityChange={ this.handleBusinessCityChange }
