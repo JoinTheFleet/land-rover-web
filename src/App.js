@@ -612,6 +612,9 @@ export default class App extends Component {
 
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
+                <Route exact path='/google20e0fd0ba71feb2a.html' render={(props) => {
+                  return 'google-site-verification: google20e0fd0ba71feb2a.html';
+                }} />
                 <Route exact path="/" render={(props) => {
                   return <Homescreen {...props}
                                       handleReferral={ this.handleReferral }
