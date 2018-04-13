@@ -31,9 +31,7 @@ export default class ListingPricing extends Component {
       listing.price = listing.price;
     }
 
-    if (listing.cleaning_fee) {
-      listing.cleaning_fee = listing.cleaning_fee;
-    }
+    listing.cleaning_fee = listing.cleaning_fee || 0;
 
     this.state = {
       listing: listing,
@@ -73,7 +71,7 @@ export default class ListingPricing extends Component {
       return false;
     }
 
-    return listing.price > 0 && listing.cleaning_fee > 0;
+    return listing.price > 0 && listing.cleaning_fee >= 0;
   }
 
   handleInputChange(param, value) {

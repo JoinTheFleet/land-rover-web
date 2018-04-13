@@ -84,7 +84,7 @@ export default class Dashboard extends Component {
             <UserProfileDetails setDirty={ this.setDirty } setClean={ this.setClean } />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
-            <UserProfileVerifiedInfo {... this.props } setDirty={ this.setDirty } setClean={ this.setClean } />
+            <UserProfileVerifiedInfo {... this.props} setDirty={ this.setDirty } setClean={ this.setClean } />
           </div>
           <div className='col-xs-12 no-side-padding dashboard-wishlist-summary'>
             <Elements>

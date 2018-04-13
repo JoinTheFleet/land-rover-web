@@ -71,8 +71,8 @@ export default class BookingQuotation extends Component {
 
         <FormField type="daterange"
                    id="bookings_form_quotation_dates"
-                   startDate={ moment.unix(pricingQuote.check_in) }
-                   endDate={ moment.unix(pricingQuote.check_out) }
+                   startDate={ moment.unix(pricingQuote.check_in).utc() }
+                   endDate={ moment.unix(pricingQuote.check_out).utc() }
                    focusedInput={ this.state.focusedInput }
                    disabled={ disableInputs }
                    showClearDates={ false }
@@ -111,8 +111,8 @@ export default class BookingQuotation extends Component {
                   )
 
                   let onDemandDetailsValues = {
-                    pick_up_time: moment.unix(this.props.listing.check_in_time),
-                    drop_off_time: moment.unix(this.props.listing.check_out_time),
+                    pick_up_time: moment.unix(this.props.listing.check_in_time).utc(),
+                    drop_off_time: moment.unix(this.props.listing.check_out_time).utc(),
                     pick_up_location: { latitude: 0, longitude: 0, address: '' },
                     drop_off_location: { latitude: 0, longitude: 0, address: '' }
                   }
@@ -132,8 +132,8 @@ export default class BookingQuotation extends Component {
                     }
 
                     if (on_demand_location.pick_up_time && on_demand_location.drop_off_time) {
-                      onDemandDetailsValues.pick_up_time = moment.unix(on_demand_location.pick_up_time);
-                      onDemandDetailsValues.drop_off_time = moment.unix(on_demand_location.drop_off_time);
+                      onDemandDetailsValues.pick_up_time = moment.unix(on_demand_location.pick_up_time).utc();
+                      onDemandDetailsValues.drop_off_time = moment.unix(on_demand_location.drop_off_time).utc();
                     }
 
                     if (on_demand_location.pick_up_location && on_demand_location.drop_off_location) {
@@ -189,28 +189,30 @@ export default class BookingQuotation extends Component {
                     );
                   }
 
-                  onDemandDetailsDiv = (
-                    <div className="booking-form-quotation-on-demand-details fs-14 text-secondary-font-weight col-xs-12 no-side-padding">
-                      <div className="booking-form-quotation-on-demand-times col-xs-12 no-side-padding">
-                        {
-                          ['pick_up_time', 'drop_off_time'].map(type => {
-                            return (
-                              <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
-                                <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
-                                <FormField type="timepicker"
-                                            id={ `booking_form_quotation_${type}` }
-                                            value={ onDemandDetailsValues[type] }
-                                            disabled={ disableInputs }
-                                            handleChange={ (time, timeString) => this.props.handlePickUpDropOffTimeSelect(type, time) } />
-                              </div>
-                            )
-                          })
-                        }
-                      </div>
+                  if (isOnDemand || disableInputs) {
+                    onDemandDetailsDiv = (
+                      <div className="booking-form-quotation-on-demand-details fs-14 text-secondary-font-weight col-xs-12 no-side-padding">
+                        <div className="booking-form-quotation-on-demand-times col-xs-12 no-side-padding">
+                          {
+                            ['pick_up_time', 'drop_off_time'].map(type => {
+                              return (
+                                <div key={ `booking_form_quotation_${type}` } className="col-xs-12 col-sm-6 no-side-padding">
+                                  <span className="subtitle-font-weight">{ LocalizationService.formatMessage(`bookings.${type}`) }</span>
+                                  <FormField type="timepicker"
+                                              id={ `booking_form_quotation_${type}` }
+                                              value={ onDemandDetailsValues[type] }
+                                              disabled={ disableInputs }
+                                              handleChange={ (time, timeString) => this.props.handlePickUpDropOffTimeSelect(type, time) } />
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
 
-                      { locationDiv }
-                    </div>
-                  )
+                        { locationDiv }
+                      </div>
+                    )
+                  }
                 }
 
                 return (

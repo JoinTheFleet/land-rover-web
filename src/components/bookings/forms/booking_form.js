@@ -435,7 +435,7 @@ class BookingForm extends Component {
 
   handlePickUpDropOffTimeSelect(type, time, timeString) {
     let quotation = this.state.quotation;
-    quotation.on_demand_location[type] = moment.duration(time.format('HH:MM:SS')).asSeconds();
+    quotation.on_demand_location[type] = time.utc().unix();
 
     this.setState({ quotation: quotation }, this.fetchQuotation);
   }

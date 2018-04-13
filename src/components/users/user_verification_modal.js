@@ -321,7 +321,9 @@ export default class UserVerificationModal extends Component {
                                   !(address.country_code || address.country)
     }
 
-    return addressInformationMissing || companyInformationMissing || companyAddressInformationMissing;
+    let ownerInformationMissing = this.props.scope !== 'renter' && (!user.country || !user.account_type);
+
+    return ownerInformationMissing || addressInformationMissing || companyInformationMissing || companyAddressInformationMissing;
   }
 
   contactDetailsMissing() {

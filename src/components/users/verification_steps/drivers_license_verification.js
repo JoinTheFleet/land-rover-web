@@ -48,10 +48,17 @@ export default class DriversLicenseVerification extends Component {
     if (event.target.value.length === 10) {
       if (date.isAfter(moment().startOf('day'))) {
         Alert.error(LocalizationService.formatMessage('user_verification.future_issue_date'));
+        this.setState({ showDatePrompt: true });
       }
       else {
-        this.setState({ issueDate: date.unix() })
+        this.setState({
+          showDatePrompt: false,
+          issueDate: date.unix()
+        });
       }
+    }
+    else {
+      this.setState({ showDatePrompt: true });
     }
   }
 
@@ -181,6 +188,7 @@ export default class DriversLicenseVerification extends Component {
         { this.renderCountrySelector() }
         <FormRow type='text' id='license-number' value={ this.state.licenseNumber } handleChange={ (event) => { this.setState({ licenseNumber: event.target.value }) } } placeholder={ LocalizationService.formatMessage('user_verification.license_number') } />
         <FormRow type='cleavedate' id='license-issue-date' handleChange={ this.handleIssueDateChange } value={ this.state.issueDate ? moment.unix(this.state.issueDate).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_verification.license_issue_date') } />
+        <div className='col-xs-12 no-side-padding text-danger' hidden={ !this.state.showDatePrompt }>{ LocalizationService.formatMessage('application.date_format_prompt') }</div>
         <FormRow id='license-front' type={ 'file' } handleChange={ (event) => { this.handleImageChange('front', event) } } value={ this.state.frontImage } placeholder={ LocalizationService.formatMessage('user_verification.front_of_license') } />
         <FormRow id='license-back' type={ 'file' } handleChange={ (event) => { this.handleImageChange('back', event) } } value={ this.state.backImage } placeholder={ LocalizationService.formatMessage('user_verification.back_of_license') } />
       </div>

@@ -66,15 +66,6 @@ export default class UserForm extends Component {
       country = this.props.user.address.country.alpha2;
     }
 
-    let countries = [];
-
-    if (this.props.configuration && this.props.configuration.countries) {
-      countries = this.props.configuration.countries.map(country => ({
-        value: country.alpha2,
-        label: country.name
-      }));
-    }
-
     let emailUnverified = '';
 
     if ((this.props.user.verifications_required && this.props.user.verifications_required.email) || (this.props.user.owner_verifications_required && this.props.user.owner_verifications_required.email)) {
@@ -91,7 +82,7 @@ export default class UserForm extends Component {
       <div className="user-form">
         <FormRow type='cleavedate' id='user-dateofbirth' handleChange={ this.props.handleDateChange } value={ this.props.user.date_of_birth ? moment.unix(this.props.user.date_of_birth).format('DD/MM/YYYY') : undefined } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.date_of_birth') } />
         <FormRow type='select' id='user-gender' clearable={ false } handleChange={ this.props.handleGenderChange } value={ this.props.user.gender } options={ this.genderOptions } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.gender') } />
-        <FormRow type='select' id='user-country' clearable={ false } disabled={ this.props.fieldsToDisable.countryOfResidence } options={ countries } handleChange={ this.props.handleUserCountryChange } value={ this.props.user.country_code || (this.props.user && this.props.user.country ? this.props.user.country.alpha2 : 'Select a date') } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.country_of_residence')} />
+        <FormRow type='select' id='user-country' clearable={ false } disabled={ this.props.fieldsToDisable.countryOfResidence } options={ this.props.paymentCountries } handleChange={ this.props.handleUserCountryChange } value={ this.props.user.country_code || (this.props.user && this.props.user.country ? this.props.user.country.alpha2 : 'Select a date') } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.country_of_residence')} />
 
         <FormGroup placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address') }>
           <div className="col-xs-12 no-side-padding">
@@ -102,7 +93,7 @@ export default class UserForm extends Component {
             <FormField id='user-address-postcode' handleChange={ this.props.handlePostCodeChange } type='text' value={ this.props.user.address.postal_code } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.post_code')}/>
           </div>
           <div className="col-xs-12 no-side-padding">
-            <FormField id='user-address-country' handleChange={ this.props.handleCountryChange } type='select' options={ countries } value={ country } clearable={ false } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
+            <FormField id='user-address-country' handleChange={ this.props.handleCountryChange } type='select' options={ this.props.countries } value={ country } clearable={ false } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.address.country')}/>
           </div>
         </FormGroup>
 
