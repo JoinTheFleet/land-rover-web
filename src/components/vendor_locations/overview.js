@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 export default class Overview extends Component {
   renderMobile() {
-    let vendor = this.props.vendor;
     let vendorLocation = this.props.vendorLocation;
 
     return (
@@ -18,13 +17,12 @@ export default class Overview extends Component {
           <div className="col-xs-12 no-side-padding">
             <div>
               <Link to={{
-                  pathname: `/vendors/${vendor.id}`,
+                  pathname: `/vendor_locations/${vendorLocation.id}`,
                   state: {
-                    vendor: vendor,
                     vendorLocation: vendorLocation
                   }
                 }} >
-                <span className="secondary-text-color fs-18">{ vendor.name }</span>
+                <span className="secondary-text-color fs-18">{ vendorLocation.name }</span>
               </Link>
             </div>
           </div>
@@ -32,13 +30,12 @@ export default class Overview extends Component {
 
         <div className="listing-view-user-details-mobile-image pull-right">
           <Link to={{
-                pathname: `/vendors/${vendor.id}`,
+                pathname: `/vendor_locations/${vendorLocation.id}`,
                 state: {
-                  vendor: vendor,
                   vendorLocation: vendorLocation
                 }
               }} >
-            <Avatar size={ 50 } src={ vendor.images.original_url } alt="listing_user_avatar" round />
+            <Avatar size={ 50 } src={ vendorLocation.images.original_url } alt="listing_user_avatar" round />
           </Link>
         </div>
       </div>
@@ -46,21 +43,19 @@ export default class Overview extends Component {
   }
 
   renderNormal() {
-    let vendor = this.props.vendor;
     let vendorLocation = this.props.vendorLocation;
 
     return (
       <div className="listing-view-user-details hidden-xs text-center pull-right">
         <Link to={{
-          pathname: `/vendors/${vendor.id}`,
+          pathname: `/vendor_locations/${vendorLocation.id}`,
           state: {
-            vendor: vendor,
             vendorLocation: vendorLocation
           }
         }} >
           <div className='text-center block'>
-            <Avatar size={ 50 } src={ vendor.images.original_url } alt="listing_vendor_avatar" round />
-            <span className="secondary-text-color fs-18">{ vendor.name }</span>
+            <Avatar size={ 50 } src={ vendorLocation.images.original_url } alt="listing_vendor_avatar" round />
+            <span className="secondary-text-color fs-18">{ vendorLocation.name }</span>
           </div>
         </Link>
       </div>

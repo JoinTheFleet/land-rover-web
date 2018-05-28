@@ -33,7 +33,7 @@ import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 import DocumentMeta from 'react-document-meta';
 
 import UserOverview from '../users/overview';
-import VendorOverview from '../vendors/overview';
+import VendorLocationOverview from '../vendor_locations/overview';
 
 const listingsViews = Constants.listingsViews();
 
@@ -46,8 +46,7 @@ export default class ListingView extends Component {
       loading: false,
       redirectTo: undefined,
       user: undefined,
-      vendorLocation: undefined,
-      vendor: undefined
+      vendorLocation: undefined
     };
 
     this.addError = this.addError.bind(this);
@@ -69,13 +68,11 @@ export default class ListingView extends Component {
                                  let listing = response.data.data.listing;
                                  let user = listing.user;
                                  let vendorLocation = user.vendor_location;
-                                 let vendor = vendorLocation ? vendorLocation.vendor : undefined;
 
                                  this.setState({
                                    listing: listing,
                                    user: user,
                                    vendorLocation: vendorLocation,
-                                   vendor: vendor,
                                    loading: false
                                  });
                                })
@@ -98,13 +95,11 @@ export default class ListingView extends Component {
                        let listing = response.data.data.listing;
                        let user = listing.user;
                        let vendorLocation = user.vendor_location;
-                       let vendor = vendorLocation ? vendorLocation.vendor : undefined;
 
                        this.setState({
                          listing: listing,
                          user: user,
                          vendorLocation: vendorLocation,
-                         vendor: vendor,
                          loading: false
                        });
                      })
@@ -129,15 +124,14 @@ export default class ListingView extends Component {
 
   renderListingOwnerDetailsMobile() {
     let user = this.state.user;
-    let vendor = this.state.vendor;
     let vendorLocation = this.state.vendorLocation;
 
     if (!user) {
       return '';
     }
 
-    if (vendor) {
-      return <VendorOverview vendor={ vendor } vendorLocation={ vendorLocation } mobile />;
+    if (vendorLocation) {
+      return <VendorLocationOverview vendorLocation={ vendorLocation } mobile />;
     }
     else {
       return <UserOverview user={ user } mobile />;
@@ -147,7 +141,6 @@ export default class ListingView extends Component {
   renderListingOverview() {
     let listing = this.state.listing;
     let user = this.state.user;
-    let vendor = this.state.vendor;
     let vendorLocation = this.state.vendorLocation;
 
     let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
@@ -166,7 +159,7 @@ export default class ListingView extends Component {
       ) 
     }
 
-    let ownerOverview = vendor ? <VendorOverview vendor={ vendor } vendorLocation={ vendorLocation } /> : <UserOverview user={ user } />;
+    let ownerOverview = vendorLocation ? <VendorLocationOverview vendorLocation={ vendorLocation } /> : <UserOverview user={ user } />;
 
     return (
       <div className="listing-view-top-part col-xs-12 no-side-padding">
