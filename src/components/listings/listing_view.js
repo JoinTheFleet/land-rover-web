@@ -32,6 +32,9 @@ import noImagesPlaceholder from '../../assets/images/placeholder-no-images.png';
 
 import DocumentMeta from 'react-document-meta';
 
+import UserOverview from '../users/overview';
+import VendorOverview from '../vendors/overview';
+
 const listingsViews = Constants.listingsViews();
 
 export default class ListingView extends Component {
@@ -41,7 +44,10 @@ export default class ListingView extends Component {
     this.state = {
       listing: undefined,
       loading: false,
-      redirectTo: undefined
+      redirectTo: undefined,
+      user: undefined,
+      vendorLocation: undefined,
+      vendor: undefined
     };
 
     this.addError = this.addError.bind(this);
@@ -60,7 +66,18 @@ export default class ListingView extends Component {
         this.setState({ loading: true }, () => {
           ListingPreviewService.create({ listing: listingParams })
                                .then(response => {
-                                 this.setState({ listing: response.data.data.listing, loading: false });
+                                 let listing = response.data.data.listing;
+                                 let user = listing.user;
+                                 let vendorLocation = user.vendor_location;
+                                 let vendor = vendorLocation ? vendorLocation.vendor : undefined;
+
+                                 this.setState({
+                                   listing: listing,
+                                   user: user,
+                                   vendorLocation: vendorLocation,
+                                   vendor: vendor,
+                                   loading: false
+                                 });
                                })
                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
@@ -78,7 +95,18 @@ export default class ListingView extends Component {
     this.setState({ loading: true }, () => {
       ListingsService.show(id)
                      .then(response => {
-                       this.setState({ listing: response.data.data.listing, loading: false });
+                       let listing = response.data.data.listing;
+                       let user = listing.user;
+                       let vendorLocation = user.vendor_location;
+                       let vendor = vendorLocation ? vendorLocation.vendor : undefined;
+
+                       this.setState({
+                         listing: listing,
+                         user: user,
+                         vendorLocation: vendorLocation,
+                         vendor: vendor,
+                         loading: false
+                       });
                      })
                      .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
@@ -100,47 +128,27 @@ export default class ListingView extends Component {
   }
 
   renderListingOwnerDetailsMobile() {
-    let listing = this.state.listing;
+    let user = this.state.user;
+    let vendor = this.state.vendor;
+    let vendorLocation = this.state.vendorLocation;
 
-    if (!listing) {
+    if (!user) {
       return '';
     }
 
-    return (
-      <div className="listing-view-user-details-mobile visible-xs col-xs-12 no-side-padding">
-        <div className="pull-left"> 
-          <div> { LocalizationService.formatMessage('application.owner') } </div>
-
-          <div className="col-xs-12 no-side-padding">
-            <div>
-              <Link to={{
-                  pathname: `/users/${listing.user.id}`,
-                  state: {
-                    user: listing.user
-                  }
-                }} >
-                <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="listing-view-user-details-mobile-image pull-right">
-          <Link to={{
-                pathname: `/users/${listing.user.id}`,
-                state: {
-                  user: listing.user
-                }
-              }} >
-            <Avatar size={ 50 } src={ listing.user.images.original_url } alt="listing_user_avatar" round />
-          </Link>
-        </div>
-      </div>
-    )
+    if (vendor) {
+      return <VendorOverview vendor={ vendor } vendorLocation={ vendorLocation } mobile />;
+    }
+    else {
+      return <UserOverview user={ user } mobile />;
+    }
   }
 
   renderListingOverview() {
     let listing = this.state.listing;
+    let user = this.state.user;
+    let vendor = this.state.vendor;
+    let vendorLocation = this.state.vendorLocation;
 
     let vehicleMake = listing.variant ? listing.variant.make.name : listing.make;
     let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
@@ -157,6 +165,8 @@ export default class ListingView extends Component {
         </div>
       ) 
     }
+
+    let ownerOverview = vendor ? <VendorOverview vendor={ vendor } vendorLocation={ vendorLocation } /> : <UserOverview user={ user } />;
 
     return (
       <div className="listing-view-top-part col-xs-12 no-side-padding">
@@ -181,17 +191,7 @@ export default class ListingView extends Component {
           </div>
         </div>
 
-        <div className="listing-view-user-details hidden-xs text-center pull-right">
-          <Link to={{
-            pathname: `/users/${listing.user.id}`,
-            state: {
-              user: listing.user
-            }
-          }} >
-            <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
-            <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
-          </Link>
-        </div>
+        { ownerOverview }
       </div>
     )
   }
@@ -330,14 +330,15 @@ export default class ListingView extends Component {
     let readAllLink = '';
 
     if (this.state.listing && this.state.listing.total_reviews > 0) {
+      let listing = this.state.listing;
       let review = this.state.listing.review;
 
       readAllLink = (
         <div className="pull-right">
           <Link to={{
-            pathname: `/listings/${this.state.listing.id}/reviews`,
+            pathname: `/listings/${listing.id}/reviews`,
             state: {
-              listing: this.state.listing
+              listing: listing
             }
           }}>
             <span className="secondary-text-color text-capitalize"> { LocalizationService.formatMessage('application.see_all') } </span>
