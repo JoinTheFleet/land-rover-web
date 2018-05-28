@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 
-import UserListing from './user_listing';
+import UserListing from '../user_listings/user_listing';
 import { Link } from 'react-router-dom';
 import Placeholder from '../miscellaneous/placeholder';
 
 import UserListingsService from '../../shared/services/users/user_listings_service';
+import VendorLocationListingsService from '../../shared/services/vendor_locations/vendor_location_listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 const LIMIT = 5;
 
-export default class UserListingsSummary extends Component {
+export default class ListingsSummary extends Component {
   constructor(props) {
     super(props);
 
@@ -25,16 +26,29 @@ export default class UserListingsSummary extends Component {
     this.setState({
       loading: true
     }, () => {
-      UserListingsService.index(this.props.user.id, {
-        limit: LIMIT
-      })
-      .then(response => {
-        this.setState({
-          loading: false,
-          listings: response.data.data.listings
-        });
-      })
-    })
+      if (this.props.vendorLocation) {
+        VendorLocationListingsService.index(this.props.vendorLocation.vendor.id, this.props.vendorLocation.id, {
+          limit: LIMIT
+        })
+        .then(response => {
+          this.setState({
+            loading: false,
+            listings: response.data.data.listings
+          });
+        })
+      }
+      else if (this.props.user) {
+        UserListingsService.index(this.props.user.id, {
+          limit: LIMIT
+        })
+        .then(response => {
+          this.setState({
+            loading: false,
+            listings: response.data.data.listings
+          });
+        })
+      }
+    });
   }
 
   componentWillMount() {
@@ -58,6 +72,18 @@ export default class UserListingsSummary extends Component {
       )
     }
 
+    let count = 0;
+    let link = '';
+
+    if (this.props.vendorLocation) {
+      link = `/vendor_locations/${this.props.vendorLocation.id}/listings`;
+      count = this.props.vendorLocation.listing_count;
+    }
+    else if (this.props.user) {
+      link = `/vendor_locations/${this.props.user.id}/listings`;
+      count = this.props.user.listing_count;
+    }
+
     return (
       <div>
         <div className='col-xs-12 no-side-padding user-listings-title'>
@@ -65,11 +91,11 @@ export default class UserListingsSummary extends Component {
             { LocalizationService.formatMessage('listings.listings') }
           </span>
           <span className='tertiary-text-color count'>
-            ({ this.props.user.listing_count })
+            ({ count })
           </span>
           <span>
             <Link to={{
-                    pathname: `/users/${this.props.user.id}/listings`,
+                    pathname: link,
                     state: {
                       listings: this.state.listings
                     }
