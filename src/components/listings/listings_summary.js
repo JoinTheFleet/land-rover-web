@@ -97,7 +97,8 @@ export default class ListingsSummary extends Component {
             <Link to={{
                     pathname: link,
                     state: {
-                      listings: this.state.listings
+                      listings: this.state.listings,
+                      count: count
                     }
                   }}
                   className='secondary-text-color link pull-right'>
