@@ -60,6 +60,16 @@
 
 @import 'main';
 
+.block {
+  img,
+  .sb-avatar {
+    display: block !important;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .survey-buttons {
   button + button {
     margin-left: 10px;
