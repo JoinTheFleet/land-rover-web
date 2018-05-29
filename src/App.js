@@ -310,7 +310,9 @@ export default class App extends Component {
     this.setState((prevState) => ({
       currentUserRole: newRole
     }), () => {
-      cookies.set('currentUserRole', newRole);
+      cookies.set('currentUserRole', newRole, {
+        path: '/',
+      });
     });
   }
 
