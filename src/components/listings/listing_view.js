@@ -131,7 +131,7 @@ export default class ListingView extends Component {
     }
 
     if (vendorLocation) {
-      return <VendorLocationOverview vendorLocation={ vendorLocation } mobile />;
+      return <VendorLocationOverview vendorLocation={ vendorLocation } user={ user } mobile />;
     }
     else {
       return <UserOverview user={ user } mobile />;
@@ -159,7 +159,7 @@ export default class ListingView extends Component {
       ) 
     }
 
-    let ownerOverview = vendorLocation ? <VendorLocationOverview vendorLocation={ vendorLocation } /> : <UserOverview user={ user } />;
+    let ownerOverview = vendorLocation ? <VendorLocationOverview vendorLocation={ vendorLocation }  user={ user } /> : <UserOverview user={ user } />;
 
     return (
       <div className="listing-view-top-part col-xs-12 no-side-padding">

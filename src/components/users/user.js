@@ -6,7 +6,7 @@ import Avatar from 'react-avatar';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import ReviewSummary from '../reviews/review_summary';
-import UserListingsSummary from '../user_listings/user_listings_summary';
+import ListingsSummary from '../listings/listings_summary';
 
 export default class User extends Component {
   constructor(props) {
@@ -46,7 +46,7 @@ export default class User extends Component {
     if (this.props.user.listing_count > 0) {
       listings = (
         <div className='col-xs-12 no-side-padding user-listings'>
-          <UserListingsSummary {...this.props} />
+          <ListingsSummary {...this.props} />
         </div>
       )
     }

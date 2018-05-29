@@ -5,19 +5,19 @@ import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
 import Avatar from 'react-avatar';
 
-import UserListingsService from '../../shared/services/users/user_listings_service';
+import VendorLocationListingsService from '../../shared/services/vendor_locations/vendor_location_listings_service';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import UserListingList from '../user_listings/user_listing_list';
 
 const LIMIT = 10;
 
-export default class UserListings extends Component {
+export default class Listings extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      reviewSummary: this.props.user ? this.props.user.owner_review_summary : undefined,
+      reviewSummary: this.props.vendorLocation ? this.props.vendorLocation.owner_review_summary : undefined,
       metadata: undefined,
       loading: false,
       initialLoad: true,
@@ -34,7 +34,7 @@ export default class UserListings extends Component {
   }
 
   loadListings() {
-    UserListingsService.index(this.props.user.id, {
+    VendorLocationListingsService.index(this.props.vendorLocation.vendor.id, this.props.vendorLocation.id, {
       offset: this.state.page * LIMIT,
       limit: LIMIT
     })
@@ -84,16 +84,7 @@ export default class UserListings extends Component {
   }
 
   componentWillMount() {
-    let location = this.props.location;
-
-    if (location && location.state && location.state.view && location.state.view === 'owner') {
-      this.setState({
-        reviewSummary: this.props.user.renter_review_summary
-      }, this.loadData);
-    }
-    else {
-      this.loadData();
-    }
+    this.loadData();
   }
 
   render() {
@@ -115,13 +106,13 @@ export default class UserListings extends Component {
         <div className='user-profile'>
           <div className='col-xs-12'>
             <div className='col-xs-12 no-side-padding user-header'>
-              <Link to={ `/users/${this.props.user.id}` }>
-                <Avatar src={ this.props.user.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
+              <Link to={ `/vendor_locations/${this.props.vendorLocation.id}` }>
+                <Avatar src={ this.props.vendorLocation.images.large_url } size={ 200 } className='col-xs-12 col-sm-4 user-avatar no-side-padding' round />
               </Link>
               <div className='col-xs-12 col-sm-8 rating-information'>
                 <div className='col-xs-12 user-name'>
-                  <Link to={ `/users/${this.props.user.id}` }>
-                    { this.props.user.first_name }
+                  <Link to={ `/vendor_locations/${this.props.vendorLocation.id}` }>
+                    { this.props.vendorLocation.name }
                   </Link>
                 </div>
                 <div className='col-xs-12 user-rating'>

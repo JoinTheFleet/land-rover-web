@@ -16,10 +16,19 @@ export default class RenterConversationDetails extends Component {
 
     let message = conversation.messages[0];
     let owner = listing.user;
+    let vendorLocation = listing.user.vendor_location;
     let messageClassName = conversation.unread ? 'strong-font-weight primary-text-color' : 'tertiary-text-color';
     let imageURL = '';
 
-    if (listing.gallery && listing.gallery.length > 0) {
+    let link = `/users/${owner.id}`;
+    let name = owner.first_name;
+
+    if (vendorLocation) {
+      imageURL = vendorLocation.images.small_url;
+      link = `/vendor_locations/${vendorLocation.id}`;
+      name = vendorLocation.name;
+    }
+    else if (listing.gallery && listing.gallery.length > 0) {
       imageURL = listing.gallery[0].images.small_url;
     }
 
@@ -53,9 +62,9 @@ export default class RenterConversationDetails extends Component {
               </div>
               <div className='col-xs-12 owner-name'>
                 <Link to={{
-                  pathname: `/users/${owner.id}`,
+                  pathname: link,
                 }} >
-                  { owner.first_name }
+                  { name }
                 </Link>
               </div>
               <div className={ `col-xs-12 renter-message-text ${messageClassName}` }>

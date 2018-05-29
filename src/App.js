@@ -32,6 +32,7 @@ import DashboardController from './components/dashboard/dashboard_controller';
 import NotificationsController from './components/notifications/notifications_controller';
 import WishListModal from './components/wishlists/wish_list_modal';
 import ConfirmationModal from './components/miscellaneous/confirmation_modal';
+import VendorController from './components/vendor_locations/controller';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
@@ -634,13 +635,13 @@ export default class App extends Component {
                                       disableSearchButton={ disableSearchButton }
                                       toggleWishListModal={ this.toggleWishListModal } />
                 }} />
-
+                <Route path='/vendor_locations/:id' component={ VendorController } />
                 <Route exact path='/renters' render={(props) => {
                   return <RenterInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
-                }  } />
+                }} />
                 <Route exact path='/owners' render={(props) => {
                   return <OwnerInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
-                }  } />
+                }} />
 
                 <Route exact path='/listings/new' render={(props) => {
                   if (!this.state.accessToken) {
