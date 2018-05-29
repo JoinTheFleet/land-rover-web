@@ -166,18 +166,25 @@ export default class Conversation extends Component {
       let booking = conversation.booking;
       let listing = conversation.listing;
       let owner = listing.user;
+      let vendorLocation = owner.vendor_location;
       let renter = booking.renter;
       let viewer = this.props.role === 'renter' ? renter : owner;
       let otherParticpant = this.props.role === 'renter' ? owner : renter;
 
       let messageLoader = '';
 
+      let name = otherParticpant.first_name;
+
+      if (vendorLocation && this.props.role === 'renter') {
+        name = vendorLocation.name;
+      }
+
       if (this.state.loading) {
         messageLoader = <Loading hiddenText={ true } fixedSize={ '30px' } />;
       }
 
       return (
-        <FormPanel title={ otherParticpant.first_name } className='conversation-thread'>
+        <FormPanel title={ name } className='conversation-thread'>
           <div className='message-list' onScroll={ this.scroll } ref='messageList'>
             { messageLoader }
             {
