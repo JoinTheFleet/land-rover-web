@@ -587,14 +587,26 @@ class BookingForm extends Component {
 
     let vehicleTitle = `${listing.variant.make.name}, ${listing.variant.model.name}`;
     let listingOwnerDetails = '';
+    let user = listing.user;
+    let vendorLocation = user.vendor_location;
+
+    let link = `/users/${user.id}`;
+    let image = user.images.small_url;
+    let name = user.first_name;
+
+    if (vendorLocation) {
+      link = `/vendor_locations/${vendorLocation.id}`;
+      image = vendorLocation.images.small_url;
+      name = vendorLocation.name;
+    }
 
     if (this.props.currentUserRole !== 'owner') {
       listingOwnerDetails = (
         <div className="booking-form-listing-user-details text-center pull-right">
-          <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
+          <img src={ image } alt="listing_user_avatar" />
 
-          <Link to={`/users/${listing.user.id}`}>
-            <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
+          <Link to={ link }>
+            <span className="secondary-text-color fs-18">{ name }</span>
           </Link>
         </div>
       );
