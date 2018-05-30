@@ -55,21 +55,25 @@ export default class ListingLocation extends Component {
 
   componentDidMount() {
     let location = this.props.listing.location;
+    let position = {
+      lat: parseFloat(process.env.REACT_APP_LOCATION_1_LAT),
+      lng: parseFloat(process.env.REACT_APP_LOCATION_1_LNG)
+    }
 
     if (location) {
-      let position = {
+      position = {
         lat: location.latitude,
         lng: location.longitude
       };
-
-      this.setState({
-        center: position,
-        selectedPosition: {
-          latitude: position.lat,
-          longitude: position.lng
-        }
-      }, () => { this.handleMapClick(this.state.center) })
     }
+
+    this.setState({
+      center: position,
+      selectedPosition: {
+        latitude: position.lat,
+        longitude: position.lng
+      }
+    }, () => { this.handleMapClick(this.state.center) })
   }
 
   validateFields() {
