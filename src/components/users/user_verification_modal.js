@@ -46,6 +46,7 @@ export default class UserVerificationModal extends Component {
     this.extractUserParams = this.extractUserParams.bind(this);
     this.loading = this.loading.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
+    this.changeStep = this.changeStep.bind(this);
   }
 
   updateUserField(field, value) {
@@ -268,6 +269,12 @@ export default class UserVerificationModal extends Component {
     }
   }
 
+  changeStep(stepNumber) {
+    if (stepNumber <= this.state.currentStepNumber) {
+      this.setState({ currentStepNumber: stepNumber });
+    }
+  }
+
   profileInformationMissing() {
     let user = this.state.user;
 
@@ -402,7 +409,12 @@ export default class UserVerificationModal extends Component {
                           className += ' filled';
                         }
 
-                        return <li className={ className } style={{ marginLeft: leftMargin }} />
+                        if (index <= (this.state.currentStepNumber - 1)) {
+                          return <li onClick={ () => { this.changeStep(index + 1) } } className={ className } style={{ marginLeft: leftMargin }} />;
+                        }
+                        else {
+                          return <li className={ className } style={{ marginLeft: leftMargin }} />;
+                        }
                       }
                       else {
                         return <div />;
