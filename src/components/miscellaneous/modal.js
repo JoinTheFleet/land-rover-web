@@ -30,7 +30,13 @@ export default class Modal extends Component {
       closeBtn = (
         <a className={`close-login-modal-btn ${this.props.closeButtonPosition === 'right' ? 'pull-right' : ''}`}
            data-dismiss="modal"
-           onClick={ () => { this.props.toggleModal(this.props.modalName) }}>
+           onClick={ () => {
+             if (this.props.closeAction) {
+               this.props.closeAction(this.props.modalName);
+             }
+
+             this.props.toggleModal(this.props.modalName);
+           }}>
           <i className='fa fa-times' />
         </a>
       );
