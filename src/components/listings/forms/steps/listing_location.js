@@ -18,10 +18,7 @@ export default class ListingLocation extends Component {
     super(props);
 
     this.state = {
-      center: {
-        lat: 0,
-        lng: 0
-      },
+      center: { lat: parseFloat(process.env.REACT_APP_LOCATION_1_LAT), lng: parseFloat(process.env.REACT_APP_LOCATION_1_LNG) },
       selectedPosition: {
         latitude: 0,
         longitude: 0
