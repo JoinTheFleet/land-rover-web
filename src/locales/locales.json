@@ -252,6 +252,7 @@
     "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
 
+    "bookings.view": "View Booking",
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",
     "bookings.check_in_date": "Check In Date",
