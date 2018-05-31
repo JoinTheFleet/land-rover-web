@@ -68,8 +68,8 @@ export default class App extends Component {
     this.eventEmitter = new EventEmitter();
 
     const defaultLocation = {
-      latitude: 0,
-      longitude: 0
+      latitude: parseFloat(process.env.REACT_APP_LOCATION_1_LAT),
+      longitude: parseFloat(process.env.REACT_APP_LOCATION_1_LNG)
     };
 
     this.state = {

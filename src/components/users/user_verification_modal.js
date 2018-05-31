@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Modal from '../miscellaneous/modal';
 
 import { Elements } from 'react-stripe-elements';
+import { Redirect } from 'react-router-dom';
 
 import Alert from 'react-s-alert';
 
@@ -46,6 +47,8 @@ export default class UserVerificationModal extends Component {
     this.extractUserParams = this.extractUserParams.bind(this);
     this.loading = this.loading.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
+    this.changeStep = this.changeStep.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   updateUserField(field, value) {
@@ -268,6 +271,12 @@ export default class UserVerificationModal extends Component {
     }
   }
 
+  changeStep(stepNumber) {
+    if (stepNumber <= this.state.currentStepNumber) {
+      this.setState({ currentStepNumber: stepNumber });
+    }
+  }
+
   profileInformationMissing() {
     let user = this.state.user;
 
@@ -356,7 +365,15 @@ export default class UserVerificationModal extends Component {
     this.setState({ loading: loading }, callback)
   }
 
+  closeModal() {
+    this.setState({ redirectToHomeScreen: true });
+  }
+
   render() {
+    if (this.state.redirectToHomeScreen) {
+      return <Redirect to='/' />
+    }
+
     if (this.state.currentStepNumber <= this.state.verificationSteps.length) {
       let CurrentVerificationStep = this.state.verificationSteps[this.state.currentStepNumber - 1];
       let currentVerificationStep = <CurrentVerificationStep loading={ this.loading } scope={ this.props.scope } configurations={ this.props.configurations } saveUser={ this.saveUser } user={ this.state.user } ref={ this.setVerificationComponent } updateUserField={ this.updateUserField } />;
@@ -365,9 +382,10 @@ export default class UserVerificationModal extends Component {
       let stepWidth = 100.0 / ((this.state.verificationSteps.length - 1) || 1);
       let ulClass = this.state.verificationSteps.length <= 1 ? 'single' : '';
       let modalTitle = !this.verificationComponent ? '' : this.verificationComponent.title();
+      let closeAction = this.props.scope === 'renter' ? undefined : this.closeModal;
 
       return (
-        <Modal {...this.props} modalClass='user-verification' title={ modalTitle }>
+        <Modal {...this.props} modalClass='user-verification' title={ modalTitle } closeAction={ closeAction }>
           <div className='row'>
             <div className='col-xs-12 verification'>
               <Elements>
@@ -402,7 +420,12 @@ export default class UserVerificationModal extends Component {
                           className += ' filled';
                         }
 
-                        return <li className={ className } style={{ marginLeft: leftMargin }} />
+                        if (index <= (this.state.currentStepNumber - 1)) {
+                          return <li onClick={ () => { this.changeStep(index + 1) } } className={ className } style={{ marginLeft: leftMargin }} />;
+                        }
+                        else {
+                          return <li className={ className } style={{ marginLeft: leftMargin }} />;
+                        }
                       }
                       else {
                         return <div />;
