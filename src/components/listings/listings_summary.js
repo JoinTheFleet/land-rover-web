@@ -80,7 +80,7 @@ export default class ListingsSummary extends Component {
       count = this.props.vendorLocation.listing_count;
     }
     else if (this.props.user) {
-      link = `/vendor_locations/${this.props.user.id}/listings`;
+      link = `/users/${this.props.user.id}/listings`;
       count = this.props.user.listing_count;
     }
 

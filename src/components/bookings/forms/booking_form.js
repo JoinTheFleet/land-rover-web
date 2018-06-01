@@ -654,7 +654,12 @@ class BookingForm extends Component {
           <div className="booking-form-renter-image-and-name">
             <div className="booking-form-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
             <div className="booking-form-renter-name-and-rating pull-left">
-              <Link to={`/users/${booking.renter.id}`}>
+              <Link to={{
+                pathname: `/users/${booking.renter.id}`,
+                state: {
+                  view: 'owner'
+                }
+              }}>
                 <div className="fs-18 secondary-text-color"> { booking.renter.first_name } </div>
               </Link>
 

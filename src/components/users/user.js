@@ -13,6 +13,7 @@ export default class User extends Component {
     super(props);
 
     this.state = {
+      owner: false,
       reviewSummary: this.props.user ? this.props.user.owner_review_summary : {}
     };
   }
@@ -22,6 +23,7 @@ export default class User extends Component {
 
     if (location && location.state && location.state.view && location.state.view === 'owner') {
       this.setState({
+        owner: true,
         reviewSummary: this.props.user.renter_review_summary
       });
     }
@@ -38,7 +40,7 @@ export default class User extends Component {
     if (this.state.reviewSummary.total_reviews > 0) {
       reviews = (
         <div className='col-xs-12 no-side-padding user-reviews'>
-          <ReviewSummary {...this.props} />
+          <ReviewSummary owner={ this.state.owner } {...this.props} />
         </div>
       )
     }
