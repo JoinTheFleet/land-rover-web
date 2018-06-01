@@ -80,10 +80,22 @@ export default class Login extends Component {
                          .catch(this.handleModalError);
   }
 
-  handleFacebookLogin(response) {
+  handleFacebookLogin(response, newUser) {
     if (response && response.name) {
       AuthenticationService.loginWithFacebook(response)
-                            .then(this.handleSuccessfulLogin)
+                            .then((response) => {
+                              if (newUser) {
+                                let accessToken = response.data.data.token.access_token;
+                                this.props.setAccessToken(accessToken);
+                                this.setState({
+                                  loading: false,
+                                  userCreated: true
+                                });
+                              }
+                              else {
+                                this.handleSuccessfulLogin(response);
+                              }
+                            })
                             .catch(this.handleModalError);
     }
   }
@@ -283,7 +295,7 @@ export default class Login extends Component {
                        icon="fa-facebook"
                        cssClass="login-with-facebook-btn btn-icon btn facebook-color white-text text-secondary-font-weight fs-18"
                        textButton={ LocalizationService.formatMessage('authentication.register_facebook') }
-                       callback={ this.handleFacebookLogin }
+                       callback={ (response) => { this.handleFacebookLogin(response, true) } }
                        onClick={ () => { this.props.toggleModal('registration', this.props.scope) } } />
 
           <div className="divider">
