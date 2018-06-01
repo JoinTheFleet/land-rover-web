@@ -457,7 +457,7 @@ export default class Login extends Component {
             }
           }} />;
         }
-        else if (this.props.scope !== 'inline') {
+        else if (this.props.scope !== 'inline' && window.location.pathname !== '/profile') {
           return <Redirect to={{
             pathname: '/profile',
             state: {
@@ -466,7 +466,7 @@ export default class Login extends Component {
           }} />;
         }
       }
-      else {
+      else if (window.location !== '/profile') {
         return <Redirect to={{
           pathname: '/profile',
           state: {
