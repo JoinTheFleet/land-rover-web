@@ -12,9 +12,6 @@ import { Router } from 'react-router-dom';
 
 import {StripeProvider} from 'react-stripe-elements';
 
-import acceptLanguage from 'accept-language';
-import Cookies from "universal-cookie";
-
 // Stylesheets
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
@@ -23,15 +20,7 @@ import './assets/stylesheets/application.scss';
 // Translated strings
 import localeData from './locales/locales.json';
 
-acceptLanguage.languages(['en']); // Add more languages later on
-
-const cookies = new Cookies();
-const language = cookies.get('userLocale') || ((navigator.languages && navigator.languages[0]) ||
-                     navigator.language ||
-                     navigator.userLanguage);
-
-const messages = localeData[language] || localeData.en;
-const locale = acceptLanguage.get(language);
+const messages = localeData.en;
 const history = createHistory();
 
 WebFont.load({
@@ -41,7 +30,7 @@ WebFont.load({
 });
 
 render(
-  (<IntlProvider locale={locale} messages={messages}>
+  (<IntlProvider locale={'en'} messages={messages}>
     <LocaleProvider locale={enUS}>
       <StripeProvider apiKey={ process.env.REACT_APP_STRIPE_API_KEY }>
         <Router history={ history }>
