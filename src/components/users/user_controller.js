@@ -15,7 +15,7 @@ export default class UserController extends Component {
 
     this.state = {
       user: undefined,
-      loading: false
+      loading: true
     };
 
     this.refreshData = this.refreshData.bind(this);
@@ -38,7 +38,10 @@ export default class UserController extends Component {
     let location = this.props.location;
 
     if (location && location.state && location.state.user) {
-      this.setState({ user: location.state.user });
+      this.setState({
+        user: location.state.user,
+        loading: false
+      });
     }
     else {
       this.setState({

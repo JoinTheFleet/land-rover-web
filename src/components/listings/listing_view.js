@@ -174,8 +174,11 @@ export default class ListingView extends Component {
                                 currency_symbol: listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol,
                                 price: listing.price / 100
                               } } />
-
-            <br/>
+            <br />
+            <span className='timing'>{ LocalizationService.formatMessage('listings.pick_up_time', { time: moment.unix(listing.check_in_time).utc().format('HH:mm') }) }</span>
+            <br />
+            <span className='timing'>{ LocalizationService.formatMessage('listings.drop_off_time', { time: moment.unix(listing.check_out_time).utc().format('HH:mm') }) }</span>
+            <br />
             { acceptanceRate }
             <div className="listing-view-rating-reviews">
               <RatingInput rating={ listing.rating } inputNameSufix={ listing.id ? listing.id.toString() : '' } readonly={true} />

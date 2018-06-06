@@ -100,6 +100,11 @@ export default class Homefeed extends Component {
           collections: response.data.data.home_feed.collections,
           loading: false
         });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false
+        });
       });
     }
     else {
@@ -108,6 +113,11 @@ export default class Homefeed extends Component {
         this.setState({
           nearby: response.data.data.home_feed.nearby,
           collections: response.data.data.home_feed.collections,
+          loading: false
+        });
+      })
+      .catch(() => {
+        this.setState({
           loading: false
         });
       });
