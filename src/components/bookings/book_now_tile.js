@@ -165,6 +165,22 @@ class BookNowTile extends Component {
           { LocalizationService.formatMessage('bookings.not_available') }
         </div>
       );
+      let pricingInformation = '';
+
+      let listing = this.props.listing;
+      if (listing && listing.user && listing.user.vendor_location && listing.user.vendor_location.vendor) {
+        let vendor = listing.user.vendor_location.vendor;
+
+        if (!vendor.shows_booking_price_breakdown) {
+          pricingQuote.price_items = [pricingQuote.price_items[pricingQuote.price_items.length - 1]];
+
+          pricingInformation = (
+            <div className='pull-right insurance-information'>
+              { LocalizationService.formatMessage('bookings.no_breakdown') }
+            </div>
+          )
+        }
+      }
 
       if (pricingQuote.available) {
         bookingRatesContent = (
@@ -182,6 +198,7 @@ class BookNowTile extends Component {
                 )
               })
             }
+            { pricingInformation }
             <div className="col-xs-12 no-side-padding text-center">
               <Link to={{
                     pathname: `/listings/${this.props.listing.id}/bookings/new`,
