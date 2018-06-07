@@ -254,6 +254,7 @@
     "listings.pick_up_time": "Pick Up: {time}",
     "listings.drop_off_time": "Drop Off: {time}",
 
+    "bookings.no_breakdown": "This price includes fully comprehensive insurance and 24hr breakdown cover.",
     "bookings.view": "View Booking",
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",
