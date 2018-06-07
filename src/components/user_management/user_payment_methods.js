@@ -80,7 +80,7 @@ class UserPaymentMethods extends Component {
 
       if (this.state.sources.length > 0) {
         paymentMethods = this.state.sources.map((source, index) => {
-          return <PaymentMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ index === 0 }/>;
+          return <PaymentMethod key={ source.id } source={ source } reloadData={ this.reloadData } isDefault={ source.default }/>;
         })
       }
 
