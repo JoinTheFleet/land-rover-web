@@ -453,6 +453,7 @@
     "renter_information.app_point_2": "Keep in touch with owner through in-app Messages",
     "renter_information.app_point_3": "Chat directly with Fleet support",
 
+    "users.description": "Description",
     "user_verification.profile_information": "Profile Information",
     "user_verification.verified_information": "Verified Information",
     "user_verification.contact_details": "Contact Details",
