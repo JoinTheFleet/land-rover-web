@@ -1031,7 +1031,7 @@ class BookingForm extends Component {
 
   renderBookingDiscount() {
     let booking = this.state.booking;
-    let discountCode = ''
+    let discountCode = '';
 
     if (!booking) {
       return;
