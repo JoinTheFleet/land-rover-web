@@ -164,7 +164,7 @@
     "bloglist.by_author": "By {author}",
 
     "listings.reset_all_filters": "Reset All Filters",
-
+    "listings.rules": "Guidelines",
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
     "listings.engine_fuels": "Fuel",
