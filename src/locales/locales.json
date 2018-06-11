@@ -414,6 +414,7 @@
     "owner_information.app_point_1": "Carry out vehicle survey using our sleek Android & iOS apps",
     "owner_information.app_point_2": "Keep in touch with driver through in-app Messages",
     "owner_information.app_point_3": "Chat directly with Fleet support",
+    "vendor_discount.slug": "Discount Code",
 
     "renter_information.title": "Drive on Fleet",
     "renter_information.subtitle": "Choose your own adventure",
