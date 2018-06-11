@@ -171,6 +171,8 @@ class BookNowTile extends Component {
       if (listing && listing.user && listing.user.vendor_location && listing.user.vendor_location.vendor) {
         let vendor = listing.user.vendor_location.vendor;
 
+        console.log(vendor)
+
         if (!vendor.shows_booking_price_breakdown) {
           pricingQuote.price_items = [pricingQuote.price_items[pricingQuote.price_items.length - 1]];
 

@@ -1029,6 +1029,26 @@ class BookingForm extends Component {
     )
   }
 
+  renderBookingDiscount() {
+    let booking = this.state.booking;
+    let discountCode = ''
+
+    if (!booking) {
+      return;
+    }
+
+    if (booking.user_applied_vendor_discount && booking.vendor_discount_slug && booking.vendor_discount_slug.length > 0) {
+      discountCode = (
+        <div className="booking-form-vehicle-survey booking-form-box fs-16 col-xs-12 discount-code no-side-padding">
+          <div className="pull-left">{ LocalizationService.formatMessage('vendor_discount.slug') }</div>
+          <div className="pull-right">{ booking.vendor_discount_slug }</div>
+        </div>
+      )
+    }
+
+    return discountCode;
+  }
+
   renderLoading() {
     if (!this.state.loading ) {
       return '';
@@ -1081,6 +1101,8 @@ class BookingForm extends Component {
           { this.renderInsuranceCriteria() }
 
           { this.renderTermsAndRules() }
+
+           { this.renderBookingDiscount() }
 
           { this.renderGetBookingDirections() }
 
