@@ -102,9 +102,11 @@ export default class ListingImages extends Component {
     let numberOfImagesToAdd = files.length;
     let imagesToAdd = [];
 
-    this.setState({ loading: true }, () => {
-      this.readUploadedImages(files, imagesToAdd, numberOfImagesToAdd);
-    });
+    if (numberOfImagesToAdd > 0) {
+      this.setState({ loading: true }, () => {
+        this.readUploadedImages(files, imagesToAdd, numberOfImagesToAdd);
+      });
+    }
   }
 
   readUploadedImages(files, imagesToAdd, numberOfImagesToAdd) {

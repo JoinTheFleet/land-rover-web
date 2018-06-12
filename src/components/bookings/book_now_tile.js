@@ -271,14 +271,15 @@ class BookNowTile extends Component {
           </div>
 
           <DateRangePicker startDate={ startDate }
-                          endDate={ endDate }
-                          minimumNights={ 0 }
-                          numberOfMonths={ this.state.numberOfMonthsToShow }
-                          focusedInput={this.state.focusedInput}
-                          onDatesChange={ this.handleDatesChange }
-                          onFocusChange={ focusedInput => this.setState({ focusedInput }) }
-                          hideKeyboardShortcutsPanel={ true }
-                          isDayBlocked={ (day) => day.utc().isBefore(moment().utc()) } />
+                           endDate={ endDate }
+                           displayFormat={ 'DD/MM/YYYY' }
+                           minimumNights={ 0 }
+                           numberOfMonths={ this.state.numberOfMonthsToShow }
+                           focusedInput={ this.state.focusedInput }
+                           onDatesChange={ this.handleDatesChange }
+                           onFocusChange={ focusedInput => this.setState({ focusedInput }) }
+                           hideKeyboardShortcutsPanel={ true }
+                           isDayBlocked={ (day) => day.utc().isBefore(moment().utc()) } />
 
           { this.renderBookingRates() }
         </div>

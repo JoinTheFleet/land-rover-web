@@ -71,6 +71,14 @@ export default class User extends Component {
               </div>
             </div>
           </div>
+          <div className='col-xs-12 no-side-padding user-listings-title'>
+            <span className='main-text-color title'>
+              { LocalizationService.formatMessage('users.description') }
+            </span>
+            <div className='col-xs-12 no-side-padding user-description'>
+              { this.props.user.description }
+            </div>
+          </div>
 
           { reviews }
           { listings }
