@@ -93,38 +93,40 @@ export default class ListingForm extends Component {
                       loading: false,
                       showVerificationModal: showVerificationModal
                     }, () => {
-                      if (showVerificationModal) {
-                        let location = this.props.location;
+                      let location = this.props.location;
 
-                        if (location && location.state && location.state.listing) {
-                          this.setState({ listing: location.state.listing, loading: false }, () => {
-                            this.allowForEdit();
-                            if (callback) {
-                              callback();
-                            }
-                          });
-                        }
-                        else if (this.props.match.params.id) {
-                          ListingsService.show(this.props.match.params.id)
-                                         .then(response => {
-                                           this.setState({
-                                             listing: response.data.data.listing,
-                                             loading: false
-                                           }, () => {
-                                             if (callback) {
-                                               callback();
-                                             }
-                                           });
-                                         })
-                                         .catch(() => {
-                                           this.setState({ loading: false });
-                                         });
-                        }
-                      }
-                      else {
-                        this.setState({ loading: false }, () => {
-                          if (callback) {
-                            callback();
+                      if (location && location.state && location.state.listing) {
+                        this.setState({ listing: location.state.listing, loading: false}, () => {
+                          if (location && location.state && location.state.listing) {
+                            this.setState({ listing: location.state.listing, loading: false }, () => {
+                              this.allowForEdit();
+                              if (callback) {
+                                callback();
+                              }
+                            });
+                          }
+                          else if (this.props.match.params.id) {
+                            ListingsService.show(this.props.match.params.id)
+                                            .then(response => {
+                                              this.setState({
+                                                listing: response.data.data.listing,
+                                                loading: false
+                                              }, () => {
+                                                if (callback) {
+                                                  callback();
+                                                }
+                                              });
+                                            })
+                                            .catch(() => {
+                                              this.setState({ loading: false });
+                                            });
+                          }
+                          else {
+                            this.setState({ loading: false }, () => {
+                              if (callback) {
+                                callback();
+                              }
+                            });
                           }
                         });
                       }
