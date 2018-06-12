@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Alert from 'react-s-alert';
 
 import BookingQuotation from './booking_quotation';

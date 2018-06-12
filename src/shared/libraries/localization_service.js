@@ -1,5 +1,4 @@
 import { IntlProvider } from 'react-intl';
-import acceptLanguage from 'accept-language';
 
 import localeData from '../../locales/locales.json';
 

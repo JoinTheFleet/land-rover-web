@@ -34,7 +34,7 @@ export default class MessagingController extends Component {
   }
 
   refreshData(newProps) {
-    if ((!newProps || ((this.state.listings && this.state.listings.length === 0)) && !this.state.listingsAttempted)) {
+    if (!newProps || ((this.state.listings && this.state.listings.length === 0) && !this.state.listingsAttempted)) {
       this.setState({
         loading: true
       }, () => {

@@ -66,7 +66,7 @@ export default class ReviewSummary extends Component {
   componentWillMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.view && location.state.view === 'owner' || this.props.owner) {
+    if ((location && location.state && location.state.view && location.state.view === 'owner') || this.props.owner) {
       this.loadRenterReviews();
     }
     else {
