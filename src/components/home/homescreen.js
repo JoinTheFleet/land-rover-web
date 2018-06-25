@@ -39,6 +39,65 @@ export default class Homescreen extends Component {
       nearbyListingsLoading: false,
       loadingPosts: false
     };
+
+    this.setupEvents = this.setupEvents.bind(this);
+    this.addedWishListToListing = this.addedWishListToListing.bind(this);
+    this.addWishListIDToListingArray = this.addWishListIDToListingArray.bind(this);
+    this.removedWishListFromListing = this.removedWishListFromListing.bind(this);
+    this.removeWishListIDFromListing = this.removeWishListIDFromListing.bind(this);
+    this.removeWishListIDFromListingArray = this.removeWishListIDFromListingArray.bind(this);
+
+    this.setupEvents();
+  }
+
+  setupEvents() {
+    this.props.eventEmitter.on('REMOVED_LISTING_WISHLIST', this.removedWishListFromListing);
+    this.props.eventEmitter.on('ADDED_LISTING_WISHLIST', this.addedWishListToListing);
+  }
+
+  addedWishListToListing(options, error) {
+    console.log('added')
+    if (options && options.listingID && options.wishListID) {
+      this.addWishListIDToListingArray(this.state.topSellers, options.listingID, options.wishListID)
+      this.addWishListIDToListingArray(this.state.nearbyListings, options.listingID, options.wishListID)
+    }
+  }
+
+  addWishListIDToListingArray(objects, listingID, wishListID) {
+    let listing = objects.find((listing) => {
+      return listing.id === listingID;
+    });
+
+    if (listing) {
+      listing.wish_lists.push(wishListID);
+    }
+  }
+
+  removedWishListFromListing(options, error) {
+    if (options && options.listingID && options.wishListID) {
+      this.removeWishListIDFromListingArray(this.state.topSellers, options.listingID, options.wishListID)
+      this.removeWishListIDFromListingArray(this.state.nearbyListings, options.listingID, options.wishListID)
+    }
+  }
+
+  removeWishListIDFromListingArray(objects, listingID, wishListID) {
+    let listing = objects.find((listing) => {
+      return listing.id === listingID;
+    });
+
+    if (listing) {
+      this.removeWishListIDFromListing(listing, wishListID)
+    }
+  }
+
+  removeWishListIDFromListing(listing, wishListID) {
+    let wishListIndex = listing.wish_lists.findIndex((listingWishListID) => {
+      return listingWishListID === wishListID;
+    });
+
+    if (wishListIndex >= 0) {
+      listing.wish_lists.splice(wishListIndex, 1);
+    }
   }
 
   componentDidMount() {

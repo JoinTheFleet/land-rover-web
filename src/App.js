@@ -620,6 +620,7 @@ export default class App extends Component {
                 }} />
                 <Route exact path="/" render={(props) => {
                   return <Homescreen {...props}
+                                      eventEmitter={ this.eventEmitter }
                                       handleReferral={ this.handleReferral }
                                       currentUserRole={ this.state.currentUserRole }
                                       handleLocationChange={ this.handleLocationChange }
@@ -668,6 +669,7 @@ export default class App extends Component {
                                       handleLocationChange={ this.handleLocationChange }
                                       handleLocationFocus={ this.handleLocationFocus }
                                       handleDatesChange={ this.handleDatesChange }
+                                      eventEmitter={ this.eventEmitter }
                                       handleLocationSelect={ this.handleLocationSelect }
                                       handleSearch={ this.performSearch }
                                       clearFilters={ this.clearFilters }
