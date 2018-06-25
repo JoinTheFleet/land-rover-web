@@ -97,15 +97,8 @@
 }
 
 .zopim {
-  left: 50% !important;
-  transform: translateX(-50%);
-}
-
-@media screen and (min-width: 768px) {
-  .zopim {
-    left: 0 !important;
-    transform: none;
-  }
+  left: 0 !important;
+  transform: none;
 }
 
 .fixed-body {
