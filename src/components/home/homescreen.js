@@ -56,7 +56,6 @@ export default class Homescreen extends Component {
   }
 
   addedWishListToListing(options, error) {
-    console.log('added')
     if (options && options.listingID && options.wishListID) {
       this.addWishListIDToListingArray(this.state.topSellers, options.listingID, options.wishListID)
       this.addWishListIDToListingArray(this.state.nearbyListings, options.listingID, options.wishListID)
