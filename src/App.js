@@ -497,7 +497,7 @@ export default class App extends Component {
     LocationsService.create(latitude, longitude, term)
                     .then(response => {
                       this.setState({
-                        searchLocations: response.data.data.locations
+                        searchLocations: response.data.data.locations || []
                       });
                     });
   }
@@ -547,7 +547,7 @@ export default class App extends Component {
 
   render() {
     const alerts = this.state.showAlerts ? (<Alerts />) : '';
-    const disableSearchButton = this.state.searchLocations.length > 0 && this.state.locationName !== '' && this.state.location === this.state.defaultLocation;
+    const disableSearchButton = this.state.searchLocations && this.state.searchLocations.length > 0 && this.state.locationName !== '' && this.state.location === this.state.defaultLocation;
     let mainRouter = (<Redirect to="/" />);
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
