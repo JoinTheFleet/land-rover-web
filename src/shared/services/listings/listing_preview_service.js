@@ -7,7 +7,6 @@ class ListingPreviewService extends Service {
 
   static get actions() {
     return {
-      // NOTE: Provide full listing hash for this
       create: true
     };
   }

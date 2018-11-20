@@ -83,7 +83,7 @@ export default class SimpleListingItem extends Component {
             { wishList }
             <div className="listing-item-info">
               <div>
-                { item.currency_symbol + (item.price / 100) + ' per day' /* TODO: retrieve currency_symbol from API results when available */ }
+                { item.currency_symbol + (item.price / 100) + ' per day' }
               </div>
               <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
