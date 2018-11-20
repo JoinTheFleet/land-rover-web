@@ -640,8 +640,6 @@ class BookingForm extends Component {
     let renterDetailsDiv = '';
     let booking = this.state.booking;
 
-    // TODO: Fix issue with multiple render.
-
     if (!booking || Object.keys(booking).length === 0) {
       return '';
     }

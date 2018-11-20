@@ -29,7 +29,7 @@ export default class Dropdown extends Component {
     let name = this.props.name;
 
     this.setState({
-      open: 'false' // TODO: check what's wrong with this (doesn't work with boolean false value)
+      open: 'false'
     }, () => {
 
       if(this.props.itemClickHandler) {
