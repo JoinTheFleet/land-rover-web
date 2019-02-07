@@ -1,4 +1,5 @@
 .tags*
+.history
 
 !.keep
 *.DS_Store
