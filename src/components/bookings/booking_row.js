@@ -21,7 +21,15 @@ class BookingRow extends Component {
       let vehicleMake = listing.variant.make.name;
       let vehicleModel = listing.variant.model.name;
       let vehicleTitle = vehicleMake + ', ' + vehicleModel;
+
+      let user = listing.user;
+      let vendorLocation = user.vendor_location;
+
       let userName = this.props.currentUserRole === userRoles.renter ? listing.user.first_name : booking.renter.first_name;
+
+      if (vendorLocation && this.props.currentUserRole === 'renter') {
+        userName = vendorLocation.name;
+      }
 
       let bookingStartDate = moment.utc(moment.unix(booking.start_at)).format('DD MMM');
       let bookingEndDate = moment.utc(moment.unix(booking.end_at)).format('DD MMM');

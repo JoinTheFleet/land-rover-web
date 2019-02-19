@@ -164,7 +164,7 @@
     "bloglist.by_author": "By {author}",
 
     "listings.reset_all_filters": "Reset All Filters",
-
+    "listings.rules": "Guidelines",
     "listings.door_counts": "Doors",
     "listings.seat_counts": "Seats",
     "listings.engine_fuels": "Fuel",
@@ -251,7 +251,11 @@
     "listings.rules.rules": "Rules",
     "listings.rules.rules_eg": "Rules eg. No Dogs, No Smoking, Maximum Mileage,",
     "listings.rules.pick_up_time": "Pick-up / Drop-off time",
+    "listings.pick_up_time": "Pick Up: {time}",
+    "listings.drop_off_time": "Drop Off: {time}",
 
+    "bookings.no_breakdown": "This price includes fully comprehensive insurance and 24hr breakdown cover.",
+    "bookings.view": "View Booking",
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",
     "bookings.check_in_date": "Check In Date",
@@ -410,6 +414,7 @@
     "owner_information.app_point_1": "Carry out vehicle survey using our sleek Android & iOS apps",
     "owner_information.app_point_2": "Keep in touch with driver through in-app Messages",
     "owner_information.app_point_3": "Chat directly with Fleet support",
+    "vendor_discount.slug": "Discount Code",
 
     "renter_information.title": "Drive on Fleet",
     "renter_information.subtitle": "Choose your own adventure",
@@ -429,7 +434,7 @@
     "renter_information.faq": "Frequently Asked Questions",
     "renter_information.faq_cta": "View our full <a href='https://jointhefleet.zendesk.com/hc/en-us/categories/115000499465-Renter-Help'>Renter Help Guide</a> to find out more.",
     "renter_information.faq_1_title": "Who can drive on Fleet?",
-    "renter_information.faq_1_text": "Fleet is available to drivers aged 25 or older who hold a full Irish or UK driving licence - with more licence types on the way. See our full <a href='https://jointhefleet.zendesk.com/hc/en-us/articles/115002544825-What-criteria-must-I-fulfill-in-order-to-rent-a-car-with-Fleet-'>driver eligibility requirements</a> for more details.",
+    "renter_information.faq_1_text": "Fleet is available to drivers aged 25 or older who hold a full EU licence - with more licence types on the way. See our full <a href='https://jointhefleet.zendesk.com/hc/en-us/articles/115002544825-What-criteria-must-I-fulfill-in-order-to-rent-a-car-with-Fleet-'>driver eligibility requirements</a> for more details.",
     "renter_information.faq_2_title": "How does car rental on Fleet work?",
     "renter_information.faq_2_text": "Find your car, choose your dates, and select on-demand collection or add a message if needed.<br><br>Once you submit a booking, the owner will respond within 24 hours (usually, less than two!) to confirm or reject your request.<br><br>Then you simply meet up, give the car a quick check, exchange the keys, and off you go!",
     "renter_information.faq_3_title": "How does payment work?",
@@ -448,6 +453,7 @@
     "renter_information.app_point_2": "Keep in touch with owner through in-app Messages",
     "renter_information.app_point_3": "Chat directly with Fleet support",
 
+    "users.description": "Description",
     "user_verification.profile_information": "Profile Information",
     "user_verification.verified_information": "Verified Information",
     "user_verification.contact_details": "Contact Details",

@@ -32,6 +32,7 @@ import DashboardController from './components/dashboard/dashboard_controller';
 import NotificationsController from './components/notifications/notifications_controller';
 import WishListModal from './components/wishlists/wish_list_modal';
 import ConfirmationModal from './components/miscellaneous/confirmation_modal';
+import VendorController from './components/vendor_locations/controller';
 
 import ConfigurationService from "./shared/services/configuration_service";
 import GeolocationService from './shared/services/geolocation_service';
@@ -67,8 +68,8 @@ export default class App extends Component {
     this.eventEmitter = new EventEmitter();
 
     const defaultLocation = {
-      latitude: 0,
-      longitude: 0
+      latitude: parseFloat(process.env.REACT_APP_LOCATION_1_LAT),
+      longitude: parseFloat(process.env.REACT_APP_LOCATION_1_LNG)
     };
 
     this.state = {
@@ -309,7 +310,9 @@ export default class App extends Component {
     this.setState((prevState) => ({
       currentUserRole: newRole
     }), () => {
-      cookies.set('currentUserRole', newRole);
+      cookies.set('currentUserRole', newRole, {
+        path: '/',
+      });
     });
   }
 
@@ -494,7 +497,7 @@ export default class App extends Component {
     LocationsService.create(latitude, longitude, term)
                     .then(response => {
                       this.setState({
-                        searchLocations: response.data.data.locations
+                        searchLocations: response.data.data.locations || []
                       });
                     });
   }
@@ -544,7 +547,7 @@ export default class App extends Component {
 
   render() {
     const alerts = this.state.showAlerts ? (<Alerts />) : '';
-    const disableSearchButton = this.state.searchLocations.length > 0 && this.state.locationName !== '' && this.state.location === this.state.defaultLocation;
+    const disableSearchButton = this.state.searchLocations && this.state.searchLocations.length > 0 && this.state.locationName !== '' && this.state.location === this.state.defaultLocation;
     let mainRouter = (<Redirect to="/" />);
 
     if (this.state.accessToken && this.state.accessToken.length > 0) {
@@ -617,6 +620,7 @@ export default class App extends Component {
                 }} />
                 <Route exact path="/" render={(props) => {
                   return <Homescreen {...props}
+                                      eventEmitter={ this.eventEmitter }
                                       handleReferral={ this.handleReferral }
                                       currentUserRole={ this.state.currentUserRole }
                                       handleLocationChange={ this.handleLocationChange }
@@ -634,13 +638,13 @@ export default class App extends Component {
                                       disableSearchButton={ disableSearchButton }
                                       toggleWishListModal={ this.toggleWishListModal } />
                 }} />
-
+                <Route path='/vendor_locations/:id' component={ VendorController } />
                 <Route exact path='/renters' render={(props) => {
                   return <RenterInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
-                }  } />
+                }} />
                 <Route exact path='/owners' render={(props) => {
                   return <OwnerInformation {...props} accessToken={ this.state.accessToken } toggleModal={ this.toggleModal } />
-                }  } />
+                }} />
 
                 <Route exact path='/listings/new' render={(props) => {
                   if (!this.state.accessToken) {
@@ -665,6 +669,7 @@ export default class App extends Component {
                                       handleLocationChange={ this.handleLocationChange }
                                       handleLocationFocus={ this.handleLocationFocus }
                                       handleDatesChange={ this.handleDatesChange }
+                                      eventEmitter={ this.eventEmitter }
                                       handleLocationSelect={ this.handleLocationSelect }
                                       handleSearch={ this.performSearch }
                                       clearFilters={ this.clearFilters }

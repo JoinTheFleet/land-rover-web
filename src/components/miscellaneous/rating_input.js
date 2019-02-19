@@ -5,11 +5,6 @@ export default class RatingInput extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      currentRating: this.props.rating || 0,
-      disabled: this.props.readonly || false
-    };
-
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
@@ -33,7 +28,7 @@ export default class RatingInput extends Component {
 
     let className = `${this.props.className} rating-input`;
 
-    if (this.state.disabled) {
+    if (this.props.readonly) {
       className += ' disabled';
     }
 
@@ -46,9 +41,9 @@ export default class RatingInput extends Component {
                 <input type="checkbox"
                        id={ inputId + index }
                        name={ inputName + '_' + inputNameSufix }
-                       disabled={ this.state.disabled }
+                       disabled={ this.props.readonly }
                        value={ index }
-                       checked={ index <= this.state.currentRating }
+                       checked={ index <= (this.props.rating || 0) }
                        onChange={ this.handleOnChange } />
                 <label htmlFor={inputId + index}></label>
               </div>

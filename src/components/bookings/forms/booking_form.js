@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Alert from 'react-s-alert';
 
 import BookingQuotation from './booking_quotation';
@@ -587,14 +586,26 @@ class BookingForm extends Component {
 
     let vehicleTitle = `${listing.variant.make.name}, ${listing.variant.model.name}`;
     let listingOwnerDetails = '';
+    let user = listing.user;
+    let vendorLocation = user.vendor_location;
+
+    let link = `/users/${user.id}`;
+    let image = user.images.small_url;
+    let name = user.first_name;
+
+    if (vendorLocation) {
+      link = `/vendor_locations/${vendorLocation.id}`;
+      image = vendorLocation.images.small_url;
+      name = vendorLocation.name;
+    }
 
     if (this.props.currentUserRole !== 'owner') {
       listingOwnerDetails = (
         <div className="booking-form-listing-user-details text-center pull-right">
-          <img src={ listing.user.images.original_url } alt="listing_user_avatar" />
+          <img src={ image } alt="listing_user_avatar" />
 
-          <Link to={`/users/${listing.user.id}`}>
-            <span className="secondary-text-color fs-18">{ listing.user.first_name }</span>
+          <Link to={ link }>
+            <span className="secondary-text-color fs-18">{ name }</span>
           </Link>
         </div>
       );
@@ -629,8 +640,6 @@ class BookingForm extends Component {
     let renterDetailsDiv = '';
     let booking = this.state.booking;
 
-    // TODO: Fix issue with multiple render.
-
     if (!booking || Object.keys(booking).length === 0) {
       return '';
     }
@@ -642,7 +651,12 @@ class BookingForm extends Component {
           <div className="booking-form-renter-image-and-name">
             <div className="booking-form-renter-image pull-left" style={ { backgroundImage: `url(${booking.renter.images.medium_url})` } }></div>
             <div className="booking-form-renter-name-and-rating pull-left">
-              <Link to={`/users/${booking.renter.id}`}>
+              <Link to={{
+                pathname: `/users/${booking.renter.id}`,
+                state: {
+                  view: 'owner'
+                }
+              }}>
                 <div className="fs-18 secondary-text-color"> { booking.renter.first_name } </div>
               </Link>
 
@@ -1012,6 +1026,26 @@ class BookingForm extends Component {
     )
   }
 
+  renderBookingDiscount() {
+    let booking = this.state.booking;
+    let discountCode = '';
+
+    if (!booking) {
+      return;
+    }
+
+    if (booking.user_applied_vendor_discount && booking.vendor_discount_slug && booking.vendor_discount_slug.length > 0) {
+      discountCode = (
+        <div className="booking-form-vehicle-survey booking-form-box fs-16 col-xs-12 discount-code no-side-padding">
+          <div className="pull-left">{ LocalizationService.formatMessage('vendor_discount.slug') }</div>
+          <div className="pull-right">{ booking.vendor_discount_slug }</div>
+        </div>
+      )
+    }
+
+    return discountCode;
+  }
+
   renderLoading() {
     if (!this.state.loading ) {
       return '';
@@ -1064,6 +1098,8 @@ class BookingForm extends Component {
           { this.renderInsuranceCriteria() }
 
           { this.renderTermsAndRules() }
+
+           { this.renderBookingDiscount() }
 
           { this.renderGetBookingDirections() }
 

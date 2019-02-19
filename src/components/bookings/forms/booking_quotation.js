@@ -53,6 +53,26 @@ export default class BookingQuotation extends Component {
     }
 
     let priceItems = pricingQuote.price_items;
+
+    let pricingInformation = '';
+
+    let listing = this.props.listing;
+    if (listing && listing.user && listing.user.vendor_location && listing.user.vendor_location.vendor) {
+      let vendor = listing.user.vendor_location.vendor;
+
+      if (!vendor.shows_booking_price_breakdown) {
+        priceItems = priceItems.filter((priceItem) => {
+          return priceItem.type === 'TOTAL' || priceItem.type === 'ON_DEMAND';
+        });
+
+        pricingInformation = (
+          <div className='pull-right insurance-information'>
+            { LocalizationService.formatMessage('bookings.no_breakdown') }
+          </div>
+        )
+      }
+    }
+
     let onDemandFeeIndex = priceItems.findIndex(priceItem => priceItem.type === 'ON_DEMAND');
 
     if (onDemandFeeIndex > -1 && onDemandFeeIndex < priceItems.length - 2) {
@@ -228,6 +248,7 @@ export default class BookingQuotation extends Component {
                 )
               })
             }
+            { pricingInformation }
         </div>
       </div>
     )

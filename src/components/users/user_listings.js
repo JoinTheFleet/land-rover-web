@@ -67,6 +67,7 @@ export default class UserListings extends Component {
         if (state && state.listings && this.state.initialLoad ) {
           this.setState({
             listings: state.listings,
+            count: state.count || 1,
             initialLoad: false
           });
         }

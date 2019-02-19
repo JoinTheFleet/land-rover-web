@@ -7,6 +7,9 @@ import ConversationMessagesService from '../../shared/services/conversations/con
 
 import Loading from '../miscellaneous/loading';
 import Message from './message';
+import LocalizationService from '../../shared/libraries/localization_service';
+
+import { Link } from 'react-router-dom';
 
 const REFRESH_PERIOD = 5000;
 
@@ -166,18 +169,37 @@ export default class Conversation extends Component {
       let booking = conversation.booking;
       let listing = conversation.listing;
       let owner = listing.user;
+      let vendorLocation = owner.vendor_location;
       let renter = booking.renter;
       let viewer = this.props.role === 'renter' ? renter : owner;
       let otherParticpant = this.props.role === 'renter' ? owner : renter;
 
       let messageLoader = '';
 
+      let name = otherParticpant.first_name;
+
+      if (vendorLocation && this.props.role === 'renter') {
+        name = vendorLocation.name;
+      }
+
       if (this.state.loading) {
         messageLoader = <Loading hiddenText={ true } fixedSize={ '30px' } />;
       }
 
+      let button = (
+        <Link to={{
+          pathname: `/bookings/${booking.id}`,
+          state: {
+            booking: booking
+          }
+        }}
+        className='white-text'>
+          { LocalizationService.formatMessage('bookings.view') }
+        </Link>
+      )
+
       return (
-        <FormPanel title={ otherParticpant.first_name } className='conversation-thread'>
+        <FormPanel title={ name } button={ button } className='conversation-thread'>
           <div className='message-list' onScroll={ this.scroll } ref='messageList'>
             { messageLoader }
             {

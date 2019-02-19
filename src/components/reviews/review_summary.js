@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import UserReviewsService from '../../shared/services/users/user_reviews_service';
 import RenterReviewsService from '../../shared/services/renter_reviews_service';
+import VendorLocationReviewsService from '../../shared/services/vendor_locations/vendor_location_reviews_service';
 import Review from './review';
 
 import Placeholder from '../miscellaneous/placeholder';
@@ -27,10 +28,21 @@ export default class ReviewSummary extends Component {
   }
 
   loadOwnerReviews() {
-    UserReviewsService.index(this.props.user.id, {
-      limit: LIMIT
-    })
-    .then(this.storeResponse)
+    let vendorLocation = this.props.vendorLocation;
+    let user = this.props.user
+
+    if (vendorLocation) {
+      VendorLocationReviewsService.index(vendorLocation.vendor.id, vendorLocation.id, {
+        limit: LIMIT
+      })
+      .then(this.storeResponse)
+    }
+    else if (user) {
+      UserReviewsService.index(user.id, {
+        limit: LIMIT
+      })
+      .then(this.storeResponse)
+    }
   }
 
   loadRenterReviews() {
@@ -54,7 +66,7 @@ export default class ReviewSummary extends Component {
   componentWillMount() {
     let location = this.props.location;
 
-    if (location && location.state && location.state.view && location.state.view === 'owner') {
+    if ((location && location.state && location.state.view && location.state.view === 'owner') || this.props.owner) {
       this.loadRenterReviews();
     }
     else {
@@ -79,6 +91,23 @@ export default class ReviewSummary extends Component {
       )
     }
 
+    let link = '';
+    let vendorLocation = undefined;
+
+    if (this.props.vendorLocation) {
+      link = `/vendor_locations/${this.props.vendorLocation.id}/reviews`;
+      vendorLocation = this.props.vendorLocation;
+    }
+    else if (this.props.user) {
+      link = `/users/${this.props.user.id}/reviews`;
+    }
+
+    let count = this.state.reviews.length;
+
+    if (this.state.metadata) {
+      count = this.state.metadata.total_reviews;
+    }
+
     return (
       <div>
         <div className='col-xs-12 no-side-padding review-title'>
@@ -86,14 +115,15 @@ export default class ReviewSummary extends Component {
             { LocalizationService.formatMessage('reviews.reviews') }
           </span>
           <span className='tertiary-text-color count'>
-            ({ this.state.reviews.length })
+            ({ count })
           </span>
           <span>
             <Link to={{
-                    pathname: `/users/${this.props.user.id}/reviews`,
+                    pathname: link,
                     state: {
                       reviews: this.state.reviews,
-                      metadata: this.state.metadata
+                      metadata: this.state.metadata,
+                      vendorLocation: vendorLocation
                     }
                   }}
                   className='secondary-text-color link pull-right'>

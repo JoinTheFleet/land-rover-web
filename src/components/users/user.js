@@ -6,13 +6,14 @@ import Avatar from 'react-avatar';
 import LocalizationService from '../../shared/libraries/localization_service';
 
 import ReviewSummary from '../reviews/review_summary';
-import UserListingsSummary from '../user_listings/user_listings_summary';
+import ListingsSummary from '../listings/listings_summary';
 
 export default class User extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      owner: false,
       reviewSummary: this.props.user ? this.props.user.owner_review_summary : {}
     };
   }
@@ -22,6 +23,7 @@ export default class User extends Component {
 
     if (location && location.state && location.state.view && location.state.view === 'owner') {
       this.setState({
+        owner: true,
         reviewSummary: this.props.user.renter_review_summary
       });
     }
@@ -38,7 +40,7 @@ export default class User extends Component {
     if (this.state.reviewSummary.total_reviews > 0) {
       reviews = (
         <div className='col-xs-12 no-side-padding user-reviews'>
-          <ReviewSummary {...this.props} />
+          <ReviewSummary owner={ this.state.owner } {...this.props} />
         </div>
       )
     }
@@ -46,7 +48,7 @@ export default class User extends Component {
     if (this.props.user.listing_count > 0) {
       listings = (
         <div className='col-xs-12 no-side-padding user-listings'>
-          <UserListingsSummary {...this.props} />
+          <ListingsSummary {...this.props} />
         </div>
       )
     }
@@ -67,6 +69,14 @@ export default class User extends Component {
                   <span className='pull-left rating-text'>{ this.state.reviewSummary.total_reviews || 0 } { LocalizationService.formatMessage('reviews.reviews') }</span>
                 </RatingInput>
               </div>
+            </div>
+          </div>
+          <div className='col-xs-12 no-side-padding user-listings-title'>
+            <span className='main-text-color title'>
+              { LocalizationService.formatMessage('users.description') }
+            </span>
+            <div className='col-xs-12 no-side-padding user-description'>
+              { this.props.user.description }
             </div>
           </div>
 
