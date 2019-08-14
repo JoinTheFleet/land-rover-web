@@ -94,6 +94,10 @@ export default class Footer extends Component {
               <a href={ process.env.REACT_APP_FLEET_SUPPORT_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.faqs" />
               </a>
+              <br/>
+              <a href={ process.env.REACT_APP_FLEET_PRIVACY_URL } target="_blank" className="white-text">
+                <FormattedMessage id="footer.privacy" />
+              </a>
             </p>
           </div>
 
