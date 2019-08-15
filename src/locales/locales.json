@@ -192,6 +192,7 @@
     "listings.door_count": "Doors",
     "listings.odc": "ODC",
     "listings.on_demand_collection": "On Demand Collection",
+    "listings.delivery": "Delivery",
     "listings.amenities": "Amenities",
     "listings.see_listings": "See Cars",
     "listings.add_new_listing": "Add New Car",
@@ -242,6 +243,7 @@
     "listings.pricing.daily": "Daily",
     "listings.pricing.cleaning": "Cleaning",
     "listings.pricing.on_demand_collection": "On Demand Collection",
+
     "listings.pricing.earn_more_by_offering": "Earn more by offering renters the option to select their own On Demand Collection and Drop off Locations. {terms_and_conditions}",
     "listings.pricing.distance": "Distance",
     "listings.pricing.select_distance": "Select Distance",

@@ -116,7 +116,7 @@ export default class BookingQuotation extends Component {
 
                   onDemandDiv = (
                     <div className="booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding">
-                      <div className="pull-left"> { LocalizationService.formatMessage('listings.on_demand_collection') } </div>
+                      <div className="pull-left"> { LocalizationService.formatMessage('listings.delivery') } </div>
                       <div className="pull-right">
                         <div className="booking-form-quotation-on-demand-checkbox fleet-checkbox">
                           <input type="checkbox"
