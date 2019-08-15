@@ -261,6 +261,7 @@
     "bookings.view": "View Booking",
     "bookings.book_now": "Book Now",
     "bookings.book_now_from": "Book now from",
+    "bookings.check_availability": "Check availability",
     "bookings.check_in_date": "Check In Date",
     "bookings.check_out_date": "Check Out Date",
     "bookings.insurance": "Insurance",
