@@ -129,6 +129,6 @@ export default class Constants {
   }
 
   static apiVersionUpdate() {
-    return 1;
+    return 2;
   }
 }
