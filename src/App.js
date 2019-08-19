@@ -8,6 +8,7 @@ import Alert from 'react-s-alert';
 import branch from 'branch-sdk';
 import Cookies from 'universal-cookie';
 import EventEmitter from 'eventemitter3';
+import CookieBanner from 'react-cookie-banner';
 
 import Constants from './miscellaneous/constants';
 import Helpers from './miscellaneous/helpers';
@@ -60,6 +61,13 @@ const ALERT_OPTIONS = {
     limit: 2
   }
 };
+
+//consent Cookie banner 
+const styles = {
+  banner: { height: 90, background: 'rgba(52, 64, 81, 0.88)', backgroundSize: '30px 30px', fontSize: '17px', fontWeight: 600},
+  button: { width: 66, height: 32, lineHeight: '32px', background: 'green', color: 'white', fontSize: '14px', fontWeight: 600, opacity: 1, right: 20, marginTop: -35 },
+  message: { fontWeight: 400, color:'white' },
+}
 
 export default class App extends Component {
   constructor(props) {
@@ -134,6 +142,8 @@ export default class App extends Component {
     ReactFacebookPixel.init(process.env.REACT_APP_FACEBOOK_PIXEL_ID);
     ReactFacebookPixel.pageView();
   }
+
+  
 
   componentDidMount() {
     setTimeout(() => {
@@ -612,6 +622,16 @@ export default class App extends Component {
                     hideSearchForm={ props.location.pathname === '/' }
                     disableSearchButton={ disableSearchButton }
                     showSearchButton={ true } />
+            <div>
+            <CookieBanner
+                styles={styles}
+                message=  { LocalizationService.formatMessage('application.cookies_consent') }
+                buttonMessage='Close'
+                link={<a href='https://support.jointhefleet.com/hc/en-us/articles/115003510665-Privacy-Policy#_cookiepolicy'target="_blank" rel="noopener noreferrer">Learn More</a>}
+                onAccept={() => {}}
+                cookie="user-has-accepted-cookies"
+              />
+            </div>
 
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
@@ -721,6 +741,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
+
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } scope={ this.state.modalScope } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
@@ -733,10 +754,14 @@ export default class App extends Component {
               { LocalizationService.formatMessage('authentication.confirm_log_out_text') }
             </ConfirmationModal>
 
+
+
             { alerts }
           </div>
+          
         )
-      }} />
+      }}
+       />
     );
   }
 }
