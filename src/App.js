@@ -61,13 +61,11 @@ const ALERT_OPTIONS = {
     limit: 2
   }
 };
-
-//consent Cookie banner 
-const styles = {
+const cookiesConset = {
   banner: { height: 90, background: 'rgba(52, 64, 81, 0.88)', backgroundSize: '30px 30px', fontSize: '17px', fontWeight: 600},
   button: { width: 66, height: 32, lineHeight: '32px', background: 'green', color: 'white', fontSize: '14px', fontWeight: 600, opacity: 1, right: 20, marginTop: -35 },
   message: { fontWeight: 400, color:'white' },
-}
+};
 
 export default class App extends Component {
   constructor(props) {
@@ -142,8 +140,6 @@ export default class App extends Component {
     ReactFacebookPixel.init(process.env.REACT_APP_FACEBOOK_PIXEL_ID);
     ReactFacebookPixel.pageView();
   }
-
-  
 
   componentDidMount() {
     setTimeout(() => {
@@ -624,15 +620,12 @@ export default class App extends Component {
                     showSearchButton={ true } />
             <div>
             <CookieBanner
-                styles={styles}
+                styles={cookiesConset}
                 message=  { LocalizationService.formatMessage('application.cookies_consent') }
-                buttonMessage='Close'
-                link={<a href='https://support.jointhefleet.com/hc/en-us/articles/115003510665-Privacy-Policy#_cookiepolicy'target="_blank" rel="noopener noreferrer">Learn More</a>}
-                onAccept={() => {}}
-                cookie="user-has-accepted-cookies"
+                buttonMessage= { LocalizationService.formatMessage('application.close') }
+                link={<a href='https://support.jointhefleet.com/hc/en-us/articles/115003510665-Privacy-Policy#_cookiepolicy'target="_blank" rel="noopener noreferrer">{ LocalizationService.formatMessage('application.learn_more') }</a>}
               />
             </div>
-
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
                 <Route exact path='/google20e0fd0ba71feb2a.html' render={(props) => {
@@ -753,8 +746,6 @@ export default class App extends Component {
                                title={ LocalizationService.formatMessage('authentication.confirm_log_out') } >
               { LocalizationService.formatMessage('authentication.confirm_log_out_text') }
             </ConfirmationModal>
-
-
 
             { alerts }
           </div>
