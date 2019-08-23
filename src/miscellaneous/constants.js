@@ -72,6 +72,11 @@ export default class Constants {
         display: 'Support',
         url: process.env.REACT_APP_FLEET_SUPPORT_URL
       },
+      privacy: {
+        key: 'privacy',
+        display: 'Privacy',
+        url: process.env.REACT_APP_FLEET_PRIVACY_URL
+      },
       t_and_cs: {
         key: 't_and_cs',
         display: "T's and C's",
