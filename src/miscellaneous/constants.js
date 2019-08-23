@@ -132,4 +132,8 @@ export default class Constants {
       previous: 'previous'
     };
   }
+
+  static apiVersionUpdate() {
+    return 2;
+  }
 }

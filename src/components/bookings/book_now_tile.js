@@ -300,7 +300,7 @@ class BookNowTile extends Component {
       <div className="book-now-tile">
         <div className="book-now-tile-title secondary-color white-text ls-dot-two col-xs-12 no-side-padding">
 
-          { LocalizationService.formatMessage('bookings.book_now_from') }
+          { LocalizationService.formatMessage('bookings.check_availability') }
 
           <b> { ` ${ pricePerDay }` } </b>
         </div>
