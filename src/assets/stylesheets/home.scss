@@ -171,3 +171,9 @@
     overflow-y: scroll;
   }
 }
+
+.react-cookie-banner{
+  z-index: 9999 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+}

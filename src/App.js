@@ -8,6 +8,7 @@ import Alert from 'react-s-alert';
 import branch from 'branch-sdk';
 import Cookies from 'universal-cookie';
 import EventEmitter from 'eventemitter3';
+import CookieBanner from 'react-cookie-banner';
 
 import Constants from './miscellaneous/constants';
 import Helpers from './miscellaneous/helpers';
@@ -612,7 +613,13 @@ export default class App extends Component {
                     hideSearchForm={ props.location.pathname === '/' }
                     disableSearchButton={ disableSearchButton }
                     showSearchButton={ true } />
-
+            <div>
+            <CookieBanner className="cookiesConset"
+                message=  { LocalizationService.formatMessage('application.cookies_consent') }
+                buttonMessage= { LocalizationService.formatMessage('application.close') }
+                link={<a href='https://support.jointhefleet.com/hc/en-us/articles/115003510665-Privacy-Policy#_cookiepolicy'target="_blank" rel="noopener noreferrer">{ LocalizationService.formatMessage('application.learn_more') }</a>}
+              />
+            </div>
             <div id="main_container" className="col-xs-12 no-side-padding">
               <Switch>
                 <Route exact path='/google20e0fd0ba71feb2a.html' render={(props) => {
@@ -721,6 +728,7 @@ export default class App extends Component {
                 <Route path="*" render={(props) => { return <Redirect to='/' /> }} />
               </Switch>
             </div>
+
             <Login setAccessToken={ this.setAccessToken } referralCode={ this.state.referralCode } toggleModal={ this.toggleModal } scope={ this.state.modalScope } modalName={ this.state.modalName === navigationSections.logout ? undefined : this.state.modalName }/>
             <WishListModal open={ this.state.wishListModalOpen } listing={ this.state.wishListListing || {} } toggleModal={ this.toggleWishListModal } performSearch={ this.performSearch } eventEmitter={ this.eventEmitter } />
             <Footer loggedIn={ this.state.accessToken && this.state.accessToken.length > 0 } toggleModal={ this.toggleModal } search={ this.handlePromotedLocationSelect } />
@@ -735,8 +743,10 @@ export default class App extends Component {
 
             { alerts }
           </div>
+          
         )
-      }} />
+      }}
+       />
     );
   }
 }

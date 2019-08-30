@@ -38,9 +38,7 @@ export default class Login extends Component {
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
     this.handleForgottenPasswordSubmit = this.handleForgottenPasswordSubmit.bind(this);
-
-    // for login T and C and Receivie newsletter for future
-    this.setTos_Acceptance_Timestamp = this.setTos_Acceptance_Timestamp.bind(this);
+    this.setTosAcceptanceTimestamp = this.setTosAcceptanceTimestamp.bind(this);
     this.setReceive = this.setReceive.bind(this);
   }
 
@@ -148,7 +146,7 @@ export default class Login extends Component {
     this.setState({ user: user }); 
   }
 
-  setTos_Acceptance_Timestamp(event) {
+  setTosAcceptanceTimestamp(event) {
     let user = this.state.user;
     user.tos_acceptance_timestamp = event.target.value;
 
@@ -156,10 +154,6 @@ export default class Login extends Component {
   }
 
   setReceive(event) {
-    //let user = this.state.user;
-    //user.receive = event.target.value;
-
-    //this.setState({ user: user });
   }
 
   registerUser(event) {
@@ -299,7 +293,7 @@ export default class Login extends Component {
               <FormField id='registration_toc'
                          value={ user.tos_acceptance_timestamp }
                          disabled={ this.state.loading }
-                         handleChange={ this.setTos_Acceptance_Timestamp  }
+                         handleChange={ this.setTosAcceptanceTimestamp  }
                          className='fleet-checkbox-login'
                          type='checkbox' />
               </div>
@@ -308,9 +302,7 @@ export default class Login extends Component {
               <div className=" booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding ">
                 <div className="pull-left">
                 <FormField id='registration_receive'
-                         //value={ user.receive }
                          disabled={ this.state.loading }
-                         //handleChange={ this.setReceive }
                          className=' fleet-checkbox-login'
                          type='checkbox' />
                 </div>
