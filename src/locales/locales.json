@@ -133,6 +133,8 @@
     "authentication.fill_in_all_fields": "Please fill in all required fields",
     "authentication.confirm_log_out": "Confirm Log Out",
     "authentication.confirm_log_out_text": "Are you sure you want to log out?",
+    "authentication.toc": "I agree to Fleet's Terms of Service and Privacy Policy",
+    "authentication.receive": "I want to receive updates and promotional emails from Fleet.",
 
     "authentication.sign_up_with_facebook": "Sign up with Facebook",
     "authentication.sign_up_with_email": "Sign up with Email",
