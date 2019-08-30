@@ -122,3 +122,36 @@ img {
   border-bottom: 4px solid transparent;
   border-top: 4px solid transparent;
 }
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width :$screen-xs-max) {
+  .zopim {
+    display: none;
+  }
+}
+
+.cookiesConset.react-cookie-banner {
+  height: 90px !important;
+  background-color: rgba(52, 64, 81, 0.88) !important;
+  background-size: 30px 30px;
+  font-size: 17px;
+  font-weight: 600;
+
+  .cookie-message {
+    font-weight: 400 !important; 
+    color: #ffffff !important;
+  }
+
+  .button-close {
+    width: 66px;
+    height: 32px;
+    line-height: 32px !important;
+    background-color: #008000 !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    opacity: 1;
+    right: 20px !important;
+    margin-top: -35px !important;
+  }
+}

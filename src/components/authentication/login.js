@@ -38,6 +38,8 @@ export default class Login extends Component {
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
     this.handleForgottenPasswordSubmit = this.handleForgottenPasswordSubmit.bind(this);
+    this.setTosAcceptanceTimestamp = this.setTosAcceptanceTimestamp.bind(this);
+    this.setReceive = this.setReceive.bind(this);
   }
 
   componentDidMount() {
@@ -141,7 +143,17 @@ export default class Login extends Component {
     let user = this.state.user;
     user.last_name = event.target.value;
 
-    this.setState({ user: user });
+    this.setState({ user: user }); 
+  }
+
+  setTosAcceptanceTimestamp(event) {
+    let user = this.state.user;
+    user.tos_acceptance_timestamp = event.target.value;
+
+    this.setState({ user: user }); 
+  }
+
+  setReceive(event) {
   }
 
   registerUser(event) {
@@ -155,7 +167,7 @@ export default class Login extends Component {
       user.referral_code = this.props.referralCode;
     }
 
-    if (user && user.first_name && user.last_name && user.email && user.password) {
+    if (user && user.first_name && user.last_name && user.email && user.password && user.tos_acceptance_timestamp ) {
       this.setState({
         loading: true
       }, () => {
@@ -243,10 +255,10 @@ export default class Login extends Component {
         <Anime easing="easeOutQuart"
                duration={3000}
                opacity={1}>
-          <div className="modal_form registration_form">
+          <div className="modal_form registration_form fleet-checkbox-login">
 
-              <FormField id='registration_first_name'
-              disabled={ this.state.loading }
+          <FormField id='registration_first_name'
+                         disabled={ this.state.loading }
                          value={ user.first_name }
                          handleChange={ this.setFirstName }
                          placeholder={ LocalizationService.formatMessage('user_profile.first_name') }
@@ -273,8 +285,32 @@ export default class Login extends Component {
                          placeholder={ LocalizationService.formatMessage('authentication.password') }
                          className='form-control text-secondary-font-weight fs-18'
                          type='password' />
+              <br/>
+          </div>
+          <div className=" registration_form fleet-checkbox-login agreement-padding">
+            <div className=" booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding ">  
+              <div className="pull-left">
+              <FormField id='registration_toc'
+                         value={ user.tos_acceptance_timestamp }
+                         disabled={ this.state.loading }
+                         handleChange={ this.setTosAcceptanceTimestamp  }
+                         className='fleet-checkbox-login'
+                         type='checkbox' />
+              </div>
+              <div> { LocalizationService.formatMessage('authentication.toc') } </div>
+            </div>
+              <div className=" booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding ">
+                <div className="pull-left">
+                <FormField id='registration_receive'
+                         disabled={ this.state.loading }
+                         className=' fleet-checkbox-login'
+                         type='checkbox' />
+                </div>
+                <div> { LocalizationService.formatMessage('authentication.receive') } </div>
+              </div>
               { this.renderRegistrationReferralCode() }
           </div>
+
           <Button className='white-text secondary-color text-secondary-font-weight fs-18'
                   onClick={ this.registerUser }
                   spinner={ this.state.loading }
