@@ -278,8 +278,7 @@ class BookNowTile extends Component {
                            focusedInput={ this.state.focusedInput }
                            onDatesChange={ this.handleDatesChange }
                            onFocusChange={ focusedInput => this.setState({ focusedInput }) }
-                           hideKeyboardShortcutsPanel={ true }
-                           isDayBlocked={ (day) => day.utc().isBefore(moment().utc()) } />
+                           hideKeyboardShortcutsPanel={ true } />
 
           { this.renderBookingRates() }
         </div>
