@@ -7,6 +7,8 @@ import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
 import FeaturesList from './features_list';
 import FeaturedIn from '../information/featured_in';
+import LocalizationService from '../../shared/libraries/localization_service';
+import {ButtonToolbar, Button} from 'react-bootstrap';
 
 // Images
 import topBanner from '../../assets/images/homescreen_top_banner.jpg';
@@ -183,7 +185,20 @@ export default class Homescreen extends Component {
     }
 
     return (
+      
       <div>
+       <div id="crowdfund" className="cfund">
+              <div className="col-xs-6 col-sm-offset-3 col-sm-6 text-center">
+                  <h2 className="cfund_text_main secondary-text-color"> { LocalizationService.formatMessage('crowdfunding.ownfleet') }</h2>
+                  <h4 className="cfund_text_secondary">{ LocalizationService.formatMessage('crowdfunding.seedrs') }</h4>
+                </div>
+              <div>
+                  <ButtonToolbar>
+                    <a target="_blank" href="https://fleet.seedrs.com"><Button className="cfund btn-icon btn">{ LocalizationService.formatMessage('crowdfunding.findmore') }</Button></a>
+                  </ButtonToolbar>
+              </div>
+        </div>
+
         <div id="homescreen_top_banner">
           <img src={topBanner} alt="homescreen_top_banner" id="homescreen_top_banner_bg" />
           <div id="homescreen_top_banner_content" className="white-text">
