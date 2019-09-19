@@ -188,9 +188,9 @@ export default class Homescreen extends Component {
       
       <div>
        <div id="crowdfund" className="cfund">
-              <div className="col-xs-6 col-sm-offset-3 col-sm-6 text-center">
-                  <h2 className="cfund_text_main secondary-text-color"> { LocalizationService.formatMessage('crowdfunding.ownfleet') }</h2>
-                  <h4 className="cfund_text_secondary">{ LocalizationService.formatMessage('crowdfunding.seedrs') }</h4>
+              <div className="col-xs-7 col-sm-offset-3 col-sm-6  text-center">
+                  <h2 className="cfund_text_main secondary-text-color mob-fs-20"> { LocalizationService.formatMessage('crowdfunding.ownfleet') }</h2>
+                  <h4 className="cfund_text_secondary fs-10">{ LocalizationService.formatMessage('crowdfunding.seedrs') }</h4>
                 </div>
               <div>
                   <ButtonToolbar>
