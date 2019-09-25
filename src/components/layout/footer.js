@@ -152,11 +152,18 @@ export default class Footer extends Component {
           </div>
         </div>
 
-        <div id="footer_bottom_part" className="col-xs-12">
-          <span className="white-text">
-            <FormattedMessage id="footer.copyrights" values={ { year: new Date().getFullYear() } } />
-          </span>
-        </div>
+        <div id="footer_bottom_part" className="col-xs-12"> 
+          <div className="col-sm-4">
+            <span className="white-text">
+              <FormattedMessage id="footer.copyrights" values={ { year: new Date().getFullYear() } } />
+            </span>
+          </div>
+          <div className="col-sm-8">
+            <span className="white-text">
+              <FormattedMessage id="footer.address" />
+            </span>
+          </div>
+        </div> 
       </footer>
     )
   }
