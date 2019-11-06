@@ -194,7 +194,7 @@ export default class Homescreen extends Component {
                 </div>
               <div>
                   <ButtonToolbar>
-                    <a target="_blank" rel="noopener noreferrer" href="https://fleet.seedrs.com"><Button className="cfund btn-icon btn">{ LocalizationService.formatMessage('crowdfunding.findmore') }</Button></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.seedrs.com/fleet"><Button className="cfund btn-icon btn">{ LocalizationService.formatMessage('crowdfunding.findmore') }</Button></a>
                   </ButtonToolbar>
               </div>
         </div>
