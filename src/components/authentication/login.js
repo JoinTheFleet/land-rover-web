@@ -39,7 +39,7 @@ export default class Login extends Component {
     this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
     this.handleForgottenPasswordSubmit = this.handleForgottenPasswordSubmit.bind(this);
     this.setTosAcceptanceTimestamp = this.setTosAcceptanceTimestamp.bind(this);
-    this.setReceive = this.setReceive.bind(this);
+    this.setTosReceiveTimestamp = this.setTosReceiveTimestamp.bind(this);
   }
 
   componentDidMount() {
@@ -153,7 +153,11 @@ export default class Login extends Component {
     this.setState({ user: user }); 
   }
 
-  setReceive(event) {
+  setTosReceiveTimestamp(event) {
+    let user = this.state.user;
+    user.tos_receive_timestamp = event.target.value;
+
+    this.setState({ user: user });
   }
 
   registerUser(event) {
@@ -167,7 +171,8 @@ export default class Login extends Component {
       user.referral_code = this.props.referralCode;
     }
 
-    if (user && user.first_name && user.last_name && user.email && user.password && user.tos_acceptance_timestamp ) {
+
+    if (user && user.first_name && user.last_name && user.email && user.password && user.tos_acceptance_timestamp && user.tos_receive_timestamp ) {
       this.setState({
         loading: true
       }, () => {
@@ -302,7 +307,9 @@ export default class Login extends Component {
               <div className=" booking-form-quotation-on-demand text-secondary-font-weight col-xs-12 no-side-padding ">
                 <div className="pull-left">
                 <FormField id='registration_receive'
+                         value={ user.tos_receive_timestamp }
                          disabled={ this.state.loading }
+                         handleChange={ this.setTosReceiveTimestamp  }
                          className=' fleet-checkbox-login'
                          type='checkbox' />
                 </div>
