@@ -185,8 +185,6 @@ export default class Homescreen extends Component {
     return (
       
       <div>
-
-
         <div id="homescreen_top_banner">
           <img src={topBanner} alt="homescreen_top_banner" id="homescreen_top_banner_bg" />
           <div id="homescreen_top_banner_content" className="white-text">

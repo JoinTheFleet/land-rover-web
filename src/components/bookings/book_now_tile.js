@@ -209,7 +209,7 @@ class BookNowTile extends Component {
                     }
                   }}>
                 <button className="book-now-button btn secondary-color white-text fs-18">
-                  { LocalizationService.formatMessage('bookings.book_now') }
+                  { LocalizationService.formatMessage('bookings.check_availability') }
                 </button>
               </Link>
             </div>
@@ -299,7 +299,7 @@ class BookNowTile extends Component {
       <div className="book-now-tile">
         <div className="book-now-tile-title secondary-color white-text ls-dot-two col-xs-12 no-side-padding">
 
-          { LocalizationService.formatMessage('bookings.check_availability') }
+          { LocalizationService.formatMessage('bookings.book_now') }
 
           <b> { ` ${ pricePerDay }` } </b>
         </div>
