@@ -909,6 +909,26 @@ class BookingForm extends Component {
             </div>
           )
           break;
+        case 'authentication_required':
+          actionButtonsDiv = (
+            <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
+              <div className="col-xs-12 no-side-padding">
+                <button className="booking-form-action-button btn tomato white-text fs-18 col-xs-12"
+                        onClick={ () => { this.toggleModal('rejectBooking') } }>
+                  { LocalizationService.formatMessage('bookings.reject_booking') }
+                </button>
+
+                <ConfirmationModal open={ this.state.modalsOpen.rejectBooking }
+                                  toggleModal={ this.toggleModal }
+                                  modalName="rejectBooking"
+                                  title={ LocalizationService.formatMessage('bookings.confirm_reject_booking') }
+                                  confirmationAction={ () => { this.respondToBookingRequest(false) } } >
+                  <span className="tertiary-text-color fs-16"> { LocalizationService.formatMessage('bookings.confirm_reject_booking_text') } </span>
+                </ConfirmationModal>
+              </div>
+            </div>
+          )
+          break;
         case 'confirmed':
           actionButtonsDiv = (
             <div>
@@ -966,7 +986,7 @@ class BookingForm extends Component {
           </div>
         )
       }
-      else if (this.state.booking && ['pending', 'confirmed'].includes(this.state.booking.status)) {
+      else if (this.state.booking && ['pending', 'authentication_required', 'confirmed'].includes(this.state.booking.status)) {
         actionButtonsDiv = (
           <div className="booking-form-action-buttons text-center col-xs-12 no-side-padding">
             <button className="booking-form-cancel-booking-button btn tomato white-text fs-18 col-xs-12"
@@ -994,7 +1014,7 @@ class BookingForm extends Component {
       return;
     }
 
-    if (!this.state.booking.id || this.state.booking.status === 'pending') {
+    if (!this.state.booking.id || this.state.booking.status === 'pending' || this.state.booking.status === 'authentication_required') {
       return;
     }
 
