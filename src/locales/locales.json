@@ -345,6 +345,7 @@
     "bookings.statuses.in_progress": "In Progress",
     "bookings.statuses.cancelled": "Cancelled",
     "bookings.statuses.pending": "Pending",
+    "bookings.statuses.authentication_required": "Authentication Required",
     "bookings.statuses.rejected": "Rejected",
     "bookings.statuses.confirmed": "Confirmed",
     "bookings.statuses.timed_out": "Timed Out",

@@ -14,6 +14,7 @@ export default class BookingStatus extends Component {
     switch (booking.status) {
       case 'rejected':
       case 'pending':
+      case 'authentication_required':
       case 'cancelled':
         className = 'text-danger';
         break;
