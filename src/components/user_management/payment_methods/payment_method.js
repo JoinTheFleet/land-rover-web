@@ -41,6 +41,15 @@ export default class PaymentMethod extends Component {
     }, () => {
       PaymentMethodsService.destroy(this.props.source.id)
                            .then(this.successfullyUpdated)
+                           .catch(error => {
+                            let errorMessage = error.response.data.message;
+                            Alert.error(errorMessage);
+
+                            this.setState({
+                              cardLoading: false,
+                              loading: false
+                            });
+                          })
     });
   }
 
