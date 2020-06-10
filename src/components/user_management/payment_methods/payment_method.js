@@ -49,7 +49,7 @@ export default class PaymentMethod extends Component {
                               cardLoading: false,
                               loading: false
                             });
-                          })
+                          });
     });
   }
 
