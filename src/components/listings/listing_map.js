@@ -1,102 +1,64 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
-import GoogleMapReact from 'google-map-react';
-import { fitBounds } from 'google-map-react/utils';
-
-import ListingItem from '../listings/listing_item';
+import ListingItem from './listing_item';
 
 import Helpers from '../../miscellaneous/helpers';
-import closest from 'closest';
+
+import mapboxgl from 'mapbox-gl';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_MAPS_API_KEY;
 
 class ListingMap extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      markerSelected: ''
+      map: '',
+      lng: this.props.location.longitude || parseFloat(process.env.REACT_APP_LOCATION_1_LNG),
+      lat: this.props.location.latitude || parseFloat(process.env.REACT_APP_LOCATION_1_LAT),
+      zoom: 10,
+      boundingBox: {}
     };
 
-    this.selectMarker = this.selectMarker.bind(this);
     this.onPositionChange = this.onPositionChange.bind(this);
     this.mapDragged = this.mapDragged.bind(this);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  selectMarker(id) {
-    this.setState({markerSelected: `listing_${id}`});
   }
 
   mapDragged() {
     this.setState({mapDragged: true})
   }
 
-  renderMarker(listing, index) {
-    let markerKey = `listing_${listing.id}`;
-    let coordinates = this.listingLocation(listing);
-    let selected = false;
-
-    if (this.state.markerSelected === markerKey) {
-      selected = true;
+  renderMarker(listing) {
+    if (!document.getElementById(`listing_${listing.id}_map_pin`)) {
+      const markerIcon = document.createElement('div');
+      markerIcon.className = 'listing_map_price';
+      markerIcon.id = `listing_${listing.id}_map_pin`;
+      markerIcon.key = `listing_${listing.id}`;
+      markerIcon.innerHTML = `<span>${listing.country_configuration.country.currency_symbol}${Math.round(listing.price / 100)}<\span>`;
+  
+      const popupNode = document.createElement('div');
+      ReactDOM.unstable_renderSubtreeIntoContainer(this, <ListingItem toggleWishListModal={ this.props.toggleWishListModal } additionalClasses='no-side-padding' listing={listing} />, popupNode);
+      let coordinates = this.listingLocation(listing);
+      new mapboxgl.Marker(markerIcon)
+        .setLngLat([coordinates.longitude, coordinates.latitude])
+        .setPopup(new mapboxgl.Popup().setDOMContent(popupNode))
+        .addTo(this.state.map);
     }
-
-    if (!listing.location && !listing.geometry) {
-      return '';
-    }
-    else {
-      let marker = '';
-      let className = 'listing_map_price';
-
-      if (selected) {
-        marker = (
-          <div lat={coordinates.latitude}
-               lng={coordinates.longitude}
-               key={`listing_${listing.id}`}
-               id={`listing_${listing.id}_map_pin`}
-               className={`${className} expanded`}>
-                <ListingItem toggleWishListModal={ this.props.toggleWishListModal } additionalClasses='no-side-padding' listing={listing} />
-          </div>
-        )
-      }
-      else {
-        marker = (
-          <div lat={coordinates.latitude}
-               lng={coordinates.longitude}
-               key={`listing_${listing.id}`}
-               id={`listing_${listing.id}_map_pin`}
-               onClick={(event) => {this.selectMarker(listing.id)}}
-               className={className}>
-                <span>
-                  {listing.country_configuration.country.currency_symbol}{Math.round(listing.price / 100)}
-                </span>
-          </div>
-        );
-      }
-
-      return marker;
-    }
-  }
-
-  onClick(event) {
-    if (this.state.markerSelected && closest(event.event.target, '.expanded')) {
-      return;
-    }
-
-    this.setState({markerSelected: undefined})
   }
 
   onPositionChange(options) {
-    let center = options.center;
+    let center = options.getCenter();
 
     this.setState({
-      latitude: options.center.lat,
-      longitude: options.center.lng
+      lat: center.lat,
+      lng: center.lng
     });
 
     if (this.state.mapDragged) {
-      this.props.onDragEnd(options.bounds, center);
+      this.props.onDragEnd(options, center);
     }
     else {
-      this.props.onPositionChange(options.bounds, center);
+      this.props.onPositionChange(options, center);
     }
   }
 
@@ -114,11 +76,11 @@ class ListingMap extends Component {
       latitude = (northeast.latitude + southwest.latitude) / 2;
       longitude = (northeast.longitude + southwest.longitude) / 2;
     }
-    else if (!listing.location && this.map) {
-      let center = this.map.getCenter();
+    else if (!listing.location && this.mapContainer) {
+      let center = this.mapContainer.getCenter();
 
-      latitude = center.lat();
-      longitude = center.lng();
+      latitude = center.lat;
+      longitude = center.lng;
     }
 
     return {
@@ -127,107 +89,78 @@ class ListingMap extends Component {
     };
   }
 
+  handleOnPositionChange(map) {
+    this.setState({mapDragged: true}, () => {
+      this.onPositionChange(map.getBounds());
+      this.setState({map: map});
+    });
+  }
+
   componentDidUpdate(props, state) {
-    if (this.map) {
-      let center = { lat: this.props.location.latitude, lng: this.props.location.longitude};
-      let boundingBox = this.props.boundingBox;
-      let bounds = undefined;
-      let zoom = this.map ? this.map.props.zoom : 10;
-      let mapCenter = this.map.props.center;
-
-      if ((!this.state.center || props.boundingBox !== this.props.boundingBox || props.location !== this.props.location) || (mapCenter && mapCenter.lat !== center.lat && mapCenter.lng !== center.lng)) {
-        if (boundingBox) {
-          bounds = {
-            nw: {
-              lat: boundingBox.top,
-              lng: boundingBox.left
-            },
-            sw: {
-              lat: boundingBox.bottom,
-              lng: boundingBox.left
-            },
-            ne: {
-              lat: boundingBox.top,
-              lng: boundingBox.right
-            },
-            se: {
-              lat: boundingBox.bottom,
-              lng: boundingBox.right
-            }
+    if (this.mapContainer) {
+      let listings = this.props.listings || [];
+      document.querySelectorAll('.listing_map_price').forEach(e => e.remove());
+      listings.forEach(listing => {
+        this.renderMarker(listing);
+      });
+      if (props.location && (props.location.longitude !== state.lng || props.location.latitude !== state.lat)) {
+        this.setState({
+          lng: props.location.longitude,
+          lat: props.location.latitude
+        }, ()=>{
+          if (props.boundingBox) {
+            state.map.fitBounds([
+              [props.boundingBox.left, props.boundingBox.bottom],
+              [props.boundingBox.right, props.boundingBox.top]
+            ]);
+          } else {
+            state.map.setCenter(
+              [props.location.longitude, props.location.latitude]
+            );
           }
-
-          // Calculate adjusted bounds to fit the specified bounds exactly within the map container.
-          let adjustedBounds = fitBounds(bounds, {width: this.mapContainer.clientWidth, height: this.mapContainer.clientHeight });
-
-          center = adjustedBounds.center;
-          zoom = adjustedBounds.zoom;
-
-          let mapPosition = {};
-
-          // Update our map positioning if any of it has changed from the last record.
-          if (zoom !== state.zoom) {
-            mapPosition.zoom = zoom;
-          }
-
-          if (bounds !== state.bounds) {
-            mapPosition.bounds = bounds;
-          }
-
-          if (center !== state.center) {
-            mapPosition.center = center;
-          }
-
-          if (zoom !== state.zoom && bounds !== state.bounds && center !== state.center) {
-            this.setState(mapPosition);
-          }
-        }
-        else if (center !== this.state.center) {
-          this.setState({ center: center });
-        }
+        })
       }
     }
   }
 
-  render() {
-    let listings = this.props.listings || [];
-    let center = this.state.center || { lat: this.state.latitude || this.props.location.latitude || parseFloat(process.env.REACT_APP_LOCATION_1_LAT), lng: this.state.longitude || this.props.location.longitude || parseFloat(process.env.REACT_APP_LOCATION_1_LNG) };
-    let bounds = this.state.bounds;
-    let zoom = this.state.zoom || 10;
+  componentDidMount() {
+    const map = new mapboxgl.Map({
+      container: this.mapContainer,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [this.state.lng, this.state.lat],
+      zoom: this.state.zoom
+    });
 
+    map.addControl(new mapboxgl.NavigationControl());
+    if (this.props.boundingBox) {
+      map.fitBounds([
+        [this.props.boundingBox.left, this.props.boundingBox.bottom],
+        [this.props.boundingBox.right, this.props.boundingBox.top]
+      ]);
+    }
+
+    this.setState({map: map});
+
+    let that = this;
+    map.on('moveend', () => {
+      that.handleOnPositionChange(map);
+    });
+
+    window.addEventListener('load', (e) => {
+      that.handleOnPositionChange(map);
+    });
+
+    // clean up on unmount
+    return () => map.remove();
+  }
+
+  render() {
     return (
-      <div ref={(ref) => {this.mapContainer = ref}} style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
-        <GoogleMapReact
-          id={'map'}
-          bootstrapURLKeys={{
-            key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-            language: 'EN'
-          }}
-          options={(map) => {
-            return {
-              fullscreenControl: false,
-              zoomControl: true,
-              zoomControlOptions: {
-                  position: map.ControlPosition.TOP_RIGHT
-              }
-            }
-          }}
-          onClick={this.onClick}
-          bounds={ bounds }
-          marginBounds={ bounds }
-          draggable={true}
-          onChange={this.onPositionChange}
-          onDrag={this.mapDragged}
-          resetBoundsOnResize={true}
-          center={ center }
-          ref={(ref) => {this.map = ref}}
-          zoom={ zoom }
-        >
-          {
-            listings.map((listing, index) => {
-              return this.renderMarker(listing, index);
-            })
-          }
-        </GoogleMapReact>
+      <div
+        id={'map'}
+        ref={el => this.mapContainer = el} 
+        className="mapContainer" 
+        style={{ height: (Helpers.windowHeight() - 130) + 'px' }}>
       </div>
     )
   }

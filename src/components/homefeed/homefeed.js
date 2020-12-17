@@ -20,7 +20,7 @@ import Helpers from '../../miscellaneous/helpers';
 import mapToggleIcon from '../../assets/images/map_toggle.png';
 import listToggleIcon from '../../assets/images/list_toggle.png';
 
-import LocalizationService from '../../shared/libraries/localization_service';
+// import LocalizationService from '../../shared/libraries/localization_service';
 import GeolocationService from '../../shared/services/geolocation_service';
 import Placeholder from '../miscellaneous/placeholder';
 
@@ -287,10 +287,10 @@ export default class Homefeed extends Component {
   }
 
   renderListingMap() {
-    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
+    // let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
 
     return (
-      <ListingMap googleMapURL={ googleMapUrl }
+      <ListingMap
                   loadingElement={ <div style={{ height: `100%` }} /> }
                   containerElement={ (<div style={{ height: (Helpers.windowHeight() - 130) + 'px' }}></div>) }
                   mapElement={ <div style={{ height: '100%' }}></div> }
