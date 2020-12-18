@@ -6,7 +6,6 @@ import Alert from 'react-s-alert';
 import Avatar from 'react-avatar';
 import moment from 'moment';
 
-import Map from '../miscellaneous/map';
 import Button from '../miscellaneous/button';
 import Loading from '../miscellaneous/loading';
 import RatingInput from '../miscellaneous/rating_input';
@@ -34,6 +33,9 @@ import DocumentMeta from 'react-document-meta';
 
 import UserOverview from '../users/overview';
 import VendorLocationOverview from '../vendor_locations/overview';
+
+import mapboxgl from 'mapbox-gl';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_MAPS_API_KEY;
 
 const listingsViews = Constants.listingsViews();
 
@@ -74,7 +76,7 @@ export default class ListingView extends Component {
                                    user: user,
                                    vendorLocation: vendorLocation,
                                    loading: false
-                                 });
+                                 }, () => this.mountMap(listing));
                                })
                                .catch(error => this.addError(Errors.extractErrorMessage(error)));
         });
@@ -101,7 +103,7 @@ export default class ListingView extends Component {
                          user: user,
                          vendorLocation: vendorLocation,
                          loading: false
-                       });
+                       }, () => this.mountMap(listing));
                      })
                      .catch(error => this.addError(Errors.extractErrorMessage(error)));
     });
@@ -262,41 +264,57 @@ export default class ListingView extends Component {
     return amenities;
   }
 
-  renderMap() {
-    let listing = this.state.listing;
+  mountMap(listing) {
     let location = Geolocation.getLocationFromListing(listing);
 
     if (!location) {
       return <div className="listing-view-map col-xs-12 no-side-padding"></div>;
     }
 
-    let listingCircle = {
-      position: {
-        lat: location.latitude,
-        lng: location.longitude
-      },
-      radius: location.radius,
-      options: {
-        strokeColor: '#23a9f6',
-        strokeOpacity: 1,
-        strokeWeight: 3,
-        fillColor: '#23a9f6',
-        fillOpacity: 0.35
-      }
-    }
-    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
+    const map = new mapboxgl.Map({
+      container: this.mapContainer,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [location.longitude, location.latitude],
+      zoom: 13,
+      interactive: false
+    });
 
+    map.on('load', function () {
+      map.addSource("source_circle_500", {
+        "type": "geojson",
+        "data": {
+          "type": "FeatureCollection",
+          "features": [{
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [location.longitude, location.latitude]
+            }
+          }]
+        }
+      });
+      map.addLayer({
+        "id": "source_circle_500",
+        "type": "circle",
+        "source": "source_circle_500",
+        "paint": {
+          "circle-radius": 60,
+          "circle-color": '#23a9f6',
+          "circle-opacity": 0.35,
+          "circle-stroke-color": '#23a9f6',
+          "circle-stroke-opacity": 1,
+          "circle-stroke-width": 3
+        }
+      });
+    });
+  }
+
+  renderMap() {
     return (
-      <div className="listing-view-map col-xs-12 no-side-padding">
-        <Map googleMapURL={ googleMapUrl }
-             loadingElement={ <div style={{ height: `100%` }} ><Loading /></div> }
-             containerElement={ (<div style={{ height: '275px' }}></div>) }
-             mapElement={ <div style={{ height: '100%' }}></div> }
-             options={ { disableDefaultUI: true, draggable: false, disableDoubleClickZoom: true } }
-             center={ { lat: location.latitude, lng: location.longitude } }
-             zoom={ 13 }
-             disableClick={ true }
-             circles={ [ listingCircle ] } />
+      <div className="listing-view-map col-xs-12 no-side-padding"
+        ref={el => this.mapContainer = el}
+        style={{ height: '275px' }}
+      >
       </div>
     )
   }

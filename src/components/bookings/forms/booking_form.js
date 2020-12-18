@@ -234,13 +234,13 @@ class BookingForm extends Component {
       loading: true
     }, () => {
       GeolocationService.getLocationFromPosition(pickUpLocation)
-                        .then(results => {
-                          onDemandAddresses.pick_up_location = results[0].formatted_address;
+                        .then(result => {
+                          onDemandAddresses.pick_up_location = result.place_name;
 
                           this.setState({ onDemandAddresses: onDemandAddresses }, () => {
                             GeolocationService.getLocationFromPosition(dropOffLocation)
-                                              .then(results => {
-                                                onDemandAddresses.drop_off_location = results[0].formatted_address;
+                                              .then(result => {
+                                                onDemandAddresses.drop_off_location = result.place_name;
 
                                                 this.setState({ onDemandAddresses: onDemandAddresses, loading: false });
                                               });
@@ -255,8 +255,8 @@ class BookingForm extends Component {
       loading: true
     }, () => {
       GeolocationService.getLocationFromPosition(location)
-                        .then(results => {
-                          let address = results[0].formatted_address;
+                        .then(result => {
+                          let address = result.place_name;
                           let quotation = this.state.quotation;
 
                           if (!quotation.on_demand_location) {
@@ -463,18 +463,17 @@ class BookingForm extends Component {
       this.setState({
         loading: true
       }, () => {
-        let latLng = location.latLng || location;
-        const position = { latitude: latLng.lat(), longitude: latLng.lng() };
-
+        let latLng = location;
+        const position = { latitude: latLng.lat, longitude: latLng.lng };
         GeolocationService.getLocationFromPosition(position)
-                          .then(results => {
-                            const address = results[0].formatted_address;
+                          .then(result => {
+                            const address = result.place_name;
 
                             onDemandAddresses[type] = address;
 
                             quotation.on_demand_location[type] = {
-                              latitude: latLng.lat(),
-                              longitude: latLng.lng(),
+                              latitude: latLng.lat,
+                              longitude: latLng.lng,
                               address: address
                             };
 

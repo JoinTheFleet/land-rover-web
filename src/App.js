@@ -49,6 +49,8 @@ import LocalizationService from './shared/libraries/localization_service';
 import ReactFacebookPixel from 'react-facebook-pixel';
 import GoogleTagManager from './shared/external/google_tag_manager';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
@@ -461,10 +463,10 @@ export default class App extends Component {
     }
 
     let boundingBox = {
-      left: bounds.sw.lng,
-      right: bounds.ne.lng,
-      bottom: bounds.sw.lat,
-      top: bounds.ne.lat
+      left: bounds._sw.lng,
+      right: bounds._ne.lng,
+      bottom: bounds._sw.lat,
+      top: bounds._ne.lat
     }
 
     this.setState({
