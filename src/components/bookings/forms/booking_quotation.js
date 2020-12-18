@@ -3,12 +3,83 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import FormField from '../../miscellaneous/forms/form_field';
-import Map from '../../miscellaneous/map';
-import Loading from '../../miscellaneous/loading';
 
 import Helpers from '../../../miscellaneous/helpers';
 import LocalizationService from '../../../shared/libraries/localization_service';
 
+import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_MAPS_API_KEY;
+
+class MapboxMap extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      map: undefined,
+      marker: undefined,
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.focusedLocationInput !== this.props.focusedLocationInput && prevProps.selectedPosition !== this.props.selectedPosition) {
+      this.state.map.setCenter([this.props.selectedPosition.lng, this.props.selectedPosition.lat]);
+      this.state.marker.setLngLat([this.props.selectedPosition.lng, this.props.selectedPosition.lat]);
+    }
+  }
+
+  componentDidMount() {
+    let selectedPosition = this.props.selectedPosition;
+    const map = new mapboxgl.Map({
+      container: this.mapContainer,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [selectedPosition.lng, selectedPosition.lat],
+      zoom: 10
+    });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+    map.addControl(new mapboxgl.FullscreenControl());
+
+    const marker = new mapboxgl.Marker({draggable: true})
+      .setLngLat([selectedPosition.lng, selectedPosition.lat])
+      .addTo(map);
+
+    this.setState({map: map, marker: marker});
+
+    let handleMarkerDragEnd = this.props.handleMarkerDragEnd;
+    marker.on('dragend', ()=> {
+      var lngLat = marker.getLngLat();
+      handleMarkerDragEnd(lngLat);
+    });
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      marker: false,
+    });
+
+    map.addControl(geocoder, 'top-left');
+
+    map.on('load', function() {
+      geocoder.on('result', function(e) {
+        geocoder.clear();
+        marker.setLngLat(e.result.center);
+        handleMarkerDragEnd({lng: e.result.center[0], lat: e.result.center[1]});
+      });
+    });
+  }
+
+  render() {
+    return (
+      <div 
+        className="booking-form-quotation-map col-xs-12 no-side-padding"
+        ref={el => this.mapContainer = el}
+        style={{ height: '300px' }}
+      />
+    )
+  }
+}
 export default class BookingQuotation extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +87,9 @@ export default class BookingQuotation extends Component {
     this.state = {
       focusedInput: '',
       focusedLocationInput: 'pick_up_location',
-      numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1
+      numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
+      map: undefined,
+      mapLoaded: false,
     };
 
     this.handleWindowResize = this.handleWindowResize.bind(this);
@@ -141,7 +214,6 @@ export default class BookingQuotation extends Component {
 
                   if (isOnDemand) {
                     let on_demand_location = this.props.quotation.on_demand_location || this.props.booking.on_demand_details;
-                    let googleMapUrl = LocalizationService.formatMessage('google.maps.javascript_api_link', { key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY });
                     let selectedPosition;
 
                     if (on_demand_location && Object.keys(on_demand_location).length > 0) {
@@ -163,19 +235,16 @@ export default class BookingQuotation extends Component {
 
                     if (!disableInputs) {
                       map = (
-                        <div className="booking-form-quotation-map col-xs-12 no-side-padding">
-                          <Map googleMapURL={ googleMapUrl }
-                                loadingElement={ <div style={{ height: `100%` }} ><Loading fullWidthLoading /></div> }
-                                containerElement={ (<div style={{ height: '300px' }}></div>) }
-                                mapElement={ <div style={{ height: '100%' }}></div> }
-                                onPlacesChanged={ this.handleOnDemandLocationChange }
-                                handleMapClick={ this.handleOnDemandLocationChange }
-                                handleMarkerDragEnd={ this.handleOnDemandLocationChange }
-                                center={ selectedPosition }
-                                draggableMarkers={ true }
-                                includeSearchBox={ true }
-                                markers={ selectedPosition ? [{ position: selectedPosition}] : [] } >
-                          </Map>
+                        <div 
+                          className="booking-form-quotation-map col-xs-12 no-side-padding"
+                          ref={el => this.mapContainer = el}
+                          style={{ height: '300px' }}
+                        >
+                          <MapboxMap
+                            selectedPosition={selectedPosition}
+                            handleMarkerDragEnd={this.handleOnDemandLocationChange}
+                            focusedLocationInput={this.state.focusedLocationInput}
+                          />
                         </div>
                       );
                     }
@@ -239,7 +308,6 @@ export default class BookingQuotation extends Component {
                   <div key={ 'booking_details_rate_' + index } className={ className }>
                     { onDemandDiv }
                     { onDemandDetailsDiv }
-
                     <div className="col-xs-12 no-side-padding">
                       <div className="pull-left"> { priceItem.title } </div>
                       <div className="pull-right"> { priceItem.total.currency_symbol + priceItem.total.amount.toFixed(2) } </div>
