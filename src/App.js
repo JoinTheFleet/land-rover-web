@@ -49,8 +49,6 @@ import LocalizationService from './shared/libraries/localization_service';
 import ReactFacebookPixel from 'react-facebook-pixel';
 import GoogleTagManager from './shared/external/google_tag_manager';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-
 const cookies = new Cookies();
 const navigationSections = Constants.navigationSections();
 const userRoles = Constants.userRoles();
