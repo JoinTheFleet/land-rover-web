@@ -51,7 +51,7 @@
     "jshint": "^2.10.2",
     "less": "^2.7.3",
     "less-loader": "4.1.0",
-    "mapbox-gl": "^2.0.0",
+    "mapbox-gl": "^1.13.0",
     "mobile-detect": "^1.4.1",
     "moment": "2.21.0",
     "object-assign": "4.1.1",
