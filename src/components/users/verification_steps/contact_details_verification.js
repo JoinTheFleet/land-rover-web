@@ -13,6 +13,7 @@ export default class ContactDetailsVerification extends Component {
 
     this.state = {
       countryCode: undefined,
+      countryLabel: undefined,
       phoneNumber: undefined,
       email: undefined,
       verificationCode: undefined,
@@ -47,7 +48,9 @@ export default class ContactDetailsVerification extends Component {
 
   handleCountryChange(country) {
     if (country) {
-      this.setState({ countryCode: country.value });
+      this.setState({ countryCode: country.code, countryLabel: country.label });
+    }else{
+      this.setState({ countryCode:"", countryLabel: "" });
     }
   }
 
@@ -147,7 +150,7 @@ export default class ContactDetailsVerification extends Component {
         </div>
 
         <div hidden={ (this.props.user.phone_number && this.props.user.phone_number.phone_number) || this.state.phoneNumberValidationPending || this.state.phoneNumberConfirmed } className='col-xs-12 no-side-padding phone-details'>
-          <FormRow id='user-phone-country' handleChange={ this.handleCountryChange } type='country-code' value={ this.state.countryCode } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.select_country') }/>
+          <FormRow id='user-phone-country' handleChange={ this.handleCountryChange } type='country-code' value={ this.state.countryLabel } placeholder={ LocalizationService.formatMessage('user_profile_verified_info.select_country') }/>
           <div className='col-xs-12 no-side-padding text-left form-label'>
             { LocalizationService.formatMessage('user_verification.add_phone_number') }
           </div>

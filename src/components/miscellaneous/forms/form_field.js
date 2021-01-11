@@ -38,8 +38,9 @@ const COUNTRY_CODES =
       return !country.value.includes("undefined");
     }).map(function(country) {
       return {
-        value: country.value.match(/(\d+)/)[0],
-        label: country.label
+        value: country.label,
+        label: country.label,
+        code: country.value.match(/(\d+)/)[0]
       };
    });
 
