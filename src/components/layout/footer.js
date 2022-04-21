@@ -115,18 +115,6 @@ export default class Footer extends Component {
               <FormattedMessage id="footer.get_in_touch" />
             </span>
             <div className="footer-links-list">
-              <div id="footer_social_links">
-                <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
-                  <img src={facebookIcon} alt="fleet_facebook" />
-                </a>
-                <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
-                  <img src={twitterIcon} alt="fleet_twitter" />
-                </a>
-                <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
-                  <img src={instagramIcon} alt="fleet_instagram" />
-                </a>
-              </div>
-
               <a href={ process.env.REACT_APP_FLEET_BLOG_URL } target="_blank" className="white-text">
                 <FormattedMessage id="footer.read_our_blog" />
               </a>
@@ -152,7 +140,7 @@ export default class Footer extends Component {
           </div>
         </div>
 
-        <div id="footer_bottom_part" className="col-xs-12"> 
+        <div id="footer_bottom_part" className="col-xs-12">
           <div className="col-sm-4">
             <span className="white-text">
               <FormattedMessage id="footer.copyrights" values={ { year: new Date().getFullYear() } } />
@@ -163,7 +151,7 @@ export default class Footer extends Component {
               <FormattedMessage id="footer.address" />
             </span>
           </div>
-        </div> 
+        </div>
       </footer>
     )
   }
