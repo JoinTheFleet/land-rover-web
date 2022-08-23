@@ -148,7 +148,7 @@ export default class Footer extends Component {
           </div>
           <div className="col-sm-8">
             <span className="white-text">
-              <FormattedMessage id="footer.address" />
+
             </span>
           </div>
         </div>
