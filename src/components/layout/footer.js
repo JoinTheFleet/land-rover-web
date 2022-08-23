@@ -119,12 +119,6 @@ export default class Footer extends Component {
                 <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
                   <img src={facebookIcon} alt="fleet_facebook" />
                 </a>
-                <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
-                  <img src={twitterIcon} alt="fleet_twitter" />
-                </a>
-                <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
-                  <img src={instagramIcon} alt="fleet_instagram" />
-                </a>
               </div>
 
               <a href={ process.env.REACT_APP_FLEET_BLOG_URL } target="_blank" className="white-text">
@@ -142,17 +136,11 @@ export default class Footer extends Component {
               <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
                 <img src={facebookIcon} alt="fleet_facebook" />
               </a>
-              <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
-                <img src={twitterIcon} alt="fleet_twitter" />
-              </a>
-              <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
-                <img src={instagramIcon} alt="fleet_instagram" />
-              </a>
             </div>
           </div>
         </div>
 
-        <div id="footer_bottom_part" className="col-xs-12"> 
+        <div id="footer_bottom_part" className="col-xs-12">
           <div className="col-sm-4">
             <span className="white-text">
               <FormattedMessage id="footer.copyrights" values={ { year: new Date().getFullYear() } } />
@@ -160,10 +148,10 @@ export default class Footer extends Component {
           </div>
           <div className="col-sm-8">
             <span className="white-text">
-              <FormattedMessage id="footer.address" />
+
             </span>
           </div>
-        </div> 
+        </div>
       </footer>
     )
   }
