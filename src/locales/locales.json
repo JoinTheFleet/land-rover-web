@@ -139,6 +139,7 @@
     "authentication.confirm_log_out_text": "Are you sure you want to log out?",
     "authentication.toc": "I agree to Fleet's Terms of Service and Privacy Policy",
     "authentication.receive": "I want to receive updates and promotional emails from Fleet.",
+    "authentication.agree_tcs": "You must agree to Terms & Conditions to continue",
 
     "authentication.sign_up_with_facebook": "Sign up with Facebook",
     "authentication.sign_up_with_email": "Sign up with Email",
