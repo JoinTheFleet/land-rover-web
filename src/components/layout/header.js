@@ -128,7 +128,7 @@ export default class Header extends Component {
                 </MenuItem>
               </DropdownButton>
 
-              <a className={`hidden-xs header-right-option static-link white-text ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
+              <a id='header_list_car_link' className={`hidden-xs header-right-option static-link white-text header_list_dashboard_button ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
 
               <a id="header_login_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
               <a id="header_register_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
