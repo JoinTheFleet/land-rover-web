@@ -12,6 +12,10 @@ import searchIcon from '../../assets/images/search_icon.png';
 
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import UsersService from '../../shared/services/users/users_service';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class Header extends Component {
   constructor(props) {
@@ -20,7 +24,8 @@ export default class Header extends Component {
     this.state =  {
       menuOpen: false,
       showSearchModal: false,
-      notificationsCount: 0
+      notificationsCount: 0,
+      userId: ''
     };
 
     this.closeMenu = this.closeMenu.bind(this);
@@ -60,8 +65,19 @@ export default class Header extends Component {
     this.setState({ menuOpen: false });
   }
 
+  createDashboardUrl(){
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
+      UsersService.show('me').then(response => {
+                      this.state.userId = response.data.data.user.id
+                    });
+    }
+  }
+
   render() {
     let mobileSearchIcon = '';
+    let redirection_base_url = process.env.REACT_APP_API_HOST + '/vendors/dealer_dashboard?user_id=' + this.state.userId 
 
     if ( !this.props.hideSearchForm ) {
       mobileSearchIcon = (
@@ -70,6 +86,7 @@ export default class Header extends Component {
         </div>
       )
     }
+    {this.createDashboardUrl()}
 
     return (
       <div>
@@ -110,6 +127,8 @@ export default class Header extends Component {
                   { LocalizationService.formatMessage('learn_more.blog') }
                 </MenuItem>
               </DropdownButton>
+
+              <a className={`hidden-xs header-right-option static-link white-text ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
 
               <a id="header_login_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
               <a id="header_register_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
