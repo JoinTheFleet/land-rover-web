@@ -81,12 +81,15 @@ export default class BookingsCalendar extends Component {
       ListingsService.index()
                     .then((response) => {
                       let listings = response.data.data.listings;
-
-                      this.setState({
-                        listings: listings,
-                        currentListing: listings[0],
-                        currentDailyRate: listings[0].price / 100
-                      }, () => this.fetchCurrentAvailability());
+                      if(listings.length <= 0){
+                        Alert.error("Sorry, No Vehicles available");
+                      }else{
+                        this.setState({
+                          listings: listings,
+                          currentListing: listings[0],
+                          currentDailyRate: listings[0].price / 100
+                        }, () => this.fetchCurrentAvailability());
+                      }
                     })
                     .catch((error) => {
                       this.setState({ loading: false }, () => { Alert.error(error.response.data.message) });
