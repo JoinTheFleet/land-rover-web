@@ -82,7 +82,7 @@ export default class BookingsCalendar extends Component {
                     .then((response) => {
                       let listings = response.data.data.listings;
                       if(listings.length <= 0){
-                        Alert.error("Sorry, No Vehicles available");
+                        Alert.error("Sorry, No Vehicles Available");
                       }else{
                         this.setState({
                           listings: listings,
