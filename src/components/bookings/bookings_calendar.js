@@ -32,7 +32,8 @@ export default class BookingsCalendar extends Component {
       currentDailyRate: '',
       currentAvailableSetting: null,
       numberOfMonthsToShow: Helpers.pageWidth() >= 768 ? 2 : 1,
-      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null
+      daySize: Helpers.pageWidth() < 400 ? Math.round((Helpers.pageWidth() - 90) / 7) : null,
+      showCalendar: true
     };
 
     this.renderDay = this.renderDay.bind(this);
@@ -82,7 +83,8 @@ export default class BookingsCalendar extends Component {
                     .then((response) => {
                       let listings = response.data.data.listings;
                       if(listings.length <= 0){
-                        Alert.error("Sorry, No Vehicles Available");
+                        this.setState({ loading: false, showCalendar: false  }, () => { 
+                          Alert.error("Sorry, No Vehicles Available") });
                       }else{
                         this.setState({
                           listings: listings,
@@ -389,7 +391,7 @@ export default class BookingsCalendar extends Component {
           { LocalizationService.formatMessage("calendar.description") }
         </div>
 
-        <div className="bookings-calendar-main-container col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div className={`calendar-area bookings-calendar-main-container col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 ${!this.state.showCalendar ? 'hidden' : ''}`}>
           <FormField type='calendar'
                      className=''
                      id='bookings_calendar_period'
