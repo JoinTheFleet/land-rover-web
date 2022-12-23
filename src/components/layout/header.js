@@ -25,7 +25,8 @@ export default class Header extends Component {
       menuOpen: false,
       showSearchModal: false,
       notificationsCount: 0,
-      userId: ''
+      userId: '',
+      isCompany: false 
     };
 
     this.closeMenu = this.closeMenu.bind(this);
@@ -38,6 +39,7 @@ export default class Header extends Component {
 
   componentDidMount() {
     this.props.eventEmitter.on('UPDATED_NOTIFICATIONS_COUNT', this.updateNotificationCount);
+    this.createDashboardUrl();
   }
 
   updateNotificationCount(count, error) {
@@ -70,14 +72,27 @@ export default class Header extends Component {
 
     if (accessToken) {
       UsersService.show('me').then(response => {
+                      if(response.data.data.user.account_type === "company"){
+                        this.state.isCompany = true 
+                      }
                       this.state.userId = response.data.data.user.id
                     });
     }
   }
 
+  renderDashboardButton() {
+    if (!this.state.isCompany) {
+      return '';
+    }else {
+      let redirection_base_url = process.env.REACT_APP_API_HOST + '/vendors/dealer_dashboard?user_id=' + this.state.userId 
+      return(
+        <a id='header_list_car_link' className={`hidden-xs header-right-option static-link white-text header_list_dashboard_button ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
+      )
+    }
+  }
+
   render() {
     let mobileSearchIcon = '';
-    let redirection_base_url = process.env.REACT_APP_API_HOST + '/vendors/dealer_dashboard?user_id=' + this.state.userId 
 
     if ( !this.props.hideSearchForm ) {
       mobileSearchIcon = (
@@ -86,7 +101,6 @@ export default class Header extends Component {
         </div>
       )
     }
-    {this.createDashboardUrl()}
 
     return (
       <div>
@@ -127,8 +141,8 @@ export default class Header extends Component {
                   { LocalizationService.formatMessage('learn_more.blog') }
                 </MenuItem>
               </DropdownButton>
-
-              <a id='header_list_car_link' className={`hidden-xs header-right-option static-link white-text header_list_dashboard_button ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
+              
+              {this.renderDashboardButton()}
 
               <a id="header_login_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
               <a id="header_register_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
