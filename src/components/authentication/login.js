@@ -171,8 +171,9 @@ export default class Login extends Component {
       user.referral_code = this.props.referralCode;
     }
 
+    let fields_check = (user && user.first_name && user.last_name && user.email && user.password);
 
-    if (user && user.first_name && user.last_name && user.email && user.password && user.tos_acceptance_timestamp && user.tos_receive_timestamp ) {
+    if (fields_check && user.tos_acceptance_timestamp ) {
       this.setState({
         loading: true
       }, () => {
@@ -195,6 +196,9 @@ export default class Login extends Component {
           }
         }).catch(this.handleModalError);
       });
+    }
+    else if (fields_check && !user.tos_acceptance_timestamp) {
+      this.addError(LocalizationService.formatMessage('authentication.agree_tcs'));
     }
     else {
       this.addError(LocalizationService.formatMessage('authentication.fill_in_all_fields'));

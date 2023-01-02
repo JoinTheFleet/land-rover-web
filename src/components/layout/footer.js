@@ -130,12 +130,6 @@ export default class Footer extends Component {
               <a href={ LocalizationService.formatMessage('company_info.facebook') } target="_blank">
                 <img src={facebookIcon} alt="fleet_facebook" />
               </a>
-              <a href={ LocalizationService.formatMessage('company_info.twitter') } target="_blank">
-                <img src={twitterIcon} alt="fleet_twitter" />
-              </a>
-              <a href={ LocalizationService.formatMessage('company_info.instagram') } target="_blank">
-                <img src={instagramIcon} alt="fleet_instagram" />
-              </a>
             </div>
           </div>
         </div>

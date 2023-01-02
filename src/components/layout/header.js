@@ -12,6 +12,10 @@ import searchIcon from '../../assets/images/search_icon.png';
 
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import UsersService from '../../shared/services/users/users_service';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class Header extends Component {
   constructor(props) {
@@ -20,7 +24,9 @@ export default class Header extends Component {
     this.state =  {
       menuOpen: false,
       showSearchModal: false,
-      notificationsCount: 0
+      notificationsCount: 0,
+      userId: '',
+      isCompany: false 
     };
 
     this.closeMenu = this.closeMenu.bind(this);
@@ -33,6 +39,7 @@ export default class Header extends Component {
 
   componentDidMount() {
     this.props.eventEmitter.on('UPDATED_NOTIFICATIONS_COUNT', this.updateNotificationCount);
+    this.createDashboardUrl();
   }
 
   updateNotificationCount(count, error) {
@@ -58,6 +65,30 @@ export default class Header extends Component {
 
   handleMenuItemSelect(item) {
     this.setState({ menuOpen: false });
+  }
+
+  createDashboardUrl(){
+    let accessToken = cookies.get('accessToken');
+
+    if (accessToken) {
+      UsersService.show('me').then(response => {
+                      if(response.data.data.user.account_type === "company"){
+                        this.state.isCompany = true 
+                      }
+                      this.state.userId = response.data.data.user.id
+                    });
+    }
+  }
+
+  renderDashboardButton() {
+    if (!this.state.isCompany) {
+      return '';
+    }else {
+      let redirection_base_url = process.env.REACT_APP_API_HOST + '/vendors/dealer_dashboard?user_id=' + this.state.userId 
+      return(
+        <a id='header_list_car_link' className={`hidden-xs header-right-option static-link white-text header_list_dashboard_button ${!this.props.loggedIn ? 'hide' : ''}`} href={ redirection_base_url } target="_blank" rel="noreferrer"> Go To Your Dashboard</a>
+      )
+    }
   }
 
   render() {
@@ -110,6 +141,8 @@ export default class Header extends Component {
                   { LocalizationService.formatMessage('learn_more.blog') }
                 </MenuItem>
               </DropdownButton>
+              
+              {this.renderDashboardButton()}
 
               <a id="header_login_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
               <a id="header_register_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>

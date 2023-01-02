@@ -7,6 +7,7 @@ import RatingInput from '../miscellaneous/rating_input';
 
 import likeIcon from '../../assets/images/like.png';
 import likedIcon from '../../assets/images/liked.png';
+import verifiedIcon from '../../assets/images/verifieddealer.png';
 
 import LocalizationService from '../../shared/libraries/localization_service';
 import Cookies from 'universal-cookie';
@@ -26,6 +27,16 @@ export default class ListingItem extends Component {
     }
 
     this.props.toggleWishListModal(this.props.listing);
+  }
+
+  renderPremiumCheck(){
+    if (!this.props.listing.premium_dealer_listing) {
+      return '';
+    }else {
+      return(
+        <img className="listing-verivied" src={ verifiedIcon }/> 
+      )
+    }
   }
 
   renderItem() {
@@ -59,8 +70,11 @@ export default class ListingItem extends Component {
 
     if (token && token.length > 0) {
       wishList = (
-        <div onClick={ this.toggleWishListModal } className="listing-item-liked">
-          <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+        <div>
+          <div onClick={ this.toggleWishListModal } className="listing-item-liked">
+            <img src={ wishListed ? likedIcon : likeIcon } alt="liked_icon" />
+          </div>
+          {this.renderPremiumCheck()}
         </div>
       );
     }
