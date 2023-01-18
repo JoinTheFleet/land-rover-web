@@ -328,6 +328,7 @@ export default class ListingForm extends Component {
                                          handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)
           break;
         case listingSteps.pricing:
+          this.state.listing.owner_account_type = this.state.currentUser.account_type;
           renderedStep = (<ListingPricing listing={ this.state.listing }
                                           disabled={ this.props.showVerificationModal }
                                           handleProceedToStepAndAddProperties={ this.proceedToStepAndAddProperties } />)

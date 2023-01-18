@@ -149,6 +149,7 @@ export default class ListingView extends Component {
     let vehicleModel = listing.variant ? listing.variant.model.name : listing.model;
     let vehicleTitle = vehicleMake + ', ' + vehicleModel;
     let acceptanceRate = '';
+    let monthly_info = '';
 
     if (listing.acceptance_rating !== null && listing.acceptance_rating >= 0) {
       acceptanceRate = (
@@ -159,6 +160,16 @@ export default class ListingView extends Component {
           <br/>
         </div>
       ) 
+    }
+
+    if (user.account_type === "company") {
+      monthly_info = (
+        <FormattedMessage id="listings.price_monthly"
+                          values={ {
+                            currency_symbol: listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol,
+                            price: listing.monthly_price / 100
+                          } } />
+      )
     }
 
     let ownerOverview = vendorLocation ? <VendorLocationOverview vendorLocation={ vendorLocation }  user={ user } /> : <UserOverview user={ user } />;
@@ -176,6 +187,8 @@ export default class ListingView extends Component {
                                 currency_symbol: listing.country_configuration ? listing.country_configuration.country.currency_symbol : listing.currency_symbol,
                                 price: listing.price / 100
                               } } />
+            { monthly_info !== '' && <br />}
+            { monthly_info }
             <br />
             <span className='timing'>{ LocalizationService.formatMessage('listings.pick_up_time', { time: moment.unix(listing.check_in_time).utc().format('HH:mm') }) }</span>
             <br />

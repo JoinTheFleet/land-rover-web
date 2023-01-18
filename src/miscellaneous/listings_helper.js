@@ -13,6 +13,7 @@ export default class ListingsHelper {
       on_demand_rates: listing.on_demand_rates,
       amenities: listing.amenities,
       price: listing.price,
+      monthly_price: listing.monthly_price,
       cleaning_fee: listing.cleaning_fee,
       license_plate_number: listing.license_plate_number,
       check_in_time: listing.check_in_time,
