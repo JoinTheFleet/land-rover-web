@@ -77,6 +77,12 @@ export default class ListingItem extends Component {
           {this.renderPremiumCheck()}
         </div>
       );
+    }else {
+      wishList = (
+        <div>
+          {this.renderPremiumCheck()}
+        </div>
+      );
     }
 
     return (
