@@ -205,6 +205,7 @@
     "listings.add_new_listing": "Add New Car",
     "listings.complete_listing": "Complete Car",
     "listings.price_per_day": "{currency_symbol}{price} per day",
+    "listings.price_monthly": "{currency_symbol}{price} monthly",
     "listings.per_day": "per day",
     "listings.listings": "Cars",
     "listings.delete_listing": "Delete Car",
@@ -248,6 +249,7 @@
 
     "listings.pricing.prices": "Prices",
     "listings.pricing.daily": "Daily",
+    "listings.pricing.monthly": "Monthly",
     "listings.pricing.cleaning": "Cleaning",
     "listings.pricing.on_demand_collection": "On Demand Collection",
 

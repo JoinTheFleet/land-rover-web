@@ -31,6 +31,10 @@ export default class ListingPricing extends Component {
       listing.price = listing.price;
     }
 
+    if (listing.monthly_price) {
+      listing.monthly_price = listing.monthly_price;
+    }
+
     listing.cleaning_fee = listing.cleaning_fee || 0;
 
     this.state = {
@@ -59,6 +63,7 @@ export default class ListingPricing extends Component {
 
     return {
       price: parseInt(listing.price, 10),
+      monthly_price: parseInt(listing.monthly_price, 10),
       cleaning_fee: parseInt(listing.cleaning_fee, 10),
       on_demand_rates: listing.on_demand_rates
     };
@@ -71,7 +76,7 @@ export default class ListingPricing extends Component {
       return false;
     }
 
-    return listing.price > 0 && listing.cleaning_fee >= 0;
+    return listing.price > 0 && listing.cleaning_fee >= 0 && (listing.monthly_price > 0 || listing.owner_account_type === "individual");
   }
 
   handleInputChange(param, value) {
@@ -192,6 +197,18 @@ export default class ListingPricing extends Component {
       )
     }
 
+    let monthly_field = '';
+    if (listing.owner_account_type === "company") {
+      monthly_field = (
+        <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.monthly') } >
+          <FormField id="listing_monthly_price"
+                    type="text"
+                    value={ listing.monthly_price / 100.0 }
+                    handleChange={ (event) => { this.handleInputChange('monthly_price', event.target.value * 100) } } />
+        </ListingFormField>
+      )
+    }
+
     return (
       <div className="listing-form-pricing col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">
         <ListingStep validateFields={ this.validateFields }
@@ -205,6 +222,8 @@ export default class ListingPricing extends Component {
                          value={ listing.price / 100.0 }
                          handleChange={ (event) => { this.handleInputChange('price', event.target.value * 100) } } />
             </ListingFormField>
+            
+            { monthly_field }
 
             <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.cleaning') }>
               <FormField id="listing_cleaning_fee"
