@@ -198,16 +198,14 @@ export default class ListingPricing extends Component {
     }
 
     let monthly_field = '';
-    if (listing.owner_account_type === "company") {
-      monthly_field = (
-        <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.monthly') } >
-          <FormField id="listing_monthly_price"
+    monthly_field = (
+      <ListingFormField label={ LocalizationService.formatMessage('listings.pricing.monthly') } >
+        <FormField id="listing_monthly_price"
                     type="text"
                     value={ listing.monthly_price / 100.0 }
                     handleChange={ (event) => { this.handleInputChange('monthly_price', event.target.value * 100) } } />
-        </ListingFormField>
-      )
-    }
+      </ListingFormField>
+    )
 
     return (
       <div className="listing-form-pricing col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 no-side-padding">

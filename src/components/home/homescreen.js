@@ -203,6 +203,9 @@ export default class Homescreen extends Component {
 
         <div id="homescreen_axa_banner" className="text-center">
           <img src={axaLogo} alt="homescreen_axa_banner" />
+          <div className="axa-text">
+            In order to qualify as a renter you must be 25 years of age or older and hold a fully valid Irish, UK or Eu driving license
+          </div>
         </div>
 
         { topSellers }
