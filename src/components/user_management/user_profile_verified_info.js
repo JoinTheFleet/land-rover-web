@@ -83,6 +83,10 @@ export default class UserProfileVerifiedInfo extends Component {
                     fieldsToDisable.accountType = !user.owner_verifications_required.account_type;
                     fieldsToDisable.countryOfResidence = !user.owner_verifications_required.country;
 
+                    if(user.account_type === 'individual'){
+                      fieldsToDisable.accountType = false
+                    }
+
                     this.setState(prevState => ({
                       loading: false,
                       user: user,
