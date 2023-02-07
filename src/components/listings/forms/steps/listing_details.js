@@ -19,12 +19,11 @@ export default class ListingDetails extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       errors: [],
       selectedParams: {
         on_demand: this.props.listing.on_demand || false,
-        amenities: (this.props.listing.amenities || []).map(amenity => amenity.id)
+        amenities: (this.props.listing.amenities || []).map(amenity => amenity)
       },
       filtersData: {}
     };
