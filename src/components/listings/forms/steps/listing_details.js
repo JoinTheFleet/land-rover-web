@@ -132,7 +132,7 @@ export default class ListingDetails extends Component {
               [ 'engine_fuel', 'transmission', 'seat_count', 'door_count' ].map(param => {
                 return (
                   <ListingFormField key={ 'listings_vehicle_' + param } label={ LocalizationService.formatMessage(`listings.${param}`) }>
-                    <span className="listings-readonly-value text-capitalize">
+                    <span className="listings-readonly-value text-capitalize listing-details-section">
                       { Helpers.detectObjectValue(this.props.listing.variant[param], filtersDisplayProperties) }
                     </span>
                   </ListingFormField>

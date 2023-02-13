@@ -495,6 +495,11 @@
     line-height: 36px;
   }
 
+  .listing-details-section {
+    padding-left: 15px;
+
+  }
+
   .fleet-dropdown {
     .currentSelectedItem {
       height: 34px;
@@ -547,6 +552,7 @@
       padding-left: 10px;
       width: calc(100% - 61px);
       height: 32px;
+      margin-right: 10px;
     }
 
     .listing-step-buttons {
