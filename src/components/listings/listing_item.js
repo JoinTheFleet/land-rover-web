@@ -104,6 +104,10 @@ export default class ListingItem extends Component {
               <div>
                 { item.country_configuration.country.currency_symbol + (item.price / 100) + ' per day' }
               </div>
+
+              { (item.monthly_price / 100) > 0 && <div>
+                { item.country_configuration.country.currency_symbol + (item.monthly_price / 100) + ' per month' }
+              </div>}
               <RatingInput rating={ item.rating } inputNameSufix={ item.id.toString() } readonly={true} />
               <FormattedMessage id="listings.total_reviews" values={ {total_reviews: item.total_reviews} } />
             </div>
