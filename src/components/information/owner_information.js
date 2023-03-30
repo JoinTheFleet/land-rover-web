@@ -40,7 +40,6 @@ export default class OwnerInformation extends Component {
                   <ul>
                     <li>{ LocalizationService.formatMessage('owner_information.point_1') }</li>
                     <li>{ LocalizationService.formatMessage('owner_information.point_2') }</li>
-                    <li>{ LocalizationService.formatMessage('owner_information.point_3') }</li>
                     <li>{ LocalizationService.formatMessage('owner_information.point_4') }</li>
                   </ul>
                 </div>
@@ -52,21 +51,16 @@ export default class OwnerInformation extends Component {
           </div>
           <div className='col-xs-12 no-side-padding card-overlay hidden-xs'>
             <div className='col-xs-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 cards'>
-              <Card className='col-xs-4'
+              <Card className='col-xs-6'
                     alt='Key'
                     title={ LocalizationService.formatMessage('owner_information.card_1_title') }
                     text={ LocalizationService.formatMessage('owner_information.card_1_text') }
                     img={ fleetKey } />
-              <Card className='col-xs-4'
+              <Card className='col-xs-6'
                     alt='Squares'
                     title={ LocalizationService.formatMessage('owner_information.card_2_title') }
                     text={ LocalizationService.formatMessage('owner_information.card_2_text') }
                     img={ fleetSquares } />
-              <Card className='col-xs-4'
-                    alt='AXA'
-                    title={ LocalizationService.formatMessage('owner_information.card_3_title') }
-                    text={ LocalizationService.formatMessage('owner_information.card_3_text') }
-                    img={ fleetAXA } />
             </div>
           </div>
         </div>

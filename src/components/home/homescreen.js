@@ -196,16 +196,6 @@ export default class Homescreen extends Component {
             </p>
             <LocationPeriodFilter {...this.props} homescreen={ true } shouldClearFilters={true} />
           </div>
-          <div id="homescreen_top_banner_insurance_div" className="twilight-blue fs-20 ls-dot-five white-text text-uppercase">
-            <FormattedMessage id="homescreen.insurance_partner" />
-          </div>
-        </div>
-
-        <div id="homescreen_axa_banner" className="text-center">
-          <img src={axaLogo} alt="homescreen_axa_banner" />
-          <div className="axa-text">
-            In order to qualify as a renter you must be 25 years of age or older and hold a fully valid Irish, UK or Eu driving license
-          </div>
         </div>
 
         { topSellers }
