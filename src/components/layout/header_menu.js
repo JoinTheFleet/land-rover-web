@@ -46,9 +46,6 @@ export default class HeaderMenu extends Component {
       navigationSections.home,
       navigationSections.signup,
       navigationSections.login,
-      navigationSections.earn_money,
-      navigationSections.drive_on_fleet,
-      navigationSections.get_help,
       navigationSections.blog
     ];
     let itemsWithDivider = [navigationSections.home, navigationSections.login];
