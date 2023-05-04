@@ -41,14 +41,6 @@ export default class BlogList extends Component {
             <FormattedMessage id="homescreen.keep_up_to_date" />
           </span>
         </p>
-
-        { this.renderBlogPosts() }
-
-        <div className="blog-list-view-all col-xs-12 no-side-padding text-right">
-          <a href={ process.env.REACT_APP_MEDIUM_URL || '/' } target="_blank" className="btn secondary-color white-text fs-12">
-            { LocalizationService.formatMessage('application.view_all') }
-          </a>
-        </div>
       </div>
     )
   }
