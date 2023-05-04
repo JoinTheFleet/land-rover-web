@@ -151,17 +151,6 @@ export default class ListingView extends Component {
     let acceptanceRate = '';
     let monthly_info = '';
 
-    if (listing.acceptance_rating !== null && listing.acceptance_rating >= 0) {
-      acceptanceRate = (
-        <div> 
-          <span className='listing-view-acceptance-rate no-side-padding'>
-            { LocalizationService.formatMessage('listings.acceptance_rate', { rate: listing.acceptance_rating }) }
-          </span>
-          <br/>
-        </div>
-      ) 
-    }
-
     if (user.account_type === "company") {
       monthly_info = (
         <FormattedMessage id="listings.price_monthly"

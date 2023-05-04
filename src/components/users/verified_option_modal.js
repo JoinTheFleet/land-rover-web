@@ -15,14 +15,9 @@ export default class UserVerificationModal extends Component {
               { LocalizationService.formatMessage('user_verification.next_prompt') }
             </div>
             <div className='col-xs-12 no-side-padding verification-buttons'>
-              <div className='col-xs-6'>
+              <div className='col-xs-12'>
                 <Button onClick={ this.props.showRentalVerifications } className='button col-xs-12'>
                   { LocalizationService.formatMessage('user_verification.approved_to_rent') }
-                </Button>
-              </div>
-              <div className='col-xs-6'>
-                <Button onClick={ this.props.listCar } className='button col-xs-12'>
-                  { LocalizationService.formatMessage('user_verification.list_a_car') }
                 </Button>
               </div>
             </div>

@@ -34,18 +34,6 @@ export default class FeaturesList extends Component {
           <FeatureTile icon={bookRental} titleMessageId="homescreen.book_a_car" textMessageId="homescreen.book_a_car_text" />
           <FeatureTile icon={collectCar} titleMessageId="homescreen.meet_the_owner" textMessageId="homescreen.meet_the_owner_text" />
         </div>
-
-        <div id="making_car_work_for_you_div" className="col-xs-12 text-center">
-          <p>
-            <span className="subtitle-font-size">
-              <FormattedMessage id="homescreen.making_car_work_for_you" />
-            </span>
-          </p>
-
-          <FeatureTile icon={listCar} titleMessageId="homescreen.create_profile" textMessageId="homescreen.create_profile_text" />
-          <FeatureTile icon={rentalBooking} titleMessageId="homescreen.receive_bookings" textMessageId="homescreen.receive_bookings_text" />
-          <FeatureTile icon={meetRenter} titleMessageId="homescreen.meet_the_driver" textMessageId="homescreen.meet_the_driver_text" />
-        </div>
       </div>
     )
   }

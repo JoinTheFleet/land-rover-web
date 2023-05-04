@@ -55,8 +55,6 @@ export default class HeaderMenu extends Component {
       items = [
         navigationSections.home,
         navigationSections.profile,
-        navigationSections.listings,
-        navigationSections.calendar,
         navigationSections.bookings,
         navigationSections.messages,
         navigationSections.notifications,
