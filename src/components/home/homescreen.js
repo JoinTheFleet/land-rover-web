@@ -202,7 +202,6 @@ export default class Homescreen extends Component {
         { nearbyListings }
 
         <FeaturesList />
-        <BlogList posts={ this.state.blog.posts } authors={ this.state.blog.authors } loading={ this.state.loadingPosts } />
 
         <FeaturedIn />
       </div>
