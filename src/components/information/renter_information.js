@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import LocalizationService from '../../shared/libraries/localization_service';
 
-import FeaturedIn from './featured_in';
 import Card from './card';
 import FAQ from './faq';
 
@@ -50,7 +49,7 @@ export default class RenterInformation extends Component {
         
 
         <div style = {{padding: '50px'}}>
-          <div id="Subscription-text" className="col-xs-12 text-center" style = {{border: '1px solid black', marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px' }}>
+          <div id="Subscription-text" className="col-xs-12 text-center" style = {{ marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px' }}>
             <div style = {{fontSize: '32px'}}>
               BEING FLEXIBLE HAS NEVER BEEN BETTER
             </div>
@@ -63,7 +62,7 @@ export default class RenterInformation extends Component {
             <br></br>
           </div>
 
-          <div id="Subscription-text" className="col-xs-12 text-center" style = {{border: '1px solid black', marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px', overflow: 'hidden' }}>
+          <div id="Subscription-text" className="col-xs-12 text-center" style = {{ marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px', overflow: 'hidden' }}>
             <div style = {{fontSize: '32px'}}>
               YOUR ADVANTAGES AT A GLANCE
             </div>
@@ -99,7 +98,7 @@ export default class RenterInformation extends Component {
                 <div style = {{fontSize: '20px'}}>
                   Enthusiasm
                 </div>
-                <div>With SUBSCRIBE you get exactly the Jaguar or Land Rover model you have chosen - in perfect condition with tested quality.</div>
+                <div>With SUBSCRIBE you get exactly the Land Rover model you have chosen - in perfect condition with tested quality.</div>
               </div>
             </div>
             <Link to="/home">
@@ -109,7 +108,7 @@ export default class RenterInformation extends Component {
           </div>
 
 
-          <div id="Subscription-text" className="col-xs-12 text-center" style = {{border: '1px solid black', marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px' }}>
+          <div id="Subscription-text" className="col-xs-12 text-center" style = {{ marginBottom: '15px', marginTop: '15px', paddingLeft: '100px', paddingRight: '100px' }}>
             <div style = {{fontSize: '32px'}}>
               YOUR FAST WAY TO THE WHEEL
             </div>
@@ -120,7 +119,7 @@ export default class RenterInformation extends Component {
                 <div style = {{fontSize: '20px'}}>
                   DISCOVER
                 </div>
-                <div>Find out about Jaguar & Land Rover SUBSCRIBE and our premium models available at short notice.</div>
+                <div>Find out about Land Rover SUBSCRIBE and our premium models available at short notice.</div>
               </div>
               
               
@@ -145,7 +144,7 @@ export default class RenterInformation extends Component {
                 <div style = {{fontSize: '20px'}}>
                   EXPERIENCE
                 </div>
-                <div>You enjoy the exclusive driving pleasure in your Jaguar or Land Rover We take care of everything else.</div>
+                <div>You enjoy the exclusive driving pleasure in your Land Rover We take care of everything else.</div>
               </div>
             </div>
 
@@ -175,11 +174,10 @@ export default class RenterInformation extends Component {
                 text={ LocalizationService.formatMessage('renter_information.card_3_text') }
                 img={ fleetDoneRight } />
         </div>
-        <FeaturedIn />
         <FAQ title={ LocalizationService.formatMessage('renter_information.faq') }
              faqPrefix='renter_information.faq_'
              faqCount={ 5 } />
-        <div className='faq-cta col-xs-12 text-center' dangerouslySetInnerHTML={ {__html: LocalizationService.formatMessage('renter_information.faq_cta')} } />
+        
         <div className='col-xs-12 no-side-padding subhero renter'>
           <div className='col-xs-12 know-more text-center'>
             <div className='header'>
@@ -191,39 +189,6 @@ export default class RenterInformation extends Component {
             <Link to='/search' className='btn btn-join'>
               { LocalizationService.formatMessage('renter_information.learn_more') }
             </Link>
-          </div>
-        </div>
-        <div className='col-xs-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 no-side-padding on-your-phone'>
-          <div className='col-xs-12 col-sm-6 visible-xs'>
-            <img src={ fleetApp } className='app-preview' alt='App' />
-          </div>
-          <div className='col-xs-12 col-sm-6 no-side-padding container'>
-            <div className='get-fleet'>
-              <div className='header'>
-                { LocalizationService.formatMessage('renter_information.get_fleet') }
-              </div>
-              <div className='subheader'>
-                { LocalizationService.formatMessage('renter_information.available_on') }
-              </div>
-              <div className='text'>
-                <ul>
-                  <li>{ LocalizationService.formatMessage('renter_information.app_point_1') }</li>
-                  <li>{ LocalizationService.formatMessage('renter_information.app_point_2') }</li>
-                  <li>{ LocalizationService.formatMessage('renter_information.app_point_3') }</li>
-                </ul>
-              </div>
-              <div className='buttons no-side-padding col-xs-12'>
-                <div className='ios'>
-                  <a href={ process.env.REACT_APP_APP_STORE }><img src={ fleetIOS } alt='iOS App Store' /></a>
-                </div>
-                <div className='android'>
-                <a href={ process.env.REACT_APP_PLAY_STORE }><img src={ fleetAndroid } alt='Android App Store' /></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='col-xs-12 col-sm-6 hidden-xs'>
-            <img src={ fleetApp } className='app-preview' alt='App' />
           </div>
         </div>
       </div>

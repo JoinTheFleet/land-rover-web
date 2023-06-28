@@ -52,7 +52,7 @@ export default class Footer extends Component {
     }
 
     return (
-      <footer id="footer" className="col-xs-12 secondary-color white-text text-secondary-font-weight ls-dot-five">
+      <footer id="footer" className="col-xs-12 white-text text-secondary-font-weight ls-dot-five" style={{backgroundColor: 'black'}}>
         <div id="footer_top_part" className="col-xs-12">
 
           <div className="hidden-xs col-sm-3">

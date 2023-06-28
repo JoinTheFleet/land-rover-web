@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import ListingList from '../listings/listing_list';
 import BlogList from './blog_list';
 import FeaturesList from './features_list';
-import FeaturedIn from '../information/featured_in';
 
 // Images
 import topBanner from '../../assets/images/homescreen_top_banner.jpg';
@@ -202,8 +201,6 @@ export default class Homescreen extends Component {
         { nearbyListings }
 
         <FeaturesList />
-
-        <FeaturedIn />
       </div>
     )
   }
