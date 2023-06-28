@@ -52,7 +52,7 @@ export default class Footer extends Component {
     }
 
     return (
-      <footer id="footer" className="col-xs-12 secondary-color white-text text-secondary-font-weight ls-dot-five">
+      <footer id="footer" className="col-xs-12 white-text text-secondary-font-weight ls-dot-five" style={{backgroundColor: 'black'}}>
         <div id="footer_top_part" className="col-xs-12">
 
           <div className="hidden-xs col-sm-3">
@@ -116,7 +116,7 @@ export default class Footer extends Component {
             </span>
             <div className="footer-links-list">
               <a href={ process.env.REACT_APP_FLEET_BLOG_URL } target="_blank" className="white-text">
-                <FormattedMessage id="footer.read_our_blog" />
+                Contact Us
               </a>
               <br/>
               <a href={'mailto:' + LocalizationService.formatMessage('company_info.info_email') } className="white-text">

@@ -122,6 +122,8 @@ export default class Header extends Component {
           </Modal>
           <div className="app-header">
             <img src={logo} alt="fleet logo" className="header-logo" onClick={ () => { this.toggleMenu() }} />
+            <span className="header-logo-text">Rent</span>
+
 
             <LocationPeriodFilter {...this.props} hideSearchForm={ this.props.hideSearchForm } closeMenu={ this.closeMenu }/>
 
@@ -133,13 +135,10 @@ export default class Header extends Component {
                   <Link to='/renters'>{ LocalizationService.formatMessage('learn_more.drive_on_fleet') }</Link>
                 </MenuItem>
                 <MenuItem divider className={ this.props.loggedIn ? 'hide' : '' } />
-                <MenuItem eventKey="4" href={ process.env.REACT_APP_MEDIUM_URL }>
-                  { LocalizationService.formatMessage('learn_more.blog') }
-                </MenuItem>
               </DropdownButton>
 
-              <a id="header_login_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
-              <a id="header_register_link" className={ `hidden-xs header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
+              <a id="header_login_link" className={ `header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('login'); }}> { LocalizationService.formatMessage('header.log_in') } </a>
+              <a id="header_register_link" className={ ` header-right-option static-link white-text ${this.props.loggedIn ? 'hide' : ''}` } onClick={ () => { this.toggleModal('registration'); }}> { LocalizationService.formatMessage('header.sign_up') } </a>
               <Link id='header_notification_link' className={ `header-right-option static-link white-text ${!this.props.loggedIn ? 'hide' : ''}` } to='/notifications'>
                 <i className={ `fa fa-bell ${this.state.notificationsCount > 0 ? 'notification-badge' : '' }`} />
               </Link>

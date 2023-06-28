@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LocalizationService from '../../shared/libraries/localization_service';
 
-import FeaturedIn from './featured_in';
 import Card from './card';
 import FAQ from './faq';
 
@@ -81,7 +80,6 @@ export default class OwnerInformation extends Component {
                 text={ LocalizationService.formatMessage('owner_information.card_3_text') }
                 img={ fleetAXA } />
         </div>
-        <FeaturedIn />
         <FAQ title={ LocalizationService.formatMessage('owner_information.faq') }
              faqPrefix='owner_information.faq_'
              faqCount={ 5 } />
@@ -96,39 +94,6 @@ export default class OwnerInformation extends Component {
             <a className='btn btn-join' href={ process.env.REACT_APP_OWNER_HELP }>
               { LocalizationService.formatMessage('owner_information.learn_more') }
             </a>
-          </div>
-        </div>
-        <div className='col-xs-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 no-side-padding on-your-phone'>
-          <div className='col-xs-12 col-sm-6 visible-xs'>
-            <img src={ fleetApp } className='app-preview' alt='App' />
-          </div>
-          <div className='col-xs-12 col-sm-6 no-side-padding container'>
-            <div className='get-fleet'>
-              <div className='header'>
-                { LocalizationService.formatMessage('owner_information.get_fleet') }
-              </div>
-              <div className='subheader'>
-                { LocalizationService.formatMessage('owner_information.available_on') }
-              </div>
-              <div className='text'>
-                <ul>
-                  <li>{ LocalizationService.formatMessage('owner_information.app_point_1') }</li>
-                  <li>{ LocalizationService.formatMessage('owner_information.app_point_2') }</li>
-                  <li>{ LocalizationService.formatMessage('owner_information.app_point_3') }</li>
-                </ul>
-              </div>
-              <div className='buttons no-side-padding col-xs-12'>
-                <div className='ios'>
-                  <a href={ process.env.REACT_APP_APP_STORE }><img src={ fleetIOS } alt='iOS App Store' /></a>
-                </div>
-                <div className='android'>
-                <a href={ process.env.REACT_APP_PLAY_STORE }><img src={ fleetAndroid } alt='Android App Store' /></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='col-xs-12 col-sm-6 hidden-xs'>
-            <img src={ fleetApp } className='app-preview' alt='App' />
           </div>
         </div>
       </div>
